@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 
 public class Pawn {
 
+
     /**
      * color of the constructor, taken from the enum Color
      */
@@ -198,7 +199,6 @@ public class Pawn {
         return nextPosition;
 
     }
-
 
 
 

@@ -47,10 +47,7 @@ public class Building {
 
 
     public Building(){
-        this.level = -1;
-        this.isDome = false;
-        this.quantity = -1;
-        this.placedNumber = -1;
+        this(-1,-1,-1);
     }
 
 
@@ -114,7 +111,7 @@ public class Building {
      */
     public void decreaseQuantity(){
 
-        if(this.level != 4) {
+        if(this.level != 4 && placedNumber > 0) {
             placedNumber--;
         }
 

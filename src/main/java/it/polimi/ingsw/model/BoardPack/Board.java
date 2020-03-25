@@ -80,6 +80,8 @@ public class Board {
      * @param chosenPawn the selected pawn
      * @return where the selected pawn can move
      */
+    //TODO : uncomment the below function
+    /*
     public ArrayList<Cell> getCellAvailableToMove(Pawn chosenPawn) {
 
         ArrayList<Cell> neighboringCell = getNeighboring( chosenPawn.getPosition() );
@@ -93,6 +95,7 @@ public class Board {
 
         return retAvailableCellList;
     }
+     */
 
 
     /**
@@ -100,6 +103,8 @@ public class Board {
      * @param chosenPawn the selected pawn
      * @return where the selected pawn can build
      */
+    //TODO : uncomment the below function
+    /*
     public ArrayList<Cell> getCellAvailableToBuild( Pawn chosenPawn) {
 
         ArrayList<Cell> neighboringCell = getNeighboring( chosenPawn.getPosition() );
@@ -114,6 +119,8 @@ public class Board {
 
         return retAvailableCellList;
     }
+
+     */
 
 
     /**
@@ -153,7 +160,8 @@ public class Board {
      * @param buildings the list of existing building
      * @return the list of possible building on the designated cell
      */
-    public ArrayList<Building> getPossibleBuildingOnCell(Cell designatedCell, ArrayList<Building> buildings ){
+    public ArrayList<Building> getPossibleBuildingOnCell(Cell designatedCell, ArrayList<Building> buildings ) {
+
         ArrayList<Building> possibleBuilding = new ArrayList<>();
 
         for (Building b : buildings) {
@@ -199,6 +207,8 @@ public class Board {
      * @param designatedCell the cell to encode
      * @return the encoded string
      */
+    //TODO : uncomment the below function
+    /*
     public String getStringCellInfo(Cell designatedCell) {
 
         String retString = String.valueOf(designatedCell.getRoof().getLevel());
@@ -244,6 +254,8 @@ public class Board {
 
         return "error";
     }
+
+     */
 
 
 

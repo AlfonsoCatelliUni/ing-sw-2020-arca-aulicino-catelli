@@ -155,7 +155,7 @@ public class Cell {
 
 
     /**
-     * free this cell deleting the presence of the builder
+     * set null the reference at the Pawn and false the indicator of builderHere
      */
     public void freeCell() {
         this.pawnInThisCell = null;
@@ -168,9 +168,11 @@ public class Cell {
      * @param designatedBuilding the new type of building
      */
     public void buildOnThisCell(Building designatedBuilding) {
+
         this.zPosition++;
         this.roof = designatedBuilding;
         designatedBuilding.increaseQuantity();
+
     }
 
 

@@ -108,6 +108,7 @@ class BoardTest {
     @Test
     void getNumberOfDome() {
 
+
         Board gameBoard = new Board();
 
         Building levelOne = new Building(1,22);

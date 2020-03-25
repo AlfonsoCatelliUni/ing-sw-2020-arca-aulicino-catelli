@@ -36,18 +36,19 @@ public class Building {
     // ======================================================================================
 
 
-    public Building(int level, int quantity, int placedNumber){
+    public Building(int level, int quantity){
         this.level = level;
 
         this.isDome = level == 4;
 
         this.quantity = quantity;
-        this.placedNumber = placedNumber;
+
+        this.placedNumber = 0;
     }
 
 
     public Building(){
-        this(-1,-1,-1);
+        this(-1,-1);
     }
 
 

@@ -62,7 +62,7 @@ public class Cell {
         this.rowPosition = rowPosition;
         this.zPosition = 0;
         this.isBuilderHere = false;
-        this.roof = new Building(0, 30, 0);
+        this.roof = new Building(0, 30);
         this.pawnInThisCell = null;
         this.zPosition = 0;
     }
@@ -73,7 +73,7 @@ public class Cell {
         this.rowPosition = 0;
         this.zPosition = 0;
         this.isBuilderHere = false;
-        this.roof = new Building(0, 30, 0);
+        this.roof = new Building(0, 30);
         this.pawnInThisCell = null;
         this.zPosition = 0;
     }

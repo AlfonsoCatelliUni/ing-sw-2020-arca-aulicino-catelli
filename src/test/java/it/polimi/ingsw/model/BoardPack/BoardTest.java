@@ -21,18 +21,20 @@ class BoardTest {
     void getCellAvailableToBuild() {
 
         Board gameBoard = new Board();
-        Cell cell1 = gameBoard.getCell(0,0);
+
         Pawn pawn = new Pawn(Color.BLUE, Sex.MALE, gameBoard.getCell(0,0));
-        cell1.placePawnHere(pawn);
+        gameBoard.getCell(0,0).placePawnHere(pawn);
+
         ArrayList<Cell> cells = gameBoard.getCellAvailableToBuild(pawn);
         ArrayList<Cell> expectedCells = new ArrayList<>();
 
         expectedCells.add(gameBoard.getCell(0,1));
         expectedCells.add(gameBoard.getCell(1,0));
         expectedCells.add(gameBoard.getCell(1,1));
+
         assertEquals(cells, expectedCells);
 
-        // pedina al centro con pedina vicino e cupola
+        /* pawn in a center cell with a pawn near it and a dome */
         Pawn pawn1 = new Pawn(Color.GREY,Sex.FEMALE, gameBoard.getCell(1,2));
         gameBoard.getCell(1,2).placePawnHere(pawn1);
         gameBoard.getCell(2,3).buildOnThisCell(new Building(4,18));
@@ -51,7 +53,7 @@ class BoardTest {
         expectedCells2.add(gameBoard.getCell(3,3));
         assertEquals(cells, expectedCells2);
 
-        //lista vuota
+        /* empty list */
         gameBoard.getCell(3,1).buildOnThisCell(new Building(4,18));
         gameBoard.getCell(1,1).buildOnThisCell(new Building(4,18));
         gameBoard.getCell(3,3).buildOnThisCell(new Building(4,18));

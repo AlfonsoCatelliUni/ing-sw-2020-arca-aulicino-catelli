@@ -11,15 +11,17 @@ class BuildingTest {
     @org.junit.jupiter.api.Test
     void isAvailable() {
 
-        Building building = new Building(1, 2, 2);
+        Building building = new Building(1, 2);
         Boolean available = building.isAvailable();
 
-        assertEquals(false, available);
+        assertEquals(true, available);
 
-        building.decreaseQuantity();
+        building.increaseQuantity();
+        building.increaseQuantity();
+
         available = building.isAvailable();
 
-        assertEquals(true, available);
+        assertEquals(false, available);
 
     }
 
@@ -27,12 +29,12 @@ class BuildingTest {
     @org.junit.jupiter.api.Test
     void getIsDome() {
 
-        Building buildingOne = new Building(1, 2, 0);
+        Building buildingOne = new Building(1, 2);
         Boolean isDome = buildingOne.getIsDome();
 
         assertEquals(false, isDome);
 
-        Building buildingTwo = new Building(4, 2, 0);
+        Building buildingTwo = new Building(4, 2);
         isDome = buildingTwo.getIsDome();
 
         assertEquals(true, isDome);
@@ -43,7 +45,7 @@ class BuildingTest {
     @org.junit.jupiter.api.Test
     void increaseQuantity() {
 
-        Building building = new Building(1, 2, 0);
+        Building building = new Building(1, 2);
         building.increaseQuantity();
         int placed = building.getPlacedNumber();
 
@@ -65,7 +67,7 @@ class BuildingTest {
     @org.junit.jupiter.api.Test
     void decreaseQuantity() {
 
-        Building building = new Building(1, 2, 1);
+        Building building = new Building(1, 2);
         building.decreaseQuantity();
         int placed = building.getPlacedNumber();
 

@@ -77,7 +77,7 @@ class CellTest {
 
         assertEquals(0, designatedCell.getHeight());
 
-        Building newRoof = new Building(1,2,0);
+        Building newRoof = new Building(1,2);
         designatedCell.buildOnThisCell(newRoof);
 
         Building roof = designatedCell.getRoof();

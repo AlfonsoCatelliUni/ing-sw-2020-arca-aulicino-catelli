@@ -154,6 +154,7 @@ public class Cell {
     }
 
 
+
     /**
      * set null the reference at the Pawn and false the indicator of builderHere
      */

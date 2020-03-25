@@ -43,12 +43,6 @@ public class Building {
 
         this.quantity = quantity;
 
-        this.placedNumber = 0;
-    }
-
-
-    public Building(){
-        this(-1,-1);
     }
 
 

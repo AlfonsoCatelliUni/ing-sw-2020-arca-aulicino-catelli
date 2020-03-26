@@ -67,7 +67,7 @@ public class Pawn {
     }
 
 
-    public Pawn(){
+    public Pawn() {
         this.color = null;
         this.sex = null;
         this.position = new Cell();

@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
 
+
     @Test
     void getCellAvailableToMove() {
 
@@ -69,6 +70,7 @@ class BoardTest {
         //case where a dome is built in a cell where the designatedPawn can be moved to + the pawn cannot move (empty list)
         assertEquals(testCell, cells);
     }
+
 
     @Test
     void getCellAvailableToBuild() {

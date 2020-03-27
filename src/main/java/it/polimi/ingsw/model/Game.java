@@ -74,8 +74,8 @@ public class Game {
              */
 
 
-            players.get(i).initPawn(gameBoard, colors.get(i), Sex.MALE, gameBoard.getCell(i, i));
-            players.get(i).initPawn(gameBoard, colors.get(i), Sex.FEMALE, gameBoard.getCell(i, i+1));
+            players.get(i).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(i, i));
+            players.get(i).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(i, i+1));
 
         }
 

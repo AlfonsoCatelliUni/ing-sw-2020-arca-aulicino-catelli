@@ -88,20 +88,19 @@ public class BasicPlayer implements Player {
     /**
      * this method initiate one male pawn and one female pawn and place them on the board
      * @param gameBoard the board where we have to place the pawns
-     * @param color the color of the pawn
      * @param sex the sex of the pawn
      * @param startCell the cell where to place the pawn initiated
      */
     @Override
-    public void initPawn(Board gameBoard, Color color, Sex sex, Cell startCell ) {
+    public void initPawn(Board gameBoard, Sex sex, Cell startCell) {
 
         /* control if the pawn is already present */
         if( sex == Sex.MALE && pawns[0] == null) {
-            this.pawns[0] = new Pawn(color, sex, startCell);
+            this.pawns[0] = new Pawn(this.getColor(), sex, startCell);
             placePawn( gameBoard, this.pawns[0], startCell);
         }
         else if (sex == Sex.FEMALE && pawns[1] == null){
-            this.pawns[1] = new Pawn(color, sex, startCell);
+            this.pawns[1] = new Pawn(this.getColor(), sex, startCell);
             placePawn( gameBoard, this.pawns[1], startCell);
         }
 
@@ -198,7 +197,6 @@ public class BasicPlayer implements Player {
         gameBoard.getCell(rowPosition, columnPosition).placePawnHere(designatedPawn);
 
     }
-
 
     @Override
     public ArrayList<String> getPossibleAction() {

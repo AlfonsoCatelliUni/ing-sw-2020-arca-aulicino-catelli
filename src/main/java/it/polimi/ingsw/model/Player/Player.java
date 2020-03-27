@@ -21,7 +21,7 @@ public interface Player {
     void forcePawn(Pawn designatedPawn, Cell nextPosition);
 
 
-    void initPawn(Board gameBoard, Color color, Sex sex, Cell cell);
+    void initPawn(Board gameBoard, Sex sex, Cell cell);
 
 
     ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
@@ -46,5 +46,8 @@ public interface Player {
 
 
     Color getColor();
+
+    Pawn[] getPawns();
+
 
 }

@@ -45,8 +45,8 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public void initPawn(Board gameBoard, Color color, Sex sex, Cell cell) {
-        player.initPawn(gameBoard, color, sex, cell);
+    public void initPawn(Board gameBoard, Sex sex, Cell cell) {
+        player.initPawn(gameBoard, sex, cell);
     }
 
 
@@ -95,6 +95,11 @@ public class PlayerDecorator implements Player {
     @Override
     public Color getColor() {
         return player.getColor();
+    }
+
+    @Override
+    public Pawn[] getPawns() {
+        return player.getPawns();
     }
 
 

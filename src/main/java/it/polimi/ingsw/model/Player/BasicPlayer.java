@@ -30,9 +30,6 @@ public class BasicPlayer implements Player {
     private Pawn[] pawns;
 
 
-//    private Boolean canBuildBeforeMove;
-
-
     private Boolean canBuildAgain;
 
 

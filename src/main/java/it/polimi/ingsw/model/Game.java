@@ -2,10 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
-import it.polimi.ingsw.model.Player.BasicPlayer;
-import it.polimi.ingsw.model.Player.DomeBuildPlayer;
-import it.polimi.ingsw.model.Player.Player;
-import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

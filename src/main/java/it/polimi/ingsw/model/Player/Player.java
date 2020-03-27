@@ -47,4 +47,14 @@ public interface Player {
 
     Color getColor();
 
+
+    void setName(String name);
+
+
+    void setColor(Color color);
+
+
+    void setCard(Card card);
+
+
 }

@@ -2,14 +2,12 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
-import it.polimi.ingsw.model.Player.BasicPlayer;
-import it.polimi.ingsw.model.Player.DomeBuildPlayer;
-import it.polimi.ingsw.model.Player.Player;
-import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Game {
 
@@ -38,7 +36,7 @@ public class Game {
     // ======================================================================================
 
 
-    public Game(ArrayList<String> playersNickname, ArrayList<Color> colors, ArrayList<String> godsName, ArrayList<Card> godsCards ) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public Game(ArrayList<String> playersNickname, ArrayList<Color> colors, ArrayList<String> godsName, ArrayList<Card> godsCards, Map<String, Player> effectClassMap) {
 
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
@@ -48,19 +46,6 @@ public class Game {
 
         for (int i = 0; i < playersNickname.size(); i++) {
 
-            Class myClass = Class.forName("it.polimi.ingsw.model.Player.DomeBuildPlayer");
-            Class[] types = { BasicPlayer.class };
-
-            Constructor myConstructor = myClass.getConstructor(types);
-            Object[] parameters = { new BasicPlayer(playersNickname.get(i), colors.get(i), godsName.get(i)) };
-
-            Player o = (Player) myConstructor.newInstance(parameters);
-
-
-            players.add(o);
-
-
-            //Alternative method
             /*
             switch (godsName.get(i)) {
                 case "Atlas":
@@ -85,7 +70,7 @@ public class Game {
     }
 
 
-    //TODO : finish the standard Game contructor
+    //TODO : finish the standard Game constructor
     public Game(){
         this.gameBoard = new Board();
 

@@ -24,13 +24,7 @@ public class BasicPlayer implements Player {
     private Card godCard;
 
 
-    private String nameGodCard;
-
-
     private Pawn[] pawns;
-
-
-//    private Boolean canBuildBeforeMove;
 
 
     private Boolean canBuildAgain;
@@ -53,7 +47,6 @@ public class BasicPlayer implements Player {
     public BasicPlayer(String name, Color color, String nameGodCard) {
         this.name = name;
         this.color = color;
-        this.nameGodCard = nameGodCard;
         this.godCard = null;
         this.pawns = new Pawn[QUANTITY];
     }
@@ -69,6 +62,24 @@ public class BasicPlayer implements Player {
 
     public Color getColor() {
         return color;
+    }
+
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    @Override
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+
+    @Override
+    public void setCard(Card card) {
+        this.godCard = card;
     }
 
 

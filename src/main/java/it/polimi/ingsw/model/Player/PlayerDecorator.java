@@ -98,4 +98,22 @@ public class PlayerDecorator implements Player {
     }
 
 
+    @Override
+    public void setName(String name) {
+        player.setName(name);
+    }
+
+
+    @Override
+    public void setColor(Color color) {
+        player.setColor(color);
+    }
+
+
+    @Override
+    public void setCard(Card card) {
+        player.setCard(card);
+    }
+
+
 }

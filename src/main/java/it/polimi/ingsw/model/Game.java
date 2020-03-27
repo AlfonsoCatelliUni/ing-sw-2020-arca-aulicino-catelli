@@ -2,14 +2,11 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
-import it.polimi.ingsw.model.Player.BasicPlayer;
-import it.polimi.ingsw.model.Player.DomeBuildPlayer;
-import it.polimi.ingsw.model.Player.Player;
-import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.*;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Game {
 
@@ -34,6 +31,8 @@ public class Game {
 
     private int indexCurrentPlayer;
 
+    private HashMap<String, PlayerDecorator> hash = new HashMap<>();
+
 
     // ======================================================================================
 
@@ -47,31 +46,6 @@ public class Game {
 
 
         for (int i = 0; i < playersNickname.size(); i++) {
-
-            Class myClass = Class.forName("it.polimi.ingsw.model.Player.DomeBuildPlayer");
-            Class[] types = { BasicPlayer.class };
-
-            Constructor myConstructor = myClass.getConstructor(types);
-            Object[] parameters = { new BasicPlayer(playersNickname.get(i), colors.get(i), godsName.get(i)) };
-
-            Player o = (Player) myConstructor.newInstance(parameters);
-
-
-            players.add(o);
-
-
-            //Alternative method
-            /*
-            switch (godsName.get(i)) {
-                case "Atlas":
-                    players.add(new DomeBuildPlayer(new BasicPlayer(playersNickname.get(i), colors.get(i), godsName.get(i))));
-                    break;
-                default:
-                    players.add(new BasicPlayer(playersNickname.get(i), colors.get(i), godsName.get(i)));
-                    break;
-            }
-
-             */
 
 
             players.get(i).initPawn(gameBoard, colors.get(i), Sex.MALE, gameBoard.getCell(i, i));

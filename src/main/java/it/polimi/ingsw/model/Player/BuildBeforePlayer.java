@@ -81,13 +81,14 @@ public class BuildBeforePlayer extends PlayerDecorator {
         if( player.getNumMove() == 0 && player.getNumBuild() == 1 && !hasBuiltBefore ) {
 
             if(availableCellsToBuild.size() == availableCellsToMove.size() && availableCellsToBuild.size() == 1) {
-                for(Cell c : availableCellsToBuild) {
-                    if(c.getHeight() < designatedPawn.getzPosition()) {
-                        availableCellsToBuild.clear();
-                        availableCellsToBuild.add(c);
-                        break;
-                    }
+
+                Cell possibleBuild = availableCellsToBuild.get(0);
+                availableCellsToBuild.clear();
+
+                if(possibleBuild.getHeight() < designatedPawn.getzPosition()) {
+                    availableCellsToBuild.add(possibleBuild);
                 }
+
             }
             else if(availableCellsToBuild.size() >= availableCellsToMove.size()) {
 
@@ -95,7 +96,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
                 int lowerLevelCells = 0;
                 Cell sameLevelCell = new Cell();
 
-                for(Cell c : availableCellsToMove) {
+                for(Cell c : availableCellsToBuild) {
                     if(c.getHeight() < designatedPawn.getzPosition()) {
                         lowerLevelCells++;
                     }

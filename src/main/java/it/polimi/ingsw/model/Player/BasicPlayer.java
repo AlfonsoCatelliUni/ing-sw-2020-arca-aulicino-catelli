@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BasicPlayer implements Player {
 
@@ -214,15 +215,11 @@ public class BasicPlayer implements Player {
      */
     @Override
     public ArrayList<Cell> wherePawnCanMove( Board gameBoard, Pawn designatedPawn ) {
+
         ArrayList<Cell> availableCellsToMove = gameBoard.getCellAvailableToMove( designatedPawn );
 
-        if( !this.canMoveUp ) {
-            for ( Cell c : availableCellsToMove ) {
-                if( c.getHeight() - designatedPawn.getzPosition() == 1 ) {
-                    availableCellsToMove.remove(c);
-                }
-            }
-        }
+        availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+
 
         return availableCellsToMove;
     }

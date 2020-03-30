@@ -18,7 +18,7 @@ public class DomeBuildPlayer extends PlayerDecorator {
     // ======================================================================================
 
     @Override
-    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, List<Building> buildings) {
 
         List<Building> possibleBuilding = super.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
 

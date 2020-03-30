@@ -142,7 +142,7 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public void pawnBuild( Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings) {
+    public void pawnBuild( Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         this.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
     }
 
@@ -166,7 +166,7 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, List<Building> buildings) {
         return this.player.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
     }
 

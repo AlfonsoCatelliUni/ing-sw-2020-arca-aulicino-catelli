@@ -140,7 +140,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
 
     @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings) {
+    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         super.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
 

@@ -97,7 +97,7 @@ public class DoubleBuildPlayer extends PlayerDecorator {
 
 
     @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings) {
+    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         super.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
 
         this.cellBefore = designatedCell;

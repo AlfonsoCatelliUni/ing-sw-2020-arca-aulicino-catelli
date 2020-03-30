@@ -108,4 +108,7 @@ public class DoubleBuildPlayer extends PlayerDecorator {
     public void setCellBefore(Cell cellBefore) {
         this.cellBefore = cellBefore;
     }
+
+    // only for test
+    public Cell getCellBefore() { return this.cellBefore; }
 }

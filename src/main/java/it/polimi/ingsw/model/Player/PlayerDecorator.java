@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerDecorator implements Player {
 
@@ -153,25 +154,25 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
         return this.player.wherePawnCanMove(gameBoard, designatedPawn);
     }
 
 
     @Override
-    public ArrayList<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
         return this.player.wherePawnCanBuild(gameBoard, designatedPawn);
     }
 
 
     @Override
-    public ArrayList<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
         return this.player.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
     }
 
 
     @Override
-    public ArrayList<Cell> getPawnsCoordinates(Board gameBoard) {
+    public List<Cell> getPawnsCoordinates(Board gameBoard) {
         return player.getPawnsCoordinates(gameBoard);
     }
 
@@ -189,7 +190,7 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
+    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
         return player.getPossibleAction(gameBoard, designatedPawn);
     }
 

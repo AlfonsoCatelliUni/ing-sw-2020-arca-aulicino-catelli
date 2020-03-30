@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuildBeforePlayer extends PlayerDecorator {
 
@@ -19,11 +20,11 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn ) {
+    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn ) {
 
-        ArrayList<String> availableActions = new ArrayList<>();
-        ArrayList<Cell> availableCellsToMove = new ArrayList<>();
-        ArrayList<Cell> availableCellsToBuild = new ArrayList<>();
+        List<String> availableActions = new ArrayList<>();
+        List<Cell> availableCellsToMove = new ArrayList<>();
+        List<Cell> availableCellsToBuild = new ArrayList<>();
 
         /* se sono entrambi 0 vuol dire che voglio costruire prima di muovere */
         if( player.getNumMove() == 0 && player.getNumBuild() == 1 && !hasBuiltBefore ) {
@@ -70,10 +71,10 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 
-        ArrayList<Cell> availableCellsToBuild = gameBoard.getCellAvailableToBuild(designatedPawn);
-        ArrayList<Cell> availableCellsToMove = player.wherePawnCanMove(gameBoard, designatedPawn);
+        List<Cell> availableCellsToBuild = gameBoard.getCellAvailableToBuild(designatedPawn);
+        List<Cell> availableCellsToMove = player.wherePawnCanMove(gameBoard, designatedPawn);
 
 
         /* se voglio costruire prima di muovere */
@@ -121,25 +122,17 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
 
-        ArrayList<Cell> availableCellsToMove = super.player.wherePawnCanMove(gameBoard, designatedPawn);
+        List<Cell> availableCellsToMove = super.player.wherePawnCanMove(gameBoard, designatedPawn);
 
         if( hasBuiltBefore ) {
 
-            for ( Cell c : availableCellsToMove ) {
-                if( c.getHeight() > designatedPawn.getzPosition() ) {
-                    availableCellsToMove.remove(c);
-                }
-            }
+            availableCellsToMove.removeIf(c -> c.getHeight() > designatedPawn.getzPosition());
         }
 
         if( !super.player.getCanMoveUp() ) {
-            for ( Cell c : availableCellsToMove ) {
-                if( c.getHeight() - designatedPawn.getzPosition() == 1 ) {
-                    availableCellsToMove.remove(c);
-                }
-            }
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
         }
 
         return availableCellsToMove;

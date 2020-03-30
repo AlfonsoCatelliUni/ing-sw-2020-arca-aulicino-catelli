@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Sex;
 import it.polimi.ingsw.model.BoardPack.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public interface Player {
@@ -66,7 +67,7 @@ public interface Player {
     int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
 
 
-    ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
+    List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
 
 
     void forcePawn(Pawn designatedPawn, Cell nextPosition);
@@ -75,13 +76,13 @@ public interface Player {
     // ======================================================================================
 
 
-    void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings);
+    void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
 
 
-    ArrayList<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn);
+    List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn);
 
 
-    ArrayList<Building> getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell, ArrayList<Building> buildings );
+    List<Building> getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell, List<Building> buildings );
 
 
     // ======================================================================================
@@ -90,10 +91,10 @@ public interface Player {
     void initPawn(Board gameBoard, Sex sex, Cell cell);
 
 
-    ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn);
+    List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn);
 
 
-    ArrayList<Cell> getPawnsCoordinates(Board gameBoard);
+    List<Cell> getPawnsCoordinates(Board gameBoard);
 
 
     void removePawn(Board gameBoard, Pawn designatedPawn);

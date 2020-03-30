@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.BoardPack;
 import it.polimi.ingsw.model.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 
@@ -80,10 +81,10 @@ public class Board {
      * @param chosenPawn the selected pawn
      * @return where the selected pawn can move
      */
-    public ArrayList<Cell> getCellAvailableToMove(Pawn chosenPawn) {
+    public List<Cell> getCellAvailableToMove(Pawn chosenPawn) {
 
-        ArrayList<Cell> neighboringCell = getNeighboring( chosenPawn.getPosition() );
-        ArrayList<Cell> retAvailableCellList = new ArrayList<>();
+        List<Cell> neighboringCell = getNeighboring( chosenPawn.getPosition() );
+        List<Cell> retAvailableCellList = new ArrayList<>();
 
         for (Cell c : neighboringCell ) {
             if ( c.getHeight() - chosenPawn.getzPosition() <= 1 && c.getIsFree()){
@@ -100,10 +101,10 @@ public class Board {
      * @param chosenPawn the selected pawn
      * @return where the selected pawn can build
      */
-    public ArrayList<Cell> getCellAvailableToBuild( Pawn chosenPawn) {
+    public List<Cell> getCellAvailableToBuild( Pawn chosenPawn) {
 
-        ArrayList<Cell> neighboringCell = getNeighboring( chosenPawn.getPosition() );
-        ArrayList<Cell> retAvailableCellList = new ArrayList<>();
+        List<Cell> neighboringCell = getNeighboring( chosenPawn.getPosition() );
+        List<Cell> retAvailableCellList = new ArrayList<>();
 
         for (Cell c : neighboringCell ) {
             //se la cella è libera (no cupola, no muratore) allora la aggiungo
@@ -121,11 +122,11 @@ public class Board {
      * @param designatedCell the cell
      * @return a list of Cell
      */
-    public ArrayList<Cell> getNeighboring( Cell designatedCell) {
+    public List<Cell> getNeighboring( Cell designatedCell) {
 
         int desColumn = designatedCell.getColumnPosition();
         int desRow = designatedCell.getRowPosition();
-        ArrayList<Cell> retCellList = new ArrayList<>();
+        List<Cell> retCellList = new ArrayList<>();
 
         for( int i = -1; i<2; i++ ){
             for( int j = -1; j<2; j++ ){
@@ -153,9 +154,9 @@ public class Board {
      * @param buildings the list of existing building
      * @return the list of possible building on the designated cell
      */
-    public ArrayList<Building> getPossibleBuildingOnCell(Cell designatedCell, ArrayList<Building> buildings ) {
+    public List<Building> getPossibleBuildingOnCell(Cell designatedCell, List<Building> buildings ) {
 
-        ArrayList<Building> possibleBuilding = new ArrayList<>();
+        List<Building> possibleBuilding = new ArrayList<>();
 
         for (Building b : buildings) {
             if( b.getLevel() == designatedCell.getRoof().getLevel() + 1 ) {

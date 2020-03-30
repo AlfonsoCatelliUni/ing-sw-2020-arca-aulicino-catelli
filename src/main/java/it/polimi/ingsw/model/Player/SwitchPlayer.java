@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SwitchPlayer extends PlayerDecorator {
 
@@ -18,11 +19,11 @@ public class SwitchPlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
 
-        ArrayList<Cell> availableCellsToMove = super.wherePawnCanMove(gameBoard, designatedPawn);
+        List<Cell> availableCellsToMove = super.wherePawnCanMove(gameBoard, designatedPawn);
 
-        ArrayList<Cell> neighboringCells = gameBoard.getNeighboring( designatedPawn.getPosition() );
+        List<Cell> neighboringCells = gameBoard.getNeighboring( designatedPawn.getPosition() );
 
         for (Cell c : neighboringCells ) {
             if ( !availableCellsToMove.contains(c) && c.getBuilderHere() &&
@@ -35,11 +36,7 @@ public class SwitchPlayer extends PlayerDecorator {
 
 
         if( !super.player.getCanMoveUp() ) {
-            for ( Cell c : availableCellsToMove ) {
-                if( c.getHeight() - designatedPawn.getzPosition() == 1 ) {
-                    availableCellsToMove.remove(c);
-                }
-            }
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
         }
 
         return availableCellsToMove;

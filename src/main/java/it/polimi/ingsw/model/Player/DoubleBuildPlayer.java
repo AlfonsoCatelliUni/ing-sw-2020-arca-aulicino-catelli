@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DoubleBuildPlayer extends PlayerDecorator {
     
@@ -23,9 +24,9 @@ public class DoubleBuildPlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn)  {
+    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn)  {
 
-        ArrayList<String> possibleActions = new ArrayList<>();
+        List<String> possibleActions = new ArrayList<>();
 
         if(super.player.getNumBuild() == 0) {
             possibleActions.add("build");
@@ -36,7 +37,7 @@ public class DoubleBuildPlayer extends PlayerDecorator {
         /* devo fare i controlli per la seconda costruzione */
         else if ( super.player.getNumMove() == 1 && super.player.getNumBuild() == 1 ) {
 
-            ArrayList<Cell> availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
+            List<Cell> availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
 
             /* can build but not on the same place */
             if(typeOfSecondBuild == 0) {
@@ -64,9 +65,9 @@ public class DoubleBuildPlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 
-        ArrayList<Cell> availableCellToBuild = new ArrayList<>();
+        List<Cell> availableCellToBuild = new ArrayList<>();
 
         if( player.getNumBuild() == 0 ) {
             availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);

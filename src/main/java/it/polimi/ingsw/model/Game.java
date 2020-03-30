@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Player.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Game {
@@ -15,7 +16,7 @@ public class Game {
     private Board gameBoard;
 
 
-    private ArrayList<Player> players;
+    private List<Player> players;
 
 
     //private ArrayList<Object> objM;
@@ -24,10 +25,10 @@ public class Game {
     private Player currentPlayer;
 
 
-    private ArrayList<Building> buildings;
+    private List<Building> buildings;
 
 
-    private ArrayList<Card> cards;
+    private List<Card> cards;
 
 
     private int indexCurrentPlayer;
@@ -36,7 +37,7 @@ public class Game {
     // ======================================================================================
 
 
-    public Game(ArrayList<String> playersNickname, ArrayList<Color> colors, ArrayList<String> godsName, ArrayList<Card> godsCards, Map<String, Player> effectClassMap) {
+    public Game(List<String> playersNickname, List<Color> colors, List<String> godsName, List<Card> godsCards, Map<String, Player> effectClassMap) {
 
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
@@ -46,18 +47,11 @@ public class Game {
 
         for (int i = 0; i < playersNickname.size(); i++) {
 
-            /*
-            switch (godsName.get(i)) {
-                case "Atlas":
-                    players.add(new DomeBuildPlayer(new BasicPlayer(playersNickname.get(i), colors.get(i), godsName.get(i))));
-                    break;
-                default:
-                    players.add(new BasicPlayer(playersNickname.get(i), colors.get(i), godsName.get(i)));
-                    break;
-            }
+            players.add(effectClassMap.get(playersNickname.get(i)));
 
-             */
-
+            players.get(i).setName(playersNickname.get(i));
+            players.get(i).setColor(colors.get(i));
+            players.get(i).setNameGod(godsName.get(i));
 
             players.get(i).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(i, i));
             players.get(i).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(i, i+1));

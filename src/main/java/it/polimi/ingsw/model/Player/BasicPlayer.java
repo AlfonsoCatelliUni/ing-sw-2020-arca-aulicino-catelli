@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class BasicPlayer implements Player {
 
@@ -214,9 +215,9 @@ public class BasicPlayer implements Player {
      * @return the list of cells available to be move
      */
     @Override
-    public ArrayList<Cell> wherePawnCanMove( Board gameBoard, Pawn designatedPawn ) {
+    public List<Cell> wherePawnCanMove( Board gameBoard, Pawn designatedPawn ) {
 
-        ArrayList<Cell> availableCellsToMove = gameBoard.getCellAvailableToMove( designatedPawn );
+        List<Cell> availableCellsToMove = gameBoard.getCellAvailableToMove( designatedPawn );
 
         availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
 
@@ -235,7 +236,7 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings) {
+    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         designatedPawn.pawnBuild();
 
@@ -261,13 +262,13 @@ public class BasicPlayer implements Player {
      * @return the list of cells available to be built
      */
     @Override
-    public ArrayList<Cell> wherePawnCanBuild( Board gameBoard, Pawn designatedPawn ) {
+    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn ) {
         return gameBoard.getCellAvailableToBuild( designatedPawn );
     }
 
 
     @Override
-    public ArrayList<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, List<Building> buildings) {
         return gameBoard.getPossibleBuildingOnCell( designatedCell, buildings );
     }
 
@@ -298,12 +299,12 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public ArrayList<Cell> getPawnsCoordinates(Board gameBoard) {
-        ArrayList<Cell> retPawnsCells = new ArrayList<>();
+    public List<Cell> getPawnsCoordinates(Board gameBoard) {
+        List<Cell> retPawnsCells = new ArrayList<>();
 
         for (int i = 0; i < pawns.length; i++) {
 
-            ArrayList<Cell> availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
+            List<Cell> availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
 
             if( availableCellsToMove.size() != 0 ) {
                 retPawnsCells.add(pawns[i].getPosition());
@@ -320,9 +321,9 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public ArrayList<String> getPossibleAction( Board gameBoard, Pawn designatedPawn ) {
+    public List<String> getPossibleAction( Board gameBoard, Pawn designatedPawn ) {
 
-        ArrayList<String> possibleAction = new ArrayList<>();
+        List<String> possibleAction = new ArrayList<>();
 
         if(numBuild < 1) {
             possibleAction.add("build");

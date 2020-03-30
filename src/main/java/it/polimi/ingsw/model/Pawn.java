@@ -152,6 +152,14 @@ public class Pawn {
         return forcedMove;
     }
 
+    /**
+     * USED ONLY FOR TESTING
+     * @param zPosition is the height of the pawn
+     */
+    public void setzPosition(int zPosition) {
+        this.zPosition = zPosition;
+    }
+
 
     /**
      * actually move the pawn, changing its state

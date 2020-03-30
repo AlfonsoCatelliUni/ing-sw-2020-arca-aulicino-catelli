@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,8 +86,8 @@ class BasicPlayerTest {
         player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
 
         Pawn[] pawns = player.getPawns();
-        ArrayList<Cell> availableCellsToMove;
-        ArrayList<Cell> correctCellsToMove = new ArrayList<>();
+        List<Cell> availableCellsToMove;
+        List<Cell> correctCellsToMove = new ArrayList<>();
 
 
         /* simple corner case */

@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +33,7 @@ class BoardTest {
         cell_2.setHeight(1);
         cell_3.setHeight(0);
 
-        ArrayList<Cell> cells = gameBoard.getCellAvailableToMove(designatedPawn);
+        List<Cell> cells = gameBoard.getCellAvailableToMove(designatedPawn);
 
         ArrayList<Cell> testCell = new ArrayList<>();
         testCell.add(cell_1);
@@ -80,8 +81,8 @@ class BoardTest {
         Pawn pawn = new Pawn(Color.BLUE, Sex.MALE, gameBoard.getCell(0,0));
         gameBoard.getCell(0,0).placePawnHere(pawn);
 
-        ArrayList<Cell> cells = gameBoard.getCellAvailableToBuild(pawn);
-        ArrayList<Cell> expectedCells = new ArrayList<>();
+        List<Cell> cells = gameBoard.getCellAvailableToBuild(pawn);
+        List<Cell> expectedCells = new ArrayList<>();
 
         expectedCells.add(gameBoard.getCell(0,1));
         expectedCells.add(gameBoard.getCell(1,0));
@@ -137,7 +138,7 @@ class BoardTest {
         Board gameBoard = new Board();
 
         /* Testing a central cell */
-        ArrayList<Cell> retNeighboring = gameBoard.getNeighboring(gameBoard.getCell(2,2));
+        List<Cell> retNeighboring = gameBoard.getNeighboring(gameBoard.getCell(2,2));
 
         ArrayList<Cell> correctNeighboring = new ArrayList<>();
         correctNeighboring.add(gameBoard.getCell(1,1));
@@ -193,7 +194,7 @@ class BoardTest {
 
 
         /* Tested that on a level 0 you can build only a level 1*/
-        ArrayList<Building> ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0), buildings);
+        List<Building> ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0), buildings);
 
         ArrayList<Building> correctRet = new ArrayList<>();
         correctRet.add(levelOne);

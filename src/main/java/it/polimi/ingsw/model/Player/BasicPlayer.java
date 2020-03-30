@@ -281,12 +281,11 @@ public class BasicPlayer implements Player {
     /**
      * this method initiate one male pawn and one female pawn and place them on the board
      * @param gameBoard the board where we have to place the pawns
-     * @param color the color of the pawn
      * @param sex the sex of the pawn
      * @param startCell the cell where to place the pawn initiated
      */
     @Override
-    public void initPawn(Board gameBoard, Color color, Sex sex, Cell startCell ) {
+    public void initPawn(Board gameBoard, Sex sex, Cell startCell ) {
 
         /* control if the pawn is already present */
         if( sex == Sex.MALE) {

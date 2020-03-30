@@ -87,7 +87,7 @@ public interface Player {
     // ======================================================================================
 
 
-    void initPawn(Board gameBoard, Color color, Sex sex, Cell cell);
+    void initPawn(Board gameBoard, Sex sex, Cell cell);
 
 
     ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn);

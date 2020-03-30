@@ -7,16 +7,18 @@ import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DoubleBuildPlayerTest {
 
+
     @Test
     void getPossibleAction() {
 
-        ArrayList<String> possibleActions;
-        ArrayList<String> expectedActions = new ArrayList<>();
+        List<String> possibleActions;
+        List<String> expectedActions = new ArrayList<>();
 
         Board gameBoard = new Board();
         //Demeter
@@ -84,11 +86,14 @@ class DoubleBuildPlayerTest {
 
     }
 
+
     @Test
     void wherePawnCanBuild() {
     }
 
+
     @Test
     void pawnBuild() {
     }
+
 }

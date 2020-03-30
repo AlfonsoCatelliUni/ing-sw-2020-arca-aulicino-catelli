@@ -13,7 +13,11 @@ public class DoubleBuildPlayer extends PlayerDecorator {
     
     private int typeOfSecondBuild;
 
+
     private Cell cellBefore;
+
+
+    // ======================================================================================
 
 
     public DoubleBuildPlayer(BasicPlayer player, int typeOfSecondBuild) {
@@ -21,6 +25,9 @@ public class DoubleBuildPlayer extends PlayerDecorator {
         this.typeOfSecondBuild = typeOfSecondBuild;
         cellBefore = null;
     }
+
+
+    // ======================================================================================
 
 
     @Override
@@ -104,8 +111,13 @@ public class DoubleBuildPlayer extends PlayerDecorator {
 
     }
 
-    // only for test
+
+    // used ONLY FOR TESTING
     public void setCellBefore(Cell cellBefore) {
         this.cellBefore = cellBefore;
     }
+
+
+
+
 }

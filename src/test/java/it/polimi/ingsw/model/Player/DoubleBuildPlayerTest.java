@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DoubleBuildPlayerTest {
 
+
     @Test
     void getPossibleAction() {
 
@@ -86,6 +87,7 @@ class DoubleBuildPlayerTest {
 
     }
 
+
     @Test
     void wherePawnCanBuild() {
         List<Cell> availableCellsToBuild;
@@ -139,6 +141,7 @@ class DoubleBuildPlayerTest {
 
     }
 
+
     @Test
     void pawnBuild() {
         Board gameBoard = new Board();
@@ -160,4 +163,5 @@ class DoubleBuildPlayerTest {
 
 
     }
+
 }

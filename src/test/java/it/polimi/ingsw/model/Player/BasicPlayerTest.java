@@ -17,6 +17,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class BasicPlayerTest {
 
 
+    private Board gameBoard;
+
+
+    private Player player;
+
+
+    private Player opponentPlayer;
+
+
     /**
      * the cell startCell is not occupied by any pawn before the call of the method,
      * this is checked in the controller section
@@ -24,8 +33,8 @@ class BasicPlayerTest {
     @Test
     void initPawn() {
 
-        Board gameBoard = new Board();
-        Player player = new BasicPlayer("test", Color.BLUE, "test");
+        gameBoard = new Board();
+        player = new BasicPlayer("test", Color.BLUE, "test");
 
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
@@ -58,6 +67,65 @@ class BasicPlayerTest {
     @Test
     void movePawn() {
 
+        gameBoard = new Board();
+        player = new BasicPlayer("test", Color.BLUE, "test");
+        opponentPlayer = new BasicPlayer("opp", Color.WHITE, "opp");
+        int retMoveEncoded = 0;
+
+        Building levelOne = new Building(1,22);
+        Building levelTwo = new Building(2,18);
+        Building levelThree = new Building(3,14);
+        Building levelFour = new Building(4,18);
+
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+
+        /* Level One */
+        gameBoard.getCell(0,1).buildOnThisCell(levelOne);
+        /* Level Two */
+        gameBoard.getCell(0,2).buildOnThisCell(levelOne);
+        gameBoard.getCell(0,2).buildOnThisCell(levelTwo);
+        /* Level Three */
+        gameBoard.getCell(0,3).buildOnThisCell(levelOne);
+        gameBoard.getCell(0,3).buildOnThisCell(levelTwo);
+        gameBoard.getCell(0,3).buildOnThisCell(levelThree);
+        /* Dome Level */
+        gameBoard.getCell(1,3).buildOnThisCell(levelOne);
+        gameBoard.getCell(1,3).buildOnThisCell(levelTwo);
+        gameBoard.getCell(1,3).buildOnThisCell(levelThree);
+        gameBoard.getCell(1,3).buildOnThisCell(levelFour);
+
+
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(0,1));
+
+        assertEquals(0, retMoveEncoded);
+        assertEquals(1, player.getNumMove());
+        assertEquals(0, player.getNumBuild());
+
+        player.setNumBuild(1);
+        player.setNumMove(0);
+
+
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(0,2));
+
+        assertEquals(0, retMoveEncoded);
+        assertEquals(1, player.getNumMove());
+        assertEquals(0, player.getNumBuild());
+
+        player.setNumBuild(1);
+        player.setNumMove(0);
+
+
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,2), gameBoard.getCell(0,3));
+
+        assertEquals(1, retMoveEncoded);
+        assertEquals(1, player.getNumMove());
+        assertEquals(0, player.getNumBuild());
+
+        player.setNumBuild(1);
+        player.setNumMove(0);
+
+
     }
 
 
@@ -66,6 +134,9 @@ class BasicPlayerTest {
     }
 
 
+    /**
+     * this method calls only the forcePawn from Pawn class that's already tested
+     */
     @Test
     void forcePawn() {
     }
@@ -74,7 +145,7 @@ class BasicPlayerTest {
     @Test
     void wherePawnCanMove() {
 
-        Board gameBoard = new Board();
+        gameBoard = new Board();
         Player player = new BasicPlayer("test", Color.BLUE, "test");
 
         Building levelOne = new Building(1,22);
@@ -165,8 +236,8 @@ class BasicPlayerTest {
     @Test
     void removePawn() {
 
-        Board gameBoard = new Board();
-        Player player = new BasicPlayer("test", Color.BLUE, "test");
+        gameBoard = new Board();
+        player = new BasicPlayer("test", Color.BLUE, "test");
         Cell cell = gameBoard.getCell(0,0);
 
         player.initPawn(gameBoard, Sex.MALE, cell);
@@ -192,8 +263,8 @@ class BasicPlayerTest {
     @Test
     void placePawn() {
 
-        Board gameBoard = new Board();
-        Player player = new BasicPlayer("test", Color.BLUE, "test");
+        gameBoard = new Board();
+        player = new BasicPlayer("test", Color.BLUE, "test");
         Cell cell = gameBoard.getCell(0,0);
 
         player.initPawn(gameBoard, Sex.MALE, cell);

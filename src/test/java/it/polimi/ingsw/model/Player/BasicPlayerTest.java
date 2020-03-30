@@ -1,15 +1,20 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Board;
+import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BasicPlayerTest {
+
 
     /**
      * the cell startCell is not occupied by any pawn before the call of the method,
@@ -48,29 +53,113 @@ class BasicPlayerTest {
 
     }
 
+
     @Test
     void movePawn() {
+
     }
+
 
     @Test
     void pawnBuild() {
     }
 
+
     @Test
     void forcePawn() {
     }
 
+
     @Test
     void wherePawnCanMove() {
+
+        Board gameBoard = new Board();
+        Player player = new BasicPlayer("test", Color.BLUE, "test");
+
+        Building levelOne = new Building(1,22);
+        Building levelTwo = new Building(2,18);
+        Building levelThree = new Building(3,14);
+        Building levelFour = new Building(4,18);
+
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+
+        Pawn[] pawns = player.getPawns();
+        ArrayList<Cell> availableCellsToMove;
+        ArrayList<Cell> correctCellsToMove = new ArrayList<>();
+
+
+        /* simple corner case */
+        availableCellsToMove = player.wherePawnCanMove(gameBoard, pawns[0]);
+        correctCellsToMove.add(gameBoard.getCell(0,1));
+        correctCellsToMove.add(gameBoard.getCell(1,0));
+        correctCellsToMove.add(gameBoard.getCell(1,1));
+        assertEquals(correctCellsToMove, availableCellsToMove);
+        correctCellsToMove.clear();
+
+
+        /* simple center case */
+        availableCellsToMove = player.wherePawnCanMove(gameBoard, pawns[1]);
+        correctCellsToMove.add(gameBoard.getCell(1,1));
+        correctCellsToMove.add(gameBoard.getCell(1,2));
+        correctCellsToMove.add(gameBoard.getCell(1,3));
+        correctCellsToMove.add(gameBoard.getCell(2,1));
+        correctCellsToMove.add(gameBoard.getCell(2,3));
+        correctCellsToMove.add(gameBoard.getCell(3,1));
+        correctCellsToMove.add(gameBoard.getCell(3,2));
+        correctCellsToMove.add(gameBoard.getCell(3,3));
+
+        assertEquals(correctCellsToMove, availableCellsToMove);
+        correctCellsToMove.clear();
+
+
+        /* corner case, cannot move up, there's a dome in a cell and a level one in another cell*/
+        player.setCanMoveUp(false);
+        gameBoard.getCell(1,1).buildOnThisCell(levelFour);
+        gameBoard.getCell(0,1).buildOnThisCell(levelOne);
+
+        availableCellsToMove = player.wherePawnCanMove(gameBoard, pawns[0]);
+        correctCellsToMove.add(gameBoard.getCell(1,0));
+
+        assertEquals(correctCellsToMove, availableCellsToMove);
+        correctCellsToMove.clear();
+
+
+        /* center case, surrounded by level one building and cannot move up */
+        player.setCanMoveUp(false);
+        gameBoard = new Board();
+        gameBoard.getCell(1,1).buildOnThisCell(levelOne);
+        gameBoard.getCell(1,2).buildOnThisCell(levelOne);
+        gameBoard.getCell(1,3).buildOnThisCell(levelOne);
+        gameBoard.getCell(2,1).buildOnThisCell(levelOne);
+        gameBoard.getCell(2,3).buildOnThisCell(levelOne);
+        gameBoard.getCell(3,1).buildOnThisCell(levelOne);
+        gameBoard.getCell(3,1).buildOnThisCell(levelTwo);
+        gameBoard.getCell(3,1).buildOnThisCell(levelThree);
+        gameBoard.getCell(3,2).buildOnThisCell(levelOne);
+        gameBoard.getCell(3,2).buildOnThisCell(levelTwo);
+        gameBoard.getCell(3,2).buildOnThisCell(levelThree);
+
+        availableCellsToMove = player.wherePawnCanMove(gameBoard, pawns[1]);
+        correctCellsToMove.add(gameBoard.getCell(3,3));
+        assertEquals(correctCellsToMove, availableCellsToMove);
+
+        correctCellsToMove.clear();
+
+
+
     }
+
 
     @Test
     void wherePawnCanBuild() {
     }
 
+
     @Test
     void getPossibleBuildingOnCell() {
     }
+
 
     @Test
     void removePawn() {
@@ -93,6 +182,7 @@ class BasicPlayerTest {
 
     }
 
+
     /**
      * the attribute position in the pawn is not modified in this method, but in the moveTo
      * method of class Pawn
@@ -114,6 +204,7 @@ class BasicPlayerTest {
         assertEquals(gameBoard.getCell(1,1).getPawnInThisCell(), player.getPawns()[0]);
 
     }
+
 
     @Test
     void getPossibleAction() {

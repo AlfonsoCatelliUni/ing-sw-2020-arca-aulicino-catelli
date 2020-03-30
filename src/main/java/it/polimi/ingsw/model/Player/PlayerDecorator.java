@@ -27,80 +27,48 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public void movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
-        player.movePawn(gameBoard, designatedPawn, nextPosition);
-    }
-
-
-    @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings) {
-        player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
-    }
-
-
-    @Override
-    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
-        player.forcePawn(designatedPawn, nextPosition);
-    }
-
-
-    @Override
-    public void initPawn(Board gameBoard, Sex sex, Cell cell) {
-        player.initPawn(gameBoard, sex, cell);
-    }
-
-
-    @Override
-    public ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
-        return player.wherePawnCanMove(gameBoard, designatedPawn);
-    }
-
-
-    @Override
-    public ArrayList<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
-        return player.wherePawnCanBuild(gameBoard, designatedPawn);
-    }
-
-
-    @Override
-    public ArrayList<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
-        return player.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
-    }
-
-
-    @Override
-    public void removePawn(Board gameBoard, Pawn designatedPawn) {
-        player.removePawn(gameBoard, designatedPawn);
-    }
-
-
-    @Override
-    public void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
-        player.placePawn(gameBoard, designatedPawn, designatedCell);
-    }
-
-
-    @Override
-    public ArrayList<String> getPossibleAction() {
-        return player.getPossibleAction();
-    }
-
-
-    @Override
     public String getName() {
-        return player.getName();
+        return this.player.getName();
     }
 
 
     @Override
     public Color getColor() {
-        return player.getColor();
+        return this.player.getColor();
     }
+
+
+    @Override
+    public Card getGodCard() {
+        return this.player.getGodCard();
+    }
+
+
+    @Override
+    public int getNumMove() {
+        return player.getNumMove();
+    }
+
+
+    @Override
+    public int getNumBuild() {
+        return player.getNumBuild();
+    }
+
+
+    @Override
+    public Boolean getCanMoveUp() {
+        return player.getCanMoveUp();
+    }
+
 
     @Override
     public Pawn[] getPawns() {
         return player.getPawns();
     }
+
+
+    // ======================================================================================
 
 
     @Override
@@ -119,6 +87,112 @@ public class PlayerDecorator implements Player {
     public void setCard(Card card) {
         player.setCard(card);
     }
+
+
+    @Override
+    public void setNameGod(String nameGod) {
+        player.setNameGod(nameGod);
+    }
+
+
+    @Override
+    public void setNumMove(int numMove) {
+        player.setNumMove(numMove);
+    }
+
+
+    @Override
+    public void setNumBuild(int numBuild) {
+        player.setNumBuild(numBuild);
+    }
+
+
+    @Override
+    public void setCanMoveUp(Boolean canMoveUp) {
+        player.setCanMoveUp(canMoveUp);
+    }
+
+
+    @Override
+    public void resetNumMove() {
+        player.resetNumMove();
+    }
+
+
+    @Override
+    public void resetNumBuild() {
+        player.resetNumBuild();
+    }
+
+
+    // ======================================================================================
+
+
+    @Override
+    public void initPawn(Board gameBoard, Sex sex, Cell cell) {
+        this.player.initPawn(gameBoard, sex, cell);
+    }
+
+
+    @Override
+    public int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+        return this.player.movePawn(gameBoard, designatedPawn, nextPosition);
+    }
+
+
+    @Override
+    public void pawnBuild( Pawn designatedPawn, Cell designatedCell, int chosenLevel, ArrayList<Building> buildings) {
+        this.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+    }
+
+
+    @Override
+    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
+        this.player.forcePawn(designatedPawn, nextPosition);
+    }
+
+
+    @Override
+    public ArrayList<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
+        return this.player.wherePawnCanMove(gameBoard, designatedPawn);
+    }
+
+
+    @Override
+    public ArrayList<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+        return this.player.wherePawnCanBuild(gameBoard, designatedPawn);
+    }
+
+
+    @Override
+    public ArrayList<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, ArrayList<Building> buildings) {
+        return this.player.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
+    }
+
+
+    @Override
+    public ArrayList<Cell> getPawnsCoordinates(Board gameBoard) {
+        return player.getPawnsCoordinates(gameBoard);
+    }
+
+
+    @Override
+    public void removePawn(Board gameBoard, Pawn designatedPawn) {
+        this.player.removePawn(gameBoard, designatedPawn);
+    }
+
+
+    @Override
+    public void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
+        this.player.placePawn(gameBoard, designatedPawn, designatedCell);
+    }
+
+
+    @Override
+    public ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
+        return player.getPossibleAction(gameBoard, designatedPawn);
+    }
+
 
 
 }

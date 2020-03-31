@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Board;
+import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
@@ -179,11 +180,108 @@ class BuildBeforePlayerTest {
 
     @Test
     void wherePawnCanMove() {
+
+        Board gameBoard = new Board();
+        List<Cell> test = new ArrayList<>();
+
+        BasicPlayer player1 = new BasicPlayer("test1", Color.BLUE, "test1");
+        BuildBeforePlayer player_1 = new BuildBeforePlayer(player1);
+        BasicPlayer player2 = new BasicPlayer("test2", Color.GREY, "test2");
+        BuildBeforePlayer player_2 = new BuildBeforePlayer(player2);
+        BasicPlayer player3 = new BasicPlayer("test3", Color.WHITE, "test3");
+        BuildBeforePlayer player_3 = new BuildBeforePlayer(player3);
+
+        player_1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player_1.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
+        player_2.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,1));
+        player_2.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(1,2));
+        player_3.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
+        player_3.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,3));
+
+        /* case when the player has built before, so the pawn cannot move up */
+
+        player_3.setHasBuiltBefore(true);
+
+        gameBoard.getCell(2,1).setHeight(1);
+        gameBoard.getCell(3,1).setHeight(1);
+        gameBoard.getCell(3,2).setHeight(1);
+        gameBoard.getCell(1,3).setHeight(1);
+
+        test.add(gameBoard.getCell(3,3));
+
+        assertEquals(test, player_3.wherePawnCanMove(gameBoard, player_3.getPawns()[0]));
+
+        /* same case, but the pawn can move in more than one cell */
+
+        gameBoard.getCell(2,1).setHeight(0);
+        gameBoard.getCell(3,1).setHeight(0);
+
+        test.clear();
+
+        test.add(gameBoard.getCell(2,1));
+        test.add(gameBoard.getCell(3,1));
+        test.add(gameBoard.getCell(3,3));
+
+        assertEquals(test, player_3.wherePawnCanMove(gameBoard, player_3.getPawns()[0]));
+
+        /* case when the player cannot move up because of the BlockOpponentPlayer effect */
+
+        player_2.setCanMoveUp(false);
+        player_2.setHasBuiltBefore(false);
+
+        test.clear();
+        test.add(gameBoard.getCell(0,2));
+        test.add(gameBoard.getCell(1,0));
+        test.add(gameBoard.getCell(2,0));
+        test.add(gameBoard.getCell(2,1));
+
+
+        assertEquals(test, player_2.wherePawnCanMove(gameBoard,player_2.getPawns()[0]));
+
     }
 
 
     @Test
     void pawnBuild() {
+
+        /* case when the player can build before moving, so NumBuild increases by 1, and I have to reset it to 1,
+        after that I set the flag hasBuiltBefore */
+
+        Board gameBoard = new Board();
+
+        BasicPlayer player1 = new BasicPlayer("test1", Color.BLUE, "test1");
+        BuildBeforePlayer player_1 = new BuildBeforePlayer(player1);
+        BasicPlayer player2 = new BasicPlayer("test2", Color.GREY, "test2");
+        BuildBeforePlayer player_2 = new BuildBeforePlayer(player2);
+        BasicPlayer player3 = new BasicPlayer("test3", Color.WHITE, "test3");
+        BuildBeforePlayer player_3 = new BuildBeforePlayer(player3);
+
+        player_1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player_1.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
+        player_2.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,1));
+        player_2.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(1,2));
+        player_3.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
+        player_3.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,3));
+
+        Building levelOne = new Building(1,22);
+        Building levelTwo = new Building(2,18);
+        Building levelThree = new Building(3,14);
+        Building levelFour = new Building(4,18);
+
+        List<Building> buildings = new ArrayList<>();
+        buildings.add(levelOne);
+        buildings.add(levelTwo);
+        buildings.add(levelThree);
+        buildings.add(levelFour);
+
+
+        player_3.setHasBuiltBefore(false);
+
+        player_3.pawnBuild(player_3.getPawns()[0], gameBoard.getCell(3,3), 1, buildings);
+
+        assertEquals(1, player_3.getNumBuild());
+        assertTrue(player_3.getHasBuiltBefore());
+
     }
 
 

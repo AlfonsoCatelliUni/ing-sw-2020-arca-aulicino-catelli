@@ -17,6 +17,12 @@ public class PushPlayer extends PlayerDecorator {
 
     // ======================================================================================
 
+    /**
+     * wherePawnCanMove returns also cells occupied by opponent pawns
+     * @param gameBoard the game board where the pawn can move on
+     * @param designatedPawn the pawn that's designated to move
+     * @return the list of cells available to be move
+     */
 
     @Override
     public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
@@ -54,6 +60,14 @@ public class PushPlayer extends PlayerDecorator {
         return availableCellsToMove;
 
     }
+
+    /**
+     * this method move pawn on nextposition cell and if the cell is occupied by a opponent pawn, it pushes this pawn in the same direction if is unoccupied
+     * @param gameBoard the board where we have to move the pawn
+     * @param designatedPawn the pawn that's designated to move
+     * @param nextPosition the cell where to move the pawn
+     * @return int encoded by super.movepawn
+     */
 
 
     @Override

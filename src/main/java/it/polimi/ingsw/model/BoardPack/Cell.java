@@ -8,15 +8,15 @@ public class Cell {
 
 
     /**
-     * x = column
-     */
-    private int columnPosition;
-
-
-    /**
      * y = row
      */
     private int rowPosition;
+
+
+    /**
+     * x = column
+     */
+    private int columnPosition;
 
 
     /**

@@ -72,9 +72,9 @@ public class SwitchPlayer extends PlayerDecorator {
 
 
     @Override
-    public ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
+    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
 
-        ArrayList<String> availableActions = new ArrayList<>();
+        List<String> availableActions = new ArrayList<>();
 
         if( super.player.getNumMove() == 0 && wherePawnCanMove(gameBoard, designatedPawn).size() != 0) {
             availableActions.add("move");

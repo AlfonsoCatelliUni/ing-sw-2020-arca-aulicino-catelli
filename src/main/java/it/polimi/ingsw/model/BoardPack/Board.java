@@ -199,10 +199,13 @@ public class Board {
      *      - Pawn is the color's first letter, upper case if male, lower case if female (B-b, G-g, W-w)
      *      - Pawn is "x" if there is a dome in this cell
      *      - Pawn is "." if there is no builder in this cell
-     * @param designatedCell the cell to encode
+     * @param row the row of the cell to encode
+     * @param column the column of the cell to encode
      * @return the encoded string
      */
-    public String getStringCellInfo(Cell designatedCell) {
+    public String getStringCellInfo(int row, int column) {
+
+        Cell designatedCell = this.getCell(row, column);
 
         String retString = String.valueOf(designatedCell.getHeight());
 

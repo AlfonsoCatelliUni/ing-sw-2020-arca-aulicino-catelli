@@ -160,7 +160,6 @@ public class BuildBeforePlayer extends PlayerDecorator {
         List<Cell> availableCellsToMove = super.player.wherePawnCanMove(gameBoard, designatedPawn);
 
         if( hasBuiltBefore ) {
-
             availableCellsToMove.removeIf(c -> c.getHeight() > designatedPawn.getHeight());
         }
 

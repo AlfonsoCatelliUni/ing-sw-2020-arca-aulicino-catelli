@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,9 +56,13 @@ class DoubleMovePlayerTest {
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
         correctListAvailableCellsMove.add(gameBoard.getCell(0,1));
         correctListAvailableCellsMove.add(gameBoard.getCell(0,2));
+        correctListAvailableCellsMove.add(gameBoard.getCell(2,0));
         correctListAvailableCellsMove.add(gameBoard.getCell(1,1));
         correctListAvailableCellsMove.add(gameBoard.getCell(1,2));
-        correctListAvailableCellsMove.add(gameBoard.getCell(2,0));
+
+        availableCellsToMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        correctListAvailableCellsMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
 
         assertEquals(availableCellsToMove, correctListAvailableCellsMove);
         correctListAvailableCellsMove.clear();

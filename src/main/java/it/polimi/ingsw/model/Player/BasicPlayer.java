@@ -300,16 +300,19 @@ public class BasicPlayer implements Player {
 
     @Override
     public List<Cell> getPawnsCoordinates(Board gameBoard) {
+
         List<Cell> retPawnsCells = new ArrayList<>();
+        List<Cell> availableCellsToMove;
 
         for (int i = 0; i < pawns.length; i++) {
 
-            List<Cell> availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
+            availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
 
             if( availableCellsToMove.size() != 0 ) {
                 retPawnsCells.add(pawns[i].getPosition());
             }
 
+            availableCellsToMove.clear();
         }
 
         if( retPawnsCells.size() == 0 ) {

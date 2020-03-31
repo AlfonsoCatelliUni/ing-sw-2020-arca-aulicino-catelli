@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DoubleBuildPlayer extends PlayerDecorator {
-    
-    
+
+
     private int typeOfSecondBuild;
 
 

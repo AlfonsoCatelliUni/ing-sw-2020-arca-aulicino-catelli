@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DomeBuildPlayer extends PlayerDecorator {
@@ -17,16 +16,21 @@ public class DomeBuildPlayer extends PlayerDecorator {
 
     // ======================================================================================
 
+    /**
+     * this is the same of basic method but it adds also the Dome building in order of apply Atlas Effects
+     * @param gameBoard the game board where the pawn have to build on
+     * @param designatedCell the cell where the pawn have to build on
+     * @param buildings lists of the buildings of the game
+     * @return the list of possible buildings
+     */
+
     @Override
     public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, List<Building> buildings) {
 
         List<Building> possibleBuilding = super.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
 
-        for (Building b : buildings) {
-            if( b.getIsDome() && buildings.get(0).getLevel() != b.getLevel() ){
-                possibleBuilding.add(b);
-            }
-        }
+        if( !designatedCell.getRoof().getIsDome())
+            possibleBuilding.add(buildings.get(3));
 
         return possibleBuilding;
     }

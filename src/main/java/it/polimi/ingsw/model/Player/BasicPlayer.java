@@ -219,7 +219,9 @@ public class BasicPlayer implements Player {
 
         List<Cell> availableCellsToMove = gameBoard.getCellAvailableToMove( designatedPawn );
 
-        availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+        if(!this.canMoveUp) {
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+        }
 
 
         return availableCellsToMove;

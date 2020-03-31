@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BuildBeforePlayerTest {
 
+
     @Test
     void getPossibleAction() {
 
@@ -86,6 +87,7 @@ class BuildBeforePlayerTest {
 
 
     }
+
 
     @Test
     void wherePawnCanBuild() {
@@ -174,11 +176,15 @@ class BuildBeforePlayerTest {
 
     }
 
+
     @Test
     void wherePawnCanMove() {
     }
 
+
     @Test
     void pawnBuild() {
     }
+
+
 }

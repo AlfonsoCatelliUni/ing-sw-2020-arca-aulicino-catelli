@@ -25,12 +25,22 @@ public class BuildBeforePlayer extends PlayerDecorator {
     // ======================================================================================
 
 
+    /**
+     * This method is based on the status of the player in his turn, so if the player has already built, the method will return
+     * as possible action only "move"
+     * If this is the start of the player's turn, the method will return the possible action "build" (if possible) and move
+     * After the player moved, will be returned only the action "build"
+     * For the end of the turn, the method will return the action "finish"
+     * @param gameBoard is the board where is played the game
+     * @param designatedPawn is the pawn selected by the player for the current turn
+     * @return a list of possible actions that the player can do in a specific moment in his turn
+     */
     @Override
     public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn ) {
 
         List<String> availableActions = new ArrayList<>();
-        List<Cell> availableCellsToMove = new ArrayList<>();
-        List<Cell> availableCellsToBuild = new ArrayList<>();
+        List<Cell> availableCellsToMove;
+        List<Cell> availableCellsToBuild;
 
         /* se sono entrambi 0 vuol dire che voglio costruire prima di muovere */
         if( player.getNumMove() == 0 && player.getNumBuild() == 1 && !hasBuiltBefore ) {
@@ -68,7 +78,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
         }
         if( player.getNumMove() == 1 && player.getNumBuild() == 1 ) {
             hasBuiltBefore = false;
-            availableActions.add("Finish");
+            availableActions.add("finish");
         }
 
 
@@ -76,11 +86,19 @@ public class BuildBeforePlayer extends PlayerDecorator {
     }
 
 
+    /**
+     * The method returns the list of cells where the designated pawn can build
+     * This is different from the basic wherePawnCanBuild because the player can build before moving,
+     * but if he builds, he cannot move up when moving, so we have to delete some cells in particular cases
+     * @param gameBoard is the board where is played the game
+     * @param designatedPawn is the pawn selected by the player for the current turn
+     * @return a list of cells where the pawn can build in the current turn
+     */
     @Override
     public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 
         List<Cell> availableCellsToBuild = gameBoard.getCellAvailableToBuild(designatedPawn);
-        List<Cell> availableCellsToMove = player.wherePawnCanMove(gameBoard, designatedPawn);
+        List<Cell> availableCellsToMove = super.player.wherePawnCanMove(gameBoard, designatedPawn);
 
 
         /* se voglio costruire prima di muovere */
@@ -128,6 +146,14 @@ public class BuildBeforePlayer extends PlayerDecorator {
     }
 
 
+    /**
+     * This method returns a list of cells where the pawn can move
+     * This is different from the basic method because if the player builds before moving,
+     * he cannot move up in the same turn
+     * @param gameBoard is the board where is played the game
+     * @param designatedPawn is the pawn selected by the player for the current turn
+     * @return a list of cells where the pawn can move in the current turn
+     */
     @Override
     public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
 
@@ -145,6 +171,14 @@ public class BuildBeforePlayer extends PlayerDecorator {
     }
 
 
+    /**
+     * This method is different from the basic one because the player can build before the move,
+     * so if it happens, we have to set some parameters in order to have a correct move after the first built
+     * @param designatedPawn is the pawn selected by the player for the current turn
+     * @param designatedCell is the cell where the pawn will build
+     * @param chosenLevel is the level that the designatedCell will have after the built
+     * @param buildings is a list of every type of building based on the level * not used here *
+     */
     @Override
     public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
@@ -167,6 +201,15 @@ public class BuildBeforePlayer extends PlayerDecorator {
      */
     public void setHasBuiltBefore(Boolean hasBuiltBefore) {
         this.hasBuiltBefore = hasBuiltBefore;
+    }
+
+
+    /**
+     * USED ONLY FOR TESTING
+     * @return if the player has built before moving
+     */
+    public boolean getHasBuiltBefore() {
+        return this.hasBuiltBefore;
     }
 
 

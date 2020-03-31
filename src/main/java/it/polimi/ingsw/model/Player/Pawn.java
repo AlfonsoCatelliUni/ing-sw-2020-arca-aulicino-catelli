@@ -1,6 +1,8 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Sex;
 
 public class Pawn {
 
@@ -26,7 +28,7 @@ public class Pawn {
     /**
      * height of the constructor in the [row, column] position
      */
-    private int zPosition;
+    private int height;
 
 
     /**
@@ -60,7 +62,7 @@ public class Pawn {
         this.color = color;
         this.sex = sex;
         this.position = starCell;
-        this.zPosition = starCell.getHeight();
+        this.height = starCell.getHeight();
         this.hasMoved = false;
         this.goneUp = false;
         this.forcedMove = false;
@@ -71,7 +73,7 @@ public class Pawn {
         this.color = null;
         this.sex = null;
         this.position = new Cell();
-        this.zPosition = 0;
+        this.height = 0;
         this.hasMoved = false;
         this.goneUp = false;
         this.forcedMove = false;
@@ -112,8 +114,8 @@ public class Pawn {
      * can i have the height level of this pawn ?
      * @return the height of the cell where the pawn actually is
      */
-    public int getzPosition() {
-        return zPosition;
+    public int getHeight() {
+        return height;
     }
 
 
@@ -152,12 +154,9 @@ public class Pawn {
         return forcedMove;
     }
 
-    /**
-     * USED ONLY FOR TESTING
-     * @param zPosition is the height of the pawn
-     */
-    public void setzPosition(int zPosition) {
-        this.zPosition = zPosition;
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
 
@@ -173,14 +172,14 @@ public class Pawn {
 
         /* potendo scendere di 1 o piu livelli devo controllare che
          * la poszione successiva sia ad un livello minore dell'attuale */
-        if( nextPosition.getHeight() < this.zPosition ) {
+        if( nextPosition.getHeight() < this.height ) {
             this.goneUp = false;
         }
-        else if(nextPosition.getHeight() == this.zPosition + 1) { //salito
+        else if(nextPosition.getHeight() == this.height + 1) { //salito
             this.goneUp = true;
         }
 
-        this.zPosition = nextPosition.getHeight();
+        this.height = nextPosition.getHeight();
         this.position = nextPosition;
 
 
@@ -202,7 +201,7 @@ public class Pawn {
         this.forcedMove = true;
 
         this.position = nextPosition;
-        this.zPosition = nextPosition.getHeight();
+        this.height = nextPosition.getHeight();
 
         return nextPosition;
 

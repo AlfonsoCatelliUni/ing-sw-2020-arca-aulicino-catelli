@@ -3,20 +3,26 @@ package it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
-import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BuildBeforePlayer extends PlayerDecorator {
 
+
     private Boolean hasBuiltBefore;
+
+
+    // ======================================================================================
 
 
     public BuildBeforePlayer(BasicPlayer player) {
         super(player);
         hasBuiltBefore = false;
     }
+
+
+    // ======================================================================================
 
 
     @Override
@@ -34,7 +40,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
             if(availableCellsToBuild.size() == availableCellsToMove.size() && availableCellsToBuild.size() == 1) {
                 for(Cell c : availableCellsToBuild) {
-                    if(c.getHeight() < designatedPawn.getzPosition()) {
+                    if(c.getHeight() < designatedPawn.getHeight()) {
                         availableActions.add("build");
                         break;
                     }
@@ -42,7 +48,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
             }
             else if(availableCellsToBuild.size() >= availableCellsToMove.size()) {
                 for(Cell c : availableCellsToMove) {
-                    if(c.getHeight() <= designatedPawn.getzPosition()) {
+                    if(c.getHeight() <= designatedPawn.getHeight()) {
                         availableActions.add("build");
                         break;
                     }
@@ -85,7 +91,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
                 Cell possibleBuild = availableCellsToBuild.get(0);
                 availableCellsToBuild.clear();
 
-                if(possibleBuild.getHeight() < designatedPawn.getzPosition()) {
+                if(possibleBuild.getHeight() < designatedPawn.getHeight()) {
                     availableCellsToBuild.add(possibleBuild);
                 }
 
@@ -96,11 +102,11 @@ public class BuildBeforePlayer extends PlayerDecorator {
                 int lowerLevelCells = 0;
                 Cell sameLevelCell = new Cell();
 
-                for(Cell c : availableCellsToBuild) {
-                    if(c.getHeight() < designatedPawn.getzPosition()) {
+                for(Cell c : availableCellsToMove) {
+                    if(c.getHeight() < designatedPawn.getHeight()) {
                         lowerLevelCells++;
                     }
-                    else if(c.getHeight() == designatedPawn.getzPosition()) {
+                    else if(c.getHeight() == designatedPawn.getHeight()) {
                         sameLevelCells++;
                         sameLevelCell = c;
 
@@ -128,12 +134,11 @@ public class BuildBeforePlayer extends PlayerDecorator {
         List<Cell> availableCellsToMove = super.player.wherePawnCanMove(gameBoard, designatedPawn);
 
         if( hasBuiltBefore ) {
-
-            availableCellsToMove.removeIf(c -> c.getHeight() > designatedPawn.getzPosition());
+            availableCellsToMove.removeIf(c -> c.getHeight() > designatedPawn.getHeight());
         }
 
         if( !super.player.getCanMoveUp() ) {
-            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getHeight() == 1);
         }
 
         return availableCellsToMove;
@@ -152,6 +157,10 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
     }
 
+
+    // ======================================================================================
+
+
     /**
      * USED ONLY FOR TESTING
      * @param hasBuiltBefore sets if the player has built before moving
@@ -159,4 +168,6 @@ public class BuildBeforePlayer extends PlayerDecorator {
     public void setHasBuiltBefore(Boolean hasBuiltBefore) {
         this.hasBuiltBefore = hasBuiltBefore;
     }
+
+
 }

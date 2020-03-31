@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
-import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +129,9 @@ public class DoubleBuildPlayer extends PlayerDecorator {
         this.cellBefore = designatedCell;
 
     }
+
+
+    // ======================================================================================
 
 
     // used ONLY FOR TESTING

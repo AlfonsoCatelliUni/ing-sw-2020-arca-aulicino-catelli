@@ -4,11 +4,9 @@ import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class BasicPlayer implements Player {
@@ -220,7 +218,7 @@ public class BasicPlayer implements Player {
         List<Cell> availableCellsToMove = gameBoard.getCellAvailableToMove( designatedPawn );
 
         if(!this.canMoveUp) {
-            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getHeight() == 1);
         }
 
 
@@ -302,16 +300,19 @@ public class BasicPlayer implements Player {
 
     @Override
     public List<Cell> getPawnsCoordinates(Board gameBoard) {
+
         List<Cell> retPawnsCells = new ArrayList<>();
+        List<Cell> availableCellsToMove;
 
         for (int i = 0; i < pawns.length; i++) {
 
-            List<Cell> availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
+            availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
 
             if( availableCellsToMove.size() != 0 ) {
                 retPawnsCells.add(pawns[i].getPosition());
             }
 
+            availableCellsToMove.clear();
         }
 
         if( retPawnsCells.size() == 0 ) {

@@ -2,18 +2,22 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
-import it.polimi.ingsw.model.Pawn;
 
 public class BlockOpponentPlayer extends PlayerDecorator {
+
 
     public BlockOpponentPlayer(BasicPlayer player) {
         super(player);
     }
 
+
+    // ======================================================================================
+
+
     @Override
     public int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        int oldHeight = designatedPawn.getzPosition();
+        int oldHeight = designatedPawn.getHeight();
 
         int moveRetEncoded = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
@@ -23,4 +27,6 @@ public class BlockOpponentPlayer extends PlayerDecorator {
 
         return moveRetEncoded;
     }
+
+
 }

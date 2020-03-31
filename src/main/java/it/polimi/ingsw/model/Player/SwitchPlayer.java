@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
-import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,7 @@ public class SwitchPlayer extends PlayerDecorator {
         for (Cell c : neighboringCells ) {
             if ( !availableCellsToMove.contains(c) && c.getBuilderHere() &&
                     c.getPawnInThisCell().getColor() != designatedPawn.getColor() &&
-                    c.getHeight() - designatedPawn.getzPosition() <= 1 &&
+                    c.getHeight() - designatedPawn.getHeight() <= 1 &&
                     super.player.wherePawnCanBuild(gameBoard, c.getPawnInThisCell()).size() > 0 ) {
                 availableCellsToMove.add(c);
             }
@@ -36,7 +35,7 @@ public class SwitchPlayer extends PlayerDecorator {
 
 
         if( !super.player.getCanMoveUp() ) {
-            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getHeight() == 1);
         }
 
         return availableCellsToMove;
@@ -72,13 +71,10 @@ public class SwitchPlayer extends PlayerDecorator {
     }
 
 
-    // ======================================================================================
-
-
     @Override
-    public ArrayList<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
+    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
 
-        ArrayList<String> availableActions = new ArrayList<>();
+        List<String> availableActions = new ArrayList<>();
 
         if( super.player.getNumMove() == 0 && wherePawnCanMove(gameBoard, designatedPawn).size() != 0) {
             availableActions.add("move");

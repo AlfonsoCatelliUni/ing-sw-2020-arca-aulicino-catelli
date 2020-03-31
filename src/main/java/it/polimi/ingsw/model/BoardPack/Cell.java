@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.BoardPack;
 
-import it.polimi.ingsw.model.BoardPack.Building;
-import it.polimi.ingsw.model.Pawn;
+import it.polimi.ingsw.model.Player.Pawn;
 
 public class Cell {
 
@@ -9,15 +8,15 @@ public class Cell {
 
 
     /**
-     * x = column
-     */
-    private int columnPosition;
-
-
-    /**
      * y = row
      */
     private int rowPosition;
+
+
+    /**
+     * x = column
+     */
+    private int columnPosition;
 
 
     /**
@@ -153,6 +152,8 @@ public class Cell {
         return !getRoof().getIsDome() && !getBuilderHere();
     }
 
+
+    // ======================================================================================
 
 
     /**

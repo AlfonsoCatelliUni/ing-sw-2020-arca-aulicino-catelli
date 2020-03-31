@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Player.Pawn;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +72,6 @@ class PawnTest {
         assertEquals(false, pawn.getHasMoved());
         assertEquals(true, pawn.getForcedMove());
         assertEquals(cell1, pawn.getPosition());
-        assertEquals(cell1.getHeight(), pawn.getzPosition());
+        assertEquals(cell1.getHeight(), pawn.getHeight());
     }
 }

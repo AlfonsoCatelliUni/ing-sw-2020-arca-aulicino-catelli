@@ -4,10 +4,8 @@ import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Sex;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDecorator implements Player {

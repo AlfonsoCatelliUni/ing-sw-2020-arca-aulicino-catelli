@@ -1,12 +1,10 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Pawn;
 import it.polimi.ingsw.model.Sex;
 
 import it.polimi.ingsw.model.BoardPack.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

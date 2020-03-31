@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.BoardPack;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.Player.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class Board {
         List<Cell> retAvailableCellList = new ArrayList<>();
 
         for (Cell c : neighboringCell ) {
-            if ( c.getHeight() - chosenPawn.getzPosition() <= 1 && c.getIsFree()){
+            if ( c.getHeight() - chosenPawn.getHeight() <= 1 && c.getIsFree()){
                 retAvailableCellList.add(c);
             }
         }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
-import it.polimi.ingsw.model.Pawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class DoubleMovePlayer extends PlayerDecorator {
         }
 
         if( !super.player.getCanMoveUp() ) {
-            availableCells.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+            availableCells.removeIf(c -> c.getHeight() - designatedPawn.getHeight() == 1);
         }
 
         return availableCells;

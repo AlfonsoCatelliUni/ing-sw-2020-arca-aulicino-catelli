@@ -50,6 +50,8 @@ class DoubleMovePlayerTest {
         /* Dome Level */
         gameBoard.getCell(2,1).buildOnThisCell(levelFour);
 
+
+        /* in this case the pawn can move up, there's a ramp to a second level */
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
         correctListAvailableCellsMove.add(gameBoard.getCell(0,1));
         correctListAvailableCellsMove.add(gameBoard.getCell(0,2));
@@ -61,6 +63,7 @@ class DoubleMovePlayerTest {
         correctListAvailableCellsMove.clear();
 
 
+        /* in this case the pawn cannot move up, so it can move only to the same or lower level */
         player.setCanMoveUp(false);
 
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));

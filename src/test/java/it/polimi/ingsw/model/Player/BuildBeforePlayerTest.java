@@ -51,7 +51,7 @@ class BuildBeforePlayerTest {
         /* case when the pawn can move and build only in the same cell and cell.getHeight is < pawn.getzPosition */
 
         gameBoard.getCell(0,0).setHeight(1);
-        player_1.getPawns()[0].setzPosition(1);
+        player_1.getPawns()[0].setHeight(1);
 
         assertEquals(test, player_1.getPossibleAction(gameBoard, player_1.getPawns()[0]));
 
@@ -118,7 +118,7 @@ class BuildBeforePlayerTest {
         /* case when the pawn can build on the only cell it could move on, because the level of the cell is < of the pawn's level */
 
         gameBoard.getCell(0,0).setHeight(1);
-        player1.getPawns()[0].setzPosition(1);
+        player1.getPawns()[0].setHeight(1);
 
         test.add(gameBoard.getCell(1,0));
 
@@ -155,7 +155,7 @@ class BuildBeforePlayerTest {
         /* case when the pawn has at least neighbouring cells with level < than the pawn's level */
 
         gameBoard.getCell(2,2).setHeight(1);
-        player_3.getPawns()[0].setzPosition(1);
+        player_3.getPawns()[0].setHeight(1);
 
         assertEquals(test, player_3.wherePawnCanBuild(gameBoard, player_3.getPawns()[0]));
 

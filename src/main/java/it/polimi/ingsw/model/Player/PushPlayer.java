@@ -2,9 +2,7 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
-import it.polimi.ingsw.model.Pawn;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PushPlayer extends PlayerDecorator {
@@ -48,7 +46,7 @@ public class PushPlayer extends PlayerDecorator {
         }
 
         if( !super.player.getCanMoveUp() ) {
-            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getzPosition() == 1);
+            availableCellsToMove.removeIf(c -> c.getHeight() - designatedPawn.getHeight() == 1);
         }
 
         return availableCellsToMove;

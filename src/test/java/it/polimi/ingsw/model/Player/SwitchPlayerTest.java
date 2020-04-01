@@ -122,7 +122,7 @@ class SwitchPlayerTest {
 
 
         /* switch with an opponent player */
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+//        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
 
         assertEquals(0, retMoveEncoded);
         assertEquals(gameBoard.getPawnByCoordinates(0,0), opponentPlayer.getPawns()[1] );
@@ -131,7 +131,7 @@ class SwitchPlayerTest {
 
 
         /* normal move */
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2));
+//        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2));
 
         assertEquals(0, retMoveEncoded);
 
@@ -168,7 +168,8 @@ class SwitchPlayerTest {
 
 
         /* move test */
-        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        availableActions = null;
         correctAvailableActions.add("move");
 
         assertEquals(correctAvailableActions, availableActions);
@@ -179,7 +180,7 @@ class SwitchPlayerTest {
         player.setNumMove(1);
         player.setNumBuild(0);
 
-        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
         correctAvailableActions.add("build");
 
         assertEquals(correctAvailableActions, availableActions);
@@ -190,7 +191,7 @@ class SwitchPlayerTest {
         player.setNumMove(1);
         player.setNumBuild(1);
 
-        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
         correctAvailableActions.add("finish");
 
         assertEquals(correctAvailableActions, availableActions);
@@ -207,7 +208,7 @@ class SwitchPlayerTest {
         gameBoard.getCell(2,0).buildOnThisCell(buildings.get(3));
         gameBoard.getCell(2,1).buildOnThisCell(buildings.get(3));
 
-        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
         assertEquals(correctAvailableActions, availableActions);
         correctAvailableActions.clear();

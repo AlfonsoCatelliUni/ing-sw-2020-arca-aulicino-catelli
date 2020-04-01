@@ -55,8 +55,8 @@ public class PreGameLobby {
         effectClassMap.put("Artemis", new DoubleMovePlayer(new BasicPlayer()));
         effectClassMap.put("Athena", new BlockOpponentPlayer(new BasicPlayer()));
         effectClassMap.put("Atlas", new DomeBuildPlayer(new BasicPlayer()));
-        effectClassMap.put("Demeter", new DoubleBuildPlayer(new BasicPlayer(), 0));
-        effectClassMap.put("Hephaestus", new DoubleBuildPlayer(new BasicPlayer(), 1));
+        effectClassMap.put("Demeter", new DoubleBuildPlayer(new BasicPlayer()));
+        effectClassMap.put("Hephaestus", new SameBuildAfterPlayer(new BasicPlayer()));
         effectClassMap.put("Minotaur", new PushPlayer(new BasicPlayer()));
         effectClassMap.put("Pan", new DownTwoPlayer(new BasicPlayer()));
         effectClassMap.put("Prometheus", new BuildBeforePlayer(new BasicPlayer()));

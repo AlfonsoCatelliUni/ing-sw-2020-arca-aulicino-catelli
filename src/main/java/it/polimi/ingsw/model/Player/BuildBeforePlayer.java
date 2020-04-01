@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -36,9 +40,9 @@ public class BuildBeforePlayer extends PlayerDecorator {
      * @return a list of possible actions that the player can do in a specific moment in his turn
      */
     @Override
-    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn ) {
+    public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn ) {
 
-        List<String> availableActions = new ArrayList<>();
+        List<Action> availableActions = new ArrayList<>();
         List<Cell> availableCellsToMove;
         List<Cell> availableCellsToBuild;
 
@@ -51,7 +55,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
             if(availableCellsToBuild.size() == availableCellsToMove.size() && availableCellsToBuild.size() == 1) {
                 for(Cell c : availableCellsToBuild) {
                     if(c.getHeight() < designatedPawn.getHeight()) {
-                        availableActions.add("build");
+                        availableActions.add(new BuildAction());
                         break;
                     }
                 }
@@ -59,7 +63,7 @@ public class BuildBeforePlayer extends PlayerDecorator {
             else if(availableCellsToBuild.size() >= availableCellsToMove.size()) {
                 for(Cell c : availableCellsToMove) {
                     if(c.getHeight() <= designatedPawn.getHeight()) {
-                        availableActions.add("build");
+                        availableActions.add(new BuildAction());
                         break;
                     }
                 }
@@ -70,15 +74,15 @@ public class BuildBeforePlayer extends PlayerDecorator {
 
         /* se non ha ancora mosso allora devo dargli la possibilità di farlo */
         if ( player.getNumMove() == 0 ) {
-            availableActions.add("move");
+            availableActions.add(new MoveAction());
         }
         /* se ho mosso ma non costruito allora devo dare la possibilita di costruire */
         if ( player.getNumBuild() == 0 ) {
-            availableActions.add("build");
+            availableActions.add(new BuildAction());
         }
         if( player.getNumMove() == 1 && player.getNumBuild() == 1 ) {
             hasBuiltBefore = false;
-            availableActions.add("finish");
+            availableActions.add(new FinishAction());
         }
 
 

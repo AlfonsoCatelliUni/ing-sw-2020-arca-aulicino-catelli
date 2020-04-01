@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
@@ -32,6 +35,9 @@ public interface Player {
     Pawn[] getPawns();
 
 
+    Pawn getPawnInCoordinates(int row, int column);
+
+
     Boolean getCanMoveUp();
 
 
@@ -62,7 +68,7 @@ public interface Player {
     // ======================================================================================
 
 
-    int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
+    Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
 
 
     List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
@@ -89,7 +95,7 @@ public interface Player {
     void initPawn(Board gameBoard, Sex sex, Cell cell);
 
 
-    List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn);
+    List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn);
 
 
     List<Cell> getPawnsCoordinates(Board gameBoard);

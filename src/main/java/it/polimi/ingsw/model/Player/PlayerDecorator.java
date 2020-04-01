@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -64,6 +67,12 @@ public class PlayerDecorator implements Player {
     @Override
     public Pawn[] getPawns() {
         return player.getPawns();
+    }
+
+
+    @Override
+    public Pawn getPawnInCoordinates(int row, int column) {
+        return player.getPawnInCoordinates(row, column);
     }
 
 
@@ -134,7 +143,7 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
         return this.player.movePawn(gameBoard, designatedPawn, nextPosition);
     }
 
@@ -188,8 +197,8 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
-        return player.getPossibleAction(gameBoard, designatedPawn);
+    public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
+        return player.getPossibleActions(gameBoard, designatedPawn);
     }
 
 

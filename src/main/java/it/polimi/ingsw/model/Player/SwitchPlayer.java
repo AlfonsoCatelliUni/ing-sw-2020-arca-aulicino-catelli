@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
 
@@ -61,9 +65,9 @@ public class SwitchPlayer extends PlayerDecorator {
      * @return an encoded value that indicates if the pawn moved on a third level
      */
     @Override
-    public int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        int moveRetEncoded = 0;
+        Action resultAction;
 
 
         if( nextPosition.getBuilderHere() ) {
@@ -73,7 +77,7 @@ public class SwitchPlayer extends PlayerDecorator {
 
             removePawn(gameBoard, nextPosition.getPawnInThisCell());
 
-            moveRetEncoded = super.movePawn(gameBoard, designatedPawn, nextPosition);
+            resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
             super.forcePawn(opponentPawn, myPawnCell);
 
@@ -81,10 +85,10 @@ public class SwitchPlayer extends PlayerDecorator {
 
         }
         else {
-            moveRetEncoded = super.movePawn(gameBoard, designatedPawn, nextPosition);
+            resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
         }
 
-        return moveRetEncoded;
+        return resultAction;
     }
 
 
@@ -97,18 +101,18 @@ public class SwitchPlayer extends PlayerDecorator {
      * @return the list of possible action with the chosen pawn
      */
     @Override
-    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn) {
+    public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<String> availableActions = new ArrayList<>();
+        List<Action> availableActions = new ArrayList<>();
 
         if( super.player.getNumMove() == 0 && wherePawnCanMove(gameBoard, designatedPawn).size() != 0) {
-            availableActions.add("move");
+            availableActions.add(new MoveAction());
         }
         else if( super.player.getNumBuild() == 0 ) {
-            availableActions.add("build");
+            availableActions.add(new BuildAction());
         }
         else if( super.player.getNumBuild() == 1 && super.player.getNumMove() == 1 ) {
-            availableActions.add("finish");
+            availableActions.add(new FinishAction());
         }
 
 

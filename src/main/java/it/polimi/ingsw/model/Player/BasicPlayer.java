@@ -1,13 +1,17 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BasicPlayer implements Player {
 
@@ -36,7 +40,13 @@ public class BasicPlayer implements Player {
     private int numBuild;
 
 
+    private Point turnIndicator;
+
+
     private Boolean canMoveUp;
+
+
+    private Map<Point, Action> turnBasedActions;
 
 
     // ======================================================================================
@@ -66,6 +76,14 @@ public class BasicPlayer implements Player {
 
         this.numMove = 0;
         this.numBuild = 1;
+
+        this.turnIndicator = new Point(0,1);
+
+        turnBasedActions = new HashMap<>();
+        turnBasedActions.put(new Point(0,1), new MoveAction());
+        turnBasedActions.put(new Point(1,0), new BuildAction());
+        turnBasedActions.put(new Point(1,1), new FinishAction());
+
     }
 
 
@@ -87,6 +105,19 @@ public class BasicPlayer implements Player {
     @Override
     public Pawn[] getPawns() {
         return pawns;
+    }
+
+
+    @Override
+    public Pawn getPawnInCoordinates(int row, int column) {
+
+        for ( Pawn p : pawns ) {
+            if( p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column ) {
+                return p;
+            }
+        }
+
+        return null;
     }
 
 
@@ -175,12 +206,10 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
+    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
 
 
         removePawn( gameBoard,  designatedPawn ); // remove the pawn from the game board
-
-        int moveRetEncoded = 0; // save the return of Pawn.moveTo
 
         /* save the old height of the pawn to compare it with the new height to declare if there is a winner */
         int oldPawnHeight = designatedPawn.getPosition().getHeight();
@@ -192,17 +221,15 @@ public class BasicPlayer implements Player {
          * only if it's not been forced to move in the position */
         if ( oldPawnHeight == 2 && nextPosition.getHeight() == 3
                 && !designatedPawn.getForcedMove() && designatedPawn.getHasMoved() ) {
-            moveRetEncoded = 1;
+            return new VictoryAction();
         }
 
-        numMove++;
-        numBuild--;
+        turnIndicator.x++;
+        turnIndicator.y--;
 
         placePawn( gameBoard, designatedPawn, nextPosition ); // place the pawn on the board in the new position
 
-
-
-        return moveRetEncoded;
+        return new NoConsequenceAction();
     }
 
 
@@ -304,12 +331,12 @@ public class BasicPlayer implements Player {
         List<Cell> retPawnsCells = new ArrayList<>();
         List<Cell> availableCellsToMove;
 
-        for (int i = 0; i < pawns.length; i++) {
+        for (Pawn pawn : pawns) {
 
-            availableCellsToMove = wherePawnCanMove(gameBoard, pawns[i]);
+            availableCellsToMove = wherePawnCanMove(gameBoard, pawn);
 
-            if( availableCellsToMove.size() != 0 ) {
-                retPawnsCells.add(pawns[i].getPosition());
+            if (availableCellsToMove.size() != 0) {
+                retPawnsCells.add(pawn.getPosition());
             }
 
             availableCellsToMove.clear();
@@ -324,21 +351,13 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public List<String> getPossibleAction( Board gameBoard, Pawn designatedPawn ) {
+    public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<String> possibleAction = new ArrayList<>();
+        List<Action> availableActions = new ArrayList<>();
 
-        if(numBuild < 1) {
-            possibleAction.add("build");
-        }
-        if (numMove < 1) {
-            possibleAction.add("move");
-        }
-        if( numBuild == 1 && numMove == 1 ) {
-            possibleAction.add("finish");
-        }
+        availableActions.add(turnBasedActions.get(turnIndicator));
 
-        return possibleAction;
+        return availableActions;
     }
 
 

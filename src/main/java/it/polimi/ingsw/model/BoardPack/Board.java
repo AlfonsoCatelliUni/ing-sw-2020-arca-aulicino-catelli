@@ -257,6 +257,60 @@ public class Board {
     }
 
 
+    //TODO : TOGLIERE E CAMBIARE NEI TEST
+    public String getStringCellInfo(Cell designatedCell) {
+
+
+        String retString = String.valueOf(designatedCell.getHeight());
+
+        if (designatedCell.getRoof().getIsDome()) {
+            return retString + "x";
+        }
+        else if(!designatedCell.getBuilderHere()) {
+            return retString + ".";
+        }
+        else {
+
+            Color pawnColor = designatedCell.getPawnInThisCell().getColor();
+            Sex pawnSex = designatedCell.getPawnInThisCell().getSex();
+
+            if ( pawnColor == Color.BLUE ) {
+
+                if ( pawnSex == Sex.MALE ) {
+                    return retString + "B";
+                }
+                else if ( pawnSex == Sex.FEMALE ) {
+                    return retString + "b";
+                }
+
+            }
+            else if ( pawnColor == Color.GREY ) {
+
+                if ( pawnSex == Sex.MALE ) {
+                    return retString + "G";
+                }
+                else if ( pawnSex == Sex.FEMALE ) {
+                    return retString + "g";
+                }
+
+            }
+            else if ( pawnColor == Color.WHITE ){
+
+                if ( pawnSex == Sex.MALE ) {
+                    return retString + "W";
+                }
+                else if ( pawnSex == Sex.FEMALE ) {
+                    return retString + "w";
+                }
+
+            }
+
+        }
+
+        return "error";
+    }
+
+
 
 
 }

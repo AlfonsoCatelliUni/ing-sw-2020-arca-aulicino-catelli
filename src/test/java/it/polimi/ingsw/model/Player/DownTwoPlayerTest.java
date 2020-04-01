@@ -19,7 +19,8 @@ class DownTwoPlayerTest {
         gameBoard.getCell(1,1).buildOnThisCell(new Building(2,22));
         player.getPawns()[0].moveTo(gameBoard.getCell(1,1));
 
-        int num = player.movePawn(gameBoard,player.getPawns()[0],gameBoard.getCell(0,0));
+        //int num = player.movePawn(gameBoard,player.getPawns()[0],gameBoard.getCell(0,0));
+        int num = 0;
 
         assertEquals(2,num);
 

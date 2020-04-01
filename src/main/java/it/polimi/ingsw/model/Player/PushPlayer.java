@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
 
@@ -69,9 +70,9 @@ public class PushPlayer extends PlayerDecorator {
 
 
     @Override
-    public int movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        int moveRetEncoded = 0;
+        Action resultAction;
 
 
         if( nextPosition.getBuilderHere() ) {
@@ -84,7 +85,7 @@ public class PushPlayer extends PlayerDecorator {
 
             removePawn(gameBoard, nextPosition.getPawnInThisCell());
 
-            moveRetEncoded = super.movePawn(gameBoard, designatedPawn, nextPosition);
+            resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
             super.forcePawn(oppPawn, oppCell);
 
@@ -92,10 +93,10 @@ public class PushPlayer extends PlayerDecorator {
 
         }
         else {
-            moveRetEncoded = super.movePawn(gameBoard, designatedPawn, nextPosition);
+            resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
         }
 
-        return moveRetEncoded;
+        return resultAction;
     }
 
 

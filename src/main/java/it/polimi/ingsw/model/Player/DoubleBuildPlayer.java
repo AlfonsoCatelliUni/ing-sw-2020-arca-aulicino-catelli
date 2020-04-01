@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -10,66 +14,52 @@ import java.util.List;
 public class DoubleBuildPlayer extends PlayerDecorator {
 
 
-    private int typeOfSecondBuild;
-
-
     private Cell cellBefore;
 
 
     // ======================================================================================
 
 
-    public DoubleBuildPlayer(BasicPlayer player, int typeOfSecondBuild) {
+    public DoubleBuildPlayer(BasicPlayer player) {
         super(player);
-        this.typeOfSecondBuild = typeOfSecondBuild;
         cellBefore = null;
     }
 
 
     // ======================================================================================
 
+
     /**
-     * this method is the same of basic method but it adds a second possibility to build after the first, it checks if it's possible to build the twice
+     * this method is the same of basic method
      * @param gameBoard Board where to check the possible actions
      * @param designatedPawn the pawn subject of the action
      * @return list of names of actions
      */
-
     @Override
-    public List<String> getPossibleAction(Board gameBoard, Pawn designatedPawn)  {
+    public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn)  {
 
-        List<String> possibleActions = new ArrayList<>();
+        List<Action> possibleActions = new ArrayList<>();
 
         if(super.player.getNumBuild() == 0) {
-            possibleActions.add("build");
+            possibleActions.add(new BuildAction());
         }
         else if (super.player.getNumMove() == 0) {
-            possibleActions.add("move");
+            possibleActions.add(new MoveAction());
         }
 
         else if ( super.player.getNumMove() == 1 && super.player.getNumBuild() == 1 ) {
 
             List<Cell> availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
 
-            /* can build but not on the same place */
-            if(typeOfSecondBuild == 0) {
-                availableCellToBuild.remove(cellBefore);
-                if( availableCellToBuild.size() > 0 ) {
-                    possibleActions.add("build");
-                }
+            availableCellToBuild.remove(cellBefore);
+            if( availableCellToBuild.size() > 0 ) {
+                possibleActions.add(new BuildAction());
             }
 
-            /* can build only on the previous cell */
-            else if ( typeOfSecondBuild == 1) {
-                if( !cellBefore.getRoof().getIsDome() && cellBefore.getRoof().getLevel() != 3 ) {
-                    possibleActions.add("build");
-                }
-            }
-
-            possibleActions.add("finish");
+            possibleActions.add(new FinishAction());
         }
         else if( super.player.getNumBuild() == 2 && super.player.getNumMove() == 1 ) {
-            possibleActions.add("finish");
+            possibleActions.add(new FinishAction());
         }
 
         return possibleActions;
@@ -82,7 +72,6 @@ public class DoubleBuildPlayer extends PlayerDecorator {
      * @param designatedPawn the pawn that's designated to build
      * @return the list of cells available to be built
      */
-
     @Override
     public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 
@@ -95,24 +84,13 @@ public class DoubleBuildPlayer extends PlayerDecorator {
 
             availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
 
-            /* can build but not on the same place */
-            if(typeOfSecondBuild == 0) {
-                availableCellToBuild.remove(cellBefore);
-            }
-
-            /* can build only on the previous cell */
-            else if ( typeOfSecondBuild == 1) {
-                availableCellToBuild.clear();
-                if( !cellBefore.getRoof().getIsDome() && cellBefore.getRoof().getLevel() != 3 ) {
-                    availableCellToBuild.add(cellBefore);
-                }
-            }
-
+            availableCellToBuild.remove(cellBefore);
 
         }
 
         return availableCellToBuild;
     }
+
 
     /**
      * This is the same of basic method but it stores the value of the cell of the first build
@@ -121,7 +99,6 @@ public class DoubleBuildPlayer extends PlayerDecorator {
      * @param chosenLevel the level of the building to build
      * @param buildings list of possibile buildings to build
      */
-
     @Override
     public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         super.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
@@ -138,6 +115,7 @@ public class DoubleBuildPlayer extends PlayerDecorator {
     public void setCellBefore(Cell cellBefore) {
         this.cellBefore = cellBefore;
     }
+
 
     // used ONLY FOR TESTING
     public Cell getCellBefore() { return this.cellBefore; }

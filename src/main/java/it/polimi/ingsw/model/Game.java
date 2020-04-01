@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Player.*;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,8 +104,8 @@ public class Game {
     }
 
 
-    public List<String> getPossibleAction(int row, int column) {
-        return currentPlayer.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+    public List<Action> getPossibleActions(int row, int column) {
+        return currentPlayer.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
     }
 
 
@@ -123,26 +123,9 @@ public class Game {
      */
     public void movePawn(int row, int column, int newRow, int newColumn) {
 
-        int moveRetEncoded = 0;
+        Action moveResult = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
-        moveRetEncoded = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
-
-
-        if(moveRetEncoded == 1) {
-            //TODO : winByMove
-        }
-        else if(moveRetEncoded == 2) {
-            //TODO : winByMove
-        }
-        else if(moveRetEncoded == 3) {
-
-            for ( Player p : players ) {
-                if( !p.equals(currentPlayer) ) {
-                    p.setCanMoveUp(false);
-                }
-            }
-
-        }
+        moveConsequence(moveResult);
 
     }
 
@@ -164,52 +147,25 @@ public class Game {
     }
 
 
-    /**
-     * needed to display the board into the CLI
-     * @return the string of the board
-     */
-    public String boardToString() {
-
-        String retString = "";
-
-        retString = ("╔═══╦════╦════╦════╦════╦════╗\n" +
-                "║   ║ 1  ║ 2  ║ 3  ║ 4  ║ 5  ║\n" +
-                "╠═══╬════╬════╬════╬════╬════╣\n" +
-                "║ A ║ " + gameBoard.getStringCellInfo(0,0) + " ║ "
-                + gameBoard.getStringCellInfo(0,1) + " ║ "
-                + gameBoard.getStringCellInfo(0,2) + " ║ "
-                + gameBoard.getStringCellInfo(0,3) + " ║ "
-                + gameBoard.getStringCellInfo(0,4) + " ║\n" + /* printed the first line */
-                "║ B ║ "+ gameBoard.getStringCellInfo(1,0) + " ║ "
-                + gameBoard.getStringCellInfo(1,1) + " ║ "
-                + gameBoard.getStringCellInfo(1,2) + " ║ "
-                + gameBoard.getStringCellInfo(1,3) + " ║ "
-                + gameBoard.getStringCellInfo(1,4) + " ║\n" + /* printed the second line */
-                "║ C ║ " + gameBoard.getStringCellInfo(2,0) + " ║ "
-                + gameBoard.getStringCellInfo(2,1) + " ║ "
-                + gameBoard.getStringCellInfo(2,2) + " ║ "
-                + gameBoard.getStringCellInfo(2,3) + " ║ "
-                + gameBoard.getStringCellInfo(2,4) + " ║\n" + /* printed the third line */
-                "║ D ║ " + gameBoard.getStringCellInfo(3,0) + " ║ "
-                + gameBoard.getStringCellInfo(3,1) + " ║ "
-                + gameBoard.getStringCellInfo(3,2) + " ║ "
-                + gameBoard.getStringCellInfo(3,3) + " ║ "
-                + gameBoard.getStringCellInfo(3,4) + " ║\n" + /* printed the fourth line */
-                "║ E ║ " + gameBoard.getStringCellInfo(4,0) + " ║ "
-                + gameBoard.getStringCellInfo(4,1) + " ║ "
-                + gameBoard.getStringCellInfo(4,2) + " ║ "
-                + gameBoard.getStringCellInfo(4,3) + " ║ "
-                + gameBoard.getStringCellInfo(4,4) + " ║\n" + /* printed the fifth line */
-                "╚═══╩════╩════╩════╩════╩════╝\n\n");
-
-
-        return retString;
+    public void moveConsequence(Action action) {
+        action.doAction();
     }
 
 
+    public void moveConsequence(BlockOpponentAction blockOpponentAction) {
+
+        for ( Player p : players ) {
+            if( !p.equals(currentPlayer) ) {
+                p.setCanMoveUp(false);
+            }
+        }
+
+    }
 
 
-
+    public void moveConsequence(VictoryAction victoryAction) {
+        /* azione di vittoria */
+    }
 
 
     // ======================================================================================
@@ -256,6 +212,43 @@ public class Game {
 
     }
 
+    public String boardToString() {
+
+        String retString = "";
+
+        retString = ("╔═══╦════╦════╦════╦════╦════╗\n" +
+                "║   ║ 1  ║ 2  ║ 3  ║ 4  ║ 5  ║\n" +
+                "╠═══╬════╬════╬════╬════╬════╣\n" +
+                "║ A ║ " + gameBoard.getStringCellInfo(0,0) + " ║ "
+                + gameBoard.getStringCellInfo(0,1) + " ║ "
+                + gameBoard.getStringCellInfo(0,2) + " ║ "
+                + gameBoard.getStringCellInfo(0,3) + " ║ "
+                + gameBoard.getStringCellInfo(0,4) + " ║\n" + /* printed the first line */
+                "║ B ║ "+ gameBoard.getStringCellInfo(1,0) + " ║ "
+                + gameBoard.getStringCellInfo(1,1) + " ║ "
+                + gameBoard.getStringCellInfo(1,2) + " ║ "
+                + gameBoard.getStringCellInfo(1,3) + " ║ "
+                + gameBoard.getStringCellInfo(1,4) + " ║\n" + /* printed the second line */
+                "║ C ║ " + gameBoard.getStringCellInfo(2,0) + " ║ "
+                + gameBoard.getStringCellInfo(2,1) + " ║ "
+                + gameBoard.getStringCellInfo(2,2) + " ║ "
+                + gameBoard.getStringCellInfo(2,3) + " ║ "
+                + gameBoard.getStringCellInfo(2,4) + " ║\n" + /* printed the third line */
+                "║ D ║ " + gameBoard.getStringCellInfo(3,0) + " ║ "
+                + gameBoard.getStringCellInfo(3,1) + " ║ "
+                + gameBoard.getStringCellInfo(3,2) + " ║ "
+                + gameBoard.getStringCellInfo(3,3) + " ║ "
+                + gameBoard.getStringCellInfo(3,4) + " ║\n" + /* printed the fourth line */
+                "║ E ║ " + gameBoard.getStringCellInfo(4,0) + " ║ "
+                + gameBoard.getStringCellInfo(4,1) + " ║ "
+                + gameBoard.getStringCellInfo(4,2) + " ║ "
+                + gameBoard.getStringCellInfo(4,3) + " ║ "
+                + gameBoard.getStringCellInfo(4,4) + " ║\n" + /* printed the fifth line */
+                "╚═══╩════╩════╩════╩════╩════╝\n\n");
+
+
+        return retString;
+    }
 
 
 

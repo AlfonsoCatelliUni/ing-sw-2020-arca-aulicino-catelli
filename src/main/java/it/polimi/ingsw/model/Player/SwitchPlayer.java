@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
 
@@ -65,9 +62,9 @@ public class SwitchPlayer extends PlayerDecorator {
      * @return an encoded value that indicates if the pawn moved on a third level
      */
     @Override
-    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        Action resultAction;
+        MoveConsequence resultAction;
 
 
         if( nextPosition.getBuilderHere() ) {

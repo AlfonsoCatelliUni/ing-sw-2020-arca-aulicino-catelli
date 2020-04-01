@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.MoveConsequence;
 import it.polimi.ingsw.model.Actions.VictoryAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -15,14 +16,14 @@ public class DownTwoPlayer extends PlayerDecorator {
 
 
     @Override
-    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
         int oldHeight = designatedPawn.getHeight();
 
-        Action resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
+        MoveConsequence resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
-        if( !resultAction.getClass().equals(VictoryAction.class) && oldHeight - nextPosition.getHeight() >= 2 ) {
-            return new VictoryAction();
+        if( !resultAction.isVictoryByMove() && oldHeight - nextPosition.getHeight() >= 2 ) {
+            return new MoveConsequence(true,true,false);
         }
 
         return resultAction;

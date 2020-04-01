@@ -123,9 +123,10 @@ public class Game {
      */
     public void movePawn(int row, int column, int newRow, int newColumn) {
 
-        Action moveResult = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
+        MoveConsequence moveResult = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
-        moveConsequence(moveResult);
+        if (moveResult.isCheckResult())
+            moveConsequence(moveResult);
 
     }
 
@@ -147,24 +148,18 @@ public class Game {
     }
 
 
-    public void moveConsequence(Action action) {
-        action.doAction();
-    }
-
-
-    public void moveConsequence(BlockOpponentAction blockOpponentAction) {
-
-        for ( Player p : players ) {
-            if( !p.equals(currentPlayer) ) {
-                p.setCanMoveUp(false);
-            }
+    public void moveConsequence(MoveConsequence moveResult) {
+        if (moveResult.isVictoryByMove()) {
+            // chiama metodo ha vinto current player
         }
 
-    }
-
-
-    public void moveConsequence(VictoryAction victoryAction) {
-        /* azione di vittoria */
+        if (moveResult.isBlockOpponent() && !moveResult.isVictoryByMove()) {
+            for (Player p : players) {
+                if (!p.equals(currentPlayer)) {
+                    p.setCanMoveUp(false);
+                }
+            }
+        }
     }
 
 

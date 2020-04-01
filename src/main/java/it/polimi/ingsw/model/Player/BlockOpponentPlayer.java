@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BlockOpponentAction;
-import it.polimi.ingsw.model.Actions.VictoryAction;
+import it.polimi.ingsw.model.Actions.MoveConsequence;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
 
@@ -27,14 +25,14 @@ public class BlockOpponentPlayer extends PlayerDecorator {
      * moved up, so for the next opponent's turns, they will not be able to move up with their pawns
      */
     @Override
-    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
         int oldHeight = designatedPawn.getHeight();
 
-        Action resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
+        MoveConsequence resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
-        if( !resultAction.getClass().equals(VictoryAction.class) && nextPosition.getHeight() - oldHeight == 1) {
-            return new BlockOpponentAction();
+        if( !resultAction.isCheckResult() && nextPosition.getHeight() - oldHeight == 1) {
+            return new MoveConsequence(true,false, true);
         }
 
         return resultAction;

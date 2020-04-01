@@ -206,7 +206,7 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
+    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
 
 
         removePawn( gameBoard,  designatedPawn ); // remove the pawn from the game board
@@ -221,7 +221,7 @@ public class BasicPlayer implements Player {
          * only if it's not been forced to move in the position */
         if ( oldPawnHeight == 2 && nextPosition.getHeight() == 3
                 && !designatedPawn.getForcedMove() && designatedPawn.getHasMoved() ) {
-            return new VictoryAction();
+            return new MoveConsequence(true,true,false);
         }
 
         turnIndicator.x++;
@@ -229,7 +229,7 @@ public class BasicPlayer implements Player {
 
         placePawn( gameBoard, designatedPawn, nextPosition ); // place the pawn on the board in the new position
 
-        return new NoConsequenceAction();
+        return new MoveConsequence(false);
     }
 
 

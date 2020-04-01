@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.MoveConsequence;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
@@ -68,7 +69,7 @@ public interface Player {
     // ======================================================================================
 
 
-    Action movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
+    MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
 
 
     List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);

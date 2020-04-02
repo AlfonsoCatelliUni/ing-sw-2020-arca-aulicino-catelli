@@ -49,8 +49,6 @@ public class Building {
 
         this.isDome = level == 4;
 
-        this.placedNumber = 0;
-
         this.quantity = quantity;
         this.placedNumber = 0;
     }

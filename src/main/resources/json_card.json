@@ -1,0 +1,56 @@
+[
+    {
+      "name": "Apollo",
+      "available2P": true,
+      "available3P": true,
+      "effect": "apolloEffect"
+    },
+    {
+      "name": "Artemis",
+      "available2P": true,
+      "available3P": true,
+      "effect": "artemisEffect"
+    },
+    {
+      "name": "Athena",
+      "available2P": true,
+      "available3P": true,
+      "effect": "athenaEffect"
+    },
+    {
+      "name": "Atlas",
+      "available2P": true,
+      "available3P": true,
+      "effect": "atlasEffect"
+    },
+    {
+      "name": "Demeter",
+      "available2P": true,
+      "available3P": true,
+      "effect": "demeterEffect"
+    },
+    {
+      "name": "Hephaestus",
+      "available2P": true,
+      "available3P": true,
+      "effect": "hephaestusEffect"
+    },
+    {
+      "name": "Minotaur",
+      "available2P": true,
+      "available3P": true,
+      "effect": "minotaurEffect"
+    },
+    {
+      "name": "Pan",
+      "available2P": true,
+      "available3P": true,
+      "effect": "panEffect"
+    },
+  {
+    "name": "Prometheus",
+    "available2P": true,
+    "available3P": true,
+    "effect": "prometheusEffect"
+  }
+]

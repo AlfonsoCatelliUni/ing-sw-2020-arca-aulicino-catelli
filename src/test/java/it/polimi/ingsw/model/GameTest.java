@@ -49,14 +49,6 @@ class GameTest {
     @Test
     void moveConsequence() {
 
-        Game game = new Game();
-
-        Action actionRes = new VictoryAction();
-
-        game.moveConsequence(actionRes);
-
-
-
     }
 
 

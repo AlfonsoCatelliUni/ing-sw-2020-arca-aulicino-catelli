@@ -40,13 +40,9 @@ public class BasicPlayer implements Player {
     private int numBuild;
 
 
-    private Point turnIndicator;
-
-
     private Boolean canMoveUp;
 
 
-    private Map<Point, Action> turnBasedActions;
 
 
     // ======================================================================================
@@ -77,12 +73,6 @@ public class BasicPlayer implements Player {
         this.numMove = 0;
         this.numBuild = 1;
 
-        this.turnIndicator = new Point(0,1);
-
-        turnBasedActions = new HashMap<>();
-        turnBasedActions.put(new Point(0,1), new MoveAction());
-        turnBasedActions.put(new Point(1,0), new BuildAction());
-        turnBasedActions.put(new Point(1,1), new FinishAction());
 
     }
 
@@ -145,6 +135,8 @@ public class BasicPlayer implements Player {
     }
 
 
+
+
     // ======================================================================================
 
 
@@ -173,22 +165,19 @@ public class BasicPlayer implements Player {
 
 
     @Override
+    public void setCanMoveUp(Boolean canMoveUp) {
+        this.canMoveUp = canMoveUp;
+    }
+
+    @Override
     public void setNumMove(int numMove) {
         this.numMove = numMove;
     }
-
 
     @Override
     public void setNumBuild(int numBuild) {
         this.numBuild = numBuild;
     }
-
-
-    @Override
-    public void setCanMoveUp(Boolean canMoveUp) {
-        this.canMoveUp = canMoveUp;
-    }
-
 
     @Override
     public void resetNumMove() {
@@ -224,8 +213,8 @@ public class BasicPlayer implements Player {
             return new MoveConsequence(true,true,false);
         }
 
-        turnIndicator.x++;
-        turnIndicator.y--;
+        numMove++;
+        numBuild--;
 
         placePawn( gameBoard, designatedPawn, nextPosition ); // place the pawn on the board in the new position
 
@@ -355,7 +344,22 @@ public class BasicPlayer implements Player {
 
         List<Action> availableActions = new ArrayList<>();
 
-        availableActions.add(turnBasedActions.get(turnIndicator));
+
+        if (numMove == 0) {
+            if ( wherePawnCanMove(gameBoard, designatedPawn).size() > 0 )
+                availableActions.add(new MoveAction());
+            // else eccezione?
+
+        }
+
+        if (numBuild == 0) {
+            if ( wherePawnCanBuild(gameBoard, designatedPawn).size() > 0 )
+                availableActions.add ( new BuildAction());
+            // else eccezione?
+        }
+
+        if (numMove == 1 && numBuild == 1)
+            availableActions.add(new FinishAction());
 
         return availableActions;
     }

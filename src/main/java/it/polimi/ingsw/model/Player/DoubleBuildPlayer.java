@@ -3,7 +3,6 @@ package it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -38,31 +37,22 @@ public class DoubleBuildPlayer extends PlayerDecorator {
     @Override
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn)  {
 
-        List<Action> possibleActions = new ArrayList<>();
+        List<Action> availableActions;
 
-        if(super.player.getNumBuild() == 0) {
-            possibleActions.add(new BuildAction());
-        }
-        else if (super.player.getNumMove() == 0) {
-            possibleActions.add(new MoveAction());
-        }
+        availableActions = super.player.getPossibleActions(gameBoard, designatedPawn);
 
-        else if ( super.player.getNumMove() == 1 && super.player.getNumBuild() == 1 ) {
-
-            List<Cell> availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
-
-            availableCellToBuild.remove(cellBefore);
-            if( availableCellToBuild.size() > 0 ) {
-                possibleActions.add(new BuildAction());
-            }
-
-            possibleActions.add(new FinishAction());
-        }
-        else if( super.player.getNumBuild() == 2 && super.player.getNumMove() == 1 ) {
-            possibleActions.add(new FinishAction());
+        if ( super.player.getNumMove() == 1 && super.player.getNumBuild() == 1 ) {
+            if ( player.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0 )
+                availableActions.add(new BuildAction());
         }
 
-        return possibleActions;
+        if  (super.player.getNumBuild() == 2) {
+            if (player.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0)
+                availableActions.add(new BuildAction());
+            availableActions.add(new FinishAction());
+        }
+
+        return availableActions;
     }
 
 

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -62,6 +66,7 @@ class BasicPlayerTest {
     }
 
 
+    // TODO : da rifare una volta implementata la move giusta
     @Test
     void movePawn() {
 
@@ -126,9 +131,8 @@ class BasicPlayerTest {
 
 
     }
-    //TODO
 
-
+    //TODO : da fare una volta implementata la build giusta
     @Test
     void pawnBuild() {
     }
@@ -223,6 +227,9 @@ class BasicPlayerTest {
     }
 
 
+    /**
+     * this method calls only the getCellAvailableToBuild from Board class that's already tested
+     */
     @Test
     void wherePawnCanBuild() {
     }
@@ -284,20 +291,80 @@ class BasicPlayerTest {
 
 
     @Test
-    void getPossibleAction() {
+    void getPossibleActions() {
 
-        gameBoard = new Board();
-        player = new BasicPlayer("test", Color.BLUE, "test");
+        Board gameBoard = new Board();
+        List<Action> test = new ArrayList<>();
 
+        BasicPlayer player1 = new BasicPlayer("test1", Color.BLUE, "test1");
+        BasicPlayer player2 = new BasicPlayer("test2", Color.GREY, "test2");
+        BasicPlayer player3 = new BasicPlayer("test3", Color.WHITE, "test3");
+
+        List<Building> buildings = new ArrayList<>();
         Building levelOne = new Building(1,22);
         Building levelTwo = new Building(2,18);
         Building levelThree = new Building(3,14);
         Building levelFour = new Building(4,18);
+        buildings.add(levelOne);
+        buildings.add(levelTwo);
+        buildings.add(levelThree);
+        buildings.add(levelFour);
 
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
-        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
 
 
+        player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player1.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
+        player2.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,1));
+        player2.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(1,2));
+        player3.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
+        player3.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,3));
+
+        int i;
+
+        /* case when the pawn cannot move */
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(1));
+
+        assertEquals(test, player1.getPossibleActions(gameBoard, player1.getPawns()[0]));
+
+        // TODO : mettere il metodo per rimuovere le celle
+        gameBoard.getCell(1,0).setHeight(0);
+
+
+        /* case when the pawn can move */
+        test.add(new MoveAction());
+
+        for(i = 0; i < test.size(); i++)
+            assertEquals(test.get(i).getClass(), player1.getPossibleActions(gameBoard, player1.getPawns()[0]).get(i).getClass());
+
+        test.clear();
+
+        /* case when the pawn cannot build */
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(3));
+
+        assertEquals(test, player1.getPossibleActions(gameBoard, player1.getPawns()[0]));
+
+        // TODO : mettere il metodo per rimuovere le celle
+        gameBoard.getCell(0,0).setHeight(0);
+
+        /* case when the pawn can build */
+        test.add(new BuildAction());
+
+        player1.movePawn(gameBoard, player1.getPawns()[0], gameBoard.getCell(1,0));
+
+        for(i = 0; i < test.size(); i++)
+            assertEquals(test.get(i).getClass(), player1.getPossibleActions(gameBoard, player1.getPawns()[0]).get(i).getClass());
+
+        player1.pawnBuild(player1.getPawns()[0],gameBoard.getCell(0,0), 1, buildings);
+
+        test.clear();
+        test.add(new FinishAction());
+
+        for(i = 0; i < test.size(); i++)
+            assertEquals(test.get(i).getClass(), player1.getPossibleActions(gameBoard, player1.getPawns()[0]).get(i).getClass());
 
 
     }

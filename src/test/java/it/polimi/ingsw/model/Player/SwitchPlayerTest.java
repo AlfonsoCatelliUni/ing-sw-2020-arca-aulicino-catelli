@@ -94,7 +94,7 @@ class SwitchPlayerTest {
 
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
-        assertEquals(0, availableCellsToMove.size());
+        assertEquals(1, availableCellsToMove.size());
 
     }
 

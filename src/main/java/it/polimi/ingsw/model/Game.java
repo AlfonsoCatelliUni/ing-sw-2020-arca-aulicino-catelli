@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.GameObserver;
+import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Game {
+public class Game implements GameConsequenceHandler {
 
 
     private Board gameBoard;
@@ -31,6 +33,9 @@ public class Game {
     private int indexCurrentPlayer;
 
 
+    private List<GameObserver> observers;
+
+
     // ======================================================================================
 
 
@@ -40,6 +45,7 @@ public class Game {
         this.players = new ArrayList<>();
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
+        this.observers = new ArrayList<>();
 
 
         for (int i = 0; i < playersNickname.size(); i++) {
@@ -123,10 +129,9 @@ public class Game {
      */
     public void movePawn(int row, int column, int newRow, int newColumn) {
 
-        MoveConsequence moveResult = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
+        Consequence moveResult = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
-        if (moveResult.isCheckResult())
-            moveConsequence(moveResult);
+        receiveConsequence(moveResult);
 
     }
 
@@ -148,20 +153,84 @@ public class Game {
     }
 
 
-    public void moveConsequence(MoveConsequence moveResult) {
-        if (moveResult.isVictoryByMove()) {
-            // chiama metodo ha vinto current player
+    /* devo eliminare il player nel caso non possa muovere nessuna pedina */
+    public void removePlayer() {
+
+        Pawn[] pawns = currentPlayer.getPawns();
+
+        //remove the pawns of the losing player from the game board
+        for( Pawn p : pawns ) {
+            currentPlayer.removePawn(gameBoard, p);
         }
 
-        if (moveResult.isBlockOpponent() && !moveResult.isVictoryByMove()) {
-            for (Player p : players) {
-                if (!p.equals(currentPlayer)) {
-                    p.setCanMoveUp(false);
-                }
+        //remove the losing player from the players list
+        players.removeIf(player -> player.equals(currentPlayer));
+
+        //pick the next player
+        nextCurrentPlayer();
+        currentPlayer = players.get(indexCurrentPlayer);
+
+        //if there's only one player, this player is the winner
+        if( players.size() == 1 ) {
+            receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
+        }
+
+
+    }
+
+
+    // ======================================================================================
+
+
+    @Override
+    public void receiveConsequence(Consequence consequence) {
+        consequence.accept(this);
+    }
+
+
+    //TODO : magari c'è qualcosa da fare con la vittoria
+    @Override
+    public void doConsequence(VictoryConsequence consequence) {
+        /* per il momento so che devo notificare che c'è una vittoria,
+        * ma non so ancora cosa devo fare con la vittoria */
+        //notifyObservers();
+    }
+
+
+    @Override
+    public void doConsequence(BlockConsequence consequence) {
+
+        for (Player p : players) {
+            if (!p.equals(currentPlayer)) {
+                p.setCanMoveUp(false);
             }
         }
 
     }
+
+
+    @Override
+    public void doConsequence(NoConsequence consequence) {
+        //nothing to do here :)
+    }
+
+
+    // ======================================================================================
+
+
+    public void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+
+
+    private void notifyObservers(ClientToServerEvent event) {
+
+        for (GameObserver obs : observers) {
+            obs.update(event);
+        }
+
+    }
+
 
 
     // ======================================================================================
@@ -196,18 +265,14 @@ public class Game {
         currentPlayer.resetNumMove();
         currentPlayer.resetNumBuild();
 
-        if( indexCurrentPlayer == 2 ) {
-            indexCurrentPlayer = 0;
-        }
-        else {
-            indexCurrentPlayer++;
-        }
+        nextCurrentPlayer();
 
         currentPlayer = players.get(indexCurrentPlayer);
 
         return players.get(indexCurrentPlayer).getName();
 
     }
+
 
     public String boardToString() {
 
@@ -248,6 +313,17 @@ public class Game {
     }
 
 
+    public void nextCurrentPlayer() {
+
+        if( indexCurrentPlayer == players.size() - 1 ) {
+
+            indexCurrentPlayer = 0;
+            return;
+        }
+
+        indexCurrentPlayer++;
+
+    }
 
 
 

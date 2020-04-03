@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.MoveConsequence;
+import it.polimi.ingsw.model.Actions.BlockConsequence;
+import it.polimi.ingsw.model.Actions.Consequence;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
 
@@ -71,9 +71,9 @@ public class PushPlayer extends PlayerDecorator {
 
 
     @Override
-    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        MoveConsequence resultAction;
+        Consequence resultAction;
 
 
         if( nextPosition.getBuilderHere() ) {

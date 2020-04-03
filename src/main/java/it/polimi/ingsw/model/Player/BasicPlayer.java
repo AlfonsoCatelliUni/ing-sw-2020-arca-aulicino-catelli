@@ -7,11 +7,8 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BasicPlayer implements Player {
 
@@ -195,7 +192,7 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
+    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
 
 
         removePawn( gameBoard,  designatedPawn ); // remove the pawn from the game board
@@ -206,19 +203,19 @@ public class BasicPlayer implements Player {
         /* change the position in the pawn and set the propriety of the pawn ( hasMove, hasGoneUp, ... ) */
         designatedPawn.moveTo(nextPosition);
 
-        /* this is the control for the victory moving from 2 to 3 level height,
-         * only if it's not been forced to move in the position */
-        if ( oldPawnHeight == 2 && nextPosition.getHeight() == 3
-                && !designatedPawn.getForcedMove() && designatedPawn.getHasMoved() ) {
-            return new MoveConsequence(true,true,false);
-        }
-
         numMove++;
         numBuild--;
 
         placePawn( gameBoard, designatedPawn, nextPosition ); // place the pawn on the board in the new position
 
-        return new MoveConsequence(false);
+        /* this is the control for the victory moving from 2 to 3 level height,
+         * only if it's not been forced to move in the position */
+        if ( oldPawnHeight == 2 && nextPosition.getHeight() == 3
+                && !designatedPawn.getForcedMove() && designatedPawn.getHasMoved() ) {
+            return new VictoryConsequence(name);
+        }
+
+        return new NoConsequence();
     }
 
 

@@ -1,17 +1,13 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
-import it.polimi.ingsw.model.Actions.MoveConsequence;
+import it.polimi.ingsw.model.Actions.Consequence;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
 import it.polimi.ingsw.model.BoardPack.*;
 
-import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 
 public interface Player {
@@ -72,7 +68,7 @@ public interface Player {
     // ======================================================================================
 
 
-    MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
+    Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
 
 
     List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);

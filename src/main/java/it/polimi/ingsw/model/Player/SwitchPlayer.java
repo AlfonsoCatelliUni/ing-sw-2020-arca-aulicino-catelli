@@ -61,9 +61,9 @@ public class SwitchPlayer extends PlayerDecorator {
      * @return an encoded value that indicates if the pawn moved on a third level
      */
     @Override
-    public MoveConsequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        MoveConsequence resultAction;
+        Consequence resultAction;
 
 
         if( nextPosition.getBuilderHere() ) {

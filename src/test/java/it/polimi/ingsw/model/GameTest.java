@@ -1,12 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.VictoryAction;
-import it.polimi.ingsw.model.BoardPack.Board;
-import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 

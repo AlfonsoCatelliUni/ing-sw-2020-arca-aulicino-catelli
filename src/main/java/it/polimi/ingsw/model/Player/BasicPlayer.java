@@ -302,11 +302,11 @@ public class BasicPlayer implements Player {
     public void initPawn(Board gameBoard, Sex sex, Cell startCell ) {
 
         /* control if the pawn is already present */
-        if( sex == Sex.MALE) {
+        if( sex == Sex.MALE && this.getPawns()[0] == null) {
             this.pawns[0] = new Pawn(this.color, sex, startCell);
             placePawn( gameBoard, this.pawns[0], startCell);
         }
-        else if (sex == Sex.FEMALE){
+        else if (sex == Sex.FEMALE && this.getPawns()[1] == null){
             this.pawns[1] = new Pawn(this.color, sex, startCell);
             placePawn( gameBoard, this.pawns[1], startCell);
         }
@@ -354,7 +354,7 @@ public class BasicPlayer implements Player {
 
         if (numBuild == 0) {
             if ( wherePawnCanBuild(gameBoard, designatedPawn).size() > 0 )
-                availableActions.add ( new BuildAction());
+                availableActions.add(new BuildAction());
             // else eccezione?
         }
 

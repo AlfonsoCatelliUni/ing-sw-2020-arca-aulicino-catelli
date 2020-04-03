@@ -71,7 +71,7 @@ public class SwitchPlayer extends PlayerDecorator {
             Pawn opponentPawn = nextPosition.getPawnInThisCell();
             Cell myPawnCell = designatedPawn.getPosition();
 
-            removePawn(gameBoard, nextPosition.getPawnInThisCell());
+            removePawn(gameBoard, opponentPawn);
 
             resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
 

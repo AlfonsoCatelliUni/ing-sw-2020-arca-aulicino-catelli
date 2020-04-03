@@ -82,7 +82,7 @@ public class Cell {
 
 
     /**
-     * used only for testing
+     * USED ONLY FOR TESTING
      * @param zPosition the new value of z position
      */
     public void setHeight(int zPosition) {

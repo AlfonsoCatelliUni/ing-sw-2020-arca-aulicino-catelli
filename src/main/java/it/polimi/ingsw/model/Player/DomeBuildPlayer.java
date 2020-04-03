@@ -29,7 +29,7 @@ public class DomeBuildPlayer extends PlayerDecorator {
 
         List<Building> possibleBuilding = super.getPossibleBuildingOnCell(gameBoard, designatedCell, buildings);
 
-        if( !designatedCell.getRoof().getIsDome())
+        if( designatedCell.getRoof().getLevel() < 3 )
             possibleBuilding.add(buildings.get(3));
 
         return possibleBuilding;

@@ -12,7 +12,9 @@ public class Controller {
 
 
     public Controller( Game game ){
+
         this.game = game;
+
     }
 
 

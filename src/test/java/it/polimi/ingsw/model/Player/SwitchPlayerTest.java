@@ -208,11 +208,12 @@ class SwitchPlayerTest {
 
         correctAvailableActions.clear();
 
+
         /* no actions possible test */
         player.setNumMove(0);
         player.setNumBuild(1);
 
-
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
         gameBoard.getCell(1,1).buildOnThisCell(buildings.get(0));
         gameBoard.getCell(1,1).buildOnThisCell(buildings.get(1));
         gameBoard.getCell(1,1).buildOnThisCell(buildings.get(2));
@@ -220,8 +221,11 @@ class SwitchPlayerTest {
 
         availableActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
-        assertEquals(0, availableActions.size());
+        correctAvailableActions.add(new MoveAction());
+        for (int i = 0; i < availableActions.size(); i++ )
+            assertEquals(correctAvailableActions.get(i).getClass(), availableActions.get(i).getClass());
 
+        correctAvailableActions.clear();
 
     }
 

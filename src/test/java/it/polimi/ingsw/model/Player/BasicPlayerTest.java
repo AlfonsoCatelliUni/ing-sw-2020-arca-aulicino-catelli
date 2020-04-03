@@ -228,8 +228,13 @@ class BasicPlayerTest {
     }
 
 
+    /**
+     * this method calls only getPossibleBuildingOnCell method from Board class that's already tested
+     */
     @Test
     void getPossibleBuildingOnCell() {
+
+
     }
 
 

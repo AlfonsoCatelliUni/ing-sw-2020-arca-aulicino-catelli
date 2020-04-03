@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -141,9 +145,11 @@ class SwitchPlayerTest {
 
 
     @Test
-    void getPossibleAction() {
+    void getPossibleActions() {
 
         gameBoard = new Board();
+
+
 
         buildings.add(new Building(1, 22));
         buildings.add(new Building(2, 18));
@@ -163,16 +169,17 @@ class SwitchPlayerTest {
         opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,4));
         opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(1,1));
 
-        List<String> availableActions;
-        List<String> correctAvailableActions = new ArrayList<>();
+        List<Action> availableActions;
+        List<Action> correctAvailableActions = new ArrayList<>();
 
 
         /* move test */
-//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
-        availableActions = null;
-        correctAvailableActions.add("move");
+        availableActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        correctAvailableActions.add(new MoveAction());
 
-        assertEquals(correctAvailableActions, availableActions);
+        for (int i = 0; i < availableActions.size(); i++ )
+            assertEquals(correctAvailableActions.get(i).getClass(), availableActions.get(i).getClass());
+
         correctAvailableActions.clear();
 
 
@@ -180,10 +187,12 @@ class SwitchPlayerTest {
         player.setNumMove(1);
         player.setNumBuild(0);
 
-//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
-        correctAvailableActions.add("build");
+        availableActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        correctAvailableActions.add(new BuildAction());
 
-        assertEquals(correctAvailableActions, availableActions);
+        for (int i = 0; i < availableActions.size(); i++ )
+            assertEquals(correctAvailableActions.get(i).getClass(), availableActions.get(i).getClass());
+
         correctAvailableActions.clear();
 
 
@@ -191,32 +200,27 @@ class SwitchPlayerTest {
         player.setNumMove(1);
         player.setNumBuild(1);
 
-//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
-        correctAvailableActions.add("finish");
+        availableActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        correctAvailableActions.add(new FinishAction());
 
-        assertEquals(correctAvailableActions, availableActions);
+        for (int i = 0; i < availableActions.size(); i++ )
+            assertEquals(correctAvailableActions.get(i).getClass(), availableActions.get(i).getClass());
+
         correctAvailableActions.clear();
-
 
         /* no actions possible test */
         player.setNumMove(0);
         player.setNumBuild(1);
 
-        gameBoard.getCell(0,2).buildOnThisCell(buildings.get(3));
-        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
-        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(3));
-        gameBoard.getCell(2,0).buildOnThisCell(buildings.get(3));
-        gameBoard.getCell(2,1).buildOnThisCell(buildings.get(3));
 
-//        availableActions = player.getPossibleAction(gameBoard, gameBoard.getPawnByCoordinates(0,0));
-
-        assertEquals(correctAvailableActions, availableActions);
-        correctAvailableActions.clear();
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(2));
 
 
+        availableActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
-
-
+        assertEquals(0, availableActions.size());
 
 
     }

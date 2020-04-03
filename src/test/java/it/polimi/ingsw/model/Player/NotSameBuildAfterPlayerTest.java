@@ -26,7 +26,7 @@ class NotSameBuildAfterPlayerTest {
         List<Action> expectedActions = new ArrayList<>();
 
         Board gameBoard = new Board();
-        //Demeter
+
         NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
@@ -60,7 +60,6 @@ class NotSameBuildAfterPlayerTest {
         player.setNumBuild(2);
 
         expectedActions.clear();
-        expectedActions.add(new BuildAction());
         expectedActions.add(new FinishAction());
 
         possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
@@ -79,17 +78,6 @@ class NotSameBuildAfterPlayerTest {
         player.setNumMove(1);
         player.setNumBuild(1);
 
-//        possibleActions = player.getPossibleAction(gameBoard,player.getPawns()[0]);
-        assertEquals(expectedActions, possibleActions);
-
-        //Hephaestus
-        NotSameBuildAfterPlayer player1 = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
-        player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
-        player1.setNumMove(1);
-        player1.setNumBuild(1);
-        player1.setCellBefore(gameBoard.getCell(2,1));
-
-//        possibleActions = player1.getPossibleAction(gameBoard,player1.getPawns()[0]);
         expectedActions.clear();
         expectedActions.add(new FinishAction());
 
@@ -97,7 +85,6 @@ class NotSameBuildAfterPlayerTest {
 
         for (int i = 0; i < expectedActions.size(); i++ )
             assertEquals(possibleActions.get(i).getClass(), expectedActions.get(i).getClass());
-
     }
 
 
@@ -127,31 +114,6 @@ class NotSameBuildAfterPlayerTest {
 
         availableCellsToBuild = player.wherePawnCanBuild(gameBoard, player.getPawns()[0]);
         assertEquals(expectedCellsToBuild,availableCellsToBuild);
-
-        //Hephaestus
-        /*
-        expectedCellsToBuild.clear();
-        NotSameBuildAfterPlayer player1 = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
-        player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
-
-        gameBoard.getCell(2,3).buildOnThisCell(new Building(4,22));
-        player1.setNumBuild(1);
-
-
-        player1.setCellBefore(gameBoard.getCell(2,3));
-
-        availableCellsToBuild = player1.wherePawnCanBuild(gameBoard,player1.getPawns()[0]);
-        assertEquals(expectedCellsToBuild,availableCellsToBuild);
-
-        gameBoard.getCell(2,3).buildOnThisCell(new Building(2,22));
-
-        expectedCellsToBuild.add(gameBoard.getCell(2,3));
-
-
-        availableCellsToBuild = player1.wherePawnCanBuild(gameBoard,player1.getPawns()[0]);
-        assertEquals(expectedCellsToBuild,availableCellsToBuild);
-
-        */
 
     }
 

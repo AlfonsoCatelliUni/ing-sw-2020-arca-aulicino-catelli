@@ -29,7 +29,7 @@ public class NotSameBuildAfterPlayer extends PlayerDecorator {
 
 
     /**
-     * this method is the same of basic method
+     * this method is the same of basic method but if player built once, he may build another time
      * @param gameBoard Board where to check the possible actions
      * @param designatedPawn the pawn subject of the action
      * @return list of names of actions
@@ -42,22 +42,19 @@ public class NotSameBuildAfterPlayer extends PlayerDecorator {
         availableActions = super.player.getPossibleActions(gameBoard, designatedPawn);
 
         if ( super.player.getNumMove() == 1 && super.player.getNumBuild() == 1 ) {
-            if ( player.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0 )
+            if ( wherePawnCanBuild(gameBoard, designatedPawn).size() > 0 )
                 availableActions.add(new BuildAction());
         }
 
-        if  (super.player.getNumBuild() == 2) {
-            if (player.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0)
-                availableActions.add(new BuildAction());
+        if  (super.player.getNumBuild() == 2 && super.player.getNumMove() == 1)
             availableActions.add(new FinishAction());
-        }
 
         return availableActions;
     }
 
 
     /**
-     * this method returns the cells where a pawn can build but if it's the second time to build and if typeOfSecondBuild is 0, it removes the Cell where pawn built before, if typeOfBuild is 1 it returns ONLY that cell
+     * this method returns the cells where a pawn can build but if it's the second time to build and it removes the Cell where pawn built before
      * @param gameBoard the game board where the pawn can build on
      * @param designatedPawn the pawn that's designated to build
      * @return the list of cells available to be built
@@ -87,7 +84,7 @@ public class NotSameBuildAfterPlayer extends PlayerDecorator {
      * @param designatedPawn the pawn that's designated to build
      * @param designatedCell the cell where to build
      * @param chosenLevel the level of the building to build
-     * @param buildings list of possibile buildings to build
+     * @param buildings list of possible buildings to build
      */
     @Override
     public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {

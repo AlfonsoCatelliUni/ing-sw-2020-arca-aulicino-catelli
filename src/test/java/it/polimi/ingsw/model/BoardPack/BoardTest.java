@@ -123,12 +123,6 @@ class BoardTest {
         ArrayList<Cell> expectedCells3 = new ArrayList<>();
         assertEquals(cells, expectedCells3);
 
-
-
-
-
-
-
     }
 
 

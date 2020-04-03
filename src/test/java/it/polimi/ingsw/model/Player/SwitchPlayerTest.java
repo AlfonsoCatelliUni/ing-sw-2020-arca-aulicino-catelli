@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -102,7 +99,7 @@ class SwitchPlayerTest {
     @Test
     void movePawn() {
 
-        int retMoveEncoded = 0;
+        Consequence retMoveEncoded;
 
         gameBoard = new Board();
 
@@ -126,18 +123,18 @@ class SwitchPlayerTest {
 
 
         /* switch with an opponent player */
-//        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
 
-        assertEquals(0, retMoveEncoded);
+        assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(gameBoard.getPawnByCoordinates(0,0), opponentPlayer.getPawns()[1] );
         assertEquals(true, gameBoard.getPawnByCoordinates(0,0).getForcedMove());
         assertEquals(2, opponentPlayer.getPawns()[1].getHeight());
 
 
         /* normal move */
-//        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2));
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2));
 
-        assertEquals(0, retMoveEncoded);
+        assertEquals(NoConsequence.class, retMoveEncoded.getClass());
 
 
 

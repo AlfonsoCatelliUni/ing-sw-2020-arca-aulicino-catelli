@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.BlockConsequence;
+import it.polimi.ingsw.model.Actions.VictoryConsequence;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
@@ -33,13 +35,13 @@ class BlockOpponentPlayerTest {
         player_3.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
         player_3.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,3));
 
-        /* case when the pawn moves up but don't win, so it has to return 3 */
+        /* case when the pawn moves up but don't win, so it has to return BlockConsequence */
 
         gameBoard.getCell(2,1).setHeight(1);
 
-        assertEquals(3, player_3.movePawn(gameBoard, player_3.getPawns()[0], gameBoard.getCell(2,1)));
+        assertEquals(BlockConsequence.class, player_3.movePawn(gameBoard, player_3.getPawns()[0], gameBoard.getCell(2,1)).getClass());
 
-        /* case when the pawn moves up to level 3, so the player wins, so the method must not return 3, but 1
+        /* case when the pawn moves up to level 3, so the player wins, so the method must not return BlockConsequence, but VictoryConsequence
         * P.S.: the pawn moved is now in cell [2,1]
         * */
 
@@ -48,7 +50,7 @@ class BlockOpponentPlayerTest {
 
         player_3.movePawn(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,1));
 
-        assertEquals(1, player_3.movePawn(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,2)));
+        assertEquals(VictoryConsequence.class, player_3.movePawn(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,2)).getClass());
 
 
 

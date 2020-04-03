@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -66,14 +63,13 @@ class BasicPlayerTest {
     }
 
 
-    // TODO : da rifare una volta implementata la move giusta
     @Test
     void movePawn() {
 
         gameBoard = new Board();
         player = new BasicPlayer("test", Color.BLUE, "test");
         opponentPlayer = new BasicPlayer("opp", Color.WHITE, "opp");
-        int retMoveEncoded = 0;
+        Consequence retMoveEncoded;
 
         Building levelOne = new Building(1,22);
         Building levelTwo = new Building(2,18);
@@ -99,9 +95,9 @@ class BasicPlayerTest {
         gameBoard.getCell(1,3).buildOnThisCell(levelFour);
 
 
-        //retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(0,1));
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(0,1));
 
-        assertEquals(0, retMoveEncoded);
+        assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(1, player.getNumMove());
         assertEquals(0, player.getNumBuild());
 
@@ -109,9 +105,9 @@ class BasicPlayerTest {
         player.setNumMove(0);
 
 
-        //retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(0,2));
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(0,2));
 
-        assertEquals(0, retMoveEncoded);
+        assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(1, player.getNumMove());
         assertEquals(0, player.getNumBuild());
 
@@ -119,15 +115,11 @@ class BasicPlayerTest {
         player.setNumMove(0);
 
 
-        //retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,2), gameBoard.getCell(0,3));
+        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,2), gameBoard.getCell(0,3));
 
-        assertEquals(1, retMoveEncoded);
+        assertEquals(VictoryConsequence.class, retMoveEncoded.getClass());
         assertEquals(1, player.getNumMove());
         assertEquals(0, player.getNumBuild());
-
-        player.setNumBuild(1);
-        player.setNumMove(0);
-
 
 
     }

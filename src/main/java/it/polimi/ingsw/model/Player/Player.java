@@ -9,7 +9,9 @@ import it.polimi.ingsw.model.Sex;
 
 import it.polimi.ingsw.model.BoardPack.*;
 
+import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 
 public interface Player {
@@ -40,6 +42,7 @@ public interface Player {
 
 
     Boolean getCanMoveUp();
+
 
 
     // ======================================================================================

@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -18,40 +22,52 @@ class NotSameBuildAfterPlayerTest {
     @Test
     void getPossibleActions() {
 
-        List<String> possibleActions;
-        List<String> expectedActions = new ArrayList<>();
+        List<Action> possibleActions;
+        List<Action> expectedActions = new ArrayList<>();
 
         Board gameBoard = new Board();
         //Demeter
         NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
-//        possibleActions = player.getPossibleAction(gameBoard,player.getPawns()[0]);
-        possibleActions = null;
-        expectedActions.add("move");
+        possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
+        expectedActions.add(new MoveAction());
 
         // numMove is 0 and NumBuild is 1
-        assertEquals(possibleActions, expectedActions);
+        for (int i = 0; i < expectedActions.size(); i++ )
+            assertEquals(possibleActions.get(i).getClass(), expectedActions.get(i).getClass());
 
         player.setNumMove(1);
         player.setNumBuild(0);
-        expectedActions.remove("move");
-        expectedActions.add("build");
+        expectedActions.clear();
+        expectedActions.add(new BuildAction());
 
-//        possibleActions = player.getPossibleAction(gameBoard,player.getPawns()[0]);
-        assertEquals(expectedActions, possibleActions);
+        possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
+
+        for (int i = 0; i < expectedActions.size(); i++ )
+            assertEquals(possibleActions.get(i).getClass(), expectedActions.get(i).getClass());
 
         player.setNumBuild(1);
-        expectedActions.add("finish");
+        expectedActions.clear();
+        expectedActions.add(new FinishAction());
+        expectedActions.add(new BuildAction());
 
-//        possibleActions = player.getPossibleAction(gameBoard,player.getPawns()[0]);
-        assertEquals(expectedActions, possibleActions);
+        possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
+
+        for (int i = 0; i < expectedActions.size(); i++ )
+            assertEquals(possibleActions.get(i).getClass(), expectedActions.get(i).getClass());
 
         player.setNumBuild(2);
-        expectedActions.remove("build");
 
-//        possibleActions = player.getPossibleAction(gameBoard,player.getPawns()[0]);
-        assertEquals(expectedActions, possibleActions);
+        expectedActions.clear();
+        expectedActions.add(new BuildAction());
+        expectedActions.add(new FinishAction());
+
+        possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
+
+        for (int i = 0; i < expectedActions.size(); i++ )
+            assertEquals(possibleActions.get(i).getClass(), expectedActions.get(i).getClass());
+
 
         //non può costruire la seconda volta
         gameBoard.getCell(0,1).buildOnThisCell(new Building(1, 18));
@@ -75,16 +91,12 @@ class NotSameBuildAfterPlayerTest {
 
 //        possibleActions = player1.getPossibleAction(gameBoard,player1.getPawns()[0]);
         expectedActions.clear();
-        expectedActions.add("build");
-        expectedActions.add("finish");
-        assertEquals(expectedActions, possibleActions);
+        expectedActions.add(new FinishAction());
 
-        gameBoard.getCell(2,1).buildOnThisCell(new Building(4,18));
-        player1.setCellBefore(gameBoard.getCell(2,1));
+        possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
 
-        expectedActions.remove("build");
-//        possibleActions = player1.getPossibleAction(gameBoard,player1.getPawns()[0]);
-        assertEquals(expectedActions, possibleActions);
+        for (int i = 0; i < expectedActions.size(); i++ )
+            assertEquals(possibleActions.get(i).getClass(), expectedActions.get(i).getClass());
 
     }
 
@@ -117,6 +129,7 @@ class NotSameBuildAfterPlayerTest {
         assertEquals(expectedCellsToBuild,availableCellsToBuild);
 
         //Hephaestus
+        /*
         expectedCellsToBuild.clear();
         NotSameBuildAfterPlayer player1 = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
         player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
@@ -138,7 +151,7 @@ class NotSameBuildAfterPlayerTest {
         availableCellsToBuild = player1.wherePawnCanBuild(gameBoard,player1.getPawns()[0]);
         assertEquals(expectedCellsToBuild,availableCellsToBuild);
 
-
+        */
 
     }
 

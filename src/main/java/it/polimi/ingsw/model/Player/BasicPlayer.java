@@ -43,6 +43,7 @@ public class BasicPlayer implements Player {
 
 
 
+
     // ======================================================================================
 
 
@@ -71,6 +72,7 @@ public class BasicPlayer implements Player {
 
         this.numMove = 0;
         this.numBuild = 1;
+
 
     }
 
@@ -117,13 +119,13 @@ public class BasicPlayer implements Player {
 
     @Override
     public int getNumMove() {
-        return this.numMove;
+        return numMove;
     }
 
 
     @Override
     public int getNumBuild() {
-        return this.numBuild;
+        return numBuild;
     }
 
 
@@ -131,6 +133,8 @@ public class BasicPlayer implements Player {
     public Boolean getCanMoveUp() {
         return canMoveUp;
     }
+
+
 
 
     // ======================================================================================
@@ -161,22 +165,19 @@ public class BasicPlayer implements Player {
 
 
     @Override
+    public void setCanMoveUp(Boolean canMoveUp) {
+        this.canMoveUp = canMoveUp;
+    }
+
+    @Override
     public void setNumMove(int numMove) {
         this.numMove = numMove;
     }
-
 
     @Override
     public void setNumBuild(int numBuild) {
         this.numBuild = numBuild;
     }
-
-
-    @Override
-    public void setCanMoveUp(Boolean canMoveUp) {
-        this.canMoveUp = canMoveUp;
-    }
-
 
     @Override
     public void resetNumMove() {

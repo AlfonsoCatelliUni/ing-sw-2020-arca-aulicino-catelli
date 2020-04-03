@@ -183,7 +183,7 @@ public class Game {
         return names;
     }
 
-    public List<Player> getMasters() {
+    public List<Player> getPlayers() {
         return players;
     }
 

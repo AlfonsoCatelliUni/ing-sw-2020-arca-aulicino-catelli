@@ -36,8 +36,7 @@ public class SwitchPlayer extends PlayerDecorator {
         for (Cell c : neighboringCells ) {
             if ( !availableCellsToMove.contains(c) && c.getBuilderHere() &&
                     c.getPawnInThisCell().getColor() != designatedPawn.getColor() &&
-                    c.getHeight() - designatedPawn.getHeight() <= 1 &&
-                    super.player.wherePawnCanBuild(gameBoard, c.getPawnInThisCell()).size() > 0 ) {
+                    c.getHeight() - designatedPawn.getHeight() <= 1 ) {
                 availableCellsToMove.add(c);
             }
         }

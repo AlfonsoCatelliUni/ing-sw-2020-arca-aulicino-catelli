@@ -12,18 +12,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DoubleBuildPlayerTest {
+class NotSameBuildAfterPlayerTest {
 
 
     @Test
-    void getPossibleAction() {
+    void getPossibleActions() {
 
         List<String> possibleActions;
         List<String> expectedActions = new ArrayList<>();
 
         Board gameBoard = new Board();
         //Demeter
-        DoubleBuildPlayer player = new DoubleBuildPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
+        NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
 //        possibleActions = player.getPossibleAction(gameBoard,player.getPawns()[0]);
@@ -67,7 +67,7 @@ class DoubleBuildPlayerTest {
         assertEquals(expectedActions, possibleActions);
 
         //Hephaestus
-        DoubleBuildPlayer player1 = new DoubleBuildPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
+        NotSameBuildAfterPlayer player1 = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
         player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
         player1.setNumMove(1);
         player1.setNumBuild(1);
@@ -97,7 +97,7 @@ class DoubleBuildPlayerTest {
         Board gameBoard = new Board();
 
         //Demeter
-        DoubleBuildPlayer player = new DoubleBuildPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
+        NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
         player.setNumBuild(0);
@@ -118,7 +118,7 @@ class DoubleBuildPlayerTest {
 
         //Hephaestus
         expectedCellsToBuild.clear();
-        DoubleBuildPlayer player1 = new DoubleBuildPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
+        NotSameBuildAfterPlayer player1 = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
         player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
 
         gameBoard.getCell(2,3).buildOnThisCell(new Building(4,22));
@@ -146,7 +146,7 @@ class DoubleBuildPlayerTest {
     @Test
     void pawnBuild() {
         Board gameBoard = new Board();
-        DoubleBuildPlayer player = new DoubleBuildPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
+        NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
         List<Building> buildings = new ArrayList<>();
         buildings.add(new Building(1,18));

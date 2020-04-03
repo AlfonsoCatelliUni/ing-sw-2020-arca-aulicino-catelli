@@ -59,14 +59,11 @@ public class SameBuildAfterPlayer extends PlayerDecorator {
 
         else if ( super.player.getNumMove() == 1 && super.player.getNumBuild() == 1 ) {
 
-            List<Cell> availableCellToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
+                if( !cellBefore.getRoof().getIsDome() && cellBefore.getRoof().getLevel() != 3 ) {
+                    possibleActions.add(new BuildAction());
+                }
 
-            availableCellToBuild.remove(cellBefore);
-            if( !cellBefore.getRoof().getIsDome() && cellBefore.getRoof().getLevel() != 3 ) {
-                possibleActions.add(new BuildAction());
-            }
-
-            possibleActions.add(new FinishAction());
+                possibleActions.add(new FinishAction());
         }
         else if( super.player.getNumBuild() == 2 && super.player.getNumMove() == 1 ) {
             possibleActions.add(new FinishAction());

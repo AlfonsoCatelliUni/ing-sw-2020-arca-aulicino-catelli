@@ -43,110 +43,23 @@ public class BuildBeforePlayer extends PlayerDecorator {
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn ) {
 
         List<Action> availableActions = new ArrayList<>();
-        List<Cell> availableCellsToMove;
         List<Cell> availableCellsToBuild;
 
         /* se sono entrambi 0 vuol dire che voglio costruire prima di muovere */
         if( player.getNumMove() == 0 && player.getNumBuild() == 1 && !hasBuiltBefore ) {
 
-            availableCellsToMove = player.wherePawnCanMove(gameBoard, designatedPawn);
             availableCellsToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
 
-            if(availableCellsToBuild.size() == availableCellsToMove.size() && availableCellsToBuild.size() == 1) {
-                for(Cell c : availableCellsToBuild) {
-                    if(c.getHeight() < designatedPawn.getHeight()) {
-                        availableActions.add(new BuildAction());
-                        break;
-                    }
-                }
-            }
-            else if(availableCellsToBuild.size() >= availableCellsToMove.size()) {
-                for(Cell c : availableCellsToMove) {
-                    if(c.getHeight() <= designatedPawn.getHeight()) {
-                        availableActions.add(new BuildAction());
-                        break;
-                    }
-                }
+            if(availableCellsToBuild.size() > 0) {
+                availableActions.add(new BuildAction());
             }
 
-
         }
 
-        /* se non ha ancora mosso allora devo dargli la possibilità di farlo */
-        if ( player.getNumMove() == 0 ) {
-            availableActions.add(new MoveAction());
-        }
-        /* se ho mosso ma non costruito allora devo dare la possibilita di costruire */
-        if ( player.getNumBuild() == 0 ) {
-            availableActions.add(new BuildAction());
-        }
-        if( player.getNumMove() == 1 && player.getNumBuild() == 1 ) {
-            hasBuiltBefore = false;
-            availableActions.add(new FinishAction());
-        }
+        availableActions.addAll(super.player.getPossibleActions(gameBoard, designatedPawn));
 
 
         return availableActions;
-    }
-
-
-    /**
-     * The method returns the list of cells where the designated pawn can build
-     * This is different from the basic wherePawnCanBuild because the player can build before moving,
-     * but if he builds, he cannot move up when moving, so we have to delete some cells in particular cases
-     * @param gameBoard is the board where is played the game
-     * @param designatedPawn is the pawn selected by the player for the current turn
-     * @return a list of cells where the pawn can build in the current turn
-     */
-    @Override
-    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
-
-        List<Cell> availableCellsToBuild = gameBoard.getCellAvailableToBuild(designatedPawn);
-        List<Cell> availableCellsToMove = super.player.wherePawnCanMove(gameBoard, designatedPawn);
-
-
-        /* se voglio costruire prima di muovere */
-        if( player.getNumMove() == 0 && player.getNumBuild() == 1 && !hasBuiltBefore ) {
-
-            if(availableCellsToBuild.size() == availableCellsToMove.size() && availableCellsToBuild.size() == 1) {
-
-                Cell possibleBuild = availableCellsToBuild.get(0);
-                availableCellsToBuild.clear();
-
-                if(possibleBuild.getHeight() < designatedPawn.getHeight()) {
-                    availableCellsToBuild.add(possibleBuild);
-                }
-
-            }
-            else if(availableCellsToBuild.size() >= availableCellsToMove.size()) {
-
-                int sameLevelCells = 0;
-                int lowerLevelCells = 0;
-                Cell sameLevelCell = new Cell();
-
-                for(Cell c : availableCellsToMove) {
-                    if(c.getHeight() < designatedPawn.getHeight()) {
-                        lowerLevelCells++;
-                    }
-                    else if(c.getHeight() == designatedPawn.getHeight()) {
-                        sameLevelCells++;
-                        sameLevelCell = c;
-
-                    }
-                }
-
-                if(sameLevelCells == 1 && lowerLevelCells == 0) {
-                    availableCellsToBuild.remove(sameLevelCell);
-                }
-
-            }
-        }
-        else if( player.getNumMove() == 1 ) {
-            availableCellsToBuild = player.wherePawnCanBuild(gameBoard, designatedPawn);
-        }
-
-
-        return availableCellsToBuild;
     }
 
 

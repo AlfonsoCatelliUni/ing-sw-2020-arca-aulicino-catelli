@@ -11,7 +11,7 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DoubleBuildPlayer extends PlayerDecorator {
+public class NotSameBuildAfterPlayer extends PlayerDecorator {
 
 
     private Cell cellBefore;
@@ -20,7 +20,7 @@ public class DoubleBuildPlayer extends PlayerDecorator {
     // ======================================================================================
 
 
-    public DoubleBuildPlayer(BasicPlayer player) {
+    public NotSameBuildAfterPlayer(BasicPlayer player) {
         super(player);
         cellBefore = null;
     }

@@ -1,8 +1,52 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.BoardPack.Board;
+import it.polimi.ingsw.model.BoardPack.Building;
+import it.polimi.ingsw.model.Player.BasicPlayer;
+import it.polimi.ingsw.model.Player.Player;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class GameTest {
+
+    Game game;
+
+    Board board;
+
+    List<Building> buildings;
+
+    Player player;
+
+
+    // ======================================================================================
+
+
+    @BeforeEach
+    void setUp() {
+
+        game = new Game("Alfonso", "Massi");
+
+        board = new Board();
+
+        buildings = new ArrayList<>();
+
+        buildings.add(new Building(1,22));
+        buildings.add(new Building(2,18));
+        buildings.add(new Building(3,14));
+        buildings.add(new Building(4,18));
+
+        //player = new BasicPlayer("Alfonso", Color.BLUE, "God_Alfonso");
+
+        //player.initPawn(board, Sex.MALE, board.getCell(0,0));
+        //player.initPawn(board, Sex.FEMALE, board.getCell(0,1));
+
+    }
+
+
+    // ======================================================================================
 
 
     @Test
@@ -83,6 +127,18 @@ class GameTest {
 
     @Test
     void boardToString() {
+    }
+
+
+    @Test
+    void generateStatusJson() {
+
+        board.getCell(1,0).buildOnThisCell(buildings.get(0));
+
+        String provaJson = game.generateStatusJson();
+
+        System.out.println(provaJson);
+
     }
 
 

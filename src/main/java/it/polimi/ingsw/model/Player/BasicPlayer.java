@@ -33,6 +33,7 @@ public class BasicPlayer implements Player {
 
     private int numMove;
 
+
     private int numBuild;
 
 

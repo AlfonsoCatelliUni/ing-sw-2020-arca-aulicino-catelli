@@ -1,9 +1,9 @@
 package it.polimi.ingsw.events;
 
-import it.polimi.ingsw.controller.EventVisitor;
+import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 public interface ServerToClientEvent extends GeneralEvent {
 
-    void accept(EventVisitor visitor);
+    void accept(ServerToClientManager visitor);
 
 }

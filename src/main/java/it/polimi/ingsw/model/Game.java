@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.GameObserver;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Game implements GameConsequenceHandler {
+public class Game extends Observable implements GameConsequenceHandler {
 
 
     private Board gameBoard;
@@ -33,19 +34,17 @@ public class Game implements GameConsequenceHandler {
     private int indexCurrentPlayer;
 
 
-    private List<GameObserver> observers;
-
-
     // ======================================================================================
 
 
     public Game(List<String> playersNickname, List<Color> colors, List<String> godsName, List<Card> godsCards, Map<String, Player> effectClassMap) {
 
+        super();
+
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
-        this.observers = new ArrayList<>();
 
 
         for (int i = 0; i < playersNickname.size(); i++) {
@@ -78,13 +77,44 @@ public class Game implements GameConsequenceHandler {
 
 
     /**
+     * which are the pawn that i can at least move in this turn ?
+     * if i can't move any pawn i lose the game
+     * @return the cells of the pawn i can at least move
+     */
+    public List<Cell> getPawnsCoordinates(String playerName) {
+
+        Player player = getPlayerByName(playerName);
+
+        return player.getPawnsCoordinates(gameBoard);
+    }
+
+
+    /**
+     * which are the possible actions that i can do with the selected pawn
+     * if i can't do any move with the pawn i lose the game
+     * @param row the row coordinate of the pawn
+     * @param column the column coordinate of the pawn
+     * @return the list of possible actions
+     */
+    public List<Action> getPossibleActions(String playerName, int row, int column) {
+
+        Player player = getPlayerByName(playerName);
+
+        return player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+    }
+
+
+    /**
      * where the pawn can be moved based on its position?
      * @param row the row position of the pawn you want the list
      * @param column the column position of the pawn you want the list
      * @return the list of cells where this pawn can be moved
      */
-    public List<Cell> wherePawnCanMove(int row, int column ){
-        return currentPlayer.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+    public List<Cell> wherePawnCanMove(String playerName, int row, int column ){
+
+        Player player = getPlayerByName(playerName);
+
+        return player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(row, column));
     }
 
 
@@ -94,8 +124,11 @@ public class Game implements GameConsequenceHandler {
      * @param column the column coordinate of the pawn
      * @return a list of cells where the pawn can build
      */
-    public List<Cell> wherePawnCanBuild( int row, int column ) {
-        return currentPlayer.wherePawnCanBuild(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+    public List<Cell> wherePawnCanBuild(String playerName, int row, int column ) {
+
+        Player player = getPlayerByName(playerName);
+
+        return player.wherePawnCanBuild(gameBoard, gameBoard.getPawnByCoordinates(row, column));
     }
 
 
@@ -105,18 +138,11 @@ public class Game implements GameConsequenceHandler {
      * @param column the column coordinate of the position
      * @return a list of type of buildings
      */
-    public List<Building> getPossibleBuildingOnCell(int row, int column) {
-        return currentPlayer.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column), buildings);
-    }
+    public List<Building> getPossibleBuildingOnCell(String playerName, int row, int column) {
 
+        Player player = getPlayerByName(playerName);
 
-    public List<Action> getPossibleActions(int row, int column) {
-        return currentPlayer.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
-    }
-
-
-    public List<Cell> getPawnsCoordinates() {
-        return currentPlayer.getPawnsCoordinates(gameBoard);
+        return player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column), buildings);
     }
 
 
@@ -127,9 +153,11 @@ public class Game implements GameConsequenceHandler {
      * @param newRow the row coordinate of the new position of the pawn
      * @param newColumn the column coordinate of the new position of the pawn
      */
-    public void movePawn(int row, int column, int newRow, int newColumn) {
+    public void movePawn(String playerName, int row, int column, int newRow, int newColumn) {
 
-        Consequence moveResult = currentPlayer.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
+        Player player = getPlayerByName(playerName);
+
+        Consequence moveResult = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
         receiveConsequence(moveResult);
 
@@ -144,27 +172,31 @@ public class Game implements GameConsequenceHandler {
      * @param buildColumn the column coordinate of the cell that i want to build in
      * @param level the level of the building that i want build, the level indicate a unique building
      */
-    public void pawnBuild(int pawnRow, int pawnColumn, int buildRow, int buildColumn, int level ){
+    public void pawnBuild(String playerName, int pawnRow, int pawnColumn, int buildRow, int buildColumn, int level ){
+
+        Player player = getPlayerByName(playerName);
 
         Pawn designatedPawn = gameBoard.getPawnByCoordinates(pawnRow, pawnColumn);
         Cell designatedCell = gameBoard.getCell(buildRow, buildColumn);
 
-        currentPlayer.pawnBuild(designatedPawn, designatedCell, level, buildings);
+        player.pawnBuild(designatedPawn, designatedCell, level, buildings);
     }
 
 
     /* devo eliminare il player nel caso non possa muovere nessuna pedina */
-    public void removePlayer() {
+    public void removePlayer(String playerName) {
 
-        Pawn[] pawns = currentPlayer.getPawns();
+        Player player = getPlayerByName(playerName);
+
+        Pawn[] pawns = player.getPawns();
 
         //remove the pawns of the losing player from the game board
         for( Pawn p : pawns ) {
-            currentPlayer.removePawn(gameBoard, p);
+            player.removePawn(gameBoard, p);
         }
 
         //remove the losing player from the players list
-        players.removeIf(player -> player.equals(currentPlayer));
+        players.removeIf(p -> p.equals(player));
 
         //pick the next player
         nextCurrentPlayer();
@@ -193,13 +225,13 @@ public class Game implements GameConsequenceHandler {
     public void doConsequence(VictoryConsequence consequence) {
         /* per il momento so che devo notificare che c'è una vittoria,
         * ma non so ancora cosa devo fare con la vittoria */
-        //notifyObservers();
     }
 
 
     @Override
     public void doConsequence(BlockConsequence consequence) {
 
+        /* block the other player */
         for (Player p : players) {
             if (!p.equals(currentPlayer)) {
                 p.setCanMoveUp(false);
@@ -215,23 +247,6 @@ public class Game implements GameConsequenceHandler {
     }
 
 
-    // ======================================================================================
-
-
-    public void addObserver(GameObserver observer) {
-        observers.add(observer);
-    }
-
-
-    private void notifyObservers(ClientToServerEvent event) {
-
-        for (GameObserver obs : observers) {
-            obs.update(event);
-        }
-
-    }
-
-
 
     // ======================================================================================
 
@@ -240,6 +255,7 @@ public class Game implements GameConsequenceHandler {
     public List<Building> getBuildings() {
         return buildings;
     }
+
 
     public List<String> getAllNames() {
 
@@ -252,13 +268,16 @@ public class Game implements GameConsequenceHandler {
         return names;
     }
 
+
     public List<Player> getPlayers() {
         return players;
     }
 
+
     public List<Card> getCards() {
         return cards;
     }
+
 
     public String newCurrentPlayer() {
 
@@ -323,6 +342,17 @@ public class Game implements GameConsequenceHandler {
 
         indexCurrentPlayer++;
 
+    }
+
+
+    public Player getPlayerByName(String nickname) {
+        for(Player p : players) {
+            if(p.getName().equals(nickname)){
+                return p;
+            }
+        }
+
+        return null;
     }
 
 

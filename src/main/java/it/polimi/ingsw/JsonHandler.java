@@ -14,12 +14,17 @@ import java.util.ArrayList;
 
 public class JsonHandler {
 
+
     public static String buildingPath = "/json_building.json";
+
 
     public static String cardPath = "/json_card.json";
 
+
     public static JsonParser myJsonParser = new JsonParser();
 
+
+    // ======================================================================================
 
 
     public static ArrayList<Building> deserializeBuildingList() {
@@ -68,5 +73,6 @@ public class JsonHandler {
 
         return new Card(name, available2P, available3P, effect);
     }
+
 
 }

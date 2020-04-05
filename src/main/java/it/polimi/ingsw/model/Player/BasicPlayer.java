@@ -59,11 +59,11 @@ public class BasicPlayer implements Player {
     }
 
 
-    public BasicPlayer(String name, Color color, String nameGodCard) {
+    public BasicPlayer(String name, Color color, Card godCard) {
         this.name = name;
         this.color = color;
-        this.nameGodCard = nameGodCard;
-        this.godCard = null;
+        this.nameGodCard = godCard.getName();
+        this.godCard = godCard;
         this.pawns = new Pawn[2];
 
         this.canMoveUp = true;

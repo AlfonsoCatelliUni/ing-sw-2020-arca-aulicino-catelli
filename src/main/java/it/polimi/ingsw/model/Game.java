@@ -27,27 +27,25 @@ public class Game extends Observable implements GameConsequenceHandler {
     private Player currentPlayer;
 
 
-    private List<Building> buildings;
-
-
-    private List<Card> cards;
-
-
     private int indexCurrentPlayer;
+
+
+    private List<Building> buildings;
 
 
     // ======================================================================================
 
 
-    public Game(List<String> playersNickname, List<Color> colors, List<String> godsName, List<Card> godsCards, Map<String, Player> effectClassMap) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap, List<Building> buildings) {
 
         super();
 
         this.gameBoard = new Board();
+        this.buildings = buildings;
+
         this.players = new ArrayList<>();
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
-
 
         for (int i = 0; i < playersNickname.size(); i++) {
 
@@ -55,8 +53,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
             players.get(i).setName(playersNickname.get(i));
             players.get(i).setColor(colors.get(i));
-            players.get(i).setNameGod(godsName.get(i));
+            players.get(i).setCard(nicknameCardMap.get(playersNickname.get(i)));
 
+            //TODO : cambiare l'istanziazione dei pedoni
             players.get(i).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(i, i));
             players.get(i).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(i, i+1));
 
@@ -70,6 +69,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     //TODO : finish the standard Game constructor
     public Game(){
+
+        super();
+
         this.gameBoard = new Board();
 
     }
@@ -85,8 +87,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
 
-        players.add(new BasicPlayer(playerName, Color.BLUE, "God_Player"));
-        players.add(new BasicPlayer(opponentName, Color.GREY, "God_Opponent"));
+        players.add(new BasicPlayer(playerName, Color.BLUE, new Card("God_Player", true, true, "effect_god")));
+        players.add(new BasicPlayer(opponentName, Color.GREY, new Card("God_Opponent", true, true, "effect_god")));
 
         players.get(0).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
         players.get(0).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
@@ -378,11 +380,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    public List<Card> getCards() {
-        return cards;
-    }
-
-
     public String newCurrentPlayer() {
 
         currentPlayer.resetNumMove();
@@ -450,14 +447,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     public Player getPlayerByName(String nickname) {
-        for(Player p : players) {
-            if(p.getName().equals(nickname)){
-                return p;
-            }
-        }
-
-        return null;
+        return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
     }
+
 
 
 

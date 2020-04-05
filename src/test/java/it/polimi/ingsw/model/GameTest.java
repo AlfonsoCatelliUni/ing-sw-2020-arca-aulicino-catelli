@@ -133,10 +133,27 @@ class GameTest {
     @Test
     void generateStatusJson() {
 
-        board.getCell(1,0).buildOnThisCell(buildings.get(0));
+        String provaJson;
 
-        String provaJson = game.generateStatusJson();
+        game.pawnBuild("Alfonso", 0,0,1,0,1);
 
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+        game.pawnBuild("Alfonso", 0,0,1,0,2);
+        game.pawnBuild("Alfonso", 0,0,1,0,3);
+
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+        game.pawnBuild("Alfonso", 0,0,1,0,4);
+
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+        game.pawnBuild("Alfonso", 0,0,1,1,4);
+
+        provaJson = game.generateStatusJson();
         System.out.println(provaJson);
 
     }

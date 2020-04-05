@@ -127,6 +127,33 @@ class BasicPlayerTest {
     //TODO : da fare una volta implementata la build giusta
     @Test
     void pawnBuild() {
+
+        gameBoard = new Board();
+        Player player = new BasicPlayer("test", Color.BLUE, "test");
+
+        Building levelOne = new Building(1,22);
+        Building levelTwo = new Building(2,18);
+        Building levelThree = new Building(3,14);
+        Building levelFour = new Building(4,18);
+
+        List<Building> buildings = new ArrayList<>();
+        buildings.add(levelOne);
+        buildings.add(levelTwo);
+        buildings.add(levelThree);
+        buildings.add(levelFour);
+
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+
+        player.movePawn(gameBoard, player.getPawns()[0], gameBoard.getCell(1,0));
+
+        player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
+
+        assertEquals(1, player.getNumBuild());
+        assertEquals(1, gameBoard.getCell(0,0).getHeight());
+
+
+
     }
 
 

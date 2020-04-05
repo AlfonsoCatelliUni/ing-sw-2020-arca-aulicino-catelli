@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Player.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,27 +27,25 @@ public class Game extends Observable implements GameConsequenceHandler {
     private Player currentPlayer;
 
 
-    private List<Building> buildings;
-
-
-    private List<Card> cards;
-
-
     private int indexCurrentPlayer;
+
+
+    private List<Building> buildings;
 
 
     // ======================================================================================
 
 
-    public Game(List<String> playersNickname, List<Color> colors, List<String> godsName, List<Card> godsCards, Map<String, Player> effectClassMap) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap, List<Building> buildings) {
 
         super();
 
         this.gameBoard = new Board();
+        this.buildings = buildings;
+
         this.players = new ArrayList<>();
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
-
 
         for (int i = 0; i < playersNickname.size(); i++) {
 
@@ -53,8 +53,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
             players.get(i).setName(playersNickname.get(i));
             players.get(i).setColor(colors.get(i));
-            players.get(i).setNameGod(godsName.get(i));
+            players.get(i).setCard(nicknameCardMap.get(playersNickname.get(i)));
 
+            //TODO : cambiare l'istanziazione dei pedoni
             players.get(i).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(i, i));
             players.get(i).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(i, i+1));
 
@@ -68,7 +69,33 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     //TODO : finish the standard Game constructor
     public Game(){
+
+        super();
+
         this.gameBoard = new Board();
+
+    }
+
+
+    /* USED ONLY FOR TESTING */
+    public Game(String playerName, String opponentName) {
+
+        super();
+
+        this.gameBoard = new Board();
+        this.players = new ArrayList<>();
+        this.currentPlayer = null;
+        this.indexCurrentPlayer = 0;
+
+        players.add(new BasicPlayer(playerName, Color.BLUE, new Card("God_Player", true, true, "effect_god")));
+        players.add(new BasicPlayer(opponentName, Color.GREY, new Card("God_Opponent", true, true, "effect_god")));
+
+        players.get(0).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        players.get(0).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
+
+        players.get(1).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(4,4));
+        players.get(1).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(4,3));
+
 
     }
 
@@ -211,6 +238,85 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    public String generateStatusJson(){
+
+        String statusString = "";
+
+        JSONObject obj = new JSONObject();
+
+        JSONArray jsonGameBoard = new JSONArray();
+
+        /* pass each cell of the board and format the information */
+        for(int row = 0; row <= 4; row++) {
+            for(int column = 0; column <= 4; column++) {
+
+                Cell cell = gameBoard.getCell(row, column);
+                Building roof = cell.getRoof();
+                Pawn pawn = null;
+
+                if(cell.getPawnInThisCell() != null) {
+                    pawn = cell.getPawnInThisCell();
+                }
+
+                JSONObject cellObj = new JSONObject();
+
+                /* writing the cell coordinate into the Json */
+                cellObj.put("height", cell.getHeight());
+                cellObj.put("column", cell.getColumnPosition());
+                cellObj.put("row", cell.getRowPosition());
+
+
+                JSONObject roofObj = new JSONObject();
+
+                /* writing the roof information into the Json */
+                roofObj.put("level", roof.getLevel());
+                roofObj.put("isDome", roof.getIsDome());
+
+                cellObj.put("roof", roofObj);
+
+                /* write the pawn info, if it's present in this cell */
+                if(pawn == null) {
+                    cellObj.put("pawn", "null");
+                }
+                else {
+                    JSONObject pawnObj = new JSONObject();
+
+                    pawnObj.put("color", pawn.getColor());
+                    pawnObj.put("sex", pawn.getSex());
+                    pawnObj.put("hasMoved", pawn.getHasMoved());
+                    pawnObj.put("hasBuilt", pawn.getHasBuilt());
+                    pawnObj.put("forcedMoved", pawn.getForcedMove());
+                    pawnObj.put("goneUp", pawn.getGoneUp());
+
+                    cellObj.put("pawn", pawnObj);
+                }
+
+                /* add the cell in the gameBoard JsonObject */
+                jsonGameBoard.add(cellObj);
+            }
+        }
+
+
+        JSONArray playersJson = new JSONArray();
+        for( Player p : players ){
+            JSONObject playerObj = new JSONObject();
+
+            playerObj.put("name", p.getName());
+            //playerObj.put("god", p.getGodCard().getName());
+
+            playersJson.add(playerObj);
+        }
+
+
+        obj.put("players", playersJson);
+        obj.put("gameBoard", jsonGameBoard);
+
+        statusString = obj.toString();
+
+        return statusString;
+    }
+
+
     // ======================================================================================
 
 
@@ -271,11 +377,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     public List<Player> getPlayers() {
         return players;
-    }
-
-
-    public List<Card> getCards() {
-        return cards;
     }
 
 
@@ -346,14 +447,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     public Player getPlayerByName(String nickname) {
-        for(Player p : players) {
-            if(p.getName().equals(nickname)){
-                return p;
-            }
-        }
-
-        return null;
+        return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
     }
+
 
 
 

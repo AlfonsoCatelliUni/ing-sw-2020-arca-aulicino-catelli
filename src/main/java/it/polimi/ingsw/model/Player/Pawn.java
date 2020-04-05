@@ -61,20 +61,28 @@ public class Pawn {
     public Pawn(Color color, Sex sex, Cell starCell) {
         this.color = color;
         this.sex = sex;
+
         this.position = starCell;
         this.height = starCell.getHeight();
+
         this.hasMoved = false;
+        this.hasBuilt = false;
         this.goneUp = false;
         this.forcedMove = false;
+
+
     }
 
 
     public Pawn() {
         this.color = null;
         this.sex = null;
+
         this.position = new Cell();
         this.height = 0;
+
         this.hasMoved = false;
+        this.hasBuilt = false;
         this.goneUp = false;
         this.forcedMove = false;
     }

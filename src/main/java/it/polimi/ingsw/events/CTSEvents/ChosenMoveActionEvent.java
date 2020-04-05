@@ -2,6 +2,7 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 public class ChosenMoveActionEvent implements ClientToServerEvent {
 
@@ -22,7 +23,7 @@ public class ChosenMoveActionEvent implements ClientToServerEvent {
 
     @Override
     public void accept(ClientToServerManager visitor) {
-        visitor.receiveCTS(this);
+        visitor.receiveEvent(this);
     }
 
 

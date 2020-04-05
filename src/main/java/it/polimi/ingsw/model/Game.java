@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
+import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
@@ -36,12 +37,12 @@ public class Game extends Observable implements GameConsequenceHandler {
     // ======================================================================================
 
 
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap, List<Building> buildings) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap) {
 
         super();
 
         this.gameBoard = new Board();
-        this.buildings = buildings;
+        this.buildings = JsonHandler.deserializeBuildingList();
 
         this.players = new ArrayList<>();
         this.currentPlayer = null;
@@ -186,8 +187,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Consequence moveResult = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
-        receiveConsequence(moveResult);
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
 
+        receiveConsequence(moveResult);
     }
 
 
@@ -233,7 +235,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         if( players.size() == 1 ) {
             receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
         }
-
 
     }
 
@@ -326,11 +327,9 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    //TODO : magari c'è qualcosa da fare con la vittoria
     @Override
     public void doConsequence(VictoryConsequence consequence) {
-        /* per il momento so che devo notificare che c'è una vittoria,
-        * ma non so ancora cosa devo fare con la vittoria */
+        updateAllObservers( new VictoryEvent(consequence.getWinnerNickname()) );
     }
 
 
@@ -344,6 +343,9 @@ public class Game extends Observable implements GameConsequenceHandler {
             }
         }
 
+        //TODO : testare lambda function
+        //players.stream().filter(p -> !p.getName().equals(consequence.getBlockerNickname())).forEach(p -> p.setCanMoveUp(false));
+
     }
 
 
@@ -351,7 +353,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     public void doConsequence(NoConsequence consequence) {
         //nothing to do here :)
     }
-
 
 
     // ======================================================================================

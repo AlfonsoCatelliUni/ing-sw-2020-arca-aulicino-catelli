@@ -2,7 +2,8 @@ package it.polimi.ingsw.events;
 
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
-public interface ClientToServerEvent extends GeneralEvent {
+
+public interface ClientToServerEvent {
 
     void accept(ClientToServerManager visitor);
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.Player.*;
 
 import java.util.*;
@@ -21,15 +22,22 @@ public class PreGameLobby {
 
 
     /**
-     * the deck of the card
+     * the deck of all cards
      */
-    List<Card> cards;
+    List<Card> allCards;
+
+
+    /**
+     * the players have to choose their card from this
+     * restricted number of picked cards
+     */
+    List<Card> pickedCards;
 
 
     /**
      * this map the player to his chosen card
      */
-    Map<String, String> playerToCard;
+    Map<String, Card> playerCardMap;
 
 
     private final static int MAXPLAYERS = 3;
@@ -47,7 +55,9 @@ public class PreGameLobby {
         this.effectsClassMap = new HashMap<>();
         this.effectsClassMap = fillMap();
 
-        this.cards = JsonHandler.deserializeCardList();
+        this.allCards = JsonHandler.deserializeCardList();
+        pickedCards = fillGodsDeck(allCards);
+
     }
 
 
@@ -65,9 +75,11 @@ public class PreGameLobby {
         effectClassMap.put("Apollo", new SwitchPlayer(new BasicPlayer()));
         effectClassMap.put("Artemis", new DoubleMovePlayer(new BasicPlayer()));
         effectClassMap.put("Athena", new BlockOpponentPlayer(new BasicPlayer()));
+
         effectClassMap.put("Atlas", new DomeBuildPlayer(new BasicPlayer()));
         effectClassMap.put("Demeter", new NotSameBuildAfterPlayer(new BasicPlayer()));
         effectClassMap.put("Hephaestus", new SameBuildAfterPlayer(new BasicPlayer()));
+
         effectClassMap.put("Minotaur", new PushPlayer(new BasicPlayer()));
         effectClassMap.put("Pan", new DownTwoPlayer(new BasicPlayer()));
         effectClassMap.put("Prometheus", new BuildBeforePlayer(new BasicPlayer()));
@@ -80,7 +92,7 @@ public class PreGameLobby {
 
         addNameAndCard(nickname,cardName);
 
-        if (playersNicknames.size() >= MAXPLAYERS)
+        if (playersNicknames.size() == MAXPLAYERS - 1)
             closeWaitingRoom();
 
     }
@@ -93,7 +105,7 @@ public class PreGameLobby {
 
         playersNicknames.add(nickname);
 
-        playerToCard.put(nickname, cardName);
+        playerCardMap.put( nickname, pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null) );
 
     }
 
@@ -104,19 +116,20 @@ public class PreGameLobby {
         Random random = new Random();
         List<Card> godsDeck = new ArrayList<>();
 
-        //
+
         for (int i = 0; i < cardsQuantity; i++) {
 
-            int num = random.nextInt(cards.size() - 1);
+            int num = random.nextInt(cards.size());
 
             if (cardsQuantity == 3 && cards.get(i).isAvailable3P()) {
-                godsDeck.add(this.cards.get(num));
+                godsDeck.add(this.allCards.get(num));
             }
             else {
                 i--;
             }
 
         }
+
         return godsDeck;
     }
 
@@ -130,7 +143,7 @@ public class PreGameLobby {
     }
 
 
-    private void closeWaitingRoom(){
+    private void closeWaitingRoom() {
     }
 
 

@@ -329,10 +329,6 @@ public class BasicPlayer implements Player {
             availableCellsToMove.clear();
         }
 
-        if( retPawnsCells.size() == 0 ) {
-            //TODO : PERSO
-        }
-
         return retPawnsCells;
     }
 

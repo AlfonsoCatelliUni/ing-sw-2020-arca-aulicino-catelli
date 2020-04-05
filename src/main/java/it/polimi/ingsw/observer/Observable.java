@@ -1,7 +1,5 @@
 package it.polimi.ingsw.observer;
 
-import it.polimi.ingsw.events.GeneralEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +25,7 @@ public class Observable {
     }
 
 
-    public void updateAllObservers(GeneralEvent event){
+    public void updateAllObservers(Object event){
         for(Observer o : observers) {
             o.update(event);
         }

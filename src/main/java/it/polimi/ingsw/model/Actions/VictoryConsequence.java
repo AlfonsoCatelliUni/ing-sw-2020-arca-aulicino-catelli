@@ -4,11 +4,19 @@ import it.polimi.ingsw.model.GameConsequenceHandler;
 
 public class VictoryConsequence implements Consequence {
 
+
     private String winnerNickname;
+
+
+    // ======================================================================================
+
 
     public VictoryConsequence(String winnerNickname) {
         this.winnerNickname = winnerNickname;
     }
+
+
+    // ======================================================================================
 
 
     @Override

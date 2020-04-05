@@ -7,15 +7,10 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 public class GivePossibleActionsEvent implements ServerToClientEvent {
 
 
-    //TODO : fill the method
-    @Override
-    public void accept(ClientToServerManager visitor) {
-    }
-
-
     @Override
     public void accept(ServerToClientManager visitor) {
-        visitor.manageSTCEvent(this);
+        visitor.manageEvent(this);
     }
+
 
 }

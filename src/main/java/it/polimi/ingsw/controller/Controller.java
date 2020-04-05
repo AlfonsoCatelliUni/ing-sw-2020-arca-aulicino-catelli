@@ -1,10 +1,11 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
+import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.CTSEvents.ChosenMoveActionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
-import it.polimi.ingsw.events.GeneralEvent;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -28,10 +29,18 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    // ======================================================================================
 
-    //TODO : maybe cambiare il tipo di parametro
+
     @Override
-    public void update(GeneralEvent event) {
+    public void update(Object event) throws RuntimeException {
+
+        if(event instanceof ClientToServerEvent) {
+            ((ClientToServerEvent) event).accept(this);
+        }
+        else {
+            throw new RuntimeException("The controller cant receive a ServerToClientEvent!");
+        }
 
     }
 
@@ -40,13 +49,13 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
-    public void receiveCTS(ClientToServerEvent event) {
+    public void receiveEvent(ClientToServerEvent event) {
         event.accept(this);
     }
 
 
     @Override
-    public void manageCTSEvent(ChosenMoveActionEvent event) {
+    public void manageEvent(ChosenMoveActionEvent event) {
 
         List<Action> actionsAvailable = game.getPossibleActions(event.getPlayerNickname(), event.getPawnRow(), event.getPawnColumn());
 
@@ -78,6 +87,18 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     }
+
+
+    @Override
+    public void manageEvent(VictoryEvent event) {
+
+        //done with LAMBDA BITCH!
+        Player winnerPlayer = game.getPlayerByName(event.getWinnerNickname());
+
+
+
+    }
+
 
 
 

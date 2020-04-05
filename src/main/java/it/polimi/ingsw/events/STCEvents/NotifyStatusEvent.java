@@ -21,10 +21,9 @@ public class NotifyStatusEvent implements ServerToClientEvent {
     // ======================================================================================
 
 
-
     @Override
     public void accept(ServerToClientManager visitor) {
-        visitor.manageSTCEvent(this);
+        visitor.manageEvent(this);
     }
 
 
@@ -32,14 +31,6 @@ public class NotifyStatusEvent implements ServerToClientEvent {
         return this.status;
     }
 
-
-    // ======================================================================================
-
-
-    @Override
-    public void accept(ClientToServerManager visitor) {
-        //do nothing :)
-    }
 
 
 }

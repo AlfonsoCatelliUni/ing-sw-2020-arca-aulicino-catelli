@@ -34,7 +34,7 @@ public class BlockOpponentPlayer extends PlayerDecorator {
         Consequence resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
         if( !(resultAction instanceof VictoryConsequence) && nextPosition.getHeight() - oldHeight == 1) {
-            return new BlockConsequence();
+            return new BlockConsequence(super.player.getName());
         }
 
         return resultAction;

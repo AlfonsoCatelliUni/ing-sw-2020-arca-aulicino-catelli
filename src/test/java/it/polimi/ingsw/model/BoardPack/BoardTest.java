@@ -255,7 +255,7 @@ class BoardTest {
 
 
         /* Testing a dome on a ground level */
-        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(4));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(1,0));
 
         assertEquals("1x", retString);

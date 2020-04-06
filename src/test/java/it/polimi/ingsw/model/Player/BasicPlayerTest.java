@@ -130,21 +130,39 @@ class BasicPlayerTest {
 
     }
 
-    //TODO : da fare una volta implementata la build giusta
+
     @Test
     void pawnBuild() {
+
+        Consequence buildConsequence;
+
+        Building building;
 
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
         player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
 
         player.movePawn(gameBoard, player.getPawns()[0], gameBoard.getCell(1,0));
 
-        player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
+        buildConsequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
 
         assertEquals(1, player.getNumBuild());
         assertEquals(1, gameBoard.getCell(0,0).getHeight());
+        assertEquals(NoConsequence.class, buildConsequence.getClass());
 
 
+        building = buildings.get(0);
+
+        while(building.isAvailable()) {
+            building.increaseQuantity();
+        }
+
+        building.decreaseQuantity();
+
+        assertEquals(21, building.getPlacedNumber());
+
+        buildConsequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
+
+        assertEquals(DestroyTowersConsequence.class, buildConsequence.getClass());
 
     }
 
@@ -154,6 +172,7 @@ class BasicPlayerTest {
      */
     @Test
     void forcePawn() {
+
     }
 
 
@@ -243,8 +262,6 @@ class BasicPlayerTest {
      */
     @Test
     void getPossibleBuildingOnCell() {
-
-
     }
 
 

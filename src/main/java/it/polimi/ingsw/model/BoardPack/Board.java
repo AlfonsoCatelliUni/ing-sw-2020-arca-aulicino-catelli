@@ -216,6 +216,8 @@ public class Board {
                         }
                     }
 
+                    //buildings.stream().filter(b -> !b.getIsDome()).forEach(Building::decreaseQuantity);
+
                 }
 
             }

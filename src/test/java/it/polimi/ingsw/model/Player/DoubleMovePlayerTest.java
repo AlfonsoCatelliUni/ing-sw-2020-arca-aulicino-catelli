@@ -17,15 +17,25 @@ import static org.junit.jupiter.api.Assertions.*;
 class DoubleMovePlayerTest {
 
 
-    Board gameBoard;
-    Player player;
-    List<Cell> availableCellsToMove;
-    List<Cell> correctListAvailableCellsMove;
+    private Board gameBoard;
+
+    private List<Building> buildings;
+
+    private Player player;
+
+    private List<Cell> availableCellsToMove;
+
+    private List<Cell> correctListAvailableCellsMove;
 
     @BeforeEach
     void setUp() {
+
         gameBoard = new Board();
-        player = new DoubleMovePlayer(new BasicPlayer("playerTest", Color.BLUE, new Card("DoubleMove", true, true, "effect")));
+        buildings = gameBoard.getBuildings();
+
+        player = new DoubleMovePlayer(new BasicPlayer("player", Color.BLUE, new Card("Artemis", true, true, "effect_artemis")));
+
+        availableCellsToMove = new ArrayList<>();
         correctListAvailableCellsMove = new ArrayList<>();
 
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
@@ -35,32 +45,26 @@ class DoubleMovePlayerTest {
     @Test
     void wherePawnCanMove() {
 
-
-        Building levelOne = new Building(1,22);
-        Building levelTwo = new Building(2,18);
-        Building levelThree = new Building(3,14);
-        Building levelFour = new Building(4,18);
-
         player.setCanMoveUp(true);
 
 
-
         /* Level One */
-        gameBoard.getCell(0,1).buildOnThisCell(levelOne);
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(0));
         /* Level Two */
-        gameBoard.getCell(0,2).buildOnThisCell(levelOne);
-        gameBoard.getCell(0,2).buildOnThisCell(levelTwo);
+        gameBoard.getCell(0,2).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,2).buildOnThisCell(buildings.get(1));
         /* Level Three */
-        gameBoard.getCell(1,2).buildOnThisCell(levelOne);
-        gameBoard.getCell(1,2).buildOnThisCell(levelTwo);
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(1));
         /* Dome Level */
-        gameBoard.getCell(1,0).buildOnThisCell(levelFour);
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
         /* Dome Level */
-        gameBoard.getCell(2,1).buildOnThisCell(levelFour);
+        gameBoard.getCell(2,1).buildOnThisCell(buildings.get(3));
 
 
         /* in this case the pawn can move up, there's a ramp to a second level */
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+
         correctListAvailableCellsMove.add(gameBoard.getCell(0,1));
         correctListAvailableCellsMove.add(gameBoard.getCell(0,2));
         correctListAvailableCellsMove.add(gameBoard.getCell(2,0));

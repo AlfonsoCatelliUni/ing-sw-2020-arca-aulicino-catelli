@@ -117,7 +117,7 @@ public class Building {
      */
     public void decreaseQuantity(){
 
-        if(this.level != 4 && placedNumber > 0) {
+        if(placedNumber > 0) {
             placedNumber--;
         }
 

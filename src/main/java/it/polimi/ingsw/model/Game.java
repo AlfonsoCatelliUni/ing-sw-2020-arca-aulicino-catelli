@@ -31,9 +31,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     private int indexCurrentPlayer;
 
 
-    private List<Building> buildings;
-
-
     // ======================================================================================
 
 
@@ -42,7 +39,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         super();
 
         this.gameBoard = new Board();
-        this.buildings = JsonHandler.deserializeBuildingList();
 
         this.players = new ArrayList<>();
         this.currentPlayer = null;
@@ -170,7 +166,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        return player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column), buildings);
+        return player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column));
     }
 
 
@@ -208,7 +204,7 @@ public class Game extends Observable implements GameConsequenceHandler {
         Pawn designatedPawn = gameBoard.getPawnByCoordinates(pawnRow, pawnColumn);
         Cell designatedCell = gameBoard.getCell(buildRow, buildColumn);
 
-        player.pawnBuild(designatedPawn, designatedCell, level, buildings);
+        player.pawnBuild(designatedPawn, designatedCell, level, gameBoard.getBuildings());
     }
 
 
@@ -355,13 +351,13 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    // ======================================================================================
-
-
-    /* MOETODO DI PROVA */
-    public List<Building> getBuildings() {
-        return buildings;
+    @Override
+    public void doConsequence(DestroyTowersConsequence consequence) {
+        gameBoard.destroyTowers();
     }
+
+
+    // ======================================================================================
 
 
     public List<String> getAllNames() {

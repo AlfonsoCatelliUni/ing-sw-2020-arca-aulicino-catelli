@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -83,10 +80,12 @@ public class SameBuildAfterPlayer extends PlayerDecorator {
      * @param buildings list of possible buildings to build
      */
     @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
-        super.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+        Consequence buildConsequence = super.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
 
         this.cellBefore = designatedCell;
+
+        return buildConsequence;
 
     }
 

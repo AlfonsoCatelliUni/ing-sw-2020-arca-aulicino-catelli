@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.BoardPack;
 
+import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Player.Pawn;
 
@@ -26,6 +27,9 @@ public class Board {
     private Cell[][] matrixBoard = new Cell[ROW][COLUMN];
 
 
+    private List<Building> buildings;
+
+
     // ======================================================================================
 
 
@@ -38,7 +42,7 @@ public class Board {
             }
         }
 
-
+        this.buildings = JsonHandler.deserializeBuildingList();
 
     }
 
@@ -63,6 +67,11 @@ public class Board {
      */
     public Cell getCell(int row, int column){
         return matrixBoard[row][column];
+    }
+
+
+    public List<Building> getBuildings(){
+        return this.buildings;
     }
 
 
@@ -108,10 +117,11 @@ public class Board {
         List<Cell> retAvailableCellList = new ArrayList<>();
 
         for (Cell c : neighboringCell ) {
-            //se la cella è libera (no cupola, no muratore) allora la aggiungo
-            if ( c.getIsFree() ){
+
+            if ( c.getIsFree() && getPossibleBuildingOnCell(c).size() > 0){
                 retAvailableCellList.add(c);
             }
+
         }
 
         return retAvailableCellList;
@@ -152,15 +162,14 @@ public class Board {
     /**
      * can i get the type of building that can be built on this cell ?
      * @param designatedCell the cell that i've chosen to build on
-     * @param buildings the list of existing building
      * @return the list of possible building on the designated cell
      */
-    public List<Building> getPossibleBuildingOnCell(Cell designatedCell, List<Building> buildings ) {
+    public List<Building> getPossibleBuildingOnCell(Cell designatedCell) {
 
         List<Building> possibleBuilding = new ArrayList<>();
 
         for (Building b : buildings) {
-            if( b.getLevel() == designatedCell.getRoof().getLevel() + 1 ) {
+            if( b.getLevel() == designatedCell.getRoof().getLevel() + 1 && b.isAvailable() ) {
                 possibleBuilding.add(b);
             }
         }
@@ -191,6 +200,32 @@ public class Board {
 
         return numDome;
     }
+
+
+    public void destroyTowers() {
+
+        for(int row = 0; row < ROW; row++){
+            for(int column = 0; column < COLUMN; column++){
+
+                if(matrixBoard[row][column].getHeight() == 4){
+                    matrixBoard[row][column].setHeight(1);
+
+                    for(Building b : buildings){
+                        if(!b.getIsDome()){
+                            b.decreaseQuantity();
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+
+    }
+
+
+    // ======================================================================================
 
 
     /**
@@ -309,7 +344,6 @@ public class Board {
 
         return "error";
     }
-
 
 
 

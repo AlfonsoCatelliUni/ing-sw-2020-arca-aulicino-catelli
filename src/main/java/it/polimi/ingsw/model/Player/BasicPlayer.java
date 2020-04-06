@@ -250,7 +250,7 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         designatedPawn.pawnBuild();
 
@@ -266,6 +266,12 @@ public class BasicPlayer implements Player {
 
         designatedCell.buildOnThisCell(designatedBuilding);
 
+
+        if( !designatedBuilding.isAvailable()) {
+            return new DestroyTowersConsequence();
+        }
+
+        return new NoConsequence();
     }
 
 
@@ -276,14 +282,14 @@ public class BasicPlayer implements Player {
      * @return the list of cells available to be built
      */
     @Override
-    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn ) {
+    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
         return gameBoard.getCellAvailableToBuild( designatedPawn );
     }
 
 
     @Override
-    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell, List<Building> buildings) {
-        return gameBoard.getPossibleBuildingOnCell( designatedCell, buildings );
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
+        return gameBoard.getPossibleBuildingOnCell( designatedCell );
     }
 
 

@@ -80,13 +80,13 @@ public interface Player {
     // ======================================================================================
 
 
-    void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
+    Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
 
 
     List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn);
 
 
-    List<Building> getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell, List<Building> buildings );
+    List<Building> getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell);
 
 
     // ======================================================================================

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -97,15 +94,16 @@ public class BuildBeforePlayer extends PlayerDecorator {
      * @param buildings is a list of every type of building based on the level * not used here *
      */
     @Override
-    public void pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        super.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+        Consequence buildConsequence = super.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
 
         if( player.getNumBuild() == 2 && !hasBuiltBefore ) {
             player.setNumBuild(1);
             hasBuiltBefore = true;
         }
 
+        return buildConsequence;
     }
 
 

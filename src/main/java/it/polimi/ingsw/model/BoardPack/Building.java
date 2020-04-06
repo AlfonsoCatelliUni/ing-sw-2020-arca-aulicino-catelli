@@ -100,6 +100,10 @@ public class Building {
     // ======================================================================================
 
 
+    public void setPlacedNumber(int placedNumber) {
+        this.placedNumber = placedNumber;
+    }
+
     /**
      * when you place a building
      */

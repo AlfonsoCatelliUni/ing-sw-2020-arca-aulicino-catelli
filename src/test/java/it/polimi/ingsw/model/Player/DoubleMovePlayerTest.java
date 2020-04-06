@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,15 +19,22 @@ class DoubleMovePlayerTest {
 
     Board gameBoard;
     Player player;
+    List<Cell> availableCellsToMove;
+    List<Cell> correctListAvailableCellsMove;
 
+    @BeforeEach
+    void setUp() {
+        gameBoard = new Board();
+        player = new DoubleMovePlayer(new BasicPlayer("playerTest", Color.BLUE, new Card("DoubleMove", true, true, "effect")));
+        correctListAvailableCellsMove = new ArrayList<>();
+
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+    }
 
     @Test
     void wherePawnCanMove() {
 
-        gameBoard = new Board();
-        player = new DoubleMovePlayer(new BasicPlayer("playerTest", Color.BLUE, "playerGodTest"));
-        List<Cell> availableCellsToMove = new ArrayList<>();
-        List<Cell> correctListAvailableCellsMove = new ArrayList<>();
 
         Building levelOne = new Building(1,22);
         Building levelTwo = new Building(2,18);
@@ -34,8 +42,7 @@ class DoubleMovePlayerTest {
         Building levelFour = new Building(4,18);
 
         player.setCanMoveUp(true);
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
-        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+
 
 
         /* Level One */

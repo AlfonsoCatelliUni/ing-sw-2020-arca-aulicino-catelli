@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.BoardPack;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -12,11 +13,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BoardTest {
 
+    private Board gameBoard;
+
+    private List<Building> buildings;
+
+
+    @BeforeEach
+    void setUp() {
+
+        gameBoard = new Board();
+
+        buildings = gameBoard.getBuildings();
+
+    }
+
 
     @Test
     void getCellAvailableToMove() {
-
-        Board gameBoard = new Board();
 
         Cell cell_0 = gameBoard.getCell(0,0);
         cell_0.setHeight(0);
@@ -76,8 +89,6 @@ class BoardTest {
     @Test
     void getCellAvailableToBuild() {
 
-        Board gameBoard = new Board();
-
         Pawn pawn = new Pawn(Color.BLUE, Sex.MALE, gameBoard.getCell(0,0));
         gameBoard.getCell(0,0).placePawnHere(pawn);
 
@@ -120,7 +131,7 @@ class BoardTest {
         gameBoard.getCell(3,2).buildOnThisCell(new Building(4,18));
 
         cells = gameBoard.getCellAvailableToBuild(pawn);
-        ArrayList<Cell> expectedCells3 = new ArrayList<>();
+        List<Cell> expectedCells3 = new ArrayList<>();
         assertEquals(cells, expectedCells3);
 
     }
@@ -129,12 +140,10 @@ class BoardTest {
     @Test
     void getNeighboring() {
 
-        Board gameBoard = new Board();
-
         /* Testing a central cell */
         List<Cell> retNeighboring = gameBoard.getNeighboring(gameBoard.getCell(2,2));
 
-        ArrayList<Cell> correctNeighboring = new ArrayList<>();
+        List<Cell> correctNeighboring = new ArrayList<>();
         correctNeighboring.add(gameBoard.getCell(1,1));
         correctNeighboring.add(gameBoard.getCell(1,2));
         correctNeighboring.add(gameBoard.getCell(1,3));
@@ -173,33 +182,20 @@ class BoardTest {
     @Test
     void getPossibleBuildingOnCell() {
 
-        Board gameBoard = new Board();
-        ArrayList<Building> buildings = new ArrayList<>();
-
-        Building levelOne = new Building(1,22);
-        Building levelTwo = new Building(2,18);
-        Building levelThree = new Building(3,14);
-        Building levelFour = new Building(4,18);
-
-        buildings.add( levelOne );
-        buildings.add( levelTwo );
-        buildings.add( levelThree );
-        buildings.add( levelFour );
-
 
         /* Tested that on a level 0 you can build only a level 1*/
-        List<Building> ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0), buildings);
+        List<Building> ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0));
 
-        ArrayList<Building> correctRet = new ArrayList<>();
-        correctRet.add(levelOne);
+        List<Building> correctRet = new ArrayList<>();
+        correctRet.add(buildings.get(0));
 
         assertEquals(correctRet, ret);
 
 
         /* Tested that on a dome you cannot build any type of building */
-        gameBoard.getCell(0,0).buildOnThisCell(levelFour);
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(3));
 
-        ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0), buildings);
+        ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0));
         correctRet.clear();
 
         assertEquals(correctRet, ret);
@@ -212,46 +208,38 @@ class BoardTest {
     @Test
     void getNumberOfDome() {
 
-
-        Board gameBoard = new Board();
-
-        Building levelOne = new Building(1,22);
-        Building levelTwo = new Building(2,18);
-        Building levelThree = new Building(3,14);
-        Building levelFour = new Building(4,18);
-
         int domeNum = gameBoard.getNumberOfDome();
 
         assertEquals(0, domeNum);
 
         /* an third level tower il built on the cell 0-0 */
-        gameBoard.getCell(0,0).buildOnThisCell(levelOne);
-        gameBoard.getCell(0,0).buildOnThisCell(levelTwo);
-        gameBoard.getCell(0,0).buildOnThisCell(levelThree);
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(2));
 
         domeNum = gameBoard.getNumberOfDome();
         assertEquals(0, domeNum);
 
 
         /* a complete tower il built on the cell 0-0 */
-        gameBoard.getCell(0,0).buildOnThisCell(levelFour);
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(3));
 
         domeNum = gameBoard.getNumberOfDome();
         assertEquals(1, domeNum);
 
 
         /* a dome is built on cell 3-3 */
-        gameBoard.getCell(3,3).buildOnThisCell(levelFour);
+        gameBoard.getCell(3,3).buildOnThisCell(buildings.get(3));
 
         domeNum = gameBoard.getNumberOfDome();
         assertEquals(2, domeNum);
 
 
         /* an entire tower is built on the cell 0-4 */
-        gameBoard.getCell(0,4).buildOnThisCell(levelOne);
-        gameBoard.getCell(0,4).buildOnThisCell(levelTwo);
-        gameBoard.getCell(0,4).buildOnThisCell(levelThree);
-        gameBoard.getCell(0,4).buildOnThisCell(levelFour);
+        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(3));
 
         domeNum = gameBoard.getNumberOfDome();
         assertEquals(3, domeNum);
@@ -263,28 +251,21 @@ class BoardTest {
     @Test
     void getStringCellInfo() {
 
-        Board gameBoard = new Board();
-
-        Building levelOne = new Building(1,22);
-        Building levelTwo = new Building(2,18);
-        Building levelThree = new Building(3,14);
-        Building levelFour = new Building(4,18);
-
         String retString;
 
 
         /* Testing a dome on a ground level */
-        gameBoard.getCell(1,0).buildOnThisCell(levelFour);
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(4));
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(1,0));
 
         assertEquals("1x", retString);
 
 
         /* Testing a complete tower */
-        gameBoard.getCell(1,1).buildOnThisCell(levelOne);
-        gameBoard.getCell(1,1).buildOnThisCell(levelTwo);
-        gameBoard.getCell(1,1).buildOnThisCell(levelThree);
-        gameBoard.getCell(1,1).buildOnThisCell(levelFour);
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(3));
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(1,1));
 
         assertEquals("4x", retString);
@@ -299,7 +280,7 @@ class BoardTest {
 
 
         /* Testing the blue female on a level one */
-        gameBoard.getCell(0,1).buildOnThisCell(levelOne);
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(0));
         Pawn blueFemale = new Pawn(Color.BLUE, Sex.FEMALE, gameBoard.getCell(0,1));
         gameBoard.getCell(0,1).placePawnHere(blueFemale);
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(0,1));
@@ -308,8 +289,8 @@ class BoardTest {
 
 
         /* Testing the grey male on a level two */
-        gameBoard.getCell(0,2).buildOnThisCell(levelOne);
-        gameBoard.getCell(0,2).buildOnThisCell(levelTwo);
+        gameBoard.getCell(0,2).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,2).buildOnThisCell(buildings.get(1));
         Pawn greyMale = new Pawn(Color.GREY, Sex.MALE, gameBoard.getCell(0,2));
         gameBoard.getCell(0,2).placePawnHere(greyMale);
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(0,2));
@@ -318,9 +299,9 @@ class BoardTest {
 
 
         /* Testing the grey female on a level three */
-        gameBoard.getCell(0,3).buildOnThisCell(levelOne);
-        gameBoard.getCell(0,3).buildOnThisCell(levelTwo);
-        gameBoard.getCell(0,3).buildOnThisCell(levelThree);
+        gameBoard.getCell(0,3).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,3).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,3).buildOnThisCell(buildings.get(2));
         Pawn greyFemale = new Pawn(Color.GREY, Sex.FEMALE, gameBoard.getCell(0,3));
         gameBoard.getCell(0,3).placePawnHere(greyFemale);
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(0,3));
@@ -336,7 +317,7 @@ class BoardTest {
         assertEquals("0W", retString);
 
         /* Testing the white female on a level one */
-        gameBoard.getCell(4,0).buildOnThisCell(levelOne);
+        gameBoard.getCell(4,0).buildOnThisCell(buildings.get(0));
         Pawn whiteFemale = new Pawn(Color.WHITE, Sex.FEMALE, gameBoard.getCell(4,0));
         gameBoard.getCell(4,0).placePawnHere(whiteFemale);
         retString = gameBoard.getStringCellInfo(gameBoard.getCell(4,0));

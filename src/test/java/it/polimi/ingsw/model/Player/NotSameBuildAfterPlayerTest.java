@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -18,17 +19,39 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NotSameBuildAfterPlayerTest {
 
+    List<Action> possibleActions;
+    List<Action> expectedActions;
+    List<Cell> availableCellsToBuild;
+    List<Cell> expectedCellsToBuild;
+    Board gameBoard;
+    NotSameBuildAfterPlayer player;
+    List<Building> buildings;
+
+
+    @BeforeEach
+    void setUp() {
+
+        expectedCellsToBuild = new ArrayList<>();
+
+        gameBoard = new Board();
+
+        buildings = gameBoard.getBuildings();
+
+        //Demeter
+        player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, new Card("Demeter", true, true, "Demeter")));
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+
+        expectedActions = new ArrayList<>();
+
+        buildings = new ArrayList<>();
+        buildings.add(new Building(1,18));
+        buildings.add(new Building(2,18));
+        buildings.add(new Building(3,18));
+        buildings.add(new Building(4,18));
+    }
 
     @Test
     void getPossibleActions() {
-
-        List<Action> possibleActions;
-        List<Action> expectedActions = new ArrayList<>();
-
-        Board gameBoard = new Board();
-
-        NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
         possibleActions = player.getPossibleActions(gameBoard,player.getPawns()[0]);
         expectedActions.add(new MoveAction());
@@ -90,14 +113,7 @@ class NotSameBuildAfterPlayerTest {
 
     @Test
     void wherePawnCanBuild() {
-        List<Cell> availableCellsToBuild;
-        List<Cell> expectedCellsToBuild = new ArrayList<>();
 
-        Board gameBoard = new Board();
-
-        //Demeter
-        NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
         player.setNumBuild(0);
 
@@ -120,14 +136,8 @@ class NotSameBuildAfterPlayerTest {
 
     @Test
     void pawnBuild() {
-        Board gameBoard = new Board();
-        NotSameBuildAfterPlayer player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
-        List<Building> buildings = new ArrayList<>();
-        buildings.add(new Building(1,18));
-        buildings.add(new Building(2,18));
-        buildings.add(new Building(3,18));
-        buildings.add(new Building(4,18));
+
+
         Cell expectedCell = gameBoard.getCell(0,1);
 
         player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);

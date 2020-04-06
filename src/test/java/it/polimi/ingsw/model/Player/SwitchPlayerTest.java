@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -22,32 +23,44 @@ class SwitchPlayerTest {
     private Player player;
     private Player opponentPlayer;
 
-    List<Building> buildings = new ArrayList<>();
+    List<Building> buildings;
+
+    Consequence retMoveEncoded;
 
 
 
-    @Test
-    void wherePawnCanMove() {
-
+    @BeforeEach
+    void setUp() {
         gameBoard = new Board();
+        buildings = new ArrayList<>();
 
         buildings.add(new Building(1, 22));
         buildings.add(new Building(2, 18));
         buildings.add(new Building(3, 14));
         buildings.add(new Building(4, 18));
 
-        player = new SwitchPlayer(new BasicPlayer("playerTest", Color.BLUE, "playerGodTest"));
-        opponentPlayer = new BasicPlayer("opponentTest", Color.GREY, "opponentGodTest");
+        buildings = gameBoard.getBuildings();
 
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
-        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
+        player = new SwitchPlayer(new BasicPlayer("playerTest", Color.BLUE, new Card("SwitchPlayer", true, true, "SwitchPlayer")));
+        opponentPlayer = new BasicPlayer("opponentTest", Color.GREY, new Card("SwitchPlayer", true, true, "SwitchPlayer"));
 
         player.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,0));
         player.initPawn(gameBoard, Sex.FEMALE ,gameBoard.getCell(2,2));
 
         opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,4));
-        opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(1,1));
+        opponentPlayer.initPawn(gameBoard, Sex.FEMALE ,gameBoard.getCell(1,1));
+
+    }
+
+    @Test
+    void wherePawnCanMove() {
+
+
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
+
+
 
         List<Cell> correctAvailableToMove = new ArrayList<>();
         List<Cell> availableCellsToMove;
@@ -99,27 +112,11 @@ class SwitchPlayerTest {
     @Test
     void movePawn() {
 
-        Consequence retMoveEncoded;
-
-        gameBoard = new Board();
-
-        buildings.add(new Building(1, 22));
-        buildings.add(new Building(2, 18));
-        buildings.add(new Building(3, 14));
-        buildings.add(new Building(4, 18));
-
-        player = new SwitchPlayer(new BasicPlayer("playerTest", Color.BLUE, "playerGodTest"));
-        opponentPlayer = new BasicPlayer("opponentTest", Color.GREY, "opponentGodTest");
 
         gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
         gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
         gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
 
-        player.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,0));
-        player.initPawn(gameBoard, Sex.FEMALE ,gameBoard.getCell(2,2));
-
-        opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,4));
-        opponentPlayer.initPawn(gameBoard, Sex.FEMALE ,gameBoard.getCell(1,1));
 
 
         /* switch with an opponent player */
@@ -144,27 +141,11 @@ class SwitchPlayerTest {
     @Test
     void getPossibleActions() {
 
-        gameBoard = new Board();
-
-
-
-        buildings.add(new Building(1, 22));
-        buildings.add(new Building(2, 18));
-        buildings.add(new Building(3, 14));
-        buildings.add(new Building(4, 18));
-
-        player = new SwitchPlayer(new BasicPlayer("playerTest", Color.BLUE, "playerGodTest"));
-        opponentPlayer = new BasicPlayer("opponentTest", Color.GREY, "opponentGodTest");
 
         gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
         gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
         gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
 
-        player.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,0));
-        player.initPawn(gameBoard, Sex.FEMALE ,gameBoard.getCell(2,2));
-
-        opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,4));
-        opponentPlayer.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(1,1));
 
         List<Action> availableActions;
         List<Action> correctAvailableActions = new ArrayList<>();

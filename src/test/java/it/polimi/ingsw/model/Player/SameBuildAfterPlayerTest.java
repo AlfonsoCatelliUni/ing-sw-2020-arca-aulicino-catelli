@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,15 +18,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SameBuildAfterPlayerTest {
 
+    Board gameBoard;
+    List<Cell> availableCellsToBuild;
+    List<Cell> expectedCellsToBuild;
+    SameBuildAfterPlayer player;
+    List<Action> possibleActions;
+    List<Action> expectedActions;
+    List<Building> buildings;
+
+    @BeforeEach
+    void setUp() {
+
+        gameBoard = new Board();
+        expectedCellsToBuild = new ArrayList<>();
+        player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, new Card("Demeter", true, true, "Hephaestus")));
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
+        expectedActions = new ArrayList<>();
+        buildings = new ArrayList<>();
+        buildings.add(new Building(1,18));
+        buildings.add(new Building(2,18));
+        buildings.add(new Building(3,18));
+        buildings.add(new Building(4,18));
+        buildings = gameBoard.getBuildings();
+
+    }
+
     @Test
     void wherePawnCanBuild() {
-        Board gameBoard = new Board();
-
-        List<Cell> availableCellsToBuild;
-        List<Cell> expectedCellsToBuild = new ArrayList<>();
-
-        SameBuildAfterPlayer player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
 
         gameBoard.getCell(2,3).buildOnThisCell(new Building(4,22));
         player.setNumBuild(1);
@@ -49,14 +68,6 @@ class SameBuildAfterPlayerTest {
 
     @Test
     void getPossibleActions() {
-
-        List<Action> possibleActions;
-        List<Action> expectedActions = new ArrayList<>();
-
-        Board gameBoard = new Board();
-
-        SameBuildAfterPlayer player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, "Hephaestus"));
-        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
 
         player.setNumMove(1);
         player.setNumBuild(1);
@@ -98,14 +109,10 @@ class SameBuildAfterPlayerTest {
 
     @Test
     void pawnBuild() {
-        Board gameBoard = new Board();
-        SameBuildAfterPlayer player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, "Demeter"));
+
+
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
-        List<Building> buildings = new ArrayList<>();
-        buildings.add(new Building(1,18));
-        buildings.add(new Building(2,18));
-        buildings.add(new Building(3,18));
-        buildings.add(new Building(4,18));
+
         Cell expectedCell = gameBoard.getCell(0,1);
 
         player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);

@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -26,6 +23,7 @@ class NotSameBuildAfterPlayerTest {
     Board gameBoard;
     NotSameBuildAfterPlayer player;
     List<Building> buildings;
+    Consequence consequence;
 
 
     @BeforeEach
@@ -43,11 +41,6 @@ class NotSameBuildAfterPlayerTest {
 
         expectedActions = new ArrayList<>();
 
-        buildings = new ArrayList<>();
-        buildings.add(new Building(1,18));
-        buildings.add(new Building(2,18));
-        buildings.add(new Building(3,18));
-        buildings.add(new Building(4,18));
     }
 
     @Test
@@ -140,9 +133,13 @@ class NotSameBuildAfterPlayerTest {
 
         Cell expectedCell = gameBoard.getCell(0,1);
 
-        player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);
+        consequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);
 
         assertEquals(expectedCell,player.getCellBefore());
+
+        Consequence consequence1 = new NoConsequence();
+
+        assertEquals(consequence.getClass(), consequence1.getClass());
 
 
 

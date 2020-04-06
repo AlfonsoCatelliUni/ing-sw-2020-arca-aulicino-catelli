@@ -32,12 +32,6 @@ class SwitchPlayerTest {
     @BeforeEach
     void setUp() {
         gameBoard = new Board();
-        buildings = new ArrayList<>();
-
-        buildings.add(new Building(1, 22));
-        buildings.add(new Building(2, 18));
-        buildings.add(new Building(3, 14));
-        buildings.add(new Building(4, 18));
 
         buildings = gameBoard.getBuildings();
 

@@ -210,21 +210,14 @@ public class Board {
                 if(matrixBoard[row][column].getHeight() == 4){
                     matrixBoard[row][column].setHeight(1);
 
-                    for(Building b : buildings){
-                        if(!b.getIsDome()){
-                            b.decreaseQuantity();
-                        }
-                    }
-
-                    //buildings.stream().filter(b -> !b.getIsDome()).forEach(Building::decreaseQuantity);
-
+                    buildings.stream().filter(b -> !b.getIsDome()).forEach(Building::decreaseQuantity);
                 }
-
             }
+
         }
 
-
     }
+
 
 
     // ======================================================================================

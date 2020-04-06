@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.BoardPack;
 
+import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
@@ -132,7 +133,22 @@ class BoardTest {
 
         cells = gameBoard.getCellAvailableToBuild(pawn);
         List<Cell> expectedCells3 = new ArrayList<>();
+
         assertEquals(cells, expectedCells3);
+
+
+        //test if there is no pieces to build
+
+        gameBoard.getBuildings().get(0).setPlacedNumber(22);
+        gameBoard.getBuildings().get(1).setPlacedNumber(18);
+        gameBoard.getBuildings().get(2).setPlacedNumber(14);
+        gameBoard.getBuildings().get(3).setPlacedNumber(18);
+
+        cells = gameBoard.getCellAvailableToBuild(pawn);
+
+        assertEquals(cells, expectedCells3);
+
+
 
     }
 
@@ -200,7 +216,15 @@ class BoardTest {
 
         assertEquals(correctRet, ret);
 
+        //test if there is no pieces of building to build
+        gameBoard.getBuildings().get(0).setPlacedNumber(22);
+        gameBoard.getBuildings().get(1).setPlacedNumber(18);
+        gameBoard.getBuildings().get(2).setPlacedNumber(14);
+        gameBoard.getBuildings().get(3).setPlacedNumber(18);
 
+        ret = gameBoard.getPossibleBuildingOnCell(gameBoard.getCell(0,0));
+
+        assertEquals(0, ret.size());
 
     }
 
@@ -330,4 +354,55 @@ class BoardTest {
     }
 
 
+    @Test
+    void destroyTowers() {
+
+        //build complete tower
+        gameBoard.getCell(0,0).buildOnThisCell(gameBoard.getBuildings().get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(gameBoard.getBuildings().get(1));
+        gameBoard.getCell(0,0).buildOnThisCell(gameBoard.getBuildings().get(2));
+        gameBoard.getCell(0,0).buildOnThisCell(gameBoard.getBuildings().get(3));
+
+        gameBoard.getCell(0,1).buildOnThisCell(gameBoard.getBuildings().get(0));
+        gameBoard.getCell(0,1).buildOnThisCell(gameBoard.getBuildings().get(1));
+        gameBoard.getCell(0,1).buildOnThisCell(gameBoard.getBuildings().get(2));
+        gameBoard.getCell(0,1).buildOnThisCell(gameBoard.getBuildings().get(3));
+
+        //no complete tower with dome
+        gameBoard.getCell(1,0).buildOnThisCell(gameBoard.getBuildings().get(0));
+        gameBoard.getCell(1,0).buildOnThisCell(gameBoard.getBuildings().get(1));
+        gameBoard.getCell(1,0).buildOnThisCell(gameBoard.getBuildings().get(3));
+
+        //normal construction
+        gameBoard.getCell(2,2).buildOnThisCell(gameBoard.getBuildings().get(0));
+        gameBoard.getCell(2,2).buildOnThisCell(gameBoard.getBuildings().get(1));
+        gameBoard.getCell(2,2).buildOnThisCell(gameBoard.getBuildings().get(2));
+
+
+        gameBoard.destroyTowers();
+
+
+        assertEquals(2,gameBoard.getBuildings().get(0).getPlacedNumber());
+        assertEquals(2,gameBoard.getBuildings().get(1).getPlacedNumber());
+        assertEquals(1,gameBoard.getBuildings().get(2).getPlacedNumber());
+        assertEquals(3,gameBoard.getBuildings().get(3).getPlacedNumber());
+
+        assertEquals(1,gameBoard.getCell(0,0).getHeight());
+        assertEquals(gameBoard.getBuildings().get(3),gameBoard.getCell(0,0).getRoof());
+
+        assertEquals(1,gameBoard.getCell(0,1).getHeight());
+        assertEquals(gameBoard.getBuildings().get(3),gameBoard.getCell(0,1).getRoof());
+
+        assertEquals(3,gameBoard.getCell(1,0).getHeight());
+        assertEquals(gameBoard.getBuildings().get(3),gameBoard.getCell(1,0).getRoof());
+
+        assertEquals(3,gameBoard.getCell(2,2).getHeight());
+        assertEquals(gameBoard.getBuildings().get(2),gameBoard.getCell(2,2).getRoof());
+
+
+
+
+
+
+    }
 }

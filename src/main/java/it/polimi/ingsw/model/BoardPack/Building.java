@@ -100,6 +100,10 @@ public class Building {
     // ======================================================================================
 
 
+    public void setPlacedNumber(int placedNumber) {
+        this.placedNumber = placedNumber;
+    }
+
     /**
      * when you place a building
      */
@@ -122,6 +126,14 @@ public class Building {
         }
 
 
+    }
+
+    /**
+     * USED ONLY FOR TESTING
+     * @param placedNumber is the number of block placed
+     */
+    public void setQuantity(int placedNumber) {
+        this.placedNumber = placedNumber;
     }
 
 }

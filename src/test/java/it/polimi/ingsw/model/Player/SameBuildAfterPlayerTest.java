@@ -1,8 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.FinishAction;
+import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
@@ -25,6 +23,7 @@ class SameBuildAfterPlayerTest {
     List<Action> possibleActions;
     List<Action> expectedActions;
     List<Building> buildings;
+    Consequence consequence;
 
     @BeforeEach
     void setUp() {
@@ -34,11 +33,7 @@ class SameBuildAfterPlayerTest {
         player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, new Card("Demeter", true, true, "Hephaestus")));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
         expectedActions = new ArrayList<>();
-        buildings = new ArrayList<>();
-        buildings.add(new Building(1,18));
-        buildings.add(new Building(2,18));
-        buildings.add(new Building(3,18));
-        buildings.add(new Building(4,18));
+
         buildings = gameBoard.getBuildings();
 
     }
@@ -115,7 +110,11 @@ class SameBuildAfterPlayerTest {
 
         Cell expectedCell = gameBoard.getCell(0,1);
 
-        player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);
+        consequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);
+
+        Consequence consequence1 = new NoConsequence();
+
+        assertEquals(consequence.getClass(), consequence1.getClass());
 
         assertEquals(expectedCell,player.getCellBefore());
 

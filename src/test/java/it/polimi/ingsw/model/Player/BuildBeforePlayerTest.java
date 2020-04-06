@@ -111,6 +111,35 @@ class BuildBeforePlayerTest {
         for(i = 0; i < test.size(); i++)
             assertEquals(test.get(i).getClass(), player_1.getPossibleActions(gameBoard, player_1.getPawns()[1]).get(i).getClass());
 
+        /* case when are the domes are placed on the board */
+
+        gameBoard.getBuildings().get(3).setQuantity(18);
+
+        test.clear();
+        test.add(new MoveAction());
+
+        gameBoard.getCell(2,2).setHeight(2);
+        player_3.getPawns()[0].setHeight(2);
+
+        gameBoard.getCell(2,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(2,1).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(2,1).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(3,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(3,1).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(3,1).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(3,2).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(3,2).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(3,2).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(3,3).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(3,3).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(3,3).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(1,3).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,3).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,3).buildOnThisCell(buildings.get(2));
+
+        for(i = 0; i < test.size(); i++)
+            assertEquals(test.get(i).getClass(), player_3.getPossibleActions(gameBoard, player_3.getPawns()[0]).get(i).getClass());
+
 
 
 
@@ -139,7 +168,7 @@ class BuildBeforePlayerTest {
         gameBoard.getCell(2,1).setHeight(0);
         gameBoard.getCell(3,1).setHeight(0);
 
-        test.clear();
+        test_1.clear();
 
         test_1.add(gameBoard.getCell(2,1));
         test_1.add(gameBoard.getCell(3,1));
@@ -152,7 +181,7 @@ class BuildBeforePlayerTest {
         player_2.setCanMoveUp(false);
         player_2.setHasBuiltBefore(false);
 
-        test.clear();
+        test_1.clear();
         test_1.add(gameBoard.getCell(0,2));
         test_1.add(gameBoard.getCell(1,0));
         test_1.add(gameBoard.getCell(2,0));

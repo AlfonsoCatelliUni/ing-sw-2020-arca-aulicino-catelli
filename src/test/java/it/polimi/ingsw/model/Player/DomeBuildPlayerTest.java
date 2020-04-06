@@ -21,9 +21,13 @@ class DomeBuildPlayerTest {
 
     Card card;
 
+    Card card_1;
+
     List<Building> buildings;
 
     Player player;
+
+    Player player_1;
 
     List<Building> expectedBuildings;
 
@@ -35,14 +39,13 @@ class DomeBuildPlayerTest {
         gameBoard = new Board();
         test = new ArrayList<>();
         card = new Card("test", true, true, "test");
+        card_1 = new Card("test_1", true, true, "test_1");
         buildings = gameBoard.getBuildings();
-        buildings.add(new Building(1,18));
-        buildings.add(new Building(2,18));
-        buildings.add(new Building(3,18));
-        buildings.add(new Building(4,18));
 
         player = new DomeBuildPlayer(new BasicPlayer("test", Color.BLUE, card));
         player.initPawn(gameBoard, Sex.MALE,gameBoard.getCell(0,0));
+        player_1 = new DomeBuildPlayer((new BasicPlayer("test_1", Color.WHITE, card_1)));
+        player_1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,3));
 
         expectedBuildings = new ArrayList<>();
 
@@ -57,7 +60,7 @@ class DomeBuildPlayerTest {
         expectedBuildings.add(buildings.get(0));
         expectedBuildings.add(buildings.get(3));
 
-        possibleBuildings = player.getPossibleBuildingOnCell(gameBoard,gameBoard.getCell(1,1));
+        possibleBuildings = player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(1,1));
         assertEquals(expectedBuildings,possibleBuildings);
 
 
@@ -79,7 +82,14 @@ class DomeBuildPlayerTest {
         possibleBuildings = player.getPossibleBuildingOnCell(gameBoard,gameBoard.getCell(1,1));
         assertEquals(expectedBuildings,possibleBuildings);
 
+        /* case when all the domes are placed in the board */
 
+        gameBoard.getBuildings().get(3).setQuantity(18);
+
+        expectedBuildings.clear();
+        expectedBuildings.add(buildings.get(0));
+
+        assertEquals(expectedBuildings, player_1.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(2,2)));
 
     }
 }

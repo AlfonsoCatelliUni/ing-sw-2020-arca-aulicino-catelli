@@ -128,4 +128,12 @@ public class Building {
 
     }
 
+    /**
+     * USED ONLY FOR TESTING
+     * @param placedNumber is the number of block placed
+     */
+    public void setQuantity(int placedNumber) {
+        this.placedNumber = placedNumber;
+    }
+
 }

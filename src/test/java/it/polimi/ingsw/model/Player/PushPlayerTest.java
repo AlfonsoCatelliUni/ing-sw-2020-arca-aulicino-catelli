@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.BoardPack.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,18 +16,38 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PushPlayerTest {
 
+
+    private Board gameBoard;
+
+    private Player player;
+
+    private Player opponentPlayer;
+
+    private List<Building> buildings;
+
+
+    @BeforeEach
+    void setUp() {
+
+        gameBoard = new Board();
+
+        player = new PushPlayer( new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, true, "effetto_apollo")));
+        opponentPlayer = new PushPlayer( new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, true, "effetto_atlas")));
+
+        buildings = gameBoard.getBuildings();
+
+    }
+
+
     @Test
     void wherePawnCanMove() {
 
         List<Cell> availableCellsToMove;
         List<Cell> expectedCellsToMove = new ArrayList<>();
-        Board gameBoard = new Board();
 
         //the opposite cell is free so player can move there
-        Player player = new PushPlayer(new BasicPlayer("test", Color.GREY,"Apollo"));
-        Player player1 = new PushPlayer(new BasicPlayer("test1", Color.BLUE,"opponent"));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
-        player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,2));
+        opponentPlayer.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,2));
 
         expectedCellsToMove.add(gameBoard.getCell(1,1));
         expectedCellsToMove.add(gameBoard.getCell(1,3));
@@ -47,7 +68,7 @@ class PushPlayerTest {
 
 
         //the opposite cell isn't free so player can't move there
-        player1.initPawn(gameBoard, Sex.FEMALE,gameBoard.getCell(0,2));
+        opponentPlayer.initPawn(gameBoard, Sex.FEMALE,gameBoard.getCell(0,2));
 
         expectedCellsToMove.remove(gameBoard.getCell(1,2));
 
@@ -66,13 +87,12 @@ class PushPlayerTest {
 
     }
 
+
     @Test
     void movePawn() {
-        Board gameBoard = new Board();
-        Player player = new PushPlayer(new BasicPlayer("test", Color.GREY,"Apollo"));
-        Player player1 = new PushPlayer(new BasicPlayer("test1", Color.BLUE,"opponent"));
+
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
-        player1.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,2));
+        opponentPlayer.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,2));
 
         player.movePawn(gameBoard,player.getPawns()[0],gameBoard.getCell(1,2));
 
@@ -85,11 +105,7 @@ class PushPlayerTest {
         assertEquals(false,gameBoard.getCell(1,2).getBuilderHere());
         assertEquals(true,gameBoard.getCell(1,3).getBuilderHere());
 
-
-
-
-
-
-
     }
+
+
 }

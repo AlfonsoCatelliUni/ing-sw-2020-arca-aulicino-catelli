@@ -32,6 +32,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     // ======================================================================================
+    // MARK : constructors
 
 
     public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap) {
@@ -98,6 +99,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     // ======================================================================================
+    // MARK : main functional methods
 
 
     /**
@@ -315,7 +317,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     // ======================================================================================
-
+    // MARK : consequence of a move
 
     @Override
     public void receiveConsequence(Consequence consequence) {
@@ -358,6 +360,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     // ======================================================================================
+    // MARK : support methods
 
 
     public List<String> getAllNames() {
@@ -379,8 +382,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     public String newCurrentPlayer() {
 
-        currentPlayer.resetNumMove();
-        currentPlayer.resetNumBuild();
+        currentPlayer.resetPlayerStatus();
 
         nextCurrentPlayer();
 
@@ -440,6 +442,13 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         indexCurrentPlayer++;
 
+    }
+
+
+    public void resetPlayerStatus(String playerName) {
+        Player player = getPlayerByName(playerName);
+
+        player.resetPlayerStatus();
     }
 
 

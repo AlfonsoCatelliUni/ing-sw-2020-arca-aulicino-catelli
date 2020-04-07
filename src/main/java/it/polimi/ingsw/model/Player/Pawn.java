@@ -163,9 +163,26 @@ public class Pawn {
     }
 
 
+    // ======================================================================================
+
+
     public void setHeight(int height) {
         this.height = height;
     }
+
+
+    public void resetPawnStatus() {
+
+        this.hasMoved = false;
+        this.hasBuilt = false;
+
+        this.goneUp = false;
+        this.forcedMove = false;
+
+    }
+
+
+    // ======================================================================================
 
 
     /**
@@ -203,16 +220,13 @@ public class Pawn {
     }
 
 
-    public Cell forcePawn(Cell nextPosition) {
+    public void forcePawn(Cell nextPosition) {
 
         this.hasMoved = false;
         this.forcedMove = true;
 
         this.position = nextPosition;
         this.height = nextPosition.getHeight();
-
-        return nextPosition;
-
     }
 
 

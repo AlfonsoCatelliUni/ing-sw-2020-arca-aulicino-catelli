@@ -65,6 +65,9 @@ public interface Player {
     void setNumBuild(int numBuild);
 
 
+    void resetPlayerStatus();
+
+
     // ======================================================================================
 
 
@@ -105,12 +108,6 @@ public interface Player {
 
 
     void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell);
-
-
-    void resetNumMove();
-
-
-    void resetNumBuild();
 
 
     // ======================================================================================

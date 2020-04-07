@@ -121,14 +121,8 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public void resetNumMove() {
-        player.resetNumMove();
-    }
-
-
-    @Override
-    public void resetNumBuild() {
-        player.resetNumBuild();
+    public void resetPlayerStatus() {
+        player.resetPlayerStatus();
     }
 
 

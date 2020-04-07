@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BasicPlayer implements Player {
@@ -62,15 +63,16 @@ public class BasicPlayer implements Player {
     public BasicPlayer(String name, Color color, Card godCard) {
         this.name = name;
         this.color = color;
+
         this.nameGodCard = godCard.getName();
         this.godCard = godCard;
+
         this.pawns = new Pawn[2];
 
         this.canMoveUp = true;
 
         this.numMove = 0;
         this.numBuild = 1;
-
 
     }
 
@@ -167,25 +169,31 @@ public class BasicPlayer implements Player {
         this.canMoveUp = canMoveUp;
     }
 
+
     @Override
     public void setNumMove(int numMove) {
         this.numMove = numMove;
     }
+
 
     @Override
     public void setNumBuild(int numBuild) {
         this.numBuild = numBuild;
     }
 
+
     @Override
-    public void resetNumMove() {
+    public void resetPlayerStatus() {
+
+        this.canMoveUp = true;
+
         this.numMove = 0;
-    }
+        this.numBuild = 1;
 
+        for (Pawn p : pawns ) {
+            p.resetPawnStatus();
+        }
 
-    @Override
-    public void resetNumBuild() {
-        this.numBuild = 0;
     }
 
 
@@ -396,6 +404,8 @@ public class BasicPlayer implements Player {
         gameBoard.getCell(rowPosition, columnPosition).placePawnHere(designatedPawn);
 
     }
+
+
 
 
 

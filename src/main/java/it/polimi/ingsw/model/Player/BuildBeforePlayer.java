@@ -110,6 +110,18 @@ public class BuildBeforePlayer extends PlayerDecorator {
     // ======================================================================================
 
 
+    @Override
+    public void resetPlayerStatus() {
+
+        super.resetPlayerStatus();
+
+        this.hasBuiltBefore = false;
+    }
+
+
+    // ======================================================================================
+
+
     /**
      * USED ONLY FOR TESTING
      * @param hasBuiltBefore sets if the player has built before moving

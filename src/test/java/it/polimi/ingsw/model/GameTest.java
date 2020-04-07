@@ -1,14 +1,17 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Actions.BlockConsequence;
 import it.polimi.ingsw.model.BoardPack.Board;
 import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.Player.BasicPlayer;
+import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
 
@@ -18,7 +21,7 @@ class GameTest {
 
     List<Building> buildings;
 
-    Player player;
+    private List<Player> players;
 
 
     // ======================================================================================
@@ -30,6 +33,8 @@ class GameTest {
         game = new Game("Alfonso", "Massi");
 
         board = new Board();
+
+        players = new ArrayList<>();
 
         buildings = new ArrayList<>();
 
@@ -112,6 +117,18 @@ class GameTest {
 
     @Test
     void receiveConsequence() {
+        Player player1 = new BasicPlayer("Alfonso", Color.BLUE, new Card("Name", true,true,"effect"));
+        Player player2 = new BasicPlayer("Massi", Color.GREY, new Card("Name", true,true,"effect"));
+        players.add(player1);
+        players.add(player2);
+
+        assertEquals(true,game.getPlayerByName("Massi").getCanMoveUp());
+
+        game.receiveConsequence(new BlockConsequence("Alfonso"));
+
+        assertEquals(false,game.getPlayerByName("Massi").getCanMoveUp());
+        assertEquals(true,game.getPlayerByName("Alfonso").getCanMoveUp());
+
     }
 
 
@@ -171,6 +188,5 @@ class GameTest {
         System.out.println(provaJson);
 
     }
-
 
 }

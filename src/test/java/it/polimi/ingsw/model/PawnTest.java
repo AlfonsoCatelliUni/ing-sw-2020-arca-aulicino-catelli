@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.BoardPack.Board;
-import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 import org.junit.jupiter.api.Test;
 

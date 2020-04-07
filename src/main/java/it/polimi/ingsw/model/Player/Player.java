@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.Actions.Consequence;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
-import it.polimi.ingsw.model.BoardPack.*;
+import it.polimi.ingsw.model.Board.*;
 
 import java.util.List;
 

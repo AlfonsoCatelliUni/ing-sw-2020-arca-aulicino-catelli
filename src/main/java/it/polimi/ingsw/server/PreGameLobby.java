@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
-import it.polimi.ingsw.model.BoardPack.Building;
 import it.polimi.ingsw.model.Player.*;
 
 import java.util.*;

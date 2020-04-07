@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.BoardPack;
+package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.*;
@@ -182,17 +182,17 @@ public class Board {
 
 
     /**
-     * how much domes are placed on the board right now ?
+     * how much complete towers are placed on the board right now ?
      * @return the number of domes placed on the board
      */
-    public int getNumberOfDome() {
+    public int getNumberOfCompleteTowers() {
 
         int numDome = 0;
 
         for (int r = 0; r < ROW; r++){
             for (int c = 0; c < COLUMN; c++){
 
-                if( matrixBoard[r][c].getRoof().getIsDome() )
+                if( matrixBoard[r][c].getRoof().getIsDome() && matrixBoard[r][c].getHeight() == 4)
                     numDome++;
 
             }

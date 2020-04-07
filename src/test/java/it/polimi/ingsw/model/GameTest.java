@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.Actions.BlockConsequence;
-import it.polimi.ingsw.model.BoardPack.Board;
-import it.polimi.ingsw.model.BoardPack.Building;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Player.BasicPlayer;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
@@ -114,6 +114,7 @@ class GameTest {
     @Test
     void removePlayer() {
     }
+
 
     @Test
     void receiveConsequence() {

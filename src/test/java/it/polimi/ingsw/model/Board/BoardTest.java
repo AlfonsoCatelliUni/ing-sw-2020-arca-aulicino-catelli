@@ -1,6 +1,5 @@
-package it.polimi.ingsw.model.BoardPack;
+package it.polimi.ingsw.model.Board;
 
-import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
@@ -230,49 +229,6 @@ class BoardTest {
 
 
     @Test
-    void getNumberOfDome() {
-
-        int domeNum = gameBoard.getNumberOfDome();
-
-        assertEquals(0, domeNum);
-
-        /* an third level tower il built on the cell 0-0 */
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(2));
-
-        domeNum = gameBoard.getNumberOfDome();
-        assertEquals(0, domeNum);
-
-
-        /* a complete tower il built on the cell 0-0 */
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(3));
-
-        domeNum = gameBoard.getNumberOfDome();
-        assertEquals(1, domeNum);
-
-
-        /* a dome is built on cell 3-3 */
-        gameBoard.getCell(3,3).buildOnThisCell(buildings.get(3));
-
-        domeNum = gameBoard.getNumberOfDome();
-        assertEquals(2, domeNum);
-
-
-        /* an entire tower is built on the cell 0-4 */
-        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(0));
-        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(1));
-        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(2));
-        gameBoard.getCell(0,4).buildOnThisCell(buildings.get(3));
-
-        domeNum = gameBoard.getNumberOfDome();
-        assertEquals(3, domeNum);
-
-
-    }
-
-
-    @Test
     void getStringCellInfo() {
 
         String retString;
@@ -405,4 +361,7 @@ class BoardTest {
 
 
     }
+
+
+
 }

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.*;
-import it.polimi.ingsw.model.BoardPack.Board;
-import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.ArrayList;
 import java.util.List;

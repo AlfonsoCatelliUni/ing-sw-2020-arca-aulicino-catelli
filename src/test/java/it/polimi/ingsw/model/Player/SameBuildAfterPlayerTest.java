@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.*;
-import it.polimi.ingsw.model.BoardPack.Board;
-import it.polimi.ingsw.model.BoardPack.Building;
-import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Building;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.BeforeEach;

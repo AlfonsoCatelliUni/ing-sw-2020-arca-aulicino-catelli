@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import it.polimi.ingsw.model.BoardPack.Building;
+import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Player.Card;
 
 import java.io.BufferedReader;

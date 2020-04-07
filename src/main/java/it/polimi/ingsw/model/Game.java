@@ -1,13 +1,12 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.model.Actions.*;
-import it.polimi.ingsw.model.BoardPack.Board;
-import it.polimi.ingsw.model.BoardPack.Building;
-import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Building;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -319,6 +318,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     // ======================================================================================
     // MARK : consequence of a move
 
+
     @Override
     public void receiveConsequence(Consequence consequence) {
         consequence.accept(this);
@@ -334,15 +334,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     @Override
     public void doConsequence(BlockConsequence consequence) {
 
-        /* block the other player */
-        for (Player p : players) {
-            if (!p.getName().equals(consequence.getBlockerNickname())) {
-                p.setCanMoveUp(false);
-            }
-        }
-
-        //TODO : testare lambda function
-        //players.stream().filter(p -> !p.getName().equals(consequence.getBlockerNickname())).forEach(p -> p.setCanMoveUp(false));
+        players.stream().filter(p -> !p.getName().equals(consequence.getBlockerNickname())).forEach(p -> p.setCanMoveUp(false));
 
     }
 
@@ -455,8 +447,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     public Player getPlayerByName(String nickname) {
         return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
     }
-
-
 
 
 

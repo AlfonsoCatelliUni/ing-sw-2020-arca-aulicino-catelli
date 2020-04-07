@@ -8,7 +8,7 @@ import it.polimi.ingsw.events.CTSEvents.ChosenMoveActionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.MoveAction;
-import it.polimi.ingsw.model.BoardPack.Cell;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Game;
 
 import java.util.List;

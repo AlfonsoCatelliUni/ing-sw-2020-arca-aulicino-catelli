@@ -124,6 +124,7 @@ class NotSameBuildAfterPlayerTest {
         availableCellsToBuild = player.wherePawnCanBuild(gameBoard, player.getPawns()[0]);
         assertEquals(expectedCellsToBuild,availableCellsToBuild);
 
+
     }
 
 

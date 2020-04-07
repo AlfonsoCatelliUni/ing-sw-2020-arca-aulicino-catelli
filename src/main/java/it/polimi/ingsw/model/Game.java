@@ -334,7 +334,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         /* block the other player */
         for (Player p : players) {
-            if (!p.equals(currentPlayer)) {
+            if (!p.getName().equals(consequence.getBlockerNickname())) {
                 p.setCanMoveUp(false);
             }
         }

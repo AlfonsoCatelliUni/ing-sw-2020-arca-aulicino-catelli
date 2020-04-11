@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.Actions;
 public class MoveAction implements Action {
 
 
+    private String actionID;
+
+
     private int pawnRow;
 
 
@@ -19,6 +22,8 @@ public class MoveAction implements Action {
 
 
     public MoveAction() {
+        this.actionID = "move";
+
         this.pawnRow = -1;
         this.pawnColumn = -1;
 
@@ -28,6 +33,11 @@ public class MoveAction implements Action {
 
 
     // ======================================================================================
+
+
+    public String getActionID(){
+        return this.actionID;
+    }
 
 
     public int getPawnRow() {

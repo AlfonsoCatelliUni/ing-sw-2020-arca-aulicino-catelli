@@ -65,7 +65,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     //TODO : finish the standard Game constructor
-    public Game(){
+    public Game() {
 
         super();
 

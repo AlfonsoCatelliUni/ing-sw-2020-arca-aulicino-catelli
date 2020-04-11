@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.Actions;
 public class FinishAction implements Action {
 
 
+    private String actionID;
+
+
     private int pawnRow;
 
 
@@ -19,6 +22,8 @@ public class FinishAction implements Action {
 
 
     public FinishAction() {
+        this.actionID = "end turn";
+
         this.pawnRow = -1;
         this.pawnColumn = -1;
 
@@ -28,6 +33,11 @@ public class FinishAction implements Action {
 
 
     // ======================================================================================
+
+
+    public String getActionID(){
+        return this.actionID;
+    }
 
 
     public int getPawnRow() {

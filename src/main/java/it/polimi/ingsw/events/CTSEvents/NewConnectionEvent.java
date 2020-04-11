@@ -3,18 +3,16 @@ package it.polimi.ingsw.events.CTSEvents;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
+public class NewConnectionEvent implements ClientToServerEvent {
 
-public class VictoryEvent implements ClientToServerEvent {
-
-
-    private String winnerNickname;
+    private String newNickname;
 
 
     // ======================================================================================
 
 
-    public VictoryEvent(String winnerNickname) {
-        this.winnerNickname = winnerNickname;
+    public NewConnectionEvent(String newNickname) {
+        this.newNickname = newNickname;
     }
 
 
@@ -27,8 +25,8 @@ public class VictoryEvent implements ClientToServerEvent {
     }
 
 
-    public String getWinnerNickname() {
-        return this.winnerNickname;
+    public String getNewNickname() {
+        return this.newNickname;
     }
 
 

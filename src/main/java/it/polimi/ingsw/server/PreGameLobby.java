@@ -3,7 +3,9 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Player.*;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class PreGameLobby {
 
@@ -39,6 +41,12 @@ public class PreGameLobby {
     Map<String, Card> playerCardMap;
 
 
+    /**
+     * this map the player to the points where its pawns are going to be placed once the game is started
+     */
+    Map<String, List<Point>> playerPawnPoints;
+
+
     private final static int MAXPLAYERS = 3;
 
 
@@ -48,7 +56,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    PreGameLobby(){
+    PreGameLobby() {
 
         this.playersNicknames = new ArrayList<>();
         this.effectsClassMap = new HashMap<>();
@@ -67,7 +75,7 @@ public class PreGameLobby {
      * build the map that connects the name of the card to its correct decorator class
      * @return the map of card-playerType
      */
-    protected Map<String, Player> fillMap(){
+    protected Map<String, Player> fillMap() {
 
         Map<String, Player> effectClassMap = new HashMap<>();
 
@@ -87,9 +95,14 @@ public class PreGameLobby {
     }
 
 
-    public void addPlayer(String nickname, String cardName){
+    public void addPlayer(String nickname) throws RuntimeException {
 
-        addNameAndCard(nickname,cardName);
+        //TODO : non vogliamo che venga lanciata questa eccezione
+        //fare controllo prima di chiamare addPlayer
+        if(playersNicknames.contains(nickname))
+            throw new RuntimeException("This Lobby already contains this player");
+
+        playersNicknames.add(nickname);
 
         if (playersNicknames.size() == MAXPLAYERS - 1)
             closeWaitingRoom();
@@ -99,10 +112,7 @@ public class PreGameLobby {
 
     private void addNameAndCard (String nickname, String cardName){
 
-        if(playersNicknames.contains(nickname))
-            throw new RuntimeException("This Lobby already contains this player");
 
-        playersNicknames.add(nickname);
 
         playerCardMap.put( nickname, pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null) );
 
@@ -143,6 +153,8 @@ public class PreGameLobby {
 
 
     private void closeWaitingRoom() {
+
+
     }
 
 

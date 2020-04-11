@@ -355,14 +355,12 @@ public class BasicPlayer implements Player {
         if (numMove == 0) {
             if ( wherePawnCanMove(gameBoard, designatedPawn).size() > 0 )
                 availableActions.add(new MoveAction());
-            // else eccezione?
 
         }
 
         if (numBuild == 0) {
             if ( wherePawnCanBuild(gameBoard, designatedPawn).size() > 0 )
                 availableActions.add(new BuildAction());
-            // else eccezione?
         }
 
         if (numMove == 1 && numBuild == 1)

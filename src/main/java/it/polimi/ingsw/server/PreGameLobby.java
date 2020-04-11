@@ -110,9 +110,7 @@ public class PreGameLobby {
     }
 
 
-    private void addNameAndCard (String nickname, String cardName){
-
-
+    private void addNameAndCard (String nickname, String cardName) {
 
         playerCardMap.put( nickname, pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null) );
 
@@ -140,15 +138,6 @@ public class PreGameLobby {
         }
 
         return godsDeck;
-    }
-
-
-    // non deve essere messo qui questo metodo
-    public void showCards(List<Card> cards){
-
-        for (Card c : cards)
-            System.out.println(c.getName() + c.getEffect() + "\n");
-
     }
 
 

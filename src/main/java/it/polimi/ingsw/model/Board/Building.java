@@ -104,10 +104,11 @@ public class Building {
         this.placedNumber = placedNumber;
     }
 
+
     /**
      * when you place a building
      */
-    public void increaseQuantity(){
+    public void increasePlacedQuantity(){
         if(placedNumber != quantity) {
             placedNumber++;
         }
@@ -119,7 +120,7 @@ public class Building {
      * you can decrease the placed quantity of a piece
      * only if this piece is not a dome or if is not free
      */
-    public void decreaseQuantity(){
+    public void decreasePlacedQuantity(){
 
         if(placedNumber > 0) {
             placedNumber--;
@@ -127,6 +128,7 @@ public class Building {
 
 
     }
+
 
     /**
      * USED ONLY FOR TESTING

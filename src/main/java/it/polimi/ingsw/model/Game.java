@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.Player.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : constructors
 
 
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap, Map<String, List<Point>> playerPawnPoints) {
 
         super();
 
@@ -52,9 +53,13 @@ public class Game extends Observable implements GameConsequenceHandler {
             players.get(i).setColor(colors.get(i));
             players.get(i).setCard(nicknameCardMap.get(playersNickname.get(i)));
 
-            //TODO : cambiare l'istanziazione dei pedoni
-            players.get(i).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(i, i));
-            players.get(i).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(i, i+1));
+            // here i save the initial cells of the two pawns
+            Cell firstPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(0).x, playerPawnPoints.get(playersNickname.get(i)).get(0).y);
+            Cell secondPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(1).x, playerPawnPoints.get(playersNickname.get(i)).get(1).y);
+
+            // first placing of the pawn into the board
+            players.get(i).initPawn(gameBoard, Sex.MALE, firstPawnCell);
+            players.get(i).initPawn(gameBoard, Sex.FEMALE, secondPawnCell);
 
         }
 
@@ -64,12 +69,17 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    //TODO : finish the standard Game constructor
     public Game() {
 
         super();
 
         this.gameBoard = new Board();
+
+        this.players = new ArrayList<>();
+        this.currentPlayer = null;
+        this.indexCurrentPlayer = 0;
+
+
 
     }
 
@@ -382,45 +392,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         return players.get(indexCurrentPlayer).getName();
 
-    }
-
-
-    public String boardToString() {
-
-        String retString = "";
-
-        retString = ("╔═══╦════╦════╦════╦════╦════╗\n" +
-                "║   ║ 1  ║ 2  ║ 3  ║ 4  ║ 5  ║\n" +
-                "╠═══╬════╬════╬════╬════╬════╣\n" +
-                "║ A ║ " + gameBoard.getStringCellInfo(0,0) + " ║ "
-                + gameBoard.getStringCellInfo(0,1) + " ║ "
-                + gameBoard.getStringCellInfo(0,2) + " ║ "
-                + gameBoard.getStringCellInfo(0,3) + " ║ "
-                + gameBoard.getStringCellInfo(0,4) + " ║\n" + /* printed the first line */
-                "║ B ║ "+ gameBoard.getStringCellInfo(1,0) + " ║ "
-                + gameBoard.getStringCellInfo(1,1) + " ║ "
-                + gameBoard.getStringCellInfo(1,2) + " ║ "
-                + gameBoard.getStringCellInfo(1,3) + " ║ "
-                + gameBoard.getStringCellInfo(1,4) + " ║\n" + /* printed the second line */
-                "║ C ║ " + gameBoard.getStringCellInfo(2,0) + " ║ "
-                + gameBoard.getStringCellInfo(2,1) + " ║ "
-                + gameBoard.getStringCellInfo(2,2) + " ║ "
-                + gameBoard.getStringCellInfo(2,3) + " ║ "
-                + gameBoard.getStringCellInfo(2,4) + " ║\n" + /* printed the third line */
-                "║ D ║ " + gameBoard.getStringCellInfo(3,0) + " ║ "
-                + gameBoard.getStringCellInfo(3,1) + " ║ "
-                + gameBoard.getStringCellInfo(3,2) + " ║ "
-                + gameBoard.getStringCellInfo(3,3) + " ║ "
-                + gameBoard.getStringCellInfo(3,4) + " ║\n" + /* printed the fourth line */
-                "║ E ║ " + gameBoard.getStringCellInfo(4,0) + " ║ "
-                + gameBoard.getStringCellInfo(4,1) + " ║ "
-                + gameBoard.getStringCellInfo(4,2) + " ║ "
-                + gameBoard.getStringCellInfo(4,3) + " ║ "
-                + gameBoard.getStringCellInfo(4,4) + " ║\n" + /* printed the fifth line */
-                "╚═══╩════╩════╩════╩════╩════╝\n\n");
-
-
-        return retString;
     }
 
 

@@ -14,13 +14,13 @@ class BuildingTest {
 
         assertEquals(true, available);
 
-        building.increaseQuantity();
-        building.increaseQuantity();
+        building.increasePlacedQuantity();
+        building.increasePlacedQuantity();
         available = building.isAvailable();
 
         assertEquals(false, available);
 
-        building.decreaseQuantity();
+        building.decreasePlacedQuantity();
         available = building.isAvailable();
 
         assertEquals(true, available);
@@ -49,17 +49,17 @@ class BuildingTest {
     void increaseQuantity() {
 
         Building building = new Building(1, 2);
-        building.increaseQuantity();
+        building.increasePlacedQuantity();
         int placed = building.getPlacedNumber();
 
         assertEquals(1, placed);
 
-        building.increaseQuantity();
+        building.increasePlacedQuantity();
         placed = building.getPlacedNumber();
 
         assertEquals(2, placed);
 
-        building.increaseQuantity();
+        building.increasePlacedQuantity();
         placed = building.getPlacedNumber();
 
         assertEquals(2, placed);
@@ -71,12 +71,12 @@ class BuildingTest {
     void decreaseQuantity() {
 
         Building building = new Building(1, 2);
-        building.decreaseQuantity();
+        building.decreasePlacedQuantity();
         int placed = building.getPlacedNumber();
 
         assertEquals(0, placed);
 
-        building.decreaseQuantity();
+        building.decreasePlacedQuantity();
         placed = building.getPlacedNumber();
 
         assertEquals(0, placed);

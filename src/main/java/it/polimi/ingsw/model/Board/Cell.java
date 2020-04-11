@@ -175,7 +175,22 @@ public class Cell {
 
         this.zPosition++;
         this.roof = designatedBuilding;
-        designatedBuilding.increaseQuantity();
+        designatedBuilding.increasePlacedQuantity();
+
+    }
+
+
+    /**
+     * set the new type of building and decrement the z position
+     * @param designatedBuilding the new type of building
+     */
+    public void destroyRoof(Building designatedBuilding) {
+
+        this.zPosition--;
+
+        this.roof.decreasePlacedQuantity();
+        this.roof = designatedBuilding;
+
 
     }
 

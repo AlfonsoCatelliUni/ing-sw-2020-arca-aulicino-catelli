@@ -153,10 +153,10 @@ class BasicPlayerTest {
         building = buildings.get(0);
 
         while(building.isAvailable()) {
-            building.increaseQuantity();
+            building.increasePlacedQuantity();
         }
 
-        building.decreaseQuantity();
+        building.decreasePlacedQuantity();
 
         assertEquals(21, building.getPlacedNumber());
 
@@ -326,8 +326,9 @@ class BasicPlayerTest {
 
         assertEquals(possibleActions, player.getPossibleActions(gameBoard, player.getPawns()[0]));
 
-        // TODO : mettere il metodo per rimuovere le celle
-        gameBoard.getCell(1,0).setHeight(0);
+
+        gameBoard.destroyRoofInThisCell(1,0);
+        gameBoard.destroyRoofInThisCell(1,0);
 
 
         /* case when the pawn can move */
@@ -346,8 +347,8 @@ class BasicPlayerTest {
 
         assertEquals(possibleActions, player.getPossibleActions(gameBoard, player.getPawns()[0]));
 
-        // TODO : mettere il metodo per rimuovere le celle
-        gameBoard.getCell(0,0).setHeight(0);
+
+        gameBoard.destroyRoofInThisCell(0,0);
 
         /* case when the pawn can build */
         possibleActions.add(new BuildAction());

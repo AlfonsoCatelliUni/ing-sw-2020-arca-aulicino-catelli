@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.JsonHandler;
-import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.Player.Pawn;
 
 import java.util.ArrayList;
@@ -178,6 +177,26 @@ public class Board {
     }
 
 
+    /**
+     * destroy the actual roof, placing the correct roof
+     * @param row row coordinate of the cell that i want to lower the tower
+     * @param column column coordinate of the cell that i want to lower the tower
+     */
+    public void destroyRoofInThisCell(int row, int column) {
+
+        Cell designatedCell = getCell(row, column);
+
+        Building newRoof = new Building(0, 30);
+
+        for (Building b : buildings ) {
+            if( b.getLevel() == designatedCell.getHeight() - 1 ) {
+                newRoof = b;
+            }
+        }
+
+        designatedCell.destroyRoof(newRoof);
+    }
+
     // ======================================================================================
 
 
@@ -210,134 +229,12 @@ public class Board {
                 if(matrixBoard[row][column].getHeight() == 4){
                     matrixBoard[row][column].setHeight(1);
 
-                    buildings.stream().filter(b -> !b.getIsDome()).forEach(Building::decreaseQuantity);
+                    buildings.stream().filter(b -> !b.getIsDome()).forEach(Building::decreasePlacedQuantity);
                 }
             }
 
         }
 
-    }
-
-
-
-    // ======================================================================================
-
-
-    /**
-     * I want the information of this cell encoded in the following method "Height,Pawn" :
-     *      - Height is the building level in this cell (0-1-2-3-4)
-     *      - Pawn is the color's first letter, upper case if male, lower case if female (B-b, G-g, W-w)
-     *      - Pawn is "x" if there is a dome in this cell
-     *      - Pawn is "." if there is no builder in this cell
-     * @param row the row of the cell to encode
-     * @param column the column of the cell to encode
-     * @return the encoded string
-     */
-    public String getStringCellInfo(int row, int column) {
-
-        Cell designatedCell = this.getCell(row, column);
-
-        String retString = String.valueOf(designatedCell.getHeight());
-
-        if (designatedCell.getRoof().getIsDome()) {
-            return retString + "x";
-        }
-        else if(!designatedCell.getBuilderHere()) {
-            return retString + ".";
-        }
-        else {
-
-            Color pawnColor = designatedCell.getPawnInThisCell().getColor();
-            Sex pawnSex = designatedCell.getPawnInThisCell().getSex();
-
-            if ( pawnColor == Color.BLUE ) {
-
-                if ( pawnSex == Sex.MALE ) {
-                    return retString + "B";
-                }
-                else if ( pawnSex == Sex.FEMALE ) {
-                    return retString + "b";
-                }
-
-            }
-            else if ( pawnColor == Color.GREY ) {
-
-                if ( pawnSex == Sex.MALE ) {
-                    return retString + "G";
-                }
-                else if ( pawnSex == Sex.FEMALE ) {
-                    return retString + "g";
-                }
-
-            }
-            else if ( pawnColor == Color.WHITE ){
-
-                if ( pawnSex == Sex.MALE ) {
-                    return retString + "W";
-                }
-                else if ( pawnSex == Sex.FEMALE ) {
-                    return retString + "w";
-                }
-
-            }
-
-        }
-
-        return "error";
-    }
-
-
-    //TODO : TOGLIERE E CAMBIARE NEI TEST
-    public String getStringCellInfo(Cell designatedCell) {
-
-
-        String retString = String.valueOf(designatedCell.getHeight());
-
-        if (designatedCell.getRoof().getIsDome()) {
-            return retString + "x";
-        }
-        else if(!designatedCell.getBuilderHere()) {
-            return retString + ".";
-        }
-        else {
-
-            Color pawnColor = designatedCell.getPawnInThisCell().getColor();
-            Sex pawnSex = designatedCell.getPawnInThisCell().getSex();
-
-            if ( pawnColor == Color.BLUE ) {
-
-                if ( pawnSex == Sex.MALE ) {
-                    return retString + "B";
-                }
-                else if ( pawnSex == Sex.FEMALE ) {
-                    return retString + "b";
-                }
-
-            }
-            else if ( pawnColor == Color.GREY ) {
-
-                if ( pawnSex == Sex.MALE ) {
-                    return retString + "G";
-                }
-                else if ( pawnSex == Sex.FEMALE ) {
-                    return retString + "g";
-                }
-
-            }
-            else if ( pawnColor == Color.WHITE ){
-
-                if ( pawnSex == Sex.MALE ) {
-                    return retString + "W";
-                }
-                else if ( pawnSex == Sex.FEMALE ) {
-                    return retString + "w";
-                }
-
-            }
-
-        }
-
-        return "error";
     }
 
 

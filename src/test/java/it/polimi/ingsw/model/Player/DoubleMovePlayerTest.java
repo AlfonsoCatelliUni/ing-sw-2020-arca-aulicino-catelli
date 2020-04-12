@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.BuildAction;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
@@ -21,11 +24,13 @@ class DoubleMovePlayerTest {
 
     private List<Building> buildings;
 
-    private Player player;
+    private DoubleMovePlayer player;
 
     private List<Cell> availableCellsToMove;
 
     private List<Cell> correctListAvailableCellsMove;
+
+    private List <Action> availableAction;
 
     @BeforeEach
     void setUp() {
@@ -37,6 +42,7 @@ class DoubleMovePlayerTest {
 
         availableCellsToMove = new ArrayList<>();
         correctListAvailableCellsMove = new ArrayList<>();
+        availableAction = new ArrayList<>();
 
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
         player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
@@ -56,6 +62,7 @@ class DoubleMovePlayerTest {
         /* Level Three */
         gameBoard.getCell(1,2).buildOnThisCell(buildings.get(0));
         gameBoard.getCell(1,2).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(2));
         /* Dome Level */
         gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
         /* Dome Level */
@@ -66,10 +73,7 @@ class DoubleMovePlayerTest {
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
         correctListAvailableCellsMove.add(gameBoard.getCell(0,1));
-        correctListAvailableCellsMove.add(gameBoard.getCell(0,2));
-        correctListAvailableCellsMove.add(gameBoard.getCell(2,0));
         correctListAvailableCellsMove.add(gameBoard.getCell(1,1));
-        correctListAvailableCellsMove.add(gameBoard.getCell(1,2));
 
         availableCellsToMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
         correctListAvailableCellsMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
@@ -85,12 +89,49 @@ class DoubleMovePlayerTest {
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
         correctListAvailableCellsMove.add(gameBoard.getCell(1,1));
-        correctListAvailableCellsMove.add(gameBoard.getCell(2,0));
 
-        assertEquals(availableCellsToMove, correctListAvailableCellsMove);
+        assertEquals(correctListAvailableCellsMove, availableCellsToMove );
         correctListAvailableCellsMove.clear();
+
+        /* in this case it's a second move, so player can not move back if he wants to move again */
+        player.setCanMoveUp(true);
+
+        player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+
+        availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(1,1));
+
+        correctListAvailableCellsMove.add(gameBoard.getCell(2,0));
+        correctListAvailableCellsMove.add(gameBoard.getCell(0,1));
+
+        availableCellsToMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        correctListAvailableCellsMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+        assertEquals(correctListAvailableCellsMove, availableCellsToMove);
 
 
     }
 
+    @Test
+    void getPossibleActions() {
+        int i;
+        player.setNumMove(1);
+        player.setNumBuild(0);
+        player.setHasMoved(true);
+
+        List <Action> expectedAction = new ArrayList<>();
+
+        expectedAction.add(new MoveAction());
+        expectedAction.add(new BuildAction());
+
+
+        availableAction = player.getPossibleActions(gameBoard, player.getPawns()[0]);
+
+        for(i = 0; i < expectedAction.size(); i++)
+            assertEquals(expectedAction.get(i).getClass(), availableAction.get(i).getClass());
+
+
+
+
+
+    }
 }

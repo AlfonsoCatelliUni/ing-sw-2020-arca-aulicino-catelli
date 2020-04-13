@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
+import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
@@ -38,15 +39,20 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
-    public void update(Object event) throws RuntimeException {
+    public void update(Object event) {
+        throw new RuntimeException("Unknown Event Type!");
+    }
 
-        if(event instanceof ClientToServerEvent) {
-            ((ClientToServerEvent) event).accept(this);
-        }
-        else {
-            throw new RuntimeException("The controller cant receive a ServerToClientEvent!");
-        }
 
+    @Override
+    public void update(ClientToServerEvent event) {
+        receiveEvent(event);
+    }
+
+
+    @Override
+    public void update(ServerToClientEvent event) {
+        throw new RuntimeException("The controller cant receive a ServerToClientEvent!");
     }
 
 
@@ -92,6 +98,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     }
+
 
     @Override
     public void manageEvent(VictoryEvent event) {

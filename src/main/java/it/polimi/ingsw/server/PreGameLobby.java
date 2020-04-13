@@ -117,6 +117,33 @@ public class PreGameLobby {
     }
 
 
+    private void addNewPawnCoordinates(String nickname, int row, int column) {
+
+        //TODO : migliorare gestione casi limite, metodo fatto velocemente
+        Point pawnPoint = new Point(row, column);
+        List<String> keys = new ArrayList<>(playerPawnPoints.keySet());
+
+        for ( String k : keys ) {
+            List<Point> pointList = playerPawnPoints.get(k);
+
+            for (Point p : pointList ) {
+                if(p.getX() == pawnPoint.getX() && p.getY() == pawnPoint.getY()) {
+                    //Brutta cosa, manda messaggio di non validità
+                    //Attendi altro punto
+
+                }
+            }
+
+        }
+
+        List<Point> points = new ArrayList<>();
+        points = playerPawnPoints.get(nickname);
+        points.add(pawnPoint);
+        playerPawnPoints.put(nickname, points);
+
+    }
+
+
     protected List<Card> fillGodsDeck(List<Card> cards) {
 
         int cardsQuantity = playersNicknames.size();

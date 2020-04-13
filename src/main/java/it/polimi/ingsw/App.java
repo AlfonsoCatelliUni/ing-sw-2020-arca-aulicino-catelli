@@ -7,12 +7,6 @@ import it.polimi.ingsw.model.Sex;
 public class App  {
 
 
-    public static void main( String[] args ) {
-
-        System.out.println( "Hello Bitch" );
-
-    }
-
 
     /**
      * I want the information of this cell encoded in the following method "Height,Pawn" :

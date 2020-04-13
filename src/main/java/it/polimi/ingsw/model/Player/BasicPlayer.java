@@ -10,6 +10,10 @@ import it.polimi.ingsw.model.Sex;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this is the class of player basic, with the standard method, this class will be decorated according
+ * to the chosen card
+ */
 public class BasicPlayer implements Player {
 
 
@@ -198,7 +202,12 @@ public class BasicPlayer implements Player {
 
     // ======================================================================================
 
-
+    /**
+     * the standard method that move designated pawn, it's the default move
+     * @param gameBoard the game board where the pawn have to move to
+     * @param designatedPawn the pawn that's designated to move
+     * @return the Consequence created by the move
+     */
     @Override
     public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
 
@@ -256,6 +265,14 @@ public class BasicPlayer implements Player {
     // ======================================================================================
 
 
+    /**
+     * the standard method that build a building by the designated pawn, it's the default build
+     * @param designatedPawn the pawn that's designated to move
+     * @param designatedCell the game board where the pawn have to move to
+     * @param chosenLevel the level of the building
+     * @param buildings the list of the four buildings
+     * @return the Consequence created by the build
+     */
     @Override
     public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
@@ -293,7 +310,11 @@ public class BasicPlayer implements Player {
         return gameBoard.getCellAvailableToBuild( designatedPawn );
     }
 
-
+    /**
+     * this method returns the list of possible building on the designatedCell
+     * @param designatedCell the cell that i've chosen to build on
+     * @return the list of possible building on the designated cell
+     */
     @Override
     public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
         return gameBoard.getPossibleBuildingOnCell( designatedCell );
@@ -345,7 +366,14 @@ public class BasicPlayer implements Player {
         return retPawnsCells;
     }
 
-
+    /**
+     * return which are the possible actions that i can do with the selected pawn
+     * if i can't do any move with the pawn i lose the game, it's the basic possible action,
+     * it will by decorated according with the selected God card
+     * @param gameBoard the board of the game
+     * @param designatedPawn the pawn selected to generate the possible actions
+     * @return the list of possible actions
+     */
     @Override
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
 

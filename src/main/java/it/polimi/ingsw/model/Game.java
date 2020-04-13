@@ -182,7 +182,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     /**
-     * the current master move the pawn based on his decoration
+     * the current master <3 move the pawn based on his decoration
      * @param row the row coordinate of the pawn that he wants to move
      * @param column the column coordinate of the pawn that he wants to move
      * @param newRow the row coordinate of the new position of the pawn

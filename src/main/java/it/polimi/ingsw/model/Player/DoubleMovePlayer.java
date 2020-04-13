@@ -13,9 +13,13 @@ import java.util.List;
 public class DoubleMovePlayer extends PlayerDecorator {
 
     public Boolean hasMoved;
+
+
     public Cell startCell;
 
+
     // ======================================================================================
+
 
     public DoubleMovePlayer(BasicPlayer player) {
         super(player);
@@ -58,6 +62,7 @@ public class DoubleMovePlayer extends PlayerDecorator {
         return availableActions;
     }
 
+
     /**
      * This method returns a list of cells where the pawn can move
      * This is different from the basic method because if the player moves for the second time,
@@ -83,34 +88,6 @@ public class DoubleMovePlayer extends PlayerDecorator {
     }
 
 
-        // this is the old version of the decorator
-        /*
-        List<Cell> availableCells = new ArrayList<>();
-
-
-         for each available cell in where I can move with one movement I
-         have to check if I can do another movement
-        for (Cell c : availableCellsToMove ) {
-
-            if (!availableCells.contains(c)) {
-                availableCells.add(c);
-            }
-
-            List<Cell> secondNeighboringCells = gameBoard.getNeighboring(c);
-            for (Cell cc : secondNeighboringCells ) {
-                if ( cc.getHeight() - c.getHeight() <= 1 && cc.getIsFree() && !availableCells.contains(cc)){
-                    availableCells.add(cc);
-                }
-            }
-
-        }
-
-        if( !super.player.getCanMoveUp() ) {
-            availableCells.removeIf(c -> c.getHeight() - designatedPawn.getHeight() == 1);
-        }
-
-        return availableCells;  */
-
     /**
      * This method is different from the basic one because the player can move twice
      * so if it happens, we have to set some parameters in order to have a correct move after the first move, we have to save the start cell because the player can not
@@ -122,15 +99,18 @@ public class DoubleMovePlayer extends PlayerDecorator {
     @Override
     public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        /* if is the first move, save the pawn's position*/
-        if (player.getNumMove() == 0)
-            this.startCell = designatedPawn.getPosition();
-
         Consequence consequence = super.movePawn(gameBoard, designatedPawn, nextPosition);
 
-        /* if is the first move, player hasMoved becomes true */
-        if (player.getNumMove() == 1 && player.getNumBuild() == 0 && !hasMoved)
+        /* if is the first move, player hasMoved becomes true and saves the previous cell*/
+        if (player.getNumMove() == 1 && player.getNumBuild() == 0 && !hasMoved) {
             this.hasMoved = true;
+            this.startCell = designatedPawn.getPosition();
+        }
+        else if( player.getNumMove() == 2 && player.getNumBuild() == -1) {
+            player.setNumMove(1);
+            player.setNumBuild(0);
+        }
+
 
         return consequence;
     }
@@ -143,6 +123,9 @@ public class DoubleMovePlayer extends PlayerDecorator {
 
         this.hasMoved = false;
     }
+
+
+    // ======================================================================================
 
 
     /**

@@ -20,19 +20,19 @@ public class VirtualView extends Observable implements Observer {
 
     @Override
     public void update(Object event) {
+        throw new RuntimeException("Unknown Event Type!");
+    }
 
-        /* json status of the game */
-        if(event instanceof ServerToClientEvent) {
-            sendMessage((ServerToClientEvent) event);
-        }
-        /* this is needed only to manage the VictoryEvent */
-        else if(event instanceof ClientToServerEvent) {
-            updateAllObservers(event);
-        }
-        else {
-            throw new RuntimeException("Unknown Event Type!");
-        }
 
+    @Override
+    public void update(ServerToClientEvent event) {
+        sendMessage(event);
+    }
+
+
+    @Override
+    public void update(ClientToServerEvent event) {
+        updateAllObservers(event);
     }
 
 

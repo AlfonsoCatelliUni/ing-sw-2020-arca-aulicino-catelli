@@ -370,4 +370,17 @@ class BasicPlayerTest {
     }
 
 
+    @Test
+    void getPawnInCoordinates() {
+
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+
+        Pawn pawn = player.getPawnInCoordinates(2,2);
+
+        assertEquals(player.getPawns()[1], pawn);
+
+    }
+
+
 }

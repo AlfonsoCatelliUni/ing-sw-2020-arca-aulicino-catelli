@@ -2,6 +2,10 @@ package it.polimi.ingsw.model.Actions;
 
 import it.polimi.ingsw.model.GameConsequenceHandler;
 
+
+/**
+ * this consequence is thrown when a player win the game in any possible method
+ */
 public class VictoryConsequence implements Consequence {
 
 

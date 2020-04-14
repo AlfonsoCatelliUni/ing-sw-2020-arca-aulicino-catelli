@@ -35,7 +35,7 @@ public class Building {
 
     // ======================================================================================
 
-
+    /* togliere perché è usato una sola volta */
     public Building(){
         this.level = -1;
         this.isDome = false;

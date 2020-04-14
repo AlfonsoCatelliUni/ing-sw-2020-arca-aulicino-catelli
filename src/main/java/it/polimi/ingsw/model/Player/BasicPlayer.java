@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -104,13 +105,18 @@ public class BasicPlayer implements Player {
     @Override
     public Pawn getPawnInCoordinates(int row, int column) {
 
+        /*
         for ( Pawn p : pawns ) {
             if( p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column ) {
                 return p;
             }
         }
 
-        return null;
+         */
+
+        return Arrays.stream(pawns).filter(p -> p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column).findAny().orElse(null);
+
+        //return null;
     }
 
 
@@ -365,6 +371,7 @@ public class BasicPlayer implements Player {
 
         return retPawnsCells;
     }
+
 
     /**
      * return which are the possible actions that i can do with the selected pawn

@@ -1,5 +1,10 @@
 package it.polimi.ingsw.model.Actions;
 
+
+/**
+ * this action is used to return the player the set of possible actions
+ * and it's used to indicate that the player have chose to do a finish action
+ */
 public class FinishAction implements Action {
 
 
@@ -59,9 +64,4 @@ public class FinishAction implements Action {
         return actionColumn;
     }
 
-
-    @Override
-    public void doAction() {
-
-    }
 }

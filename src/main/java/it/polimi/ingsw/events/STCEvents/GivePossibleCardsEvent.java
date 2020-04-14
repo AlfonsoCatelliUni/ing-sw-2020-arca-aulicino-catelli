@@ -1,27 +1,26 @@
 package it.polimi.ingsw.events.STCEvents;
 
-import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Player.Card;
 
 import java.util.List;
 
-public class GivePossibleActionsEvent implements ServerToClientEvent {
+public class GivePossibleCardsEvent implements ServerToClientEvent {
 
 
     private String receiverNickname;
 
 
-    private List<Action> actions;
+    private List<Card> cards;
 
 
     // ======================================================================================
 
 
-    public GivePossibleActionsEvent(String receiverNickname, List<Action> actions) {
+    public GivePossibleCardsEvent(String receiverNickname, List<Card> cards) {
         this.receiverNickname = receiverNickname;
-        this.actions = actions;
+        this.cards = cards;
     }
 
 
@@ -42,8 +41,8 @@ public class GivePossibleActionsEvent implements ServerToClientEvent {
     }
 
 
-    public List<Action> getActions() {
-        return this.actions;
+    public List<Card> getCards() {
+        return this.cards;
     }
 
 

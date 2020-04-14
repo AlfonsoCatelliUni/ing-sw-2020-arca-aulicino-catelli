@@ -1,27 +1,31 @@
 package it.polimi.ingsw.events.STCEvents;
 
-import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.List;
 
-public class GivePossibleActionsEvent implements ServerToClientEvent {
+public class GivePossibleCellsToMoveEvent implements ServerToClientEvent {
 
 
     private String receiverNickname;
 
 
-    private List<Action> actions;
+    private List<Cell> cellsAvailableToMove;
+
+
+    private String actionID;
 
 
     // ======================================================================================
 
 
-    public GivePossibleActionsEvent(String receiverNickname, List<Action> actions) {
+    public GivePossibleCellsToMoveEvent(String receiverNickname, List<Cell> cellsAvailableToMove) {
         this.receiverNickname = receiverNickname;
-        this.actions = actions;
+        this.actionID = "move";
+
+        this.cellsAvailableToMove = cellsAvailableToMove;
     }
 
 
@@ -42,8 +46,8 @@ public class GivePossibleActionsEvent implements ServerToClientEvent {
     }
 
 
-    public List<Action> getActions() {
-        return this.actions;
+    public List<Cell> getCellsAvailableToMove() {
+        return this.cellsAvailableToMove;
     }
 
 

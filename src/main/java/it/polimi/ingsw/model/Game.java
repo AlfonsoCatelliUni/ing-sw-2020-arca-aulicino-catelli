@@ -351,7 +351,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     @Override
     public void doConsequence(NoConsequence consequence) {
-        //nothing to do here :)
+        //nothing to do here :(
     }
 
 
@@ -363,6 +363,11 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     // ======================================================================================
     // MARK : support methods
+
+
+    public Player getPlayerByName(String nickname) {
+        return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
+    }
 
 
     public List<String> getAllNames() {
@@ -413,12 +418,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.resetPlayerStatus();
     }
-
-
-    public Player getPlayerByName(String nickname) {
-        return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
-    }
-
 
 
 

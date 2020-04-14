@@ -71,7 +71,7 @@ public class JsonHandler {
         boolean available3P = buildingJson.get("available3P").getAsBoolean();
         String effect = buildingJson.get("effect").getAsString();
 
-        return new Card(name, available2P, available3P, effect);
+        return new Card(name, available3P, effect);
     }
 
 

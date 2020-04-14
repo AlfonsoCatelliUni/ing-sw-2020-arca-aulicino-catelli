@@ -38,7 +38,7 @@ class DoubleMovePlayerTest {
         gameBoard = new Board();
         buildings = gameBoard.getBuildings();
 
-        player = new DoubleMovePlayer(new BasicPlayer("player", Color.BLUE, new Card("Artemis", true, true, "effect_artemis")));
+        player = new DoubleMovePlayer(new BasicPlayer("player", Color.BLUE, new Card("Artemis", true, "effect_artemis")));
 
         availableCellsToMove = new ArrayList<>();
         correctListAvailableCellsMove = new ArrayList<>();

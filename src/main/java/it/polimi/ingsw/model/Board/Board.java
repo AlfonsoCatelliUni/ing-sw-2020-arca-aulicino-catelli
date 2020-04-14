@@ -27,9 +27,9 @@ public class Board {
 
 
     /**
-     * list of buildings
+     * the list of the four different buildings, in order to check how many pieces are available to place to the board
      */
-    private List<Building> buildings;
+    private final List<Building> buildings;
 
 
     // ======================================================================================
@@ -75,6 +75,9 @@ public class Board {
     }
 
 
+    /**
+     * @return list of the four different buildings
+     */
     public List<Building> getBuildings(){
         return this.buildings;
     }
@@ -228,8 +231,8 @@ public class Board {
 
 
     /**
-     * this method removes a complete tower less the dome
-     * and decreases the number of placed buildings in the board
+     * this method finds in the board if there are some complete towers and replace them with a dome, destroying a
+     * tower causes the decreasing of placed quantity of the buildings
      */
     public void destroyTowers() {
 

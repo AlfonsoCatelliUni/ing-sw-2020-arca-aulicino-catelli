@@ -1,22 +1,26 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
-import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
+import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
-import it.polimi.ingsw.events.CTSEvents.ChosenMoveActionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.PreGameLobby;
+import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.view.server.VirtualView;
 
 import java.util.List;
 
 public class Controller implements Observer, ClientToServerManager {
+
+
+    private VirtualView virtualView;
 
 
     private PreGameLobby preGameLobby;
@@ -40,7 +44,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void update(Object event) {
-        throw new RuntimeException("Unknown Event Type!");
+        throw new RuntimeException("Yo, Unknown Event Type... This is NOT your hood, men!");
     }
 
 
@@ -52,7 +56,13 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void update(ServerToClientEvent event) {
-        throw new RuntimeException("The controller cant receive a ServerToClientEvent!");
+        throw new RuntimeException("How the [beep] is possible that the Controller received a ServerToClientEvent? --- Great! Now I've to fix it.");
+    }
+
+
+    @Override
+    public void receiveEvent(ClientToServerEvent event) {
+        event.accept(this);
     }
 
 
@@ -60,8 +70,23 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
-    public void receiveEvent(ClientToServerEvent event) {
-        event.accept(this);
+    public void manageEvent(NewConnectionEvent event) {
+
+    }
+
+
+    @Override
+    public void manageEvent(DisconnectionEvent event) {
+
+    }
+
+
+    // ======================================================================================
+
+
+    @Override
+    public void manageEvent(ChosenCardEvent event) {
+
     }
 
 
@@ -101,6 +126,30 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
+    public void manageEvent(ChosenBuildActionEvent event) {
+
+    }
+
+
+    @Override
+    public void manageEvent(ChosenFinishActionEvent event) {
+
+    }
+
+
+    @Override
+    public void manageEvent(ChosenCellToMoveEvent event) {
+
+    }
+
+
+    @Override
+    public void manageEvent(ChosenCellToBuildEvent event) {
+
+    }
+
+
+    @Override
     public void manageEvent(VictoryEvent event) {
 
         //done with LAMBDA BITCH!
@@ -114,10 +163,7 @@ public class Controller implements Observer, ClientToServerManager {
     // ======================================================================================
 
 
-    @Override
-    public void manageEvent(NewConnectionEvent event) {
-        throw new RuntimeException("The Controller does not manage NewConnectionEvent... sadly :(");
-    }
+
 
 
 }

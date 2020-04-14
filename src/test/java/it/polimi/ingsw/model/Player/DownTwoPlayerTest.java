@@ -28,7 +28,7 @@ class DownTwoPlayerTest {
 
         gameBoard = new Board();
 
-        player = new DownTwoPlayer( new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, true, "effetto_apollo")));
+        player = new DownTwoPlayer( new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, "effetto_apollo")));
 
         buildings = gameBoard.getBuildings();
 

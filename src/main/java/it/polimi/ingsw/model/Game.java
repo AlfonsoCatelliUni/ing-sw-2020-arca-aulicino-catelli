@@ -77,9 +77,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    /**
-     * used only for testing
-     */
     public Game() {
 
         super();
@@ -105,8 +102,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
 
-        players.add(new BasicPlayer(playerName, Color.BLUE, new Card("God_Player", true, true, "effect_god")));
-        players.add(new BasicPlayer(opponentName, Color.GREY, new Card("God_Opponent", true, true, "effect_god")));
+        players.add(new BasicPlayer(playerName, Color.BLUE, new Card("God_Player", true, "effect_god")));
+        players.add(new BasicPlayer(opponentName, Color.GREY, new Card("God_Opponent", true, "effect_god")));
 
         players.get(0).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
         players.get(0).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
@@ -384,7 +381,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     @Override
     public void doConsequence(NoConsequence consequence) {
-        //nothing to do here :)
+        //nothing to do here :(
     }
 
 
@@ -400,7 +397,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     // ======================================================================================
     // MARK : support methods
-
 
     public List<String> getAllNames() {
 

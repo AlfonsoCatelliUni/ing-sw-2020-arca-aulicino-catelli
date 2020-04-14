@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.Sex;
 
 import java.util.List;
 
+/**
+ * this is the decorator of the player, each type of decorator extends this class according with pattern decorator
+ */
 public class PlayerDecorator implements Player {
 
 
@@ -93,12 +96,6 @@ public class PlayerDecorator implements Player {
     @Override
     public void setCard(Card card) {
         player.setCard(card);
-    }
-
-
-    @Override
-    public void setNameGod(String nameGod) {
-        player.setNameGod(nameGod);
     }
 
 

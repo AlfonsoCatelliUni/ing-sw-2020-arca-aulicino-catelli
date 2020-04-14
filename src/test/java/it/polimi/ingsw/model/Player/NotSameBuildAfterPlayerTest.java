@@ -36,7 +36,7 @@ class NotSameBuildAfterPlayerTest {
         buildings = gameBoard.getBuildings();
 
         //Demeter
-        player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, new Card("Demeter", true, true, "Demeter")));
+        player = new NotSameBuildAfterPlayer( new BasicPlayer("test", Color.BLUE, new Card("Demeter", true, "Demeter")));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
 
         expectedActions = new ArrayList<>();

@@ -7,6 +7,9 @@ import it.polimi.ingsw.model.Board.Cell;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to move on a cell occupied by another player switching the tow pawns
+ */
 public class SwitchPlayer extends PlayerDecorator {
 
 

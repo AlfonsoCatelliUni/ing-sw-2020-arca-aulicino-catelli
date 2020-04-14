@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to build a dome even if the level isn't number 3
+ */
 public class DomeBuildPlayer extends PlayerDecorator {
 
 

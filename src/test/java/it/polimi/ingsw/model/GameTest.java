@@ -118,8 +118,8 @@ class GameTest {
 
     @Test
     void receiveConsequence() {
-        Player player1 = new BasicPlayer("Alfonso", Color.BLUE, new Card("Name", true,true,"effect"));
-        Player player2 = new BasicPlayer("Massi", Color.GREY, new Card("Name", true,true,"effect"));
+        Player player1 = new BasicPlayer("Alfonso", Color.BLUE, new Card("Name", true,"effect"));
+        Player player2 = new BasicPlayer("Massi", Color.GREY, new Card("Name", true,"effect"));
         players.add(player1);
         players.add(player2);
 

@@ -10,11 +10,20 @@ import it.polimi.ingsw.model.Board.Cell;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to move twice, if player moves for second time, he can not move back
+ */
 public class DoubleMovePlayer extends PlayerDecorator {
 
+    /**
+     * this attribute is true if the player has moved for the first time
+     */
     public Boolean hasMoved;
 
 
+    /**
+     * the cell where the pawn starts his movement
+     */
     public Cell startCell;
 
 
@@ -116,6 +125,9 @@ public class DoubleMovePlayer extends PlayerDecorator {
     }
 
 
+    /**
+     * this method is the same of the basic but it sets also the hasMoved attribute to the default value
+     */
     @Override
     public void resetPlayerStatus() {
 

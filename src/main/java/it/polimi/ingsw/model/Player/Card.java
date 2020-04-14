@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.Player;
 
+/**
+ * the Card of the player, each player chooses one card, it's a description,
+ * the player will be decorated according to the card chosen
+ */
 public class Card {
 
 
@@ -7,12 +11,6 @@ public class Card {
      * identify the card
      */
     private String name;
-
-
-    /**
-     * is it for a 2 players match?
-     */
-    private Boolean available2P;
 
 
     /**
@@ -30,9 +28,8 @@ public class Card {
     // ======================================================================================
 
 
-    public Card(String name, Boolean available2P, Boolean available3P, String effect) {
+    public Card(String name, Boolean available3P, String effect) {
         this.name = name;
-        this.available2P = available2P;
         this.available3P = available3P;
         this.effect = effect;
     }
@@ -43,14 +40,6 @@ public class Card {
 
     public String getName() {
         return name;
-    }
-
-
-    /**
-     * @return if true, card can be used during 2 players match
-     */
-    public Boolean isAvailable2P() {
-        return available2P;
     }
 
 

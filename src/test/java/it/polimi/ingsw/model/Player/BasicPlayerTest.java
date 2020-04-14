@@ -33,9 +33,9 @@ class BasicPlayerTest {
 
         gameBoard = new Board();
 
-        player = new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, true, "effetto_apollo"));
-        opponentPlayer = new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, true, "effetto_atlas"));
-        secondOpponentPlayer = new BasicPlayer("second_opponent", Color.WHITE, new Card("Artemis", true, true, "effetto_artemis"));
+        player = new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, "effetto_apollo"));
+        opponentPlayer = new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, "effetto_atlas"));
+        secondOpponentPlayer = new BasicPlayer("second_opponent", Color.WHITE, new Card("Artemis", true, "effetto_artemis"));
 
         buildings = gameBoard.getBuildings();
 
@@ -366,6 +366,19 @@ class BasicPlayerTest {
         for(i = 0; i < possibleActions.size(); i++)
             assertEquals(possibleActions.get(i).getClass(), player.getPossibleActions(gameBoard, player.getPawns()[0]).get(i).getClass());
 
+
+    }
+
+
+    @Test
+    void getPawnInCoordinates() {
+
+        player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
+        player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
+
+        Pawn pawn = player.getPawnInCoordinates(2,2);
+
+        assertEquals(player.getPawns()[1], pawn);
 
     }
 

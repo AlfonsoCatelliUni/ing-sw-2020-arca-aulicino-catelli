@@ -1,8 +1,6 @@
 package it.polimi.ingsw.events.manager;
 
-import it.polimi.ingsw.events.CTSEvents.ChosenMoveActionEvent;
-import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
-import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
+import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.ClientToServerEvent;
 
 public interface ClientToServerManager {
@@ -12,15 +10,36 @@ public interface ClientToServerManager {
 
 
     // ======================================================================================
+    // MARK : Network And Update Events
 
 
     void manageEvent(NewConnectionEvent event);
 
+    void manageEvent(DisconnectionEvent event);
+
 
     // ======================================================================================
+    // MARK : Game Based Events
+
+
+    void manageEvent(ChosenCardEvent event);
+
 
 
     void manageEvent(ChosenMoveActionEvent event);
+
+    void manageEvent(ChosenBuildActionEvent event);
+
+    void manageEvent(ChosenFinishActionEvent event);
+
+
+
+    void manageEvent(ChosenCellToMoveEvent event);
+
+    void manageEvent(ChosenCellToBuildEvent event);
+
+
+
     void manageEvent(VictoryEvent event);
 
 

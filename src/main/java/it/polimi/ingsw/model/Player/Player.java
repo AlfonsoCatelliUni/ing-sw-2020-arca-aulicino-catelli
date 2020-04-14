@@ -9,7 +9,9 @@ import it.polimi.ingsw.model.Board.*;
 
 import java.util.List;
 
-
+/**
+ * interface according with pattern decorator of the player
+ */
 public interface Player {
 
 
@@ -54,9 +56,6 @@ public interface Player {
 
 
     void setCard(Card card);
-
-
-    void setNameGod(String nameGod);
 
 
     void setNumMove(int numMove);
@@ -111,10 +110,6 @@ public interface Player {
 
 
     // ======================================================================================
-
-
-
-
 
 
 }

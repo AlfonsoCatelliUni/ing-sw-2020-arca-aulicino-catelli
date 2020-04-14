@@ -47,7 +47,7 @@ class BuildBeforePlayerTest {
         gameBoard = new Board();
         test = new ArrayList<>();
         test_1 = new ArrayList<>();
-        card = new Card("test", true, true, "test");
+        card = new Card("test", true, "test");
         buildings = gameBoard.getBuildings();
 
         player1 = new BasicPlayer("test1", Color.BLUE, card);
@@ -113,7 +113,7 @@ class BuildBeforePlayerTest {
 
         /* case when are the domes are placed on the board */
 
-        gameBoard.getBuildings().get(3).setQuantity(18);
+        gameBoard.getBuildings().get(3).setPlacedNumber(18);
 
         test.clear();
         test.add(new MoveAction());

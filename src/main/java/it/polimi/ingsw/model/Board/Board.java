@@ -26,12 +26,18 @@ public class Board {
     private Cell[][] matrixBoard = new Cell[ROW][COLUMN];
 
 
+    /**
+     * list of buildings
+     */
     private List<Building> buildings;
 
 
     // ======================================================================================
 
 
+    /**
+     * builds the board for the game with empty cells
+     */
     public Board() {
 
         /* build an empty board, passing only the coordinate parameters */
@@ -221,6 +227,10 @@ public class Board {
     }
 
 
+    /**
+     * this method removes a complete tower less the dome
+     * and decreases the number of placed buildings in the board
+     */
     public void destroyTowers() {
 
         for(int row = 0; row < ROW; row++){

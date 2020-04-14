@@ -35,7 +35,15 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : constructors
 
 
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> effectClassMap, Map<String, List<Point>> playerPawnPoints) {
+    /**
+     * constructor of the Game class
+     * @param playersNickname is the list of players that will play this game
+     * @param colors is the enumeration of possible colors assignable to the players
+     * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
+     * @param playerDecoratorMap is where is mapped a god's name to his decoration
+     * @param playerPawnPoints is where is mapped a nickname's player to the coordinates of his pawns
+     */
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> playerDecoratorMap, Map<String, List<Point>> playerPawnPoints) {
 
         super();
 
@@ -47,7 +55,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         for (int i = 0; i < playersNickname.size(); i++) {
 
-            players.add(effectClassMap.get(playersNickname.get(i)));
+            players.add(playerDecoratorMap.get(playersNickname.get(i)));
 
             players.get(i).setName(playersNickname.get(i));
             players.get(i).setColor(colors.get(i));
@@ -69,6 +77,9 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * used only for testing
+     */
     public Game() {
 
         super();
@@ -246,6 +257,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * puts in a json file all the info of the game in a give moment
+     * @return the status of the game in a given moment
+     */
     public String generateStatusJson(){
 
         String statusString = "";
@@ -329,18 +344,32 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : consequence of a move
 
 
+    /**
+     * receives the consequence of an action
+     * this method is a part of the visitor pattern
+     * once the consequence is received, is handled by the game handler
+     * @param consequence is a consequence of an action
+     */
     @Override
     public void receiveConsequence(Consequence consequence) {
         consequence.accept(this);
     }
 
-
+    /**
+     * This method notifies all the observers that there is a winner for this game
+     * with a victory event with the nickname's winner
+     * @param consequence is the consequence received from the handler
+     */
     @Override
     public void doConsequence(VictoryConsequence consequence) {
         updateAllObservers( new VictoryEvent(consequence.getWinnerNickname()) );
     }
 
 
+    /**
+     * Blocks all the players from moving up the next turn, less the one who invoked this method
+     * @param consequence is the consequence received from the handler
+     */
     @Override
     public void doConsequence(BlockConsequence consequence) {
 
@@ -349,12 +378,20 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * This method do nothing because there is no consequence from the action who invoked this
+     * @param consequence is the consequence received from the handler
+     */
     @Override
     public void doConsequence(NoConsequence consequence) {
         //nothing to do here :)
     }
 
 
+    /**
+     * this method calls the destroyTowers method from the Board class
+     * @param consequence is the consequence received from the handler
+     */
     @Override
     public void doConsequence(DestroyTowersConsequence consequence) {
         gameBoard.destroyTowers();
@@ -382,6 +419,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * sets the current player of this turn
+     * @return the new current player for this turn
+     */
     public String newCurrentPlayer() {
 
         currentPlayer.resetPlayerStatus();
@@ -395,6 +436,9 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * sets the index of the next current player in the arraylist of players
+     */
     public void nextCurrentPlayer() {
 
         if( indexCurrentPlayer == players.size() - 1 ) {
@@ -408,6 +452,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * this method only invokes the resetPlayerStatus in the Player class
+     * @param playerName is the nickname of the player that has to be reset
+     */
     public void resetPlayerStatus(String playerName) {
         Player player = getPlayerByName(playerName);
 
@@ -415,6 +463,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @param nickname is the nickname of the player that I want
+     * @return the player with the given nickname
+     */
     public Player getPlayerByName(String nickname) {
         return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
     }

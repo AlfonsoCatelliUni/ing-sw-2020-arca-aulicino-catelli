@@ -11,9 +11,15 @@ import it.polimi.ingsw.model.Board.Cell;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to build twice, but player can not build for the second time on the same cell
+ */
 public class NotSameBuildAfterPlayer extends PlayerDecorator {
 
 
+    /**
+     * the cell where player built for the first time
+     */
     private Cell cellBefore;
 
 

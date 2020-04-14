@@ -33,9 +33,9 @@ class BasicPlayerTest {
 
         gameBoard = new Board();
 
-        player = new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, true, "effetto_apollo"));
-        opponentPlayer = new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, true, "effetto_atlas"));
-        secondOpponentPlayer = new BasicPlayer("second_opponent", Color.WHITE, new Card("Artemis", true, true, "effetto_artemis"));
+        player = new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, "effetto_apollo"));
+        opponentPlayer = new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, "effetto_atlas"));
+        secondOpponentPlayer = new BasicPlayer("second_opponent", Color.WHITE, new Card("Artemis", true, "effetto_artemis"));
 
         buildings = gameBoard.getBuildings();
 

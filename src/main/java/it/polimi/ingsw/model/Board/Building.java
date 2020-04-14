@@ -10,7 +10,7 @@ public class Building {
      *      3 : level 3
      *      4 : dome
      */
-    private int level;
+    private final int level;
 
 
     /**
@@ -18,13 +18,13 @@ public class Building {
      * we can identify if it's a dome by the level value
      * we keep this to better readability
      */
-    private Boolean isDome;
+    private final Boolean isDome;
 
 
     /**
      * max quantity available for this specific type
      */
-    private  int quantity;
+    private final int quantity;
 
 
     /**
@@ -34,14 +34,6 @@ public class Building {
 
 
     // ======================================================================================
-
-
-    public Building(){
-        this.level = -1;
-        this.isDome = false;
-        this.quantity = -1;
-        this.placedNumber = -1;
-    }
 
 
     public Building(int level, int quantity){
@@ -100,6 +92,10 @@ public class Building {
     // ======================================================================================
 
 
+    /**
+     * USED ONLY FOR TESTING
+     * @param placedNumber is the number of block placed
+     */
     public void setPlacedNumber(int placedNumber) {
         this.placedNumber = placedNumber;
     }
@@ -127,15 +123,6 @@ public class Building {
         }
 
 
-    }
-
-
-    /**
-     * USED ONLY FOR TESTING
-     * @param placedNumber is the number of block placed
-     */
-    public void setQuantity(int placedNumber) {
-        this.placedNumber = placedNumber;
     }
 
 }

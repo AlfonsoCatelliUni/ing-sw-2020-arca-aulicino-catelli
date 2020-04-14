@@ -31,8 +31,8 @@ class PushPlayerTest {
 
         gameBoard = new Board();
 
-        player = new PushPlayer( new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, true, "effetto_apollo")));
-        opponentPlayer = new PushPlayer( new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, true, "effetto_atlas")));
+        player = new PushPlayer( new BasicPlayer("player", Color.BLUE, new Card("Apollo", true, "effetto_apollo")));
+        opponentPlayer = new PushPlayer( new BasicPlayer("opponent", Color.WHITE, new Card("Atlas", true, "effetto_atlas")));
 
         buildings = gameBoard.getBuildings();
 

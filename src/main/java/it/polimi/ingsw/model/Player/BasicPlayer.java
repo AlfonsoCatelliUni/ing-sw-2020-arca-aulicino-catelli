@@ -16,31 +16,51 @@ import java.util.List;
  */
 public class BasicPlayer implements Player {
 
-
+    /**
+     * number of the pawn each player has
+     */
     private final int QUANTITY = 2;
 
 
+    /**
+     * nickname of the player
+     */
     private String name;
 
 
+    /**
+     * color of the pawn the player has
+     */
     private Color color;
 
 
+    /**
+     * Card chosen by the player
+     */
     private Card godCard;
 
 
+    /**
+     * Pawns the player has to play with
+     */
     private Pawn[] pawns;
 
 
-    private String nameGodCard;
-
-
+    /**
+     * counter of the num of move the player did during his turn
+     */
     private int numMove;
 
 
+    /**
+     * counter of the num of build the player did during his turn
+     */
     private int numBuild;
 
 
+    /**
+     * if the player can move up during the game, this attribute is true
+     */
     private Boolean canMoveUp;
 
 
@@ -50,10 +70,10 @@ public class BasicPlayer implements Player {
 
 
     public BasicPlayer() {
-        this.name = "nomeNullo";
+        this.name = "";
         this.color = null;
         this.godCard = null;
-        this.pawns = new Pawn[2];
+        this.pawns = new Pawn[QUANTITY];
 
         this.canMoveUp = true;
 
@@ -62,15 +82,14 @@ public class BasicPlayer implements Player {
 
     }
 
-
+    // ONLY USED FOR TESTING
     public BasicPlayer(String name, Color color, Card godCard) {
         this.name = name;
         this.color = color;
 
-        this.nameGodCard = godCard.getName();
         this.godCard = godCard;
 
-        this.pawns = new Pawn[2];
+        this.pawns = new Pawn[QUANTITY];
 
         this.canMoveUp = true;
 
@@ -156,12 +175,6 @@ public class BasicPlayer implements Player {
 
 
     @Override
-    public void setNameGod(String nameGod) {
-        this.nameGodCard = nameGod;
-    }
-
-
-    @Override
     public void setCard(Card card) {
         this.godCard = card;
     }
@@ -185,6 +198,9 @@ public class BasicPlayer implements Player {
     }
 
 
+    /**
+     * this method resets the status of the player when his turn ends
+     */
     @Override
     public void resetPlayerStatus() {
 
@@ -256,6 +272,11 @@ public class BasicPlayer implements Player {
     }
 
 
+    /**
+     * this method forces the pawn and return void because there is no consequence (victory or block) if you force a pawn
+     * @param designatedPawn the pawn forced
+     * @param nextPosition the cell where the pawn is forced to
+     */
     @Override
     public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
         designatedPawn.forcePawn(nextPosition);
@@ -278,7 +299,7 @@ public class BasicPlayer implements Player {
 
         designatedPawn.pawnBuild();
 
-        Building designatedBuilding = new Building();
+        Building designatedBuilding = buildings.get(0);
 
         for (Building b : buildings) {
             if ( b.getLevel() == chosenLevel ) {
@@ -346,6 +367,11 @@ public class BasicPlayer implements Player {
     }
 
 
+    /**
+     * this method returns the cells only of the pawns of the player that can move
+     * @param gameBoard the gameBoard where the pawns are on
+     * @return List of the cells
+     */
     @Override
     public List<Cell> getPawnsCoordinates(Board gameBoard) {
 

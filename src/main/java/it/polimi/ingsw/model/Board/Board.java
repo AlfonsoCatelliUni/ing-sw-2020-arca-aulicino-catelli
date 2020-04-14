@@ -26,7 +26,10 @@ public class Board {
     private Cell[][] matrixBoard = new Cell[ROW][COLUMN];
 
 
-    private List<Building> buildings;
+    /**
+     * the list of the four different buildings, in order to check how many pieces are available to place to the board
+     */
+    private final List<Building> buildings;
 
 
     // ======================================================================================
@@ -69,6 +72,9 @@ public class Board {
     }
 
 
+    /**
+     * @return list of the four different buildings
+     */
     public List<Building> getBuildings(){
         return this.buildings;
     }
@@ -221,6 +227,10 @@ public class Board {
     }
 
 
+    /**
+     * this method finds in the board if there are some complete towers and replace them with a dome, destroying a
+     * tower causes the decreasing of placed quantity of the buildings
+     */
     public void destroyTowers() {
 
         for(int row = 0; row < ROW; row++){

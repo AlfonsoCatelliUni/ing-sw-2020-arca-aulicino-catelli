@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.Actions.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 
+/**
+ * this decorator gives the possibility to win also when player moves down two levels
+ */
 public class DownTwoPlayer extends PlayerDecorator {
 
 
@@ -14,6 +17,10 @@ public class DownTwoPlayer extends PlayerDecorator {
     // ======================================================================================
 
 
+    /**
+     * this method is the same of basic player, but it return Victory Consequence also
+     * if player moves down to two levels
+     */
     @Override
     public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 

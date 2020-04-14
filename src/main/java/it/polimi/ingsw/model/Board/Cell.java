@@ -2,6 +2,9 @@ package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.model.Player.Pawn;
 
+/**
+ * the cell that gameBoard has made with
+ */
 public class Cell {
 
     /* x = column , y = row */
@@ -10,13 +13,13 @@ public class Cell {
     /**
      * y = row
      */
-    private int rowPosition;
+    private final int rowPosition;
 
 
     /**
      * x = column
      */
-    private int columnPosition;
+    private final int columnPosition;
 
 
     /**
@@ -27,7 +30,7 @@ public class Cell {
      *      3 : 3 blocks
      *      4 : complete tower
      */
-    private int zPosition;
+    private int height;
 
 
     /**
@@ -59,24 +62,12 @@ public class Cell {
     public Cell(int rowPosition, int columnPosition) {
         this.columnPosition = columnPosition;
         this.rowPosition = rowPosition;
-        this.zPosition = 0;
+        this.height = 0;
 
         this.isBuilderHere = false;
         this.pawnInThisCell = null;
 
-        this.roof = new Building(0, 30);
-    }
-
-
-    public Cell() {
-        this.columnPosition = 0;
-        this.rowPosition = 0;
-        this.zPosition = 0;
-
-        this.isBuilderHere = false;
-        this.pawnInThisCell = null;
-
-        this.roof = new Building(0, 30);
+        this.roof = new Building(0, 25);
     }
 
 
@@ -85,10 +76,10 @@ public class Cell {
 
     /**
      * USED ONLY FOR TESTING
-     * @param zPosition the new value of z position
+     * @param height the new value of z position
      */
-    public void setHeight(int zPosition) {
-        this.zPosition = zPosition;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
 
@@ -115,7 +106,7 @@ public class Cell {
      * @return the value of the z coordinate
      */
     public int getHeight() {
-        return zPosition;
+        return height;
     }
 
 
@@ -173,7 +164,7 @@ public class Cell {
      */
     public void buildOnThisCell(Building designatedBuilding) {
 
-        this.zPosition++;
+        this.height++;
         this.roof = designatedBuilding;
         designatedBuilding.increasePlacedQuantity();
 
@@ -186,7 +177,7 @@ public class Cell {
      */
     public void destroyRoof(Building designatedBuilding) {
 
-        this.zPosition--;
+        this.height--;
 
         this.roof.decreasePlacedQuantity();
         this.roof = designatedBuilding;

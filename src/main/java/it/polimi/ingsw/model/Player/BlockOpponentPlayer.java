@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.Actions.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 
+/**
+ * this decorator blocks the possibility of opponent player to move up during their turn
+ */
 public class BlockOpponentPlayer extends PlayerDecorator {
 
 

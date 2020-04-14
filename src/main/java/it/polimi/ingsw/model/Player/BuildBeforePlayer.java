@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.Board.Cell;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to build before every move action, if the player uses this god's effect, he cannot move up in the same turn
+ */
 public class BuildBeforePlayer extends PlayerDecorator {
 
 
@@ -110,6 +113,9 @@ public class BuildBeforePlayer extends PlayerDecorator {
     // ======================================================================================
 
 
+    /**
+     * this method is the same of the basic but it sets also the hasBuiltBefore attribute to the default value
+     */
     @Override
     public void resetPlayerStatus() {
 

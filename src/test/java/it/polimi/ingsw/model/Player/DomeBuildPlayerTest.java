@@ -38,8 +38,8 @@ class DomeBuildPlayerTest {
 
         gameBoard = new Board();
         test = new ArrayList<>();
-        card = new Card("test", true, true, "test");
-        card_1 = new Card("test_1", true, true, "test_1");
+        card = new Card("test", true, "test");
+        card_1 = new Card("test_1", true, "test_1");
         buildings = gameBoard.getBuildings();
 
         player = new DomeBuildPlayer(new BasicPlayer("test", Color.BLUE, card));
@@ -84,7 +84,7 @@ class DomeBuildPlayerTest {
 
         /* case when all the domes are placed in the board */
 
-        gameBoard.getBuildings().get(3).setQuantity(18);
+        gameBoard.getBuildings().get(3).setPlacedNumber(18);
 
         expectedBuildings.clear();
         expectedBuildings.add(buildings.get(0));

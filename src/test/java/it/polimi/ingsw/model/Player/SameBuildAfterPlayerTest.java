@@ -30,7 +30,7 @@ class SameBuildAfterPlayerTest {
 
         gameBoard = new Board();
         expectedCellsToBuild = new ArrayList<>();
-        player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, new Card("Demeter", true, true, "Hephaestus")));
+        player = new SameBuildAfterPlayer( new BasicPlayer("test", Color.GREY, new Card("Demeter", true, "Hephaestus")));
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
         expectedActions = new ArrayList<>();
 

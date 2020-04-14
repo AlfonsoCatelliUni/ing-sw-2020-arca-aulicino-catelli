@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to move on a cell occupied by another player pushing the opponent to cell in front of
+ */
 public class PushPlayer extends PlayerDecorator {
 
 

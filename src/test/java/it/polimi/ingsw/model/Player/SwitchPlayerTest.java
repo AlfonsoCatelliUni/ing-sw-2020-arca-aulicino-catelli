@@ -34,8 +34,8 @@ class SwitchPlayerTest {
 
         buildings = gameBoard.getBuildings();
 
-        player = new SwitchPlayer(new BasicPlayer("playerTest", Color.BLUE, new Card("SwitchPlayer", true, true, "SwitchPlayer")));
-        opponentPlayer = new BasicPlayer("opponentTest", Color.GREY, new Card("SwitchPlayer", true, true, "SwitchPlayer"));
+        player = new SwitchPlayer(new BasicPlayer("playerTest", Color.BLUE, new Card("SwitchPlayer", true, "SwitchPlayer")));
+        opponentPlayer = new BasicPlayer("opponentTest", Color.GREY, new Card("SwitchPlayer", true, "SwitchPlayer"));
 
         player.initPawn(gameBoard, Sex.MALE ,gameBoard.getCell(0,0));
         player.initPawn(gameBoard, Sex.FEMALE ,gameBoard.getCell(2,2));

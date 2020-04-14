@@ -55,8 +55,9 @@ class PawnTest {
 
     @Test
     void pawnBuild() {
-
-        Pawn pawn = new Pawn();
+        Board gameBoard = new Board();
+        Cell cell = gameBoard.getCell(0,0);
+        Pawn pawn = new Pawn(Color.GREY, Sex.FEMALE, cell);
         pawn.pawnBuild();
         assertEquals (true, pawn.getHasBuilt());
     }

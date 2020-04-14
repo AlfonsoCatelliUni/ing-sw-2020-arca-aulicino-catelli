@@ -4,6 +4,9 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 
+/**
+ * this is the Worker, each player has two pawns to play with
+ */
 public class Pawn {
 
 
@@ -58,12 +61,18 @@ public class Pawn {
     // ======================================================================================
 
 
-    public Pawn(Color color, Sex sex, Cell starCell) {
+    /**
+     * Standard constructor
+     * @param color the right enum of the color of the pawn
+     * @param sex the right enum of the sex of the pawn
+     * @param startCell the initial cell of the pawn in the Board
+     */
+    public Pawn(Color color, Sex sex, Cell startCell) {
         this.color = color;
         this.sex = sex;
 
-        this.position = starCell;
-        this.height = starCell.getHeight();
+        this.position = startCell;
+        this.height = startCell.getHeight();
 
         this.hasMoved = false;
         this.hasBuilt = false;
@@ -71,20 +80,6 @@ public class Pawn {
         this.forcedMove = false;
 
 
-    }
-
-
-    public Pawn() {
-        this.color = null;
-        this.sex = null;
-
-        this.position = new Cell();
-        this.height = 0;
-
-        this.hasMoved = false;
-        this.hasBuilt = false;
-        this.goneUp = false;
-        this.forcedMove = false;
     }
 
 
@@ -166,19 +161,9 @@ public class Pawn {
     // ======================================================================================
 
 
+    // ONLY USED FOR TESTING
     public void setHeight(int height) {
         this.height = height;
-    }
-
-
-    public void resetPawnStatus() {
-
-        this.hasMoved = false;
-        this.hasBuilt = false;
-
-        this.goneUp = false;
-        this.forcedMove = false;
-
     }
 
 
@@ -220,6 +205,10 @@ public class Pawn {
     }
 
 
+    /**
+     * this method forces the pawn and return void because there is no consequence (victory or block) if you force a pawn
+     * @param nextPosition the cell where the pawn is forced to
+     */
     public void forcePawn(Cell nextPosition) {
 
         this.hasMoved = false;
@@ -227,6 +216,20 @@ public class Pawn {
 
         this.position = nextPosition;
         this.height = nextPosition.getHeight();
+    }
+
+
+    /**
+     * this method resets the default value of the pawn when player ends turn
+     */
+    public void resetPawnStatus() {
+
+        this.hasMoved = false;
+        this.hasBuilt = false;
+
+        this.goneUp = false;
+        this.forcedMove = false;
+
     }
 
 

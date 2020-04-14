@@ -39,7 +39,7 @@ class BlockOpponentPlayerTest {
 
         gameBoard = new Board();
         test = new ArrayList<>();
-        card = new Card("test", true, true, "test");
+        card = new Card("test", true, "test");
 
         player1 = new BasicPlayer("test1", Color.BLUE, card);
         player_1 = new BlockOpponentPlayer(player1);

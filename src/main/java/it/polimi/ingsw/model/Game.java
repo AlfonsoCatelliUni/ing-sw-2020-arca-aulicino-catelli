@@ -431,7 +431,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     }
 
-
+    
     /**
      * sets the index of the next current player in the arraylist of players
      */

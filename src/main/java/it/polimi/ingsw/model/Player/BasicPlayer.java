@@ -123,19 +123,7 @@ public class BasicPlayer implements Player {
 
     @Override
     public Pawn getPawnInCoordinates(int row, int column) {
-
-        /*
-        for ( Pawn p : pawns ) {
-            if( p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column ) {
-                return p;
-            }
-        }
-
-         */
-
         return Arrays.stream(pawns).filter(p -> p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column).findAny().orElse(null);
-
-        //return null;
     }
 
 

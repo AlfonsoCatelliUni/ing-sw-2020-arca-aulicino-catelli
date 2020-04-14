@@ -108,7 +108,8 @@ public class Connection implements Runnable{
         try {
             output.writeObject(event);
             output.flush();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("SOCKET exception: disconnecting " + name);
             e.printStackTrace();
         }

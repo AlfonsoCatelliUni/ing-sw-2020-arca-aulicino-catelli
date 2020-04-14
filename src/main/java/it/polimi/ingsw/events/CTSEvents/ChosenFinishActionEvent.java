@@ -1,9 +1,9 @@
 package it.polimi.ingsw.events.CTSEvents;
 
-import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.events.manager.ClientToServerManager;
 
-public class ChosenMoveActionEvent implements ClientToServerEvent {
+public class ChosenFinishActionEvent implements ClientToServerEvent {
 
 
     private String playerNickname;
@@ -21,9 +21,9 @@ public class ChosenMoveActionEvent implements ClientToServerEvent {
     // ======================================================================================
 
 
-    public ChosenMoveActionEvent(String playerNickname, int pawnRow, int pawnColumn) {
+    public ChosenFinishActionEvent(String playerNickname, int pawnRow, int pawnColumn) {
         this.playerNickname = playerNickname;
-        this.actionID = "move";
+        this.actionID = "finish";
 
         this.pawnRow = pawnRow;
         this.pawnColumn = pawnColumn;
@@ -60,6 +60,4 @@ public class ChosenMoveActionEvent implements ClientToServerEvent {
     public int getPawnColumn() {
         return this.pawnColumn;
     }
-
-
 }

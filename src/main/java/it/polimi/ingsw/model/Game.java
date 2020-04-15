@@ -13,6 +13,7 @@ import org.json.simple.JSONObject;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -468,6 +469,33 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * this method is used when there is a DestroyBlockPlayer
+     * @param playerName is the name of the player
+     * @param row is the row of the cell where a block will be destroyed
+     * @param column is the column od the cell where a block will be destroyed
+     */
+    public void destroyBlock(String playerName, int row, int column) {
+
+        Player player = getPlayerByName(playerName);
+
+        player.destroyBlock(gameBoard, gameBoard.getCell(row, column));
+    }
+
+    /**
+     * this method is used when there is a DestroyBlockPlayer
+     * @param playerNickname is the name of the DestroyBlockPlayer
+     * @return the list of cells where the not-moved pawn can destroy a block
+     */
+    public List<Cell> wherePawnCanDestroy(String playerNickname) {
+
+        Player player = getPlayerByName(playerNickname);
+
+        Pawn notMovedPawn = Arrays.stream(player.getPawns()).filter(pawn -> !pawn.getHasMoved()).findAny().get();
+
+        return player.wherePawnCanDestroy(gameBoard, notMovedPawn);
+
+    }
 
 
 }

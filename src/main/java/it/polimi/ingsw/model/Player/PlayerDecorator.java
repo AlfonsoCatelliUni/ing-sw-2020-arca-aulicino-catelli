@@ -185,6 +185,16 @@ public class PlayerDecorator implements Player {
         this.player.placePawn(gameBoard, designatedPawn, designatedCell);
     }
 
+    @Override
+    public void destroyBlock(Board gameBoard, Cell designatedCell) {
+        player.destroyBlock(gameBoard, designatedCell);
+    }
+
+    @Override
+    public List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn) {
+       return player.wherePawnCanDestroy(gameBoard, designatedPawn);
+    }
+
 
     @Override
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {

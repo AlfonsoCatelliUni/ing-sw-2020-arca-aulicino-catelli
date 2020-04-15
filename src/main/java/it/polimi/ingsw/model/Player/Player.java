@@ -108,6 +108,10 @@ public interface Player {
 
     void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell);
 
+    void destroyBlock(Board gameBoard, Cell designatedCell);
+
+    List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);
+
 
     // ======================================================================================
 

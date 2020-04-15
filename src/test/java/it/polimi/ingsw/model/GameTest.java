@@ -190,4 +190,17 @@ class GameTest {
 
     }
 
+    /**
+     * this method only calls the destroyBlock in player
+     */
+    @Test
+    void destroyBlock() {
+    }
+
+    /**
+     * this method only calls the wherePawnCanDestroy in player
+     */
+    @Test
+    void wherePawnCanDestroy() {
+    }
 }

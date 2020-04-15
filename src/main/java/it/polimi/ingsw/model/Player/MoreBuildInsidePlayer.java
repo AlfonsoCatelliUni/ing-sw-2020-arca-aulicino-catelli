@@ -14,9 +14,13 @@ import java.util.List;
  */
 public class MoreBuildInsidePlayer extends PlayerDecorator  {
 
+
     public MoreBuildInsidePlayer(BasicPlayer player) {
         super(player);
     }
+
+
+    // ======================================================================================
 
 
     /**
@@ -42,6 +46,7 @@ public class MoreBuildInsidePlayer extends PlayerDecorator  {
 
         return availableActions;
     }
+
 
     /**
      * this method returns the cells where a pawn can build but if it's the second time to build, it removes the perimeter cells

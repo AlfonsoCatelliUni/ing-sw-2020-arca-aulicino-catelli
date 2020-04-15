@@ -12,9 +12,14 @@ import java.util.List;
  */
 public class MovePerimeterAgainPlayer extends PlayerDecorator {
 
+
     public MovePerimeterAgainPlayer(BasicPlayer player) {
         super(player);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * This method is similar to basic, but the player can move again each time pawn moves onto perimeter space

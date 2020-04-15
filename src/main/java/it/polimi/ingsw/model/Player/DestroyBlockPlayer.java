@@ -12,9 +12,14 @@ import java.util.stream.Collectors;
 
 public class DestroyBlockPlayer extends PlayerDecorator {
 
+
     public DestroyBlockPlayer(BasicPlayer player) {
         super(player);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * this overrides the super method until the player has to finish the turn
@@ -42,6 +47,7 @@ public class DestroyBlockPlayer extends PlayerDecorator {
 
     }
 
+
     /**
      * this method controls where the not-moved pawn can destroy
      * @param gameBoard is the board where the game is played
@@ -50,9 +56,11 @@ public class DestroyBlockPlayer extends PlayerDecorator {
      */
     public List<Cell> wherePawnCanDestoy(Board gameBoard, Pawn designatedPawn) {
 
+        //💦
         return wherePawnCanBuild(gameBoard, designatedPawn).stream().filter(cell -> cell.getHeight()>0).collect(Collectors.toList());
 
     }
+
 
     /**
      * this method destroys the roof of the designatedCell.
@@ -72,5 +80,6 @@ public class DestroyBlockPlayer extends PlayerDecorator {
             }
         }
     }
+
 
 }

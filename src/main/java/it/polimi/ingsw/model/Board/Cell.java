@@ -145,6 +145,10 @@ public class Cell {
         return !getRoof().getIsDome() && !getBuilderHere();
     }
 
+    public Boolean isPerimeter(){
+        return columnPosition == 0 || rowPosition == 0 || columnPosition == 4 || rowPosition == 4;
+    }
+
 
     // ======================================================================================
 

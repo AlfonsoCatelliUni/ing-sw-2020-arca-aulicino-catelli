@@ -202,7 +202,6 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(VictoryEvent event) {
 
-        //done with LAMBDA BITCH!
         Player winnerPlayer = game.getPlayerByName(event.getWinnerNickname());
 
 

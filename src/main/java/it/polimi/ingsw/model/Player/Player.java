@@ -112,6 +112,8 @@ public interface Player {
 
     List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);
 
+    List<Cell> wherePawnCanForce (Board gameBoard, Pawn designatedPawn);
+
 
     // ======================================================================================
 

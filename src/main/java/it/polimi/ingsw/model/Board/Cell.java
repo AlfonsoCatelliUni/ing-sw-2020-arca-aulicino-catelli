@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.model.Player.Pawn;
 
+import java.util.List;
+
 /**
  * the cell that gameBoard has made with
  */
@@ -202,6 +204,7 @@ public class Cell {
         }
 
     }
+
 
 
 }

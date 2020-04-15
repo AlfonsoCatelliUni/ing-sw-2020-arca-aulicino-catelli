@@ -451,18 +451,28 @@ public class BasicPlayer implements Player {
 
     }
 
+
     /**
      * this method is used only for the destroyBlockPlayer
      */
     @Override
-    public void destroyBlock(Board gameBoard, Cell designatedCell) {
-    }
+    public void destroyBlock(Board gameBoard, Cell designatedCell) {}
+
 
     /**
      * this method is only used for the destroyBlockPlayer
      */
     @Override
     public List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn) {
+        return null;
+    }
+
+
+    /**
+     * this method is only used for the destroyBlockPlayer
+     */
+    @Override
+    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
         return null;
     }
 

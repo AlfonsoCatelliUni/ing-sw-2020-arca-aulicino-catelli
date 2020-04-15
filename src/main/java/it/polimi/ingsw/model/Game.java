@@ -176,6 +176,14 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    public List<Cell> wherePawnCanForce(String playerName, int row, int column){
+
+        Player player = getPlayerByName(playerName);
+
+        return player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(row,column));
+    }
+
+
     /**
      * which are the possible type of buildings that can be built on this position ?
      * @param row the row coordinate the position
@@ -225,6 +233,16 @@ public class Game extends Observable implements GameConsequenceHandler {
         Cell designatedCell = gameBoard.getCell(buildRow, buildColumn);
 
         player.pawnBuild(designatedPawn, designatedCell, level, gameBoard.getBuildings());
+    }
+
+
+    public void forceOpponent(String playerName, int pawnRow, int pawnColumn, int opponentRow, int opponentColumn){
+        Cell nextPosition = gameBoard.getSymmetrical(gameBoard.getCell(pawnRow,pawnColumn), gameBoard.getCell(opponentRow, opponentColumn));
+
+        Player player = getPlayerByName(playerName);
+
+        player.forcePawn(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
+
     }
 
 

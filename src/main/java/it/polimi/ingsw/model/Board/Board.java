@@ -250,6 +250,20 @@ public class Board {
 
     }
 
+    public Cell getSymmetrical(Cell centralCell, Cell opponentCell) {
+        int centralRow = centralCell.getRowPosition();
+        int centralColumn = centralCell.getColumnPosition();
+        int opponentRow = opponentCell.getRowPosition();
+        int opponentColumn = opponentCell.getColumnPosition();
+
+        int symmetricalRow = centralRow + (centralRow - opponentRow);
+        int symmetricalColumn = centralColumn + (centralColumn - opponentColumn);
+
+        if ( 0 <= symmetricalRow && symmetricalRow <= 4 && 0 <= symmetricalColumn && symmetricalColumn <= 4 )
+            if (matrixBoard[symmetricalRow][symmetricalColumn].getIsFree())
+                return matrixBoard[symmetricalRow][symmetricalColumn];
+        return null;
+    }
 
 
 }

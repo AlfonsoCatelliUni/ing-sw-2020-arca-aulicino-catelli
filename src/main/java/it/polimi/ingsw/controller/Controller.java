@@ -128,6 +128,15 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenCardEvent event) {
 
+        Boolean isCardAvailable = preGameLobby.isCardAvailable(event.getCard());
+
+        if(isCardAvailable) {
+            preGameLobby.addCard(event.getPlayerNickname(), event.getCard());
+        }
+        else {
+            //TODO : mandare messaggio
+        }
+
     }
 
 

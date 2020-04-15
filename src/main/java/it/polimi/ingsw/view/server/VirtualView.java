@@ -32,7 +32,7 @@ public class VirtualView extends Observable implements Observer {
     }
 
 
-    public static void newTempConnection(Integer id, Connection connection) {
+    public static void newConnection(Integer id, Connection connection) {
         connectionMap.put(id, connection);
     }
 

@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.CTSEvents.*;
+import it.polimi.ingsw.events.STCEvents.AskNewNicknameEvent;
+import it.polimi.ingsw.events.STCEvents.UnavailableNicknameEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Player.Player;
@@ -15,7 +17,9 @@ import it.polimi.ingsw.server.PreGameLobby;
 import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.view.server.VirtualView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Controller implements Observer, ClientToServerManager {
 
@@ -25,16 +29,21 @@ public class Controller implements Observer, ClientToServerManager {
 
     private PreGameLobby preGameLobby;
 
-
     private Game game;
 
 
     // ======================================================================================
 
 
-    public Controller( Game game ){
-
+    public Controller(Game game) {
         this.game = game;
+
+    }
+
+
+    public Controller() {
+        this.virtualView = new VirtualView();
+        this.preGameLobby = new PreGameLobby();
 
     }
 
@@ -72,6 +81,20 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(NewConnectionEvent event) {
 
+        Integer ID = event.getID();
+        String nickname = event.getNickname();
+
+        Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);
+
+        if(isNicknameFree) {
+            //TODO : la addPlayer in PreGameLobby potrebbe essere sync
+            preGameLobby.addPlayer(nickname);
+        }
+        else {
+            virtualView.sendMessageTo(ID, new UnavailableNicknameEvent(ID));
+        }
+
+
     }
 
 
@@ -82,6 +105,24 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     // ======================================================================================
+
+
+    @Override
+    public void manageEvent(ChosenInitialPawnCellEvent event) {
+
+        Boolean isSpotFree = preGameLobby.isSpotFree(event.getPawnRow(), event.getPawnColumn());
+
+        /* before I control that the selected spot is really free */
+        if(isSpotFree) {
+            preGameLobby.addNewPawnCoordinates(event.getPlayerNickname(), event.getPawnRow(), event.getPawnColumn());
+        }
+        else {
+            //TODO : mandare messaggio di inserimento del nome del giocatore
+            //virtualView.sendMessage();
+        }
+
+
+    }
 
 
     @Override

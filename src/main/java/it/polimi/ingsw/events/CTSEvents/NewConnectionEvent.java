@@ -5,14 +5,19 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 
 public class NewConnectionEvent implements ClientToServerEvent {
 
-    private String newNickname;
+
+    private Integer ID;
+
+
+    private String nickname;
 
 
     // ======================================================================================
 
 
-    public NewConnectionEvent(String newNickname) {
-        this.newNickname = newNickname;
+    public NewConnectionEvent(Integer ID, String newNickname) {
+        this.ID = ID;
+        this.nickname = newNickname;
     }
 
 
@@ -25,8 +30,16 @@ public class NewConnectionEvent implements ClientToServerEvent {
     }
 
 
-    public String getNewNickname() {
-        return this.newNickname;
+    // ======================================================================================
+
+
+    public Integer getID() {
+        return this.ID;
+    }
+
+
+    public String getNickname() {
+        return this.nickname;
     }
 
 

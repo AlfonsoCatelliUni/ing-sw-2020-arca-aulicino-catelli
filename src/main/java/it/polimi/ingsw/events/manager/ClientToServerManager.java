@@ -6,7 +6,7 @@ import it.polimi.ingsw.events.ClientToServerEvent;
 public interface ClientToServerManager {
 
 
-    void receiveEvent( ClientToServerEvent event );
+    void receiveEvent(ClientToServerEvent event);
 
 
     // ======================================================================================
@@ -21,6 +21,8 @@ public interface ClientToServerManager {
     // ======================================================================================
     // MARK : Game Based Events
 
+
+    void manageEvent(ChosenInitialPawnCellEvent event);
 
     void manageEvent(ChosenCardEvent event);
 

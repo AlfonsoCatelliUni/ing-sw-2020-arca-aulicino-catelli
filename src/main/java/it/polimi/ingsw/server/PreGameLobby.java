@@ -13,38 +13,38 @@ public class PreGameLobby {
     /**
      * this is the list of the nicknames of the player in the current Lobby
      */
-    List<String> playersNicknames;
+    private List<String> playersNicknames;
 
 
     /**
      * this map each card with the corresponding decorator class
      */
-    Map<String, Player> effectsClassMap;
+    private Map<String, Player> effectsClassMap;
 
 
     /**
      * the deck of all cards
      */
-    List<Card> allCards;
+    private List<Card> allCards;
 
 
     /**
      * the players have to choose their card from this
      * restricted number of picked cards
      */
-    List<Card> pickedCards;
+    private List<Card> pickedCards;
 
 
     /**
      * this map the player to his chosen card
      */
-    Map<String, Card> playerCardMap;
+    private Map<String, Card> playerCardMap;
 
 
     /**
      * this map the player to the points where its pawns are going to be placed once the game is started
      */
-    Map<String, List<Point>> playerPawnPoints;
+    private Map<String, List<Point>> playerPawnPoints;
 
 
     private final static int MAXPLAYERS = 3;
@@ -56,7 +56,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    PreGameLobby() {
+    public PreGameLobby() {
 
         this.playersNicknames = new ArrayList<>();
         this.effectsClassMap = new HashMap<>();
@@ -97,19 +97,22 @@ public class PreGameLobby {
     }
 
 
-    public void addPlayer(String nickname) throws RuntimeException {
+    public void addPlayer(String nickname) {
 
-        //TODO : non vogliamo che venga lanciata questa eccezione
         //fare controllo prima di chiamare addPlayer
-        if(playersNicknames.contains(nickname))
+        if(!isNicknameAvailable(nickname)) {
             throw new RuntimeException("This Lobby already contains this player");
+        }
 
         playersNicknames.add(nickname);
 
+        /*
         List<Point> defaultPoints = new ArrayList<>();
         defaultPoints.add(new Point(-1,-1));
         defaultPoints.add(new Point(-1,-1));
         playerPawnPoints.put(nickname, defaultPoints);
+
+         */
 
         if (playersNicknames.size() == MAXPLAYERS - 1)
             closeWaitingRoom();
@@ -117,6 +120,12 @@ public class PreGameLobby {
     }
 
 
+    public Boolean isNicknameAvailable(String nickname) {
+        return !playersNicknames.contains(nickname);
+    }
+
+
+    //TODO : we've to delete this (!?)
     private void addNameAndCard (String nickname, String cardName) {
 
         playerCardMap.put( nickname, pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null) );
@@ -124,35 +133,46 @@ public class PreGameLobby {
     }
 
 
-    private void addNewPawnCoordinates(String nickname, int row, int column) {
+    public void addNewPawnCoordinates(String nickname, int row, int column) {
 
-        //TODO : migliorare gestione casi limite, metodo fatto velocemente
         Point pawnPoint = new Point(row, column);
-        Point defaultPoint = new Point(-1,-1);
+
+        List<Point> points =  playerPawnPoints.get(nickname);
+
+        if(isSpotFree(pawnPoint) && points.size() < 2) {
+            points.add(pawnPoint);
+            playerPawnPoints.put(nickname, points);
+        }
+        else if(!isSpotFree(pawnPoint)) {
+            throw new RuntimeException("A sleeping Snorlax is blocking the spot. You've to find the Poke Flute to wake him up!");
+        }
+
+    }
+
+
+    public Boolean isSpotFree(int row, int column) {
+        Point spot = new Point(row, column);
+        return isSpotFree(spot);
+    }
+
+
+    private Boolean isSpotFree(Point spot){
         List<String> keys = new ArrayList<>(playerPawnPoints.keySet());
 
         for ( String k : keys ) {
+
             List<Point> pointList = playerPawnPoints.get(k);
-
             for (Point p : pointList ) {
-                if(pawnPoint.equals(p)) {
-                    //Brutta cosa, manda messaggio di non validità
-                    //Attendi altro punto
 
+                if(spot.equals(p)) {
+                    return false;
                 }
-                else if(defaultPoint.equals(p)) {
-                    p = pawnPoint;
-                }
+
             }
 
         }
 
-        //questo non servirebbe più
-        List<Point> points = new ArrayList<>();
-        points = playerPawnPoints.get(nickname);
-        points.add(pawnPoint);
-        playerPawnPoints.put(nickname, points);
-
+        return true;
     }
 
 
@@ -181,7 +201,6 @@ public class PreGameLobby {
 
 
     private void closeWaitingRoom() {
-
 
     }
 

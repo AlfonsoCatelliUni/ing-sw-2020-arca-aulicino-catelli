@@ -12,15 +12,10 @@ public class Connection implements Runnable{
 
     private Socket socket;
 
-    //private Scanner in;
-    //private PrintWriter out;
-
     private ObjectOutputStream output;
     private ObjectInputStream input;
 
-    private Server server;
-
-    private String name;
+    private Integer connectionID;
 
     private Boolean active;
 
@@ -28,12 +23,11 @@ public class Connection implements Runnable{
     // ======================================================================================
 
 
-    public Connection(Socket socket, Server server) {
-
+    public Connection(Integer connectionID, Socket socket) {
         this.active = true;
 
+        this.connectionID = connectionID;
         this.socket = socket;
-        this.server = server;
 
         try {
             input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -63,7 +57,7 @@ public class Connection implements Runnable{
 
         }
         catch(IOException | ClassNotFoundException e ) {
-            System.err.println("SOCKET exception: disconnecting " + name);
+            System.err.println("SOCKET exception: disconnecting " + connectionID);
             e.printStackTrace();
         }
         finally {
@@ -77,9 +71,7 @@ public class Connection implements Runnable{
     private void close() {
         //TODO : change system.out.print
         closeConnection();
-        System.out.println("Deregistering client...");
-        server.removeConnection(this);
-        System.out.println("Done!");
+        System.out.println("Closed!");
     }
 
 
@@ -99,10 +91,6 @@ public class Connection implements Runnable{
     }
 
 
-    /**
-     * Sends a message through this socket
-     * @param event event
-     */
     public void sendEvent(ServerToClientEvent event) {
 
         try {
@@ -110,7 +98,7 @@ public class Connection implements Runnable{
             output.flush();
         }
         catch (IOException e) {
-            System.err.println("SOCKET exception: disconnecting " + name);
+            System.err.println("SOCKET exception: disconnecting " + connectionID);
             e.printStackTrace();
         }
 
@@ -120,6 +108,8 @@ public class Connection implements Runnable{
     public synchronized Boolean getActive() {
         return this.active;
     }
+
+
 
 
 

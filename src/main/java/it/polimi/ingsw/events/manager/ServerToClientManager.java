@@ -12,12 +12,17 @@ public interface ServerToClientManager {
     // ======================================================================================
     // MARK : Network And Update Events
 
+
     void manageEvent(NotifyStatusEvent event);
 
 
     // ======================================================================================
     // MARK : Game Based Events
 
+
+    void manageEvent(AskNewNicknameEvent event);
+
+    void manageEvent(UnavailableNicknameEvent event);
 
     void manageEvent(GivePossibleCardsEvent event);
 

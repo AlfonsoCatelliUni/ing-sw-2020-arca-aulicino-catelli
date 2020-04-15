@@ -1,11 +1,15 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.view.server.VirtualView;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
 public class Server {
 
@@ -21,10 +25,7 @@ public class Server {
     private List<Connection> connections;
 
 
-    private Map<String, Connection> waitingConnection;
-
-
-//    private Map<Connection, Connection> playingConnection;
+    private Random randomGen;
 
 
     // ======================================================================================
@@ -33,10 +34,9 @@ public class Server {
     public Server() {
 
         this.executor = Executors.newFixedThreadPool(128);
+        this.randomGen = new Random();
 
         this.connections = new ArrayList<>();
-        this.waitingConnection = new HashMap<>();
-//        this.playingConnection = new HashMap<>();
 
         try {
             this.serverSocket = new ServerSocket(SOCKET_PORT);
@@ -62,45 +62,48 @@ public class Server {
 
     public void run() {
 
-        System.out.println("Server listening on port: " + SOCKET_PORT);
+        System.out.println("Server listening on port : " + SOCKET_PORT);
 
-        while(true) {
+        try {
 
-            try {
+            while (true) {
+
+                /* non so se mettere la mappatura tra connessione e id numerico del player nel server o nel controller */
+                //TODO : codice ripetuto per non chiarezza
                 Socket socket = serverSocket.accept();
+                System.out.println("Accepted new socket connection from " + socket.getRemoteSocketAddress());
 
-                Connection connection = new Connection(socket, this);
 
-                registerConnection(connection);
+                Integer id;
+                do {
+                    id = randomGen.nextInt(69420);
+                } while(!VirtualView.isValidID(id));
+
+                Connection connection = new Connection(id, socket);
+
+                VirtualView.newTempConnection(id, connection);
+
+                System.out.println("New socket bounded at the player with ID: " + id);
+
+                //starts the new server proxy to receive the connection message
+                //new Thread(connection).start();
+                //TODO : controllare che questa riga sostituisca veramente quella sopra
                 executor.submit(connection);
 
-            } catch (IOException e){
-                System.err.println("Connection error!");
+                //Sends the temporary id to the player
+                //The player will send it back with all the necessary information (nickname)
+                //TODO : mandare messaggio di assegnazione connectionID e richiesta del nickname
+                //connection.sendEvent();
             }
-
+        }
+        catch(IOException e) {
+            e.printStackTrace();
         }
 
 
-    }
 
-
-    public synchronized void registerConnection(Connection c) {
-        connections.add(c);
-    }
-
-
-    public synchronized void removeConnection(Connection c) {
-        connections.remove(c);
-
-//        Connection opponent = playingConnection.get(c);
-
-//        if(opponent != null) {
-//            waitingConnection.keySet().removeIf(s -> waitingConnection.get(s) == c);
-//        }
 
     }
-
-
 
 
 

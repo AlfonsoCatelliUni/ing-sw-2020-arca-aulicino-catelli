@@ -125,11 +125,25 @@ public class PreGameLobby {
     }
 
 
-    //TODO : we've to delete this (!?)
-    private void addNameAndCard (String nickname, String cardName) {
+    public void addCard (String nickname, String cardName) {
 
-        playerCardMap.put( nickname, pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null) );
+        Card chosenCard = pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
 
+        playerCardMap.put( nickname, chosenCard );
+        pickedCards.remove(chosenCard);
+
+    }
+
+
+    public Boolean isCardAvailable(String cardName) {
+
+        for ( Card c : pickedCards ) {
+            if(c.getName().equals(cardName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

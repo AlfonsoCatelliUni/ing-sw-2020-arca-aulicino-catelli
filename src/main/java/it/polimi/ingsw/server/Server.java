@@ -69,7 +69,6 @@ public class Server {
             while (true) {
 
                 /* non so se mettere la mappatura tra connessione e id numerico del player nel server o nel controller */
-                //TODO : codice ripetuto per non chiarezza
                 Socket socket = serverSocket.accept();
                 System.out.println("Accepted new socket connection from " + socket.getRemoteSocketAddress());
 
@@ -81,13 +80,10 @@ public class Server {
 
                 Connection connection = new Connection(id, socket);
 
-                VirtualView.newTempConnection(id, connection);
+                VirtualView.newConnection(id, connection);
 
                 System.out.println("New socket bounded at the player with ID: " + id);
 
-                //starts the new server proxy to receive the connection message
-                //new Thread(connection).start();
-                //TODO : controllare che questa riga sostituisca veramente quella sopra
                 executor.submit(connection);
 
                 //Sends the temporary id to the player

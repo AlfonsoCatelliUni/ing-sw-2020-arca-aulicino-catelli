@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Level;
 
-public class Connection implements Runnable{
+public class Connection implements Runnable {
 
     private Socket socket;
 

@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.Player;
 
-import it.polimi.ingsw.model.Actions.BlockConsequence;
-import it.polimi.ingsw.model.Actions.Consequence;
-import it.polimi.ingsw.model.Actions.VictoryConsequence;
+import it.polimi.ingsw.model.Consequence.BlockConsequence;
+import it.polimi.ingsw.model.Consequence.Consequence;
+import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 

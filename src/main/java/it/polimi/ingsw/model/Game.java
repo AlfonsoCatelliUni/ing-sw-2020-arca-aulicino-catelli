@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
+import it.polimi.ingsw.model.Consequence.*;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Board;
@@ -362,7 +363,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     @Override
     public void doConsequence(VictoryConsequence consequence) {
-        updateAllObservers( new VictoryEvent(consequence.getWinnerNickname()) );
+        updateAllObservers( new VictoryEvent(consequence.getNickname()) );
     }
 
 
@@ -373,7 +374,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     @Override
     public void doConsequence(BlockConsequence consequence) {
 
-        players.stream().filter(p -> !p.getName().equals(consequence.getBlockerNickname())).forEach(p -> p.setCanMoveUp(false));
+        players.stream().filter(p -> !p.getName().equals(consequence.getNickname())).forEach(p -> p.setCanMoveUp(false));
 
     }
 

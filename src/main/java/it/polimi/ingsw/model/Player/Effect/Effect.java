@@ -1,14 +1,13 @@
 package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.Consequence;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 
 import it.polimi.ingsw.model.Player.State.StateInterface;
-import it.polimi.ingsw.model.Sex;
 
 
 import java.util.List;
@@ -17,24 +16,28 @@ public interface Effect {
 
 
     // ======================================================================================
-    // MARK : Getter Section
+
+    //<editor-fold desc="Getter Section">
 
 
     StateInterface getState();
 
 
-    List<Cell> getPawnsCoordinates(Board gameBoard);
-
+    //</editor-fold>
 
     // ======================================================================================
-    // MARK : Setter Section
+
+    //<editor-fold desc="Setter Section">
 
 
     void changeState(StateInterface state);
 
 
+    //</editor-fold>
+
     // ======================================================================================
-    // MARK : Possibilities Control Section
+
+    //<editor-fold desc="Possibilities Control Section">
 
 
     List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn);
@@ -54,9 +57,11 @@ public interface Effect {
 
     List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);
 
+    //</editor-fold>
 
     // ======================================================================================
-    // MARK : Real Actions Section
+
+    //<editor-fold desc="Real Actions Section">
 
 
     Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
@@ -68,11 +73,11 @@ public interface Effect {
     void force(Pawn designatedPawn, Cell nextPosition);
 
 
+    //</editor-fold>
+
     // ======================================================================================
-    // MARK : Pawn Placing Section
 
-
-    void initPawn(Board gameBoard, Sex sex, Cell cell);
+    //<editor-fold desc="Pawn Placing Section">
 
 
     void removePawn(Board gameBoard, Pawn designatedPawn);
@@ -80,6 +85,8 @@ public interface Effect {
 
     void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell);
 
+
+    //</editor-fold>
 
     // ======================================================================================
 

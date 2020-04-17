@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Consequence.Consequence;
 
 import java.util.ArrayList;
 import java.util.List;

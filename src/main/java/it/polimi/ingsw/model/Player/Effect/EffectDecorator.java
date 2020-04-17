@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.Consequence;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
@@ -35,12 +35,6 @@ public class EffectDecorator implements Effect {
     @Override
     public StateInterface getState() {
         return this.effect.getState();
-    }
-
-
-    @Override
-    public List<Cell> getPawnsCoordinates(Board gameBoard) {
-        return this.effect.getPawnsCoordinates(gameBoard);
     }
 
 
@@ -118,12 +112,6 @@ public class EffectDecorator implements Effect {
 
     // ======================================================================================
     // MARK : Pawn Placing Section
-
-
-    @Override
-    public void initPawn(Board gameBoard, Sex sex, Cell cell) {
-        this.effect.initPawn(gameBoard, sex, cell);
-    }
 
 
     @Override

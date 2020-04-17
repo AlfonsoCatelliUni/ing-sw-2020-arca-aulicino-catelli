@@ -21,6 +21,13 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
         super(e);
     }
 
+    /**
+     * This is the same of basic method but it stores the value of the cell of the first build
+     * @param designatedPawn the pawn that's designated to build
+     * @param designatedCell the cell where to build
+     * @param chosenLevel the level of the building to build
+     * @param buildings list of possible buildings to build
+     */
     @Override
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
@@ -35,9 +42,7 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
             effect = new BasicEffect();
         }
 
-        Consequence buildConsequence = super.build(designatedPawn, designatedCell, chosenLevel, buildings);
-
-        return buildConsequence;
+        return super.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
 
 }

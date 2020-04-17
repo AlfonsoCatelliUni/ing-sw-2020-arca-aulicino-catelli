@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.Player.Effect;
 
-
-
 import it.polimi.ingsw.model.Actions.Consequence;
 import it.polimi.ingsw.model.Actions.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
@@ -14,6 +12,10 @@ public class DownTwoEffect extends EffectDecorator {
     }
 
 
+    /**
+     * this method is the same of basic player, but it return Victory Consequence also
+     * if player moves down to two levels
+     */
     @Override
     public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 

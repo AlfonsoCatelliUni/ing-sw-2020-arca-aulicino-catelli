@@ -7,12 +7,21 @@ import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to build a dome even if the level isn't number 3
+ */
 public class DomeBuildEffect extends EffectDecorator {
 
     public DomeBuildEffect(Effect e) {
         super(e);
     }
 
+    /**
+     * this is the same of basic method but it adds also the Dome building in order of apply Atlas Effects
+     * @param gameBoard the game board where the pawn have to build on
+     * @param designatedCell the cell where the pawn have to build on
+     * @return the list of possible buildings
+     */
     @Override
     public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
 

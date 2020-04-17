@@ -19,6 +19,16 @@ public class MoreBuildOnSameEffect extends EffectDecorator {
         super(e);
     }
 
+    /**
+     * This method decorates the player's effect based on his build for the current turn and changes his state
+     * If this is the first build, than the player could build again, so the next state will be BuildAndFinish state,
+     * but he will be able to build only on the same cell, so his effect is decorated with a BuildOnSameCellEffect
+     * @param designatedPawn is the pawn used in the current turn
+     * @param designatedCell is the cell where the pawn will build a block
+     * @param chosenLevel is the level of the block that will be built
+     * @param buildings is the list of possible buildings to be built
+     * @return a consequence of this build action that could affect the game
+     */
     @Override
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 

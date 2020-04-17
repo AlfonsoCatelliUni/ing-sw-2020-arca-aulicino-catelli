@@ -12,7 +12,9 @@ import it.polimi.ingsw.model.Sex;
 
 import java.util.List;
 
-
+/**
+ * this is the decorator of the effect, each type of decorator extends this class according with pattern decorator
+ */
 public class EffectDecorator implements Effect {
 
 

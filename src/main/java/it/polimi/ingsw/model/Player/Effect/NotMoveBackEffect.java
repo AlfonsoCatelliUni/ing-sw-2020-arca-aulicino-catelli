@@ -15,6 +15,13 @@ public class NotMoveBackEffect extends EffectDecorator {
         this.startCell = startCell;
     }
 
+    /**
+     * This method returns a list of cells where the pawn can move,
+     * except the starting cell of the turn of the designatedPawn
+     * @param gameBoard is the board where is played the game
+     * @param designatedPawn is the pawn selected by the player for the current turn
+     * @return a list of cells where the pawn can move in the current turn
+     */
     @Override
     public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
         List<Cell> cells;

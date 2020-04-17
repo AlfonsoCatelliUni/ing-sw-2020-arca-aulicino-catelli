@@ -11,6 +11,13 @@ public class PushEffect extends EffectDecorator {
         super(e);
     }
 
+    /**
+     * this method move pawn on nextposition cell and if the cell is occupied by a opponent pawn, it pushes this pawn in the same direction if is unoccupied
+     * @param gameBoard the board where we have to move the pawn
+     * @param designatedPawn the pawn that's designated to move
+     * @param nextPosition the cell where to move the pawn
+     * @return int encoded by super.movepawn
+     */
     @Override
     public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 

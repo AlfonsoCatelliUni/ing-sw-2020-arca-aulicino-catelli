@@ -11,6 +11,15 @@ public class SwitchEffect extends  EffectDecorator{
         super(e);
     }
 
+    /**
+     * this is the method that actually move the pawn, in case of switching with
+     * an opponent pawn this method force the opponent pawn in the designatedPawn
+     * starting cell
+     * @param gameBoard the gameBoard
+     * @param designatedPawn the pawn that i want to move
+     * @param nextPosition the new position of the pawn
+     * @return an encoded value that indicates if the pawn moved on a third level
+     */
     @Override
     public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 

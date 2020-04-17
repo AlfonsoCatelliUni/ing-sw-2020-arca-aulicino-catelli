@@ -25,13 +25,13 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         if (super.effect.getState().getClass().equals(BuildState.class)) {
-            //    changeState(new BuildAndFinishState(this));
-            //    effect = new OnSameCell(effect, designatedCell);
+                changeState(new BuildAndFinishState(this));
+                effect = new BuildNotOnSameCellEffect(effect, designatedCell);
 
         }
 
         else if(super.effect.getState().getClass().equals(BuildAndFinishState.class)) {
-            //    changeState(new FinishStateTest(this));
+                changeState(new FinishState(this));
             effect = new BasicEffect();
         }
 

@@ -11,6 +11,10 @@ public class SwitchEffect extends  EffectDecorator{
         super(e);
     }
 
+
+    // ======================================================================================
+
+
     /**
      * this is the method that actually move the pawn, in case of switching with
      * an opponent pawn this method force the opponent pawn in the designatedPawn
@@ -44,5 +48,6 @@ public class SwitchEffect extends  EffectDecorator{
         }
         return resultAction;
     }
+
 
 }

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.Player.Effect;
 
-
-
 import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
@@ -9,9 +7,14 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 
 public class DownTwoEffect extends EffectDecorator {
+
+
     public DownTwoEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
 
 
     /**
@@ -32,6 +35,7 @@ public class DownTwoEffect extends EffectDecorator {
 
         return resultAction;
     }
+
 
 }
 

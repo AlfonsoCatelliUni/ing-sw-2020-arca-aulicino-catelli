@@ -67,6 +67,7 @@ public class Game extends Observable implements GameConsequenceHandler {
             Cell secondPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(1).x, playerPawnPoints.get(playersNickname.get(i)).get(1).y);
 
             // first placing of the pawn into the board
+            //TODO : c'è da cambiare per farlo fittare al Player in Effect
             players.get(i).initPawn(gameBoard, Sex.MALE, firstPawnCell);
             players.get(i).initPawn(gameBoard, Sex.FEMALE, secondPawnCell);
 

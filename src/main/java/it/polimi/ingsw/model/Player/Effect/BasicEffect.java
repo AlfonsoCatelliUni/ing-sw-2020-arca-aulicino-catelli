@@ -79,7 +79,7 @@ public class BasicEffect implements Effect {
 
     @Override
     public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
-        return null;
+        return gameBoard.getPossibleBuildingOnCell( designatedCell );
     }
 
 

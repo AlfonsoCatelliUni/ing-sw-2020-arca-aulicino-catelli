@@ -32,7 +32,6 @@ public class MoreMoveEffect extends EffectDecorator {
         }
         else if(super.effect.getState().getClass().equals(MoveAndBuildState.class)) {
             changeState(new BuildState(this));
-            effect = new BasicEffect();
         }
 
         return super.move(gameBoard, designatedPawn, nextPosition);

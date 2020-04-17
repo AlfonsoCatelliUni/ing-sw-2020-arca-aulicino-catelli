@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.Player;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class MoveAndBuildState implements StateInterface {
 
 
-    private final Player player;
+    private final Effect effect;
 
 
     private final List<Action> actions;
@@ -22,8 +23,8 @@ public class MoveAndBuildState implements StateInterface {
     // ======================================================================================
 
 
-    public MoveAndBuildState(Player player) {
-        this.player = player;
+    public MoveAndBuildState(Effect effect) {
+        this.effect = effect;
 
         this.actions = new ArrayList<>();
         this.actions.add(new MoveAction());
@@ -38,11 +39,10 @@ public class MoveAndBuildState implements StateInterface {
 
         List<Action> possibleActions = new ArrayList<>(actions);
 
-        //TODO : cambiare in effect quando committeranno gli altri
-        if(player.wherePawnCanMove(gameBoard, designatedPawn).size() == 0) {
+        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() == 0) {
             possibleActions.removeIf(a -> a.getClass().equals(MoveAction.class));
         }
-        if(player.wherePawnCanBuild(gameBoard, designatedPawn).size() == 0) {
+        if(effect.wherePawnCanBuild(gameBoard, designatedPawn).size() == 0) {
             possibleActions.removeIf(a -> a.getClass().equals(BuildAction.class));
         }
 

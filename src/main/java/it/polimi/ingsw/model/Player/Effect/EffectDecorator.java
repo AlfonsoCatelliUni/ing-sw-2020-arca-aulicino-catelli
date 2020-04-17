@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.Player.Effect;
 
-
-
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.Consequence;
 import it.polimi.ingsw.model.Board.Board;
@@ -14,9 +12,15 @@ import it.polimi.ingsw.model.Sex;
 
 import java.util.List;
 
+
 public class EffectDecorator implements Effect {
 
+
     protected Effect effect;
+
+
+    // ======================================================================================
+    // MARK : Constructor Section
 
 
     public EffectDecorator (Effect e){
@@ -24,69 +28,118 @@ public class EffectDecorator implements Effect {
     }
 
 
+    // ======================================================================================
+    // MARK : Getter Section
+
+
     @Override
     public StateInterface getState() {
-        return effect.getState();
+        return this.effect.getState();
     }
+
+
+    @Override
+    public List<Cell> getPawnsCoordinates(Board gameBoard) {
+        return this.effect.getPawnsCoordinates(gameBoard);
+    }
+
+
+    // ======================================================================================
+    // MARK : Setter Section
+
 
     @Override
     public void changeState(StateInterface state) {
-        effect.changeState(state);
-
+        this.effect.changeState(state);
     }
 
-    @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
-        return this.effect.movePawn(gameBoard,designatedPawn,nextPosition);
-    }
 
-    @Override
-    public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
-        return this.effect.wherePawnCanMove(gameBoard, designatedPawn);
-    }
+    // ======================================================================================
+    // MARK : Possibilities Control Section
 
-    @Override
-    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
-
-    }
-
-    @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
-        return null;
-    }
-
-    @Override
-    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
-        return this.effect.wherePawnCanBuild(gameBoard, designatedPawn);
-    }
-
-    @Override
-    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
-        return null;
-    }
-
-    @Override
-    public void initPawn(Board gameBoard, Sex sex, Cell cell) {
-
-    }
 
     @Override
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
         return this.effect.getPossibleActions(gameBoard,designatedPawn);
     }
 
+
     @Override
-    public List<Cell> getPawnsCoordinates(Board gameBoard) {
-        return null;
+    public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.wherePawnCanMove(gameBoard, designatedPawn);
     }
+
+
+    @Override
+    public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.wherePawnCanBuild(gameBoard, designatedPawn);
+    }
+
+
+    @Override
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
+        return this.effect.getPossibleBuildingOnCell(gameBoard, designatedCell);
+    }
+
+
+    @Override
+    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.wherePawnCanForce(gameBoard, designatedPawn);
+    }
+
+
+    @Override
+    public List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.wherePawnCanDestroy(gameBoard, designatedPawn);
+    }
+
+
+    // ======================================================================================
+    // MARK : Real Actions Section
+
+
+    @Override
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+        return this.effect.move(gameBoard,designatedPawn,nextPosition);
+    }
+
+
+    @Override
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+        return this.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
+    }
+
+
+    @Override
+    public void force(Pawn designatedPawn, Cell nextPosition) {
+        this.effect.force(designatedPawn, nextPosition);
+    }
+
+
+    // ======================================================================================
+    // MARK : Pawn Placing Section
+
+
+    @Override
+    public void initPawn(Board gameBoard, Sex sex, Cell cell) {
+        this.effect.initPawn(gameBoard, sex, cell);
+    }
+
 
     @Override
     public void removePawn(Board gameBoard, Pawn designatedPawn) {
-
+        this.effect.removePawn(gameBoard, designatedPawn);
     }
+
 
     @Override
     public void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
-
+        this.effect.placePawn(gameBoard, designatedPawn, designatedCell);
     }
+
+
+
+
+
+
 }

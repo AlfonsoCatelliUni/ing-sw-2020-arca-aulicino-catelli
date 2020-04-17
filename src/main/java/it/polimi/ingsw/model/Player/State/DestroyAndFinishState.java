@@ -1,12 +1,11 @@
 package it.polimi.ingsw.model.Player.State;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.DestroyAction;
 import it.polimi.ingsw.model.Actions.FinishAction;
 import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +13,17 @@ import java.util.List;
 public class DestroyAndFinishState implements StateInterface {
 
 
-    private Player player;
+    private final Effect effect;
 
 
-    private List<Action> actions;
+    private final List<Action> actions;
 
 
     // ======================================================================================
 
 
-    public DestroyAndFinishState(Player player) {
-        this.player = player;
+    public DestroyAndFinishState(Effect effect) {
+        this.effect = effect;
 
         this.actions = new ArrayList<>();
         this.actions.add(new DestroyAction());
@@ -39,8 +38,7 @@ public class DestroyAndFinishState implements StateInterface {
 
         List<Action> possibleActions = new ArrayList<>(actions);
 
-        //TODO : cambiare in effect quando gli altri committeranno
-        if(player.wherePawnCanDestroy(gameBoard, designatedPawn).size() == 0) {
+        if(effect.wherePawnCanDestroy(gameBoard, designatedPawn).size() == 0) {
             possibleActions.removeIf(a -> a.getClass().equals(DestroyAction.class));
         }
 

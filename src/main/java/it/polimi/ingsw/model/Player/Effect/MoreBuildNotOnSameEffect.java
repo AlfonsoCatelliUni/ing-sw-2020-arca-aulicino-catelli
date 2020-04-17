@@ -43,7 +43,6 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
 
         else if(super.effect.getState().getClass().equals(BuildAndFinishState.class)) {
                 changeState(new FinishState(this));
-            effect = new BasicEffect();
         }
 
         return super.build(designatedPawn, designatedCell, chosenLevel, buildings);

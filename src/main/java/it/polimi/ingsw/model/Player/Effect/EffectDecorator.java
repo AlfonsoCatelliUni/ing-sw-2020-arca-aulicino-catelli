@@ -46,7 +46,7 @@ public class EffectDecorator implements Effect {
     }
 
     @Override
-    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
+    public void force(Pawn designatedPawn, Cell nextPosition) {
 
     }
 

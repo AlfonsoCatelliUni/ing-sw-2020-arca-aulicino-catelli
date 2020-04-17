@@ -26,7 +26,7 @@ public interface Effect {
     List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
 
 
-    void forcePawn(Pawn designatedPawn, Cell nextPosition);
+    void force(Pawn designatedPawn, Cell nextPosition);
 
 
     // ======================================================================================

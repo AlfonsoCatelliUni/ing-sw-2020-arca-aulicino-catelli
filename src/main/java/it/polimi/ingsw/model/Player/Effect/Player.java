@@ -59,6 +59,18 @@ public class Player {
         return pawns;
     }
 
+    public Effect getEffect() {
+        return effect;
+    }
+
+
+    // ======================================================================================
+
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
+    }
+
 
     // ======================================================================================
 
@@ -117,6 +129,10 @@ public class Player {
 
         gameBoard.getCell(rowPosition, columnPosition).placePawnHere(designatedPawn);
 
+    }
+
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell){
+        return effect.getPossibleBuildingOnCell(gameBoard, designatedCell);
     }
 
 

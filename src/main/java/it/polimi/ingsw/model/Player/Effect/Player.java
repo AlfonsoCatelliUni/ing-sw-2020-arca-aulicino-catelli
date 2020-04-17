@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Player {
@@ -55,12 +56,30 @@ public class Player {
     // ======================================================================================
 
 
+    public Effect getEffect() {
+        return this.effect;
+    }
+
+
     public List<Pawn> getPawns() {
         return pawns;
     }
 
     public Effect getEffect() {
         return effect;
+    }
+
+
+    // ======================================================================================
+
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
+    }
+
+
+    public Pawn getPawnInCoordinates(int row, int column) {
+        return pawns.stream().filter(p -> p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column).findAny().orElse(null);
     }
 
 

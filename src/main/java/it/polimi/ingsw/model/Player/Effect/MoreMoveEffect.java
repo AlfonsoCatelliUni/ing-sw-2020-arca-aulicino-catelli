@@ -1,8 +1,9 @@
 package it.polimi.ingsw.model.Player.Effect;
 
-import it.polimi.ingsw.model.Actions.Consequence;
+
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.MoveAndBuildState;

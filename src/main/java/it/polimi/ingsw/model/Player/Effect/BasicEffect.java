@@ -4,13 +4,8 @@ import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
-import it.polimi.ingsw.model.Player.BasicPlayer;
-import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.BuildState;
-import it.polimi.ingsw.model.Player.State.FinishState;
-import it.polimi.ingsw.model.Player.State.MoveState;
 import it.polimi.ingsw.model.Player.State.StateInterface;
 import it.polimi.ingsw.model.Sex;
 
@@ -39,7 +34,7 @@ public class BasicEffect implements Effect {
     }
 
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
         removePawn( gameBoard,  designatedPawn ); // remove the pawn from the game board
 
         /* save the old height of the pawn to compare it with the new height to declare if there is a winner */
@@ -72,12 +67,12 @@ public class BasicEffect implements Effect {
     }
 
     @Override
-    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
+    public void force(Pawn designatedPawn, Cell nextPosition) {
 
     }
 
     @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence pawn(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         designatedPawn.pawnBuild();
 
         Building designatedBuilding = new Building(2,22);

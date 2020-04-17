@@ -20,19 +20,19 @@ public interface Effect {
 
     void changeState(StateInterface state);
 
-    Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
+    Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
 
 
     List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
 
 
-    void forcePawn(Pawn designatedPawn, Cell nextPosition);
+    void force(Pawn designatedPawn, Cell nextPosition);
 
 
     // ======================================================================================
 
 
-    Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
+    Consequence pawn(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
 
 
     List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn);

@@ -22,6 +22,9 @@ public class BuildBeforeEffect extends EffectDecorator {
         changeState(new MoveAndBuildState(this));
     }
 
+
+
+
     /**
      * This method is different from the basic one because the player can build before the move,
      * so if it happens, we have to set some parameters in order to have a correct move after the first built

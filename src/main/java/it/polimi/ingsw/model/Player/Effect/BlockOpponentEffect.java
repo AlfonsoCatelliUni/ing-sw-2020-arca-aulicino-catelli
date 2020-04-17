@@ -18,6 +18,9 @@ public class BlockOpponentEffect extends EffectDecorator {
     }
 
 
+    // ======================================================================================
+
+
     /**
      * This method is different from the basic one because the special effect for this player is that if a pawn moves up in his turn,
      * for the next opponent's turns, the other players will not be able to move up
@@ -27,10 +30,6 @@ public class BlockOpponentEffect extends EffectDecorator {
      * @return is an encoded value. 0 and 1 in described in the basic method, while the value 3 means that the pawn
      * moved up, so for the next opponent's turns, they will not be able to move up with their pawns
      */
-
-    // ======================================================================================
-
-
     @Override
     public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 

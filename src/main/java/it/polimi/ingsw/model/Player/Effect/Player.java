@@ -65,17 +65,10 @@ public class Player {
         return pawns;
     }
 
-    public Effect getEffect() {
-        return effect;
-    }
+
 
 
     // ======================================================================================
-
-
-    public void setEffect(Effect effect) {
-        this.effect = effect;
-    }
 
 
     public Pawn getPawnInCoordinates(int row, int column) {

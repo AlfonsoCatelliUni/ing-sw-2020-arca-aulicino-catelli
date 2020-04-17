@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.Actions.*;
+import it.polimi.ingsw.model.Consequence.*;
 
 public interface GameConsequenceHandler {
 

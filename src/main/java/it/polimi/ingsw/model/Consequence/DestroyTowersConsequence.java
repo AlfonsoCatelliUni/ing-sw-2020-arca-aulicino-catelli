@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.Actions;
+package it.polimi.ingsw.model.Consequence;
 
 import it.polimi.ingsw.model.GameConsequenceHandler;
 
@@ -11,11 +11,24 @@ import it.polimi.ingsw.model.GameConsequenceHandler;
 public class DestroyTowersConsequence implements Consequence {
 
 
+    /**
+     * the nickname of the player that destroy the block
+     */
+    private String nickname;
+
+
     // ======================================================================================
 
 
-    public DestroyTowersConsequence() {
+    public DestroyTowersConsequence(String nickname) {
+        this.nickname = nickname;
     }
+
+
+    public DestroyTowersConsequence() {
+        this("");
+    }
+
 
     // ======================================================================================
 
@@ -23,6 +36,21 @@ public class DestroyTowersConsequence implements Consequence {
     @Override
     public void accept(GameConsequenceHandler game) {
         game.doConsequence(this);
+    }
+
+
+    // ======================================================================================
+
+
+    @Override
+    public String getNickname() {
+        return this.nickname;
+    }
+
+
+    @Override
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
 

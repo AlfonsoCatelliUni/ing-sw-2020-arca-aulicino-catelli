@@ -8,12 +8,21 @@ import java.util.List;
 
 public class NotMoveBackEffect extends EffectDecorator {
 
+
     Cell startCell;
+
+
+    // ======================================================================================
+
 
     public NotMoveBackEffect(Effect e, Cell startCell) {
         super(e);
         this.startCell = startCell;
     }
+
+
+    // ======================================================================================
+
 
     /**
      * This method returns a list of cells where the pawn can move,
@@ -33,5 +42,6 @@ public class NotMoveBackEffect extends EffectDecorator {
         return cells;
 
     }
+
 
 }

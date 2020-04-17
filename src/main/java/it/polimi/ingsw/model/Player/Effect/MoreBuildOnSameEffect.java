@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.Player.Effect;
 
-
-
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Consequence.Consequence;
@@ -16,9 +14,14 @@ import java.util.List;
 
 public class MoreBuildOnSameEffect extends EffectDecorator {
 
+
     public MoreBuildOnSameEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * This method decorates the player's effect based on his build for the current turn and changes his state
@@ -36,16 +39,14 @@ public class MoreBuildOnSameEffect extends EffectDecorator {
         if (super.effect.getState().getClass().equals(BuildState.class)) {
             changeState(new BuildAndFinishState(this));
             effect = new BuildOnSameCellEffect(effect, designatedCell);
-
         }
-
         else if(super.effect.getState().getClass().equals(BuildAndFinishState.class)) {
             changeState(new FinishState(this));
-            effect = new BasicEffect();
         }
 
         return super.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
+
 
 }
 

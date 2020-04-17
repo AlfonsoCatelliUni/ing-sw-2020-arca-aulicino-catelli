@@ -7,9 +7,14 @@ import it.polimi.ingsw.model.Player.Pawn;
 import java.util.List;
 
 public class CanSwitchOpponentEffect extends EffectDecorator {
+
+
     public CanSwitchOpponentEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
 
 
     /**
@@ -35,4 +40,6 @@ public class CanSwitchOpponentEffect extends EffectDecorator {
         return availableCellsToMove;
 
     }
+
+
 }

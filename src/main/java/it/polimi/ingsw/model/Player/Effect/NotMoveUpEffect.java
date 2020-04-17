@@ -12,6 +12,10 @@ public class NotMoveUpEffect extends EffectDecorator{
         super(e);
     }
 
+
+    // ======================================================================================
+
+
     /**
      * This method returns a list of cells where the pawn can move,
      * except the cells that are higher than the pawn's cell
@@ -28,5 +32,6 @@ public class NotMoveUpEffect extends EffectDecorator{
 
         return availableCellsToMove;
     }
+
 
 }

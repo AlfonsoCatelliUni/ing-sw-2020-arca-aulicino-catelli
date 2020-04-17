@@ -66,11 +66,6 @@ public class Player {
     }
 
 
-
-
-    // ======================================================================================
-
-
     public Pawn getPawnInCoordinates(int row, int column) {
         return pawns.stream().filter(p -> p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column).findAny().orElse(null);
     }
@@ -99,6 +94,11 @@ public class Player {
 
     public List<Cell> wherePawnCanBuild (Board gameBoard, Pawn designatedPawn) {
         return effect.wherePawnCanBuild(gameBoard, designatedPawn);
+    }
+
+
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
+        return effect.getPossibleBuildingOnCell(gameBoard, designatedCell);
     }
 
 
@@ -142,11 +142,6 @@ public class Player {
         gameBoard.getCell(rowPosition, columnPosition).placePawnHere(designatedPawn);
 
     }
-
-    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell){
-        return effect.getPossibleBuildingOnCell(gameBoard, designatedCell);
-    }
-
 
 
 

@@ -13,9 +13,14 @@ import java.util.List;
 
 public class MoreBuildNotOnSameEffect extends EffectDecorator {
 
+
     public MoreBuildNotOnSameEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * This method decorates the player's effect based on his build for the current turn and changes his state
@@ -43,6 +48,7 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
 
         return super.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
+
 
 }
 

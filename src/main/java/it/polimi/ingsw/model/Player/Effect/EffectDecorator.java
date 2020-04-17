@@ -40,6 +40,12 @@ public class EffectDecorator implements Effect {
     }
 
 
+    @Override
+    public Effect getEffect() {
+        return this.effect;
+    }
+
+
     // ======================================================================================
     // MARK : Setter Section
 

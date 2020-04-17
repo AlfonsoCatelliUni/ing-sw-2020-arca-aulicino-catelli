@@ -10,9 +10,14 @@ import it.polimi.ingsw.model.Player.State.MoveState;
 
 public class MoreMoveEffect extends EffectDecorator {
 
+
     public MoreMoveEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * This method decorates the player's effect based on his move for the current turn and changes his state
@@ -36,5 +41,6 @@ public class MoreMoveEffect extends EffectDecorator {
 
         return super.move(gameBoard, designatedPawn, nextPosition);
     }
+
 
 }

@@ -7,9 +7,14 @@ import it.polimi.ingsw.model.Player.Pawn;
 
 public class PushEffect extends EffectDecorator {
 
+
     public PushEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * this method move pawn on nextposition cell and if the cell is occupied by a opponent pawn, it pushes this pawn in the same direction if is unoccupied
@@ -47,5 +52,6 @@ public class PushEffect extends EffectDecorator {
 
         return resultAction;
     }
+
 
 }

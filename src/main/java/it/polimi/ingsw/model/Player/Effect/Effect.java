@@ -23,6 +23,9 @@ public interface Effect {
     StateInterface getState();
 
 
+    Effect getEffect();
+
+
     //</editor-fold>
 
     // ======================================================================================

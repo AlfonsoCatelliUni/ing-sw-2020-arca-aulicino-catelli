@@ -9,12 +9,21 @@ import java.util.List;
 
 public class BuildOnSameCellEffect extends EffectDecorator{
 
+
     private Cell cellBefore;
+
+
+    // ======================================================================================
+
 
     public BuildOnSameCellEffect(Effect e, Cell cellBefore) {
         super(e);
         this.cellBefore = cellBefore;
     }
+
+
+    // ======================================================================================
+
 
     @Override
     public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
@@ -25,4 +34,6 @@ public class BuildOnSameCellEffect extends EffectDecorator{
 
         return availableCellToBuild;
     }
+
+
 }

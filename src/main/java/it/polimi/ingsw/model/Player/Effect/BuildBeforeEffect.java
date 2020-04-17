@@ -12,10 +12,12 @@ import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
+
 /**
  * this decorator gives the possibility to build before every move action, if the player uses this god's effect, he cannot move up in the same turn
  */
 public class BuildBeforeEffect extends EffectDecorator {
+
 
     public BuildBeforeEffect(Effect e) {
         super(e);
@@ -23,6 +25,7 @@ public class BuildBeforeEffect extends EffectDecorator {
     }
 
 
+    // ======================================================================================
 
 
     /**
@@ -52,5 +55,6 @@ public class BuildBeforeEffect extends EffectDecorator {
 
         return buildConsequence;
     }
+
 
 }

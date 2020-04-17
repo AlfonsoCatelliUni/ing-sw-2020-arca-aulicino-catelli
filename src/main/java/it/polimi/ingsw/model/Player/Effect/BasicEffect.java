@@ -43,6 +43,13 @@ public class BasicEffect implements Effect {
     }
 
 
+    //TODO : controllare ?!
+    @Override
+    public Effect getEffect() {
+        return this;
+    }
+
+
     // ======================================================================================
     // MARK : Setter Section
 

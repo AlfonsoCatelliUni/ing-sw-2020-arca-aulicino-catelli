@@ -9,9 +9,13 @@ import java.util.List;
 
 public class CanPushOpponentEffect extends EffectDecorator {
 
+
     public CanPushOpponentEffect(Effect e){
         super(e);
     }
+
+
+    // ======================================================================================
 
 
     /**
@@ -50,4 +54,6 @@ public class CanPushOpponentEffect extends EffectDecorator {
 
         return availableCellsToMove;
     }
+
+
 }

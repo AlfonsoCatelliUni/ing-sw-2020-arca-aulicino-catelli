@@ -2,9 +2,11 @@ package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Consequence.NoConsequence;
 import it.polimi.ingsw.model.Consequence.VictoryConsequence;
+import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
 import it.polimi.ingsw.model.Player.State.MoveState;
@@ -32,9 +34,9 @@ class MoreMoveEffectTest {
 
         gameBoard = new Board();
 
-        player = new Player(new MoreMoveEffect(new BasicEffect()));
-        opponentPlayer = new Player(new MoreMoveEffect(new BasicEffect()));
-        secondOpponentPlayer = new Player(new MoreMoveEffect(new BasicEffect()));
+        player = new Player("alfo", Color.WHITE, new Card("alfo's card", true, "alfo's effect"),new MoreMoveEffect(new BasicEffect()));
+        opponentPlayer = new Player("giammi", Color.WHITE, new Card("giammi's card", true, "giammi's effect"),new MoreMoveEffect(new BasicEffect()));
+        secondOpponentPlayer = new Player("massi", Color.WHITE, new Card("massi's card", true, "massi's effect"),new MoreMoveEffect(new BasicEffect()));
 
         buildings = gameBoard.getBuildings();
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.Player.Effect;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,9 +39,9 @@ class NotMoveUpEffectTest {
         card = new Card("test", true, "test");
         buildings = gameBoard.getBuildings();
 
-        player_1 = new Player(new NotMoveUpEffect(new BasicEffect()));
-        player_2 = new Player(new NotMoveUpEffect(new BasicEffect()));
-        player_3 = new Player(new NotMoveUpEffect(new BasicEffect()));
+        player_1 = new Player("alfo", Color.WHITE, new Card("alfo's card", true, "alfo's effect"),new NotMoveUpEffect(new BasicEffect()));
+        player_2 = new Player("giammi", Color.WHITE, new Card("giammi's card", true, "giammi's effect"),new NotMoveUpEffect(new BasicEffect()));
+        player_3 = new Player("massi", Color.WHITE, new Card("massi's card", true, "massi's effect"),new NotMoveUpEffect(new BasicEffect()));
 
         player_1.initPawn(gameBoard, gameBoard.getCell(0,0));
         player_1.initPawn(gameBoard, gameBoard.getCell(0,1));

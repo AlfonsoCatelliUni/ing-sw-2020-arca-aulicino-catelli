@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Player.Card;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +29,7 @@ class NotMoveBackEffectTest {
 
         gameBoard = new Board();
 
-        player = new Player(new MoreMoveEffect(new BasicEffect()));
+        player = new Player("alfo", Color.WHITE, new Card("alfo's card", true, "alfo's effect"),new MoreMoveEffect(new BasicEffect()));
 
         availableCellsToMove = new ArrayList<>();
         correctListAvailableCellsMove = new ArrayList<>();

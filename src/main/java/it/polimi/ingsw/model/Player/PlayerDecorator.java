@@ -169,12 +169,6 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public List<Cell> getPawnsCoordinates(Board gameBoard) {
-        return player.getPawnsCoordinates(gameBoard);
-    }
-
-
-    @Override
     public void removePawn(Board gameBoard, Pawn designatedPawn) {
         this.player.removePawn(gameBoard, designatedPawn);
     }

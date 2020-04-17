@@ -28,7 +28,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     private Player currentPlayer;
 
-
     private int indexCurrentPlayer;
 
 
@@ -88,8 +87,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
 
-
-
     }
 
 
@@ -118,19 +115,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     // ======================================================================================
     // MARK : main functional methods
-
-
-    /**
-     * which are the pawn that i can at least move in this turn ?
-     * if i can't move any pawn i lose the game
-     * @return the cells of the pawn i can at least move
-     */
-    public List<Cell> getPawnsCoordinates(String playerName) {
-
-        Player player = getPlayerByName(playerName);
-
-        return player.getPawnsCoordinates(gameBoard);
-    }
 
 
     /**
@@ -417,6 +401,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     // ======================================================================================
     // MARK : support methods
 
+
     public List<String> getAllNames() {
 
         List<String> names = new ArrayList<>();
@@ -431,6 +416,28 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     public List<Player> getPlayers() {
         return players;
+    }
+
+
+    public List<Cell> getAvailablePawns(String nickname) {
+
+        Player player = getPlayerByName(nickname);
+        Pawn[] playerPawns = player.getPawns();
+
+        List<Action> possibleActions = new ArrayList<>();
+        List<Cell> availablePawns = new ArrayList<>();
+
+        for (Pawn p : playerPawns ) {
+            possibleActions = player.getPossibleActions(gameBoard, p);
+
+            if (possibleActions.size() != 0) {
+                availablePawns.add(p.getPosition());
+            }
+
+            possibleActions.clear();
+        }
+
+        return new ArrayList<>(availablePawns);
     }
 
 
@@ -499,6 +506,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.destroyBlock(gameBoard, gameBoard.getCell(row, column));
     }
+
 
     /**
      * this method is used when there is a DestroyBlockPlayer

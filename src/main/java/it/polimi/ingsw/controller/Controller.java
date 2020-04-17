@@ -65,7 +65,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void update(ServerToClientEvent event) {
-        throw new RuntimeException("How the [beep] is possible that the Controller received a ServerToClientEvent? --- Great! Now I've to fix it.");
+        throw new RuntimeException("How the hell is possible that the Controller received a ServerToClientEvent? --- Great! Now I've to fix it.");
     }
 
 

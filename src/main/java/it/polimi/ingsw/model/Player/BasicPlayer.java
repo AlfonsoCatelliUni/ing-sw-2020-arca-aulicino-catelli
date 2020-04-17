@@ -325,6 +325,7 @@ public class BasicPlayer implements Player {
         return gameBoard.getCellAvailableToBuild( designatedPawn );
     }
 
+
     /**
      * this method returns the list of possible building on the designatedCell
      * @param designatedCell the cell that i've chosen to build on
@@ -358,32 +359,6 @@ public class BasicPlayer implements Player {
             placePawn( gameBoard, this.pawns[1], startCell);
         }
 
-    }
-
-
-    /**
-     * this method returns the cells only of the pawns of the player that can move
-     * @param gameBoard the gameBoard where the pawns are on
-     * @return List of the cells
-     */
-    @Override
-    public List<Cell> getPawnsCoordinates(Board gameBoard) {
-
-        List<Cell> retPawnsCells = new ArrayList<>();
-        List<Cell> availableCellsToMove;
-
-        for (Pawn pawn : pawns) {
-
-            availableCellsToMove = wherePawnCanMove(gameBoard, pawn);
-
-            if (availableCellsToMove.size() != 0) {
-                retPawnsCells.add(pawn.getPosition());
-            }
-
-            availableCellsToMove.clear();
-        }
-
-        return retPawnsCells;
     }
 
 

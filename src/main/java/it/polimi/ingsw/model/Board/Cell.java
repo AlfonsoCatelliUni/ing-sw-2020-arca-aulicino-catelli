@@ -147,6 +147,11 @@ public class Cell {
         return !getRoof().getIsDome() && !getBuilderHere();
     }
 
+
+    /**
+     * is this cell a perimeter one ?
+     * @return true if is a perimeter
+     */
     public Boolean isPerimeter(){
         return columnPosition == 0 || rowPosition == 0 || columnPosition == 4 || rowPosition == 4;
     }

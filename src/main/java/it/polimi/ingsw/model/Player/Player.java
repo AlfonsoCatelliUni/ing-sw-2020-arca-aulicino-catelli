@@ -100,16 +100,15 @@ public interface Player {
     List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn);
 
 
-    List<Cell> getPawnsCoordinates(Board gameBoard);
-
-
     void removePawn(Board gameBoard, Pawn designatedPawn);
 
 
     void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell);
 
+
     void destroyBlock(Board gameBoard, Cell designatedCell);
 
+    
     List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);
 
     List<Cell> wherePawnCanForce (Board gameBoard, Pawn designatedPawn);

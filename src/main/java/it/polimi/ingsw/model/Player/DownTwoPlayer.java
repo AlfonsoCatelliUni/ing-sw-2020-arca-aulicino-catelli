@@ -22,11 +22,11 @@ public class DownTwoPlayer extends PlayerDecorator {
      * if player moves down to two levels
      */
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
         int oldHeight = designatedPawn.getHeight();
 
-        Consequence resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
+        Consequence resultAction = super.move(gameBoard, designatedPawn, nextPosition);
 
         if( oldHeight - nextPosition.getHeight() >= 2 ) {
             return new VictoryConsequence(super.player.getName());

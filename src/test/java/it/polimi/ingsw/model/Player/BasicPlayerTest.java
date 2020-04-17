@@ -101,7 +101,7 @@ class BasicPlayerTest {
         gameBoard.getCell(1,3).buildOnThisCell(buildings.get(3));
 
 
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(0,1));
+        retMoveEncoded = player.move(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(0,1));
 
         assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(1, player.getNumMove());
@@ -111,7 +111,7 @@ class BasicPlayerTest {
         player.setNumMove(0);
 
 
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(0,2));
+        retMoveEncoded = player.move(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(0,2));
 
         assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(1, player.getNumMove());
@@ -121,7 +121,7 @@ class BasicPlayerTest {
         player.setNumMove(0);
 
 
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,2), gameBoard.getCell(0,3));
+        retMoveEncoded = player.move(gameBoard, gameBoard.getPawnByCoordinates(0,2), gameBoard.getCell(0,3));
 
         assertEquals(VictoryConsequence.class, retMoveEncoded.getClass());
         assertEquals(1, player.getNumMove());
@@ -141,9 +141,9 @@ class BasicPlayerTest {
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
         player.initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(2,2));
 
-        player.movePawn(gameBoard, player.getPawns()[0], gameBoard.getCell(1,0));
+        player.move(gameBoard, player.getPawns()[0], gameBoard.getCell(1,0));
 
-        buildConsequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
+        buildConsequence = player.build(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
 
         assertEquals(1, player.getNumBuild());
         assertEquals(1, gameBoard.getCell(0,0).getHeight());
@@ -160,7 +160,7 @@ class BasicPlayerTest {
 
         assertEquals(21, building.getPlacedNumber());
 
-        buildConsequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
+        buildConsequence = player.build(player.getPawns()[0], gameBoard.getCell(0,0), 1, buildings);
 
         assertEquals(DestroyTowersConsequence.class, buildConsequence.getClass());
 
@@ -353,12 +353,12 @@ class BasicPlayerTest {
         /* case when the pawn can build */
         possibleActions.add(new BuildAction());
 
-        player.movePawn(gameBoard, player.getPawns()[0], gameBoard.getCell(1,0));
+        player.move(gameBoard, player.getPawns()[0], gameBoard.getCell(1,0));
 
         for(i = 0; i < possibleActions.size(); i++)
             assertEquals(possibleActions.get(i).getClass(), player.getPossibleActions(gameBoard, player.getPawns()[0]).get(i).getClass());
 
-        player.pawnBuild(player.getPawns()[0],gameBoard.getCell(0,0), 1, buildings);
+        player.build(player.getPawns()[0],gameBoard.getCell(0,0), 1, buildings);
 
         possibleActions.clear();
         possibleActions.add(new FinishAction());

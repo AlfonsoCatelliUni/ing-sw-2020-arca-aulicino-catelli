@@ -64,7 +64,7 @@ class BlockOpponentPlayerTest {
 
         gameBoard.getCell(2,1).setHeight(1);
 
-        assertEquals(BlockConsequence.class, player_3.movePawn(gameBoard, player_3.getPawns()[0], gameBoard.getCell(2,1)).getClass());
+        assertEquals(BlockConsequence.class, player_3.move(gameBoard, player_3.getPawns()[0], gameBoard.getCell(2,1)).getClass());
 
         /* case when the pawn moves up to level 3, so the player wins, so the method must not return BlockConsequence, but VictoryConsequence
         * P.S.: the pawn moved is now in cell [2,1]
@@ -73,9 +73,9 @@ class BlockOpponentPlayerTest {
         gameBoard.getCell(3,1).setHeight(2);
         gameBoard.getCell(3,2).setHeight(3);
 
-        player_3.movePawn(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,1));
+        player_3.move(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,1));
 
-        assertEquals(VictoryConsequence.class, player_3.movePawn(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,2)).getClass());
+        assertEquals(VictoryConsequence.class, player_3.move(gameBoard,player_3.getPawns()[0], gameBoard.getCell(3,2)).getClass());
 
 
 

@@ -201,7 +201,7 @@ class BuildBeforePlayerTest {
 
         player_3.setHasBuiltBefore(false);
 
-        player_3.pawnBuild(player_3.getPawns()[0], gameBoard.getCell(3,3), 1, buildings);
+        player_3.build(player_3.getPawns()[0], gameBoard.getCell(3,3), 1, buildings);
 
         assertEquals(1, player_3.getNumBuild());
         assertTrue(player_3.getHasBuiltBefore());

@@ -82,7 +82,7 @@ class CanBuildUnderItselfPlayerTest {
     @Test
     void pawnBuild() {
 
-        alfoPlayer.pawnBuild(alfoPlayer.getPawnInCoordinates(2,2), gameBoard.getCell(2,2), 3, buildings);
+        alfoPlayer.build(alfoPlayer.getPawnInCoordinates(2,2), gameBoard.getCell(2,2), 3, buildings);
 
         Building roofAfterBuild = gameBoard.getCell(2,2).getRoof();
         Pawn alfoPawn = alfoPlayer.getPawnInCoordinates(2,2);

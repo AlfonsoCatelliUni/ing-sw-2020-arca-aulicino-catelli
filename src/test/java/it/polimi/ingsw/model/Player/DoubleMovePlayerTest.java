@@ -96,7 +96,7 @@ class DoubleMovePlayerTest {
         /* in this case it's a second move, so player can not move back if he wants to move again */
         player.setCanMoveUp(true);
 
-        player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+        player.move(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
 
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(1,1));
 

@@ -50,14 +50,14 @@ public class CanBuildUnderItselfPlayer extends PlayerDecorator {
      * @return the consequence of the build action
      */
     @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        super.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+        super.build(designatedPawn, designatedCell, chosenLevel, buildings);
 
         /* se costruisco sotto di me devo solamente cambiare
          * la mia altezza e poi mi forzo la mossa */
         if(designatedCell.equals(designatedPawn.getPosition())) {
-            forcePawn(designatedPawn, designatedCell);
+            force(designatedPawn, designatedCell);
         }
 
 

@@ -110,7 +110,7 @@ class SameBuildAfterPlayerTest {
 
         Cell expectedCell = gameBoard.getCell(0,1);
 
-        consequence = player.pawnBuild(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);
+        consequence = player.build(player.getPawns()[0], gameBoard.getCell(0,1), 1, buildings);
 
         Consequence consequence1 = new NoConsequence();
 

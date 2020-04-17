@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.Consequence;
 import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Board;
@@ -106,9 +105,9 @@ public class DoubleMovePlayer extends PlayerDecorator {
      * @param nextPosition is the cell where pawn moves to
      */
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        Consequence consequence = super.movePawn(gameBoard, designatedPawn, nextPosition);
+        Consequence consequence = super.move(gameBoard, designatedPawn, nextPosition);
 
         /* if is the first move, player hasMoved becomes true and saves the previous cell*/
         if (player.getNumMove() == 1 && player.getNumBuild() == 0 && !hasMoved) {

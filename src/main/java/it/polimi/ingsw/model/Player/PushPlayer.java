@@ -72,7 +72,7 @@ public class PushPlayer extends PlayerDecorator {
      * @return int encoded by super.movepawn
      */
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
         Consequence resultAction;
 
@@ -87,15 +87,15 @@ public class PushPlayer extends PlayerDecorator {
 
             removePawn(gameBoard, nextPosition.getPawnInThisCell());
 
-            resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
+            resultAction = super.move(gameBoard, designatedPawn, nextPosition);
 
-            super.forcePawn(oppPawn, oppCell);
+            super.force(oppPawn, oppCell);
 
             placePawn(gameBoard, oppPawn, oppCell);
 
         }
         else {
-            resultAction = super.movePawn(gameBoard, designatedPawn, nextPosition);
+            resultAction = super.move(gameBoard, designatedPawn, nextPosition);
         }
 
         return resultAction;

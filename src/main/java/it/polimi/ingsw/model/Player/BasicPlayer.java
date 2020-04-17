@@ -219,7 +219,7 @@ public class BasicPlayer implements Player {
      * @return the Consequence created by the move
      */
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition ) {
 
 
         removePawn( gameBoard,  designatedPawn ); // remove the pawn from the game board
@@ -272,7 +272,7 @@ public class BasicPlayer implements Player {
      * @param nextPosition the cell where the pawn is forced to
      */
     @Override
-    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
+    public void force(Pawn designatedPawn, Cell nextPosition) {
         designatedPawn.forcePawn(nextPosition);
     }
 
@@ -289,7 +289,7 @@ public class BasicPlayer implements Player {
      * @return the Consequence created by the build
      */
     @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         designatedPawn.pawnBuild();
 
@@ -431,7 +431,7 @@ public class BasicPlayer implements Player {
      * this method is used only for the destroyBlockPlayer
      */
     @Override
-    public void destroyBlock(Board gameBoard, Cell designatedCell) {}
+    public void destroy(Board gameBoard, Cell designatedCell) {}
 
 
     /**

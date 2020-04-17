@@ -113,7 +113,7 @@ class SwitchPlayerTest {
 
 
         /* switch with an opponent player */
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+        retMoveEncoded = player.move(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
 
         assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(gameBoard.getPawnByCoordinates(0,0), opponentPlayer.getPawns()[1] );
@@ -122,7 +122,7 @@ class SwitchPlayerTest {
 
 
         /* normal move */
-        retMoveEncoded = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2));
+        retMoveEncoded = player.move(gameBoard, gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2));
 
         assertEquals(NoConsequence.class, retMoveEncoded.getClass());
 

@@ -97,9 +97,9 @@ public class BuildBeforePlayer extends PlayerDecorator {
      * @param buildings is a list of every type of building based on the level * not used here *
      */
     @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        Consequence buildConsequence = super.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+        Consequence buildConsequence = super.player.build(designatedPawn, designatedCell, chosenLevel, buildings);
 
         if( player.getNumBuild() == 2 && !hasBuiltBefore ) {
             player.setNumBuild(1);

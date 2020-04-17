@@ -45,7 +45,7 @@ class DownTwoPlayerTest {
 
         player.getPawns()[0].moveTo(gameBoard.getCell(1,1));
 
-        Consequence retMove = player.movePawn(gameBoard,player.getPawns()[0],gameBoard.getCell(0,0));
+        Consequence retMove = player.move(gameBoard,player.getPawns()[0],gameBoard.getCell(0,0));
 
         assertEquals(VictoryConsequence.class, retMove.getClass());
 

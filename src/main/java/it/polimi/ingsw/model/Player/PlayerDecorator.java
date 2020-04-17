@@ -133,20 +133,20 @@ public class PlayerDecorator implements Player {
 
 
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
-        return this.player.movePawn(gameBoard, designatedPawn, nextPosition);
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+        return this.player.move(gameBoard, designatedPawn, nextPosition);
     }
 
 
     @Override
-    public Consequence pawnBuild( Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
-        return this.player.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+        return this.player.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
 
 
     @Override
-    public void forcePawn(Pawn designatedPawn, Cell nextPosition) {
-        this.player.forcePawn(designatedPawn, nextPosition);
+    public void force(Pawn designatedPawn, Cell nextPosition) {
+        this.player.force(designatedPawn, nextPosition);
     }
 
 
@@ -180,8 +180,8 @@ public class PlayerDecorator implements Player {
     }
 
     @Override
-    public void destroyBlock(Board gameBoard, Cell designatedCell) {
-        player.destroyBlock(gameBoard, designatedCell);
+    public void destroy(Board gameBoard, Cell designatedCell) {
+        player.destroy(gameBoard, designatedCell);
     }
 
 

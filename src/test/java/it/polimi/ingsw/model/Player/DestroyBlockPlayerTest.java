@@ -70,8 +70,8 @@ class DestroyBlockPlayerTest {
 
         int i;
 
-        player_1.movePawn(gameBoard, player_1.getPawns()[0], gameBoard.getCell(1,0));
-        player_1.pawnBuild(player_1.getPawns()[0], gameBoard.getCell(2,0), 1, buildings);
+        player_1.move(gameBoard, player_1.getPawns()[0], gameBoard.getCell(1,0));
+        player_1.build(player_1.getPawns()[0], gameBoard.getCell(2,0), 1, buildings);
 
         /* case when the pawn cannot destroy any block because there are only level 0 cells around him */
         test.add(new FinishAction());
@@ -118,15 +118,15 @@ class DestroyBlockPlayerTest {
 
 
     @Test
-    void wherePawnCanDestoy() {
+    void wherePawnCanDestroy() {
 
-        assertEquals(test_1, player_1.wherePawnCanDestoy(gameBoard, player_1.getPawns()[1]));
+        assertEquals(test_1, player_1.wherePawnCanDestroy(gameBoard, player_1.getPawns()[1]));
 
         gameBoard.getCell(1,0).buildOnThisCell(buildings.get(0));
 
         test_1.add(gameBoard.getCell(1,0));
 
-        assertEquals(test_1, player_1.wherePawnCanDestoy(gameBoard, player_1.getPawns()[0]));
+        assertEquals(test_1, player_1.wherePawnCanDestroy(gameBoard, player_1.getPawns()[0]));
 
 
     }

@@ -57,13 +57,13 @@ class MovePerimeterAgainPlayerTest {
         for(i = 0; i < availableAction.size(); i++)
             assertEquals(expectedAction.get(i).getClass(), availableAction.get(i).getClass());
 
-        player.movePawn(gameBoard,player.getPawnInCoordinates(0,0), gameBoard.getCell(0,1));
+        player.move(gameBoard,player.getPawnInCoordinates(0,0), gameBoard.getCell(0,1));
         availableAction = player.getPossibleActions(gameBoard, player.getPawns()[0]);
 
         for(i = 0; i < availableAction.size(); i++)
             assertEquals(expectedAction.get(i).getClass(), availableAction.get(i).getClass());
 
-        player.movePawn(gameBoard,player.getPawnInCoordinates(0,1),gameBoard.getCell(1,1));
+        player.move(gameBoard,player.getPawnInCoordinates(0,1),gameBoard.getCell(1,1));
 
         availableAction = player.getPossibleActions(gameBoard, player.getPawns()[0]);
 
@@ -76,7 +76,7 @@ class MovePerimeterAgainPlayerTest {
         player.setNumMove(0);
         player.setNumBuild(1);
 
-        player.movePawn(gameBoard,player.getPawnInCoordinates(1,1),gameBoard.getCell(0,2));
+        player.move(gameBoard,player.getPawnInCoordinates(1,1),gameBoard.getCell(0,2));
 
         availableAction = player.getPossibleActions(gameBoard, player.getPawns()[0]);
         expectedAction.add(new MoveAction());

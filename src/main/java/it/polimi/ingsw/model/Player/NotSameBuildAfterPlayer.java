@@ -94,9 +94,9 @@ public class NotSameBuildAfterPlayer extends PlayerDecorator {
      * @param buildings list of possible buildings to build
      */
     @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        Consequence buildConsequence = super.pawnBuild(designatedPawn, designatedCell, chosenLevel, buildings);
+        Consequence buildConsequence = super.build(designatedPawn, designatedCell, chosenLevel, buildings);
 
         this.cellBefore = designatedCell;
 

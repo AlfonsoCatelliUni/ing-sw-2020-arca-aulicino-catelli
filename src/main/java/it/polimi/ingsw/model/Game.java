@@ -193,7 +193,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        Consequence moveResult = player.movePawn(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
+        Consequence moveResult = player.move(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
         updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
 
@@ -216,7 +216,7 @@ public class Game extends Observable implements GameConsequenceHandler {
         Pawn designatedPawn = gameBoard.getPawnByCoordinates(pawnRow, pawnColumn);
         Cell designatedCell = gameBoard.getCell(buildRow, buildColumn);
 
-        player.pawnBuild(designatedPawn, designatedCell, level, gameBoard.getBuildings());
+        player.build(designatedPawn, designatedCell, level, gameBoard.getBuildings());
     }
 
 
@@ -225,7 +225,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        player.forcePawn(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
+        player.force(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
 
     }
 
@@ -504,7 +504,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        player.destroyBlock(gameBoard, gameBoard.getCell(row, column));
+        player.destroy(gameBoard, gameBoard.getCell(row, column));
     }
 
 

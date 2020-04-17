@@ -94,14 +94,14 @@ class PushPlayerTest {
         player.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(2,2));
         opponentPlayer.initPawn(gameBoard, Sex.MALE, gameBoard.getCell(1,2));
 
-        player.movePawn(gameBoard,player.getPawns()[0],gameBoard.getCell(1,2));
+        player.move(gameBoard,player.getPawns()[0],gameBoard.getCell(1,2));
 
         assertEquals(true,gameBoard.getCell(0,2).getBuilderHere());
         assertEquals(true,gameBoard.getCell(1,2).getBuilderHere());
         assertEquals(false,gameBoard.getCell(2,2).getBuilderHere());
 
         //statement coverage: basic movePawn if there is no builder in designatedCell
-        player.movePawn(gameBoard, player.getPawns()[0],gameBoard.getCell(1,3));
+        player.move(gameBoard, player.getPawns()[0],gameBoard.getCell(1,3));
         assertEquals(false,gameBoard.getCell(1,2).getBuilderHere());
         assertEquals(true,gameBoard.getCell(1,3).getBuilderHere());
 

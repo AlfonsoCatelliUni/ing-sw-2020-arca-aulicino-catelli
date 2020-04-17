@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.Actions;
+package it.polimi.ingsw.model.Consequence;
 
 import it.polimi.ingsw.model.GameConsequenceHandler;
 
@@ -9,6 +9,11 @@ public interface Consequence {
 
 
     void accept(GameConsequenceHandler game);
+
+
+    String getNickname();
+
+    void setNickname(String nickname);
 
 
 }

@@ -2,7 +2,7 @@ package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.BuildAction;
-import it.polimi.ingsw.model.Actions.Consequence;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Actions.FinishAction;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.Consequence;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Sex;
 

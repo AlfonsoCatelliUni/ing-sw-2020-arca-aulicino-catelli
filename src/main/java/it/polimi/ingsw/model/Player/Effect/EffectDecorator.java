@@ -36,8 +36,8 @@ public class EffectDecorator implements Effect {
     }
 
     @Override
-    public Consequence movePawn(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
-        return this.effect.movePawn(gameBoard,designatedPawn,nextPosition);
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+        return this.effect.move(gameBoard,designatedPawn,nextPosition);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class EffectDecorator implements Effect {
     }
 
     @Override
-    public Consequence pawnBuild(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         return null;
     }
 

@@ -41,19 +41,23 @@ public class Player {
         this.pawns = new ArrayList<>(2);
     }
 
+    public Effect getEffect() {
+        return effect;
+    }
+
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn){
         return effect.getPossibleActions(gameBoard,designatedPawn);
     }
 
-    public void initPawn(Board gameBoard, Sex sex, Cell startCell ) {
+    public void initPawn(Board gameBoard, Cell startCell ) {
 
         /* control if the pawn is already present */
-        if( sex == Sex.MALE && this.getPawns().get(0) == null) {
-            this.pawns.add(new Pawn(this.color, sex, startCell));
+        if(pawns.size() == 0) {
+            this.pawns.add(new Pawn(this.color, Sex.MALE, startCell));
             placePawn( gameBoard, this.pawns.get(0), startCell);
         }
-        else if (sex == Sex.FEMALE && this.getPawns().get(1) == null){
-            this.pawns.add(new Pawn(this.color, sex, startCell));
+        else if (pawns.size() == 1){
+            this.pawns.add(new Pawn(this.color, Sex.FEMALE, startCell));
             placePawn( gameBoard, this.pawns.get(1), startCell);
         }
 

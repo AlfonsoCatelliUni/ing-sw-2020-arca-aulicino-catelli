@@ -36,21 +36,15 @@ public class BuildBeforeEffect extends EffectDecorator {
     @Override
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        Consequence buildConsequence = super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
-
         if(super.effect.getState().getClass().equals(MoveAndBuildState.class)) {
             super.effect.changeState(new MoveState(this));
-                this.effect = new NotMoveUpEffect(effect);
+            this.effect = new NotMoveUpEffect(effect);
         }
         else if(super.effect.getState().getClass().equals(BuildState.class)) {
             super.effect.changeState(new FinishState(this));
-            effect = new BasicEffect();
-        }
-        else {
-            throw new RuntimeException("Invalid State!");
         }
 
-        return buildConsequence;
+        return super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
 
 }

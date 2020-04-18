@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 /**
  * this decorator blocks the possibility of opponent player to move up during their turn
@@ -15,6 +16,7 @@ public class BlockOpponentEffect extends EffectDecorator {
 
     public BlockOpponentEffect(Effect e) {
         super(e);
+        this.effect.changeState(new MoveState(this));
     }
 
 

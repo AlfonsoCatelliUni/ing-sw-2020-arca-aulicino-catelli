@@ -26,6 +26,13 @@ public class BuildNotOnSameCellEffect extends EffectDecorator {
     // ======================================================================================
 
 
+    /**
+     * this method deletes the cell where the player built in the first build action
+     * from the possible cells where to build again
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn used in the current turn
+     * @return a list of cells where the player can build
+     */
     @Override
     public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 

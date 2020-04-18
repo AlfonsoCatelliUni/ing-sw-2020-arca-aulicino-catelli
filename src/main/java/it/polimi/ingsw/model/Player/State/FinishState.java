@@ -26,6 +26,12 @@ public class FinishState implements StateInterface {
     // ======================================================================================
 
 
+    /**
+     * returns a FinishAction, so the player can only end his turn
+     * @param gameBoard is the board where tha game is played
+     * @param designatedPawn is the chosen pawn for the current turn
+     * @return a list of possible actions
+     */
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
         List<Action> possibleActions = new ArrayList<>();
         possibleActions.add(new FinishAction());

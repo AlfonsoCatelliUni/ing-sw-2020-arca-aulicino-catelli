@@ -26,6 +26,13 @@ public class MoveAndBuildState implements StateInterface {
     // ======================================================================================
 
 
+    /**
+     * checks if in the current turn the designatedPawn can do a MoveAction, a BuildAction
+     * or even both, base on this state
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn chosen by the current player
+     * @return a list of possible actions that can be done by the designatedPawn
+     */
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
         List<Action> possibleActions = new ArrayList<>();

@@ -17,11 +17,11 @@ import static org.junit.Assert.assertNotEquals;
 
 class GameTest {
 
-    Game game;
-
-    private List<Player> players;
+    private Game game;
 
     private Board gameBoard;
+
+    private List<Player> players;
 
     private Effect alfoEffect;
     private Effect massiEffect;
@@ -37,9 +37,10 @@ class GameTest {
 
     private List<Building> buildings;
 
+
     @BeforeEach
     void setUp() {
-
+        game = new Game("Alfonso", "Massi");
         gameBoard = new Board();
         buildings = gameBoard.getBuildings();
 

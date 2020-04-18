@@ -26,6 +26,12 @@ public class MoveState implements StateInterface {
     // ======================================================================================
 
 
+    /**
+     * checks if in the current turn the designatedPawn can do a MoveAction
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn chosen by the current player
+     * @return a list of possible actions that can be done by the designatedPawn
+     */
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
         List<Action> possibleActions = new ArrayList<>();

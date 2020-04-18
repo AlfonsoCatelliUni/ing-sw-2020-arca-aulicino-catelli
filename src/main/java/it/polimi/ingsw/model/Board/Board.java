@@ -4,6 +4,7 @@ import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Player.Pawn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Board {
@@ -61,6 +62,17 @@ public class Board {
      */
     public Cell[][] getMatrixBoard() {
         return matrixBoard;
+    }
+
+
+    public List<Cell> matrix() {
+        List<Cell> matrixList = new ArrayList<>();
+
+        for(int i = 0; i < ROW; i++){
+            matrixList.addAll(Arrays.asList(matrixBoard[i]));
+        }
+
+        return matrixList;
     }
 
 

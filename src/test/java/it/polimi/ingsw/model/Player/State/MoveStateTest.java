@@ -80,8 +80,6 @@ class MoveStateTest {
         correctActionsList.add(new MoveAction());
         possibleActions = alfoPlayer.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
-        possibleActions = alfoPlayer.getEffect().getState().checkPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
-
         assertEquals(correctActionsList.size(), possibleActions.size());
         for(i = 0; i < correctActionsList.size(); i++)
             assertEquals(correctActionsList.get(i).getClass(), possibleActions.get(i).getClass());
@@ -95,8 +93,7 @@ class MoveStateTest {
         correctActionsList.clear();
 
         assertEquals(correctActionsList.size(), possibleActions.size());
-        //for(i = 0; i < possibleActions.size(); i++)
-          //  assertEquals(correctActionsList.get(i).getClass(), possibleActions.get(i).getClass());
 
     }
+
 }

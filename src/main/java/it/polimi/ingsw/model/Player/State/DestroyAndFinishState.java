@@ -17,18 +17,11 @@ public class DestroyAndFinishState implements StateInterface {
     private final Effect effect;
 
 
-    private final List<Action> actions;
-
-
     // ======================================================================================
 
 
     public DestroyAndFinishState(Effect effect) {
         this.effect = effect;
-
-        this.actions = new ArrayList<>();
-        this.actions.add(new DestroyAction());
-        this.actions.add(new FinishAction());
     }
 
 
@@ -37,10 +30,11 @@ public class DestroyAndFinishState implements StateInterface {
 
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<Action> possibleActions = new ArrayList<>(actions);
+        List<Action> possibleActions = new ArrayList<>();
+        possibleActions.add(new FinishAction());
 
-        if(effect.wherePawnCanDestroy(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(DestroyAction.class));
+        if(effect.wherePawnCanDestroy(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new DestroyAction());
         }
 
         return possibleActions;

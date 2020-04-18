@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.BuildAndFinishState;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.FinishState;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
 
     public MoreBuildNotOnSameEffect(Effect e) {
         super(e);
+        this.effect.changeState(new MoveState(this));
     }
 
 
@@ -36,9 +38,8 @@ public class MoreBuildNotOnSameEffect extends EffectDecorator {
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         if (super.effect.getState().getClass().equals(BuildState.class)) {
-                changeState(new BuildAndFinishState(this));
                 effect = new BuildNotOnSameCellEffect(effect, designatedCell);
-
+                changeState(new BuildAndFinishState(this));
         }
 
         else if(super.effect.getState().getClass().equals(BuildAndFinishState.class)) {

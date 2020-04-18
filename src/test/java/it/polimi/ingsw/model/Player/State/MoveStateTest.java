@@ -18,52 +18,85 @@ import static org.junit.Assert.assertEquals;
 
 class MoveStateTest {
 
-    int i;
-    Effect effect;
-    List<Action> possibleActions = new ArrayList<>();
-    Board gameBoard;
-    Player player;
-    Player opponentPlayer;
-    List<MoveAction> correctActions = new ArrayList<MoveAction>();
-    List<Building> buildings;
+
+    private Board gameBoard;
+
+    private Effect alfoEffect;
+    private Effect massiEffect;
+    private Effect giammaEffect;
+
+    private Card alfoCard;
+    private Card massiCard;
+    private Card giammaCard;
+
+    private Player alfoPlayer;
+    private Player massiPlayer;
+    private Player giammaPlayer;
+
+    private List<Building> buildings;
+
+    private List<Action> correctActionsList = new ArrayList<>();
 
 
     @BeforeEach
     void setUp() {
+
         gameBoard = new Board();
         buildings = gameBoard.getBuildings();
 
-        effect = new BasicEffect();
-        player = new Player("name", Color.BLUE, new Card("card", true, "effect" ), new CanSwitchOpponentEffect(new SwitchEffect(new BasicEffect())));
-        opponentPlayer = new Player("name1", Color.WHITE, new Card("card", true, "effect" ), new BasicEffect());
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
 
-        player.initPawn(gameBoard, gameBoard.getCell(0,0));
+
+        alfoEffect = new BasicEffect();
+        alfoEffect = new CanSwitchOpponentEffect(new SwitchEffect(alfoEffect));
+        alfoCard = new Card("switch_card", true, "switch_effect");
+
+        alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
+
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,0));
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(2,2));
 
 
+        massiEffect = new BasicEffect();
+        massiCard = new Card("massi_card", true, "massi_effect");
+
+        massiPlayer = new Player("massi", Color.GREY, massiCard, massiEffect);
+
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(0,4));
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(1,1));
 
     }
 
     @Test
     void checkPossibleActions() {
+        int i = 0;
+        List<Action> possibleActions;
 
-        //basic move
-        correctActions.add(new MoveAction());
+        //In this case the pawn is on a second level building and have two domes built near himself
+        //the other cell is occupied by a pawn that can be force to switch
+        correctActionsList.add(new MoveAction());
+        possibleActions = alfoPlayer.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
-        possibleActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        possibleActions = alfoPlayer.getEffect().getState().checkPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 
-        for(i = 0; i < possibleActions.size(); i++)
-            assertEquals(correctActions.get(i).getClass(), possibleActions.get(i).getClass());
+        assertEquals(correctActionsList.size(), possibleActions.size());
+        for(i = 0; i < correctActionsList.size(); i++)
+            assertEquals(correctActionsList.get(i).getClass(), possibleActions.get(i).getClass());
 
-        // there is only opponent pawn, but you can switch
-        opponentPlayer.initPawn(gameBoard, gameBoard.getCell(0,1));
-        opponentPlayer.initPawn(gameBoard, gameBoard.getCell(1,0));
-        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(0));
-        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(1));
 
-        possibleActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        //In this case the pawn is on a second level tower and is surrounded only by domes and CANNOT move
+        massiPlayer.move(gameBoard, massiPlayer.getPawnInCoordinates(1,1), gameBoard.getCell(2,1));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(3));
 
-        for(i = 0; i < possibleActions.size(); i++)
-            assertEquals(correctActions.get(i).getClass(), possibleActions.get(i).getClass());
+        possibleActions = alfoPlayer.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        correctActionsList.clear();
+
+        assertEquals(correctActionsList.size(), possibleActions.size());
+        //for(i = 0; i < possibleActions.size(); i++)
+          //  assertEquals(correctActionsList.get(i).getClass(), possibleActions.get(i).getClass());
 
     }
 }

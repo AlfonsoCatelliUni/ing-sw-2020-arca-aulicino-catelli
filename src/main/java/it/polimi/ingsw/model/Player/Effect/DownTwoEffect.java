@@ -5,12 +5,14 @@ import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 public class DownTwoEffect extends EffectDecorator {
 
 
     public DownTwoEffect(Effect e) {
         super(e);
+        this.effect.changeState(new MoveState(this));
     }
 
 

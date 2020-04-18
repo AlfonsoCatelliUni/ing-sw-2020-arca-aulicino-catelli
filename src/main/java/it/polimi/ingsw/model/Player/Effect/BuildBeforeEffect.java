@@ -21,7 +21,7 @@ public class BuildBeforeEffect extends EffectDecorator {
 
     public BuildBeforeEffect(Effect e) {
         super(e);
-        changeState(new MoveAndBuildState(this));
+        this.effect.changeState(new MoveAndBuildState(this));
     }
 
 

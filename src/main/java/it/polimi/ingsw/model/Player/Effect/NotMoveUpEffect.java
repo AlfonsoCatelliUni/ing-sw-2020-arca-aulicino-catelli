@@ -3,13 +3,16 @@ package it.polimi.ingsw.model.Player.Effect;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
 public class NotMoveUpEffect extends EffectDecorator{
 
+
     public NotMoveUpEffect(Effect e) {
         super(e);
+        this.effect.changeState(new MoveState(this));
     }
 
 

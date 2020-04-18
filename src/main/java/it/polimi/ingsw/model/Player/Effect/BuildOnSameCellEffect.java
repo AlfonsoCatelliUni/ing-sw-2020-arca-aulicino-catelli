@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.Player.Effect;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class BuildOnSameCellEffect extends EffectDecorator{
     public BuildOnSameCellEffect(Effect e, Cell cellBefore) {
         super(e);
         this.cellBefore = cellBefore;
+        this.effect.changeState(new MoveState(this));
     }
 
 

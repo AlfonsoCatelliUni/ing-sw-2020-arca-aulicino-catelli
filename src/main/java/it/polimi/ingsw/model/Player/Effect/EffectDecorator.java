@@ -118,6 +118,12 @@ public class EffectDecorator implements Effect {
     }
 
 
+    @Override
+    public void destroy(Cell designatedCell, List<Building> buildings) {
+        this.effect.destroy(designatedCell, buildings);
+    }
+
+
     // ======================================================================================
     // MARK : Pawn Placing Section
 

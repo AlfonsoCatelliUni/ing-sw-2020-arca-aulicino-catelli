@@ -3,8 +3,6 @@ package it.polimi.ingsw.model.Player.Effect;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Consequence.Consequence;
-import it.polimi.ingsw.model.Consequence.NoConsequence;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +12,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SwitchEffectTest {
+class DestroyEffectTest {
+
 
     private Board gameBoard;
 
@@ -32,6 +31,7 @@ class SwitchEffectTest {
 
     private List<Building> buildings;
 
+
     @BeforeEach
     void setUp() {
 
@@ -44,13 +44,13 @@ class SwitchEffectTest {
 
 
         alfoEffect = new BasicEffect();
-        alfoEffect = new SwitchEffect(alfoEffect);
+        alfoEffect = new DestroyEffect(alfoEffect);
         alfoCard = new Card("switch_card", true, "switch_effect");
 
         alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
 
         alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,0));
-        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(2,2));
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(2,3));
 
 
         massiEffect = new BasicEffect();
@@ -65,21 +65,24 @@ class SwitchEffectTest {
 
 
     @Test
-    void move() {
+    void destroy() {
 
-        /* switch with an opponent player */
-        Consequence returnConsequence = alfoPlayer.move(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+        alfoPlayer.move(gameBoard, alfoPlayer.getPawnInCoordinates(2,3), gameBoard.getCell(3,3));
 
-        assertEquals(NoConsequence.class, returnConsequence.getClass());
-        assertEquals(alfoPlayer.getPawnInCoordinates(0,0), massiPlayer.getPawnInCoordinates(2,2) );
-        assertEquals(true, massiPlayer.getPawnInCoordinates(0,0).getForcedMove());
-        assertEquals(2, massiPlayer.getPawnInCoordinates(0,0).getHeight());
+        //A pawn wants to destroy the third level of a tower
+        gameBoard.getCell(2,2).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(2,2).buildOnThisCell(buildings.get(1));
+        alfoPlayer.destroy(gameBoard.getCell(2,2), buildings);
 
 
-        /* normal move */
-        returnConsequence = alfoPlayer.move(gameBoard, alfoPlayer.getPawnInCoordinates(1,1), gameBoard.getCell(1,2));
 
-        assertEquals(NoConsequence.class, returnConsequence.getClass());
+    }
+
+
+    @Test
+    void build() {
+
+
 
     }
 

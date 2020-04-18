@@ -235,8 +235,10 @@ public class BasicEffect implements Effect {
     /**
      * this method is used only for the destroyBlockPlayer
      */
-    /*@Override
-    public void destroy(Board gameBoard, Cell designatedCell) {}*/
+    @Override
+    public void destroy(Cell designatedCell, List<Building> buildings) {
+        throw new RuntimeException("Invalid Command!");
+    }
 
 
     // MARK : Pawn Placing Section ======================================================================================

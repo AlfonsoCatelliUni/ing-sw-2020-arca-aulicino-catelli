@@ -158,14 +158,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    public List<Cell> wherePawnCanForce(String playerName, int row, int column){
-
-        Player player = getPlayerByName(playerName);
-
-        return player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(row,column));
-    }
-
-
     /**
      * which are the possible type of buildings that can be built on this position ?
      * @param row the row coordinate the position
@@ -177,6 +169,37 @@ public class Game extends Observable implements GameConsequenceHandler {
         Player player = getPlayerByName(playerName);
 
         return player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column));
+    }
+
+
+    /**
+     * which are the possible cells where I can force an opponent pawn to move
+     * @param playerName the nickname of the player
+     * @param row the row of the pawn that wants to force an opponent pawn
+     * @param column the column of the pawn that wants force an opponent pawn
+     * @return the list of the cells where are present
+     */
+    public List<Cell> wherePawnCanForce(String playerName, int row, int column){
+
+        Player player = getPlayerByName(playerName);
+
+        return player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(row,column));
+    }
+
+
+    /**
+     * this method is used when there is a DestroyBlockPlayer
+     * @param playerNickname is the name of the DestroyBlockPlayer
+     * @return the list of cells where the not-moved pawn can destroy a block
+     */
+    public List<Cell> wherePawnCanDestroy(String playerNickname) {
+
+        Player player = getPlayerByName(playerNickname);
+
+        Pawn notMovedPawn = player.getPawns().stream().filter(pawn -> !pawn.getHasMoved()).findAny().get();
+
+        return player.wherePawnCanDestroy(gameBoard, notMovedPawn);
+
     }
 
 
@@ -225,6 +248,20 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.force(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
 
+    }
+
+
+    /**
+     * this method is used when there is a DestroyBlockPlayer
+     * @param playerName is the name of the player
+     * @param row is the row of the cell where a block will be destroyed
+     * @param column is the column od the cell where a block will be destroyed
+     */
+    public void destroyBlock(String playerName, int row, int column) {
+
+        Player player = getPlayerByName(playerName);
+
+        player.destroy(gameBoard.getCell(row, column), gameBoard.getBuildings());
     }
 
 
@@ -351,6 +388,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     public void receiveConsequence(Consequence consequence) {
         consequence.accept(this);
     }
+
 
     /**
      * This method notifies all the observers that there is a winner for this game
@@ -488,34 +526,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    /**
-     * this method is used when there is a DestroyBlockPlayer
-     * @param playerName is the name of the player
-     * @param row is the row of the cell where a block will be destroyed
-     * @param column is the column od the cell where a block will be destroyed
-     */
-    public void destroyBlock(String playerName, int row, int column) {
-
-        Player player = getPlayerByName(playerName);
-
-        player.destroy(gameBoard, gameBoard.getCell(row, column));
-    }
 
 
-    /**
-     * this method is used when there is a DestroyBlockPlayer
-     * @param playerNickname is the name of the DestroyBlockPlayer
-     * @return the list of cells where the not-moved pawn can destroy a block
-     */
-    public List<Cell> wherePawnCanDestroy(String playerNickname) {
 
-        Player player = getPlayerByName(playerNickname);
 
-        Pawn notMovedPawn = player.getPawns().stream().filter(pawn -> !pawn.getHasMoved()).findAny().get();
-
-        return player.wherePawnCanDestroy(gameBoard, notMovedPawn);
-
-    }
 
 
 }

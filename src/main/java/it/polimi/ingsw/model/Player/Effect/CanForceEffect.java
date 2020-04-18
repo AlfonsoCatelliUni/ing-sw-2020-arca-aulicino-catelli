@@ -9,10 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CanForceEffect extends EffectDecorator {
+
+
     public CanForceEffect(Effect e) {
         super(e);
         changeState(new ForceAndMoveState(this));
     }
+
+
+    // ======================================================================================
+
 
     @Override
     public List<Cell> wherePawnCanForce (Board gameBoard, Pawn designatedPawn){

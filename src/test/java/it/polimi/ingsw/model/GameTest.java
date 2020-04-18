@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Consequence.BlockConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Effect.*;
 import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,40 +12,60 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 class GameTest {
 
     Game game;
 
-    Board board;
-
-    List<Building> buildings;
-
     private List<Player> players;
 
+    private Board gameBoard;
 
-    // ======================================================================================
+    private Effect alfoEffect;
+    private Effect massiEffect;
+    private Effect giammaEffect;
 
+    private Card alfoCard;
+    private Card massiCard;
+    private Card giammaCard;
+
+    private Player alfoPlayer;
+    private Player massiPlayer;
+    private Player giammaPlayer;
+
+    private List<Building> buildings;
 
     @BeforeEach
     void setUp() {
 
-        game = new Game("Alfonso", "Massi");
+        gameBoard = new Board();
+        buildings = gameBoard.getBuildings();
 
-        board = new Board();
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
 
-        players = new ArrayList<>();
 
-        buildings = new ArrayList<>();
+        alfoEffect = new BasicEffect();
+        alfoEffect = new CanPushOpponentEffect(new SwitchEffect(alfoEffect));
+        alfoCard = new Card("switch_card", true, "switch_effect");
 
-        buildings.add(new Building(1,22));
-        buildings.add(new Building(2,18));
-        buildings.add(new Building(3,14));
-        buildings.add(new Building(4,18));
+        alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
 
-        //player = new BasicPlayer("Alfonso", Color.BLUE, "God_Alfonso");
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,0));
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(2,2));
 
-        //player.initPawn(board, Sex.MALE, board.getCell(0,0));
-        //player.initPawn(board, Sex.FEMALE, board.getCell(0,1));
+
+        massiEffect = new BasicEffect();
+        massiEffect = new CanPushOpponentEffect(new PushEffect(massiEffect));
+        massiCard = new Card("massi_card", true, "massi_effect");
+
+        massiPlayer = new Player("massi", Color.GREY, massiCard, massiEffect);
+
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(0,4));
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(1,1));
 
     }
 
@@ -58,6 +79,7 @@ class GameTest {
     @Test
     void wherePawnCanMove() {
     }
+
 
     /**
      * this method calls only the wherePawnCanBuild from Player class that's already tested
@@ -116,18 +138,20 @@ class GameTest {
 
     @Test
     void receiveConsequence() {
-        //TODO : decommentare e fixare
-//        Player player1 = new BasicPlayer("Alfonso", Color.BLUE, new Card("Name", true,"effect"));
-//        Player player2 = new BasicPlayer("Massi", Color.GREY, new Card("Name", true,"effect"));
-//        players.add(player1);
-//        players.add(player2);
-//
-//        assertEquals(true,game.getPlayerByName("Massi").getCanMoveUp());
-//
-//        game.receiveConsequence(new BlockConsequence("Alfonso"));
-//
-//        assertEquals(false,game.getPlayerByName("Massi").getCanMoveUp());
-//        assertEquals(true,game.getPlayerByName("Alfonso").getCanMoveUp());
+
+        //TODO : dovrebbe andare ma causa test Decoratore Statico non funzionanti non sono riuscito a farlo runnare
+
+        for(Effect e = alfoPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
+            assertNotEquals(NotMoveUpEffect.class, e.getClass());
+        }
+
+        game.receiveConsequence(new BlockConsequence("massi"));
+
+        assertEquals(NotMoveUpEffect.class, alfoPlayer.getEffect().getClass());
+
+        for(Effect e = massiPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
+            assertNotEquals(NotMoveUpEffect.class, e.getClass());
+        }
 
     }
 
@@ -189,6 +213,7 @@ class GameTest {
 
     }
 
+
     /**
      * this method only calls the destroyBlock in player
      */
@@ -196,10 +221,12 @@ class GameTest {
     void destroyBlock() {
     }
 
+
     /**
      * this method only calls the wherePawnCanDestroy in player
      */
     @Test
     void wherePawnCanDestroy() {
     }
+
 }

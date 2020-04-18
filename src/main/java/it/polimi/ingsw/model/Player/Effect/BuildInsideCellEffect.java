@@ -24,8 +24,10 @@ public class BuildInsideCellEffect extends EffectDecorator {
     public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 
         List<Cell> availableCellToBuild;
-            availableCellToBuild = super.wherePawnCanBuild(gameBoard, designatedPawn);
-            availableCellToBuild.removeIf(Cell::isPerimeter);
+
+        availableCellToBuild = super.wherePawnCanBuild(gameBoard, designatedPawn);
+
+        availableCellToBuild.removeIf(Cell::isPerimeter);
 
         return availableCellToBuild;
 

@@ -76,7 +76,7 @@ public interface Effect {
     void force(Pawn designatedPawn, Cell nextPosition);
 
 
-    public void destroy(Cell designatedCell, List<Building> buildings);
+    void destroy(Cell designatedCell, List<Building> buildings);
 
 
     //</editor-fold>

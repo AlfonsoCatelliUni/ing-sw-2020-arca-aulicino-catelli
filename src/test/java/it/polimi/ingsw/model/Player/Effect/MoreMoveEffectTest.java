@@ -70,7 +70,7 @@ class MoreMoveEffectTest {
 
         assertEquals(NoConsequence.class, retMoveEncoded.getClass());
         assertEquals(MoveAndBuildState.class,player.getEffect().getState().getClass());
-        //assertEquals(NotMoveBackEffect.class, player.getEffect().getEffect().getClass());
+        assertEquals(NotMoveBackEffect.class, player.getEffect().getEffect().getClass());
 
 
         retMoveEncoded = player.move(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(0,2));

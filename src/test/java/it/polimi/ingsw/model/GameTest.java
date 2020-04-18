@@ -116,6 +116,7 @@ class GameTest {
 
     @Test
     void receiveConsequence() {
+        //TODO : decommentare e fixare
 //        Player player1 = new BasicPlayer("Alfonso", Color.BLUE, new Card("Name", true,"effect"));
 //        Player player2 = new BasicPlayer("Massi", Color.GREY, new Card("Name", true,"effect"));
 //        players.add(player1);

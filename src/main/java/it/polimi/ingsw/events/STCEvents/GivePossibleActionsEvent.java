@@ -1,6 +1,5 @@
 package it.polimi.ingsw.events.STCEvents;
 
-import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.model.Actions.Action;

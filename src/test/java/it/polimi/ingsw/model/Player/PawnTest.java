@@ -1,8 +1,10 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

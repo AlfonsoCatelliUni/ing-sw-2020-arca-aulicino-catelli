@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertEquals;
 
 class MoveStateTest {
 
@@ -24,22 +24,29 @@ class MoveStateTest {
     Board gameBoard;
     Player player;
     Player opponentPlayer;
-    List<Action> correctActions = new ArrayList<>();
+    List<MoveAction> correctActions = new ArrayList<MoveAction>();
+    List<Building> buildings;
 
 
     @BeforeEach
     void setUp() {
         gameBoard = new Board();
+        buildings = gameBoard.getBuildings();
+
         effect = new BasicEffect();
         player = new Player("name", Color.BLUE, new Card("card", true, "effect" ), new CanSwitchOpponentEffect(new SwitchEffect(new BasicEffect())));
         opponentPlayer = new Player("name1", Color.WHITE, new Card("card", true, "effect" ), new BasicEffect());
+
+        player.initPawn(gameBoard, gameBoard.getCell(0,0));
+
+
+
     }
 
     @Test
     void checkPossibleActions() {
 
         //basic move
-        player.initPawn(gameBoard, gameBoard.getCell(0,0));
         correctActions.add(new MoveAction());
 
         possibleActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
@@ -50,8 +57,8 @@ class MoveStateTest {
         // there is only opponent pawn, but you can switch
         opponentPlayer.initPawn(gameBoard, gameBoard.getCell(0,1));
         opponentPlayer.initPawn(gameBoard, gameBoard.getCell(1,0));
-        gameBoard.getCell(1,1).buildOnThisCell(new Building(1,22));
-        gameBoard.getCell(1,1).buildOnThisCell(new Building(1,22));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(1));
 
         possibleActions = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(0,0));
 

@@ -6,14 +6,11 @@ import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Consequence.Consequence;
-import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Effect.BasicEffect;
 import it.polimi.ingsw.model.Player.Effect.Effect;
-import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 

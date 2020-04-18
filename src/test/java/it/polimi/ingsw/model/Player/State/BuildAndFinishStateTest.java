@@ -70,6 +70,8 @@ class BuildAndFinishStateTest {
         rightActions.add(new FinishAction());
 
 
+        assertEquals(rightActions.size(), player.getEffect().getState().checkPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(1,0)).size());
+
         for(i = 0; i < rightActions.size(); i++)
             assertEquals(rightActions.get(i).getClass(), player.getEffect().getState().checkPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(1,0)).get(i).getClass());
 

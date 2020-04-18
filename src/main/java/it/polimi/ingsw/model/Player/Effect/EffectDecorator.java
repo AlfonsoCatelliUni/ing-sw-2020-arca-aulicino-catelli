@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 import it.polimi.ingsw.model.Player.State.StateInterface;
 
 

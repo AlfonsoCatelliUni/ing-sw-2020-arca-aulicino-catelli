@@ -4,12 +4,14 @@ import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 public class PushEffect extends EffectDecorator {
 
 
     public PushEffect(Effect e) {
         super(e);
+        this.effect.changeState(new MoveState(this));
     }
 
 

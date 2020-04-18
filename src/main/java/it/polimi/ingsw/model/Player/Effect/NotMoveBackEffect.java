@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.Player.Effect;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class NotMoveBackEffect extends EffectDecorator {
     public NotMoveBackEffect(Effect e, Cell startCell) {
         super(e);
         this.startCell = startCell;
+        this.effect.changeState(new MoveState(this));
     }
 
 

@@ -67,6 +67,17 @@ public class Board {
     }
 
 
+    public List<Cell> matrix() {
+        List<Cell> matrixList = new ArrayList<>();
+
+        for(int i = 0; i < ROW; i++){
+            matrixList.addAll(Arrays.asList(matrixBoard[i]));
+        }
+
+        return matrixList;
+    }
+
+
     /**
      * get cell by coordinates
      * @param row x position

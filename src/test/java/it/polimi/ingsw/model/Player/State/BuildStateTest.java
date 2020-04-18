@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BuildStateTest {
@@ -66,6 +67,8 @@ class BuildStateTest {
         gameBoard.getCell(2,0).buildOnThisCell(buildings.get(1));
         gameBoard.getCell(2,0).buildOnThisCell(buildings.get(2));
         gameBoard.getCell(2,0).buildOnThisCell(buildings.get(3));
+
+        assertEquals(rightActions.size(), player.getEffect().getState().checkPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(1,0)).size());
 
         assertEquals(rightActions, player.getEffect().getState().checkPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(1,0)));
 

@@ -35,12 +35,12 @@ public class BuildUnderItselfEffect extends EffectDecorator {
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         super.build(designatedPawn, designatedCell, chosenLevel, buildings);
 
-        /* se costruisco sotto di me devo solamente cambiare
-         * la mia altezza e poi mi forzo la mossa */
+        //if i build under myself I have to force myself up one level
         if(designatedCell.equals(designatedPawn.getPosition())) {
             force(designatedPawn, designatedCell);
         }
         return new NoConsequence();
     }
+
 
 }

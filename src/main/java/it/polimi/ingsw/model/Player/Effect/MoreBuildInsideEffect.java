@@ -12,10 +12,15 @@ import it.polimi.ingsw.model.Player.State.MoveState;
 import java.util.List;
 
 public class MoreBuildInsideEffect extends EffectDecorator {
+
+
     public MoreBuildInsideEffect(Effect e) {
         super(e);
         this.effect.changeState(new MoveState(this));
     }
+
+
+    // ======================================================================================
 
 
     /**
@@ -36,6 +41,7 @@ public class MoreBuildInsideEffect extends EffectDecorator {
 
         return super.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
+
 
 }
 

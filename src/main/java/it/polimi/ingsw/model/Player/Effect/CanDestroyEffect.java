@@ -27,11 +27,7 @@ public class CanDestroyEffect extends EffectDecorator {
     @Override
     public List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn) {
 
-
-
-
         return wherePawnCanBuild(gameBoard, designatedPawn).stream().filter(cell -> cell.getHeight() > 0).collect(Collectors.toList());
-
 
     }
 

@@ -20,8 +20,15 @@ public class CanForceEffect extends EffectDecorator {
     // ======================================================================================
 
 
+    /**
+     * this method checks if the designatedPawn can force an opponent pawn to the
+     * space directly on the other side of the designatedPawn position if that space is unoccupied
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn of the current player
+     * @return a list of cells that are the positions of the opponent player's pawn that can be forced
+     */
     @Override
-    public List<Cell> wherePawnCanForce (Board gameBoard, Pawn designatedPawn){
+    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
 
         List<Cell> neighboringCell = gameBoard.getNeighboring( designatedPawn.getPosition() );
         List<Cell> opponentNeighboringCell = new ArrayList<>();

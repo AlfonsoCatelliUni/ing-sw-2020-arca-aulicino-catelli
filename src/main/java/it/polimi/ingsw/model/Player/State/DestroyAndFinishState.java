@@ -32,22 +32,14 @@ public class DestroyAndFinishState implements StateInterface {
     // ======================================================================================
 
 
+    /**
+     * checks if in the current turn the designatedPawn can do a FinishAction, a DestroyAction
+     * or even both
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn chosen by the current player
+     * @return a list of possible actions that can be done by the designatedPawn
+     */
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
-
-        /*
-        Pawn nMovedPawn = null;
-
-         for(int i = 0; i < gameBoard.getMatrixBoard().length; i++) {
-            for (int j = 0; j < gameBoard.getMatrixBoard().length; j++) {
-                if (gameBoard.getCell(i, j).getBuilderHere()) {
-                    if (gameBoard.getCell(i, j).getPawnInThisCell().getColor() == designatedPawn.getColor() && gameBoard.getCell(i, j).getPawnInThisCell().getSex() != designatedPawn.getSex()) {
-                        nMovedPawn = gameBoard.getCell(i, j).getPawnInThisCell();
-                    }
-                }
-            }
-        }
-
-        */
 
         List<Cell> matrixBoard = gameBoard.matrix();
 

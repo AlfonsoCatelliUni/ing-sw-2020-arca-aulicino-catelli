@@ -3,11 +3,13 @@ package it.polimi.ingsw.model.Board;
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Player.Pawn;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Board {
+
 
     /**
      * constant value that indicates how many rows are present in board

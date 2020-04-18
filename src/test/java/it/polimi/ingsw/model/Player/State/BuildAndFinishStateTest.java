@@ -8,7 +8,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Effect.BasicEffect;
 import it.polimi.ingsw.model.Player.Effect.MoreBuildNotOnSameEffect;
-import it.polimi.ingsw.model.Player.Effect.Player;
+import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

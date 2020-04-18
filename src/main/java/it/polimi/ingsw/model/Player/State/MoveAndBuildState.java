@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

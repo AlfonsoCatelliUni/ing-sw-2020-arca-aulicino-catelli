@@ -3,6 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
 import it.polimi.ingsw.model.Consequence.*;
+import it.polimi.ingsw.model.Player.Effect.BasicEffect;
+import it.polimi.ingsw.model.Player.Effect.Effect;
+import it.polimi.ingsw.model.Player.Effect.NotMoveUpEffect;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Board;
@@ -32,8 +35,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     private int indexCurrentPlayer;
 
 
-    // ======================================================================================
-    // MARK : constructors
+    // MARK : Constructors ======================================================================================
 
 
     /**
@@ -44,7 +46,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param playerDecoratorMap is where is mapped a god's name to his decoration
      * @param playerPawnPoints is where is mapped a nickname's player to the coordinates of his pawns
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Player> playerDecoratorMap, Map<String, List<Point>> playerPawnPoints) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Effect> playerDecoratorMap, Map<String, List<Point>> playerPawnPoints) {
 
         super();
 
@@ -56,20 +58,15 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         for (int i = 0; i < playersNickname.size(); i++) {
 
-            players.add(playerDecoratorMap.get(playersNickname.get(i)));
-
-            players.get(i).setName(playersNickname.get(i));
-            players.get(i).setColor(colors.get(i));
-            players.get(i).setCard(nicknameCardMap.get(playersNickname.get(i)));
+            players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)), playerDecoratorMap.get(playersNickname.get(i))));
 
             // here i save the initial cells of the two pawns
             Cell firstPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(0).x, playerPawnPoints.get(playersNickname.get(i)).get(0).y);
             Cell secondPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(1).x, playerPawnPoints.get(playersNickname.get(i)).get(1).y);
 
             // first placing of the pawn into the board
-            //TODO : c'è da cambiare per farlo fittare al Player in Effect
-            players.get(i).initPawn(gameBoard, Sex.MALE, firstPawnCell);
-            players.get(i).initPawn(gameBoard, Sex.FEMALE, secondPawnCell);
+            players.get(i).initPawn(gameBoard, firstPawnCell);
+            players.get(i).initPawn(gameBoard, secondPawnCell);
 
         }
 
@@ -102,21 +99,21 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
 
-        players.add(new BasicPlayer(playerName, Color.BLUE, new Card("God_Player", true, "effect_god")));
-        players.add(new BasicPlayer(opponentName, Color.GREY, new Card("God_Opponent", true, "effect_god")));
 
-        players.get(0).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(0,0));
-        players.get(0).initPawn(gameBoard, Sex.FEMALE, gameBoard.getCell(0,1));
+        players.add(new Player(playerName, Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+        players.add(new Player(opponentName, Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
 
-        players.get(1).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(4,4));
-        players.get(1).initPawn(gameBoard, Sex.MALE, gameBoard.getCell(4,3));
+        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,0));
+        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,1));
+
+        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,4));
+        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,3));
 
 
     }
 
 
-    // ======================================================================================
-    // MARK : main functional methods
+    // MARK : Main Functional Methods ======================================================================================
 
 
     /**
@@ -237,7 +234,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        Pawn[] pawns = player.getPawns();
+        List<Pawn> pawns = player.getPawns();
 
         //remove the pawns of the losing player from the game board
         for( Pawn p : pawns ) {
@@ -342,8 +339,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    // ======================================================================================
-    // MARK : consequence of a move
+    // MARK : Consequence of an Action ======================================================================================
 
 
     /**
@@ -374,9 +370,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     @Override
     public void doConsequence(BlockConsequence consequence) {
-
-        players.stream().filter(p -> !p.getName().equals(consequence.getNickname())).forEach(p -> p.setCanMoveUp(false));
-
+        players.stream().filter(p -> !p.getName().equals(consequence.getNickname())).forEach(p -> p.setEffect(new NotMoveUpEffect(p.getEffect())));
     }
 
 
@@ -400,8 +394,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    // ======================================================================================
-    // MARK : support methods
+    // MARK : Support Methods ======================================================================================
 
 
     public List<String> getAllNames() {
@@ -424,7 +417,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     public List<Cell> getAvailablePawns(String nickname) {
 
         Player player = getPlayerByName(nickname);
-        Pawn[] playerPawns = player.getPawns();
+        List<Pawn> playerPawns = player.getPawns();
 
         List<Action> possibleActions = new ArrayList<>();
         List<Cell> availablePawns = new ArrayList<>();
@@ -519,7 +512,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerNickname);
 
-        Pawn notMovedPawn = Arrays.stream(player.getPawns()).filter(pawn -> !pawn.getHasMoved()).findAny().get();
+        Pawn notMovedPawn = player.getPawns().stream().filter(pawn -> !pawn.getHasMoved()).findAny().get();
 
         return player.wherePawnCanDestroy(gameBoard, notMovedPawn);
 

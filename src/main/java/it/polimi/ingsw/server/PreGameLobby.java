@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Player.*;
+import it.polimi.ingsw.model.Player.Effect.*;
 
 import java.awt.*;
 import java.util.*;
@@ -19,7 +20,7 @@ public class PreGameLobby {
     /**
      * this map each card with the corresponding decorator class
      */
-    private Map<String, Player> effectsClassMap;
+    private Map<String, Effect> effectsClassMap;
 
 
     /**
@@ -76,21 +77,21 @@ public class PreGameLobby {
      * build the map that connects the name of the card to its correct decorator class
      * @return the map of card-playerType
      */
-    protected Map<String, Player> fillMap() {
+    protected Map<String, Effect> fillMap() {
 
-        Map<String, Player> playerDecoratorMap = new HashMap<>();
+        Map<String, Effect> playerDecoratorMap = new HashMap<>();
 
-        playerDecoratorMap.put("Apollo", new SwitchPlayer(new BasicPlayer()));
-        playerDecoratorMap.put("Artemis", new DoubleMovePlayer(new BasicPlayer()));
-        playerDecoratorMap.put("Athena", new BlockOpponentPlayer(new BasicPlayer()));
+        playerDecoratorMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect ( new BasicEffect())));
+        playerDecoratorMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
+        playerDecoratorMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
 
-        playerDecoratorMap.put("Atlas", new DomeBuildPlayer(new BasicPlayer()));
-        playerDecoratorMap.put("Demeter", new NotSameBuildAfterPlayer(new BasicPlayer()));
-        playerDecoratorMap.put("Hephaestus", new SameBuildAfterPlayer(new BasicPlayer()));
+        playerDecoratorMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
+        playerDecoratorMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
+        playerDecoratorMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
 
-        playerDecoratorMap.put("Minotaur", new PushPlayer(new BasicPlayer()));
-        playerDecoratorMap.put("Pan", new DownTwoPlayer(new BasicPlayer()));
-        playerDecoratorMap.put("Prometheus", new BuildBeforePlayer(new BasicPlayer()));
+        playerDecoratorMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
+        playerDecoratorMap.put("Pan", new DownTwoEffect(new BasicEffect()));
+        playerDecoratorMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
 
 
         return playerDecoratorMap;

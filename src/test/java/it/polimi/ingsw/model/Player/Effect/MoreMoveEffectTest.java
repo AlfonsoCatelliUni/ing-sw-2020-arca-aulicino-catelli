@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Consequence.NoConsequence;
 import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
 import it.polimi.ingsw.model.Player.State.MoveState;

@@ -1,120 +1,304 @@
 package it.polimi.ingsw.model.Player;
 
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Consequence.Consequence;
+import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Building;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Consequence.Consequence;
+import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Effect.BasicEffect;
+import it.polimi.ingsw.model.Player.Effect.Effect;
+import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
 
-import it.polimi.ingsw.model.Board.*;
-
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-/**
- * interface according with pattern decorator of the player
- */
-public interface Player {
+
+public class Player {
+
+    private final int QUANTITY = 2;
+
+
+    private String name;
+
+
+    private Color color;
+
+
+    private Card card;
+
+
+    private List<Pawn> pawns;
+
+
+    private Effect effect;
 
 
     // ======================================================================================
 
 
-    int getNumMove();
+    public Player(String name, Color color, Card card, Effect effect) {
+        this.name = name;
+        this.color = color;
+
+        this.card = card;
+        this.effect = effect;
+
+        this.pawns = new ArrayList<>(QUANTITY);
+    }
 
 
-    int getNumBuild();
-
-
-    String getName();
-
-
-    Color getColor();
-
-
-    Card getGodCard();
-
-
-    Pawn[] getPawns();
-
-
-    Pawn getPawnInCoordinates(int row, int column);
-
-
-    Boolean getCanMoveUp();
-
+    public Player() {
+        this("", Color.BLUE, new Card("card", true, "effect"), new BasicEffect());
+    }
 
 
     // ======================================================================================
 
 
-    void setCanMoveUp(Boolean canMoveUp);
+    public String getName() {
+        return this.name;
+    }
 
 
-    void setName(String name);
+    public Color getColor() {
+        return this.color;
+    }
 
 
-    void setColor(Color color);
+    public Card getCard() {
+        return this.card;
+    }
 
 
-    void setCard(Card card);
+    public Effect getEffect() {
+        return this.effect;
+    }
 
 
-    void setNumMove(int numMove);
+    public List<Pawn> getPawns() {
+        return pawns;
+    }
 
 
-    void setNumBuild(int numBuild);
-
-
-    void resetPlayerStatus();
-
-
-    // ======================================================================================
-
-
-    Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
-
-
-    List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
-
-
-    void force(Pawn designatedPawn, Cell nextPosition);
+    public Pawn getPawnInCoordinates(int row, int column) {
+        return pawns.stream().filter(p -> p.getPosition().getRowPosition() == row && p.getPosition().getColumnPosition() == column).findAny().orElse(null);
+    }
 
 
     // ======================================================================================
 
 
-    Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
-    List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn);
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
 
-    List<Building> getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell);
+    public void setCard(Card card) {
+        this.card = card;
+    }
+
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
+    }
+
+
+    /**
+     * this method resets the status of the player when his turn ends
+     */
+    public void resetPlayerStatus() {
+        for (Pawn p : pawns ) {
+            p.resetPawnStatus();
+        }
+    }
 
 
     // ======================================================================================
 
 
-    void initPawn(Board gameBoard, Sex sex, Cell cell);
+    /**
+     * this player method only calls getPossibleAction of its effect
+     * @param gameBoard the game board
+     * @param designatedPawn the pawn that wants to know its actions
+     * @return the list of possible actions
+     */
+    public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
+        return effect.getPossibleActions(gameBoard,designatedPawn);
+    }
 
 
-    List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn);
+    /**
+     * this player method only calls wherePawnCanMove of its effect
+     * @param gameBoard the game board
+     * @param designatedPawn the pawn that I want to move
+     * @return the list of cells where the pawn can be moved
+     */
+    public List<Cell> wherePawnCanMove (Board gameBoard, Pawn designatedPawn){
+        return effect.wherePawnCanMove(gameBoard, designatedPawn);
+    }
 
 
-    void removePawn(Board gameBoard, Pawn designatedPawn);
+    /**
+     * this player method only calls wherePawnCanBuild of its effect
+     * @param gameBoard the game board
+     * @param designatedPawn the pawn that wants to build
+     * @return the list of cells where the pawn can build
+     */
+    public List<Cell> wherePawnCanBuild (Board gameBoard, Pawn designatedPawn) {
+        return effect.wherePawnCanBuild(gameBoard, designatedPawn);
+    }
 
 
-    void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell);
+    /**
+     * this player method only calls getPossibleBuildingOnCell of its effect
+     * @param gameBoard the game board
+     * @param designatedCell the designated cell to be built on
+     * @return the list of possible buildings on this cell
+     */
+    public List<Building> getPossibleBuildingOnCell(Board gameBoard, Cell designatedCell) {
+        return effect.getPossibleBuildingOnCell(gameBoard, designatedCell);
+    }
 
 
-    void destroy(Board gameBoard, Cell designatedCell);
+    /**
+     * this player method only calls wherePawnCanForce of its effect
+     * @param gameBoard the game board
+     * @param designatedPawn the pawn that I want to force
+     * @return the list of cells
+     */
+    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.wherePawnCanForce(gameBoard, designatedPawn);
+    }
 
-    
-    List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);
 
-    List<Cell> wherePawnCanForce (Board gameBoard, Pawn designatedPawn);
+    /**
+     * this player method only calls wherePawnCanDestroy of its effect
+     * @param gameBoard the game board
+     * @param designatedPawn the pawn that wants to destroy
+     * @return the list of cells
+     */
+    public List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.wherePawnCanDestroy(gameBoard, designatedPawn);
+    }
 
 
     // ======================================================================================
+
+
+    /**
+     * this method calls the move method of its effect and add the name of the player
+     * at the returning consequence
+     * @param gameBoard the game board
+     * @param designatedPawn the pawn that I'm moving
+     * @param nextPosition the next position of the pawn
+     * @return a {@link Consequence} based on the type of move
+     */
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+        Consequence consequence = effect.move(gameBoard,designatedPawn,nextPosition);
+        consequence.setNickname(name);
+
+        return consequence;
+    }
+
+
+    /**
+     * this method calls the build method of its effect and add
+     * the name of the player ar the returning consequence
+     * @param designatedPawn the pawn that is building
+     * @param designatedCell the cell where the pawn is building
+     * @param chosenLevel the level of the chosen building
+     * @param buildings the list of all possible buildings
+     * @return a {@link Consequence} based on the type of build
+     */
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+        Consequence consequence = effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
+        consequence.setNickname(name);
+
+        return consequence;
+    }
+
+
+    /**
+     * this method only calls the force of its effect
+     * @param designatedPawn the pawn that I'm forcing
+     * @param designatedCell its next cell
+     */
+    public void force(Pawn designatedPawn, Cell designatedCell) {
+        this.effect.force(designatedPawn, designatedCell);
+    }
+
+
+    /**
+     * this method only calls the destroy of its effect
+     * @param gameBoard the game board
+     * @param designatedCell the cell where I want to destroy a block
+     */
+    public void destroy(Board gameBoard, Cell designatedCell) {
+        //TODO : fare destroy in effect
+    }
+
+
+    // ======================================================================================
+
+
+    /**
+     * this method initiate one male pawn and one female pawn and place them on the board
+     * @param gameBoard the board where we have to place the pawns
+     * @param startCell the cell where to place the pawn initiated
+     */
+    public void initPawn(Board gameBoard, Cell startCell ) {
+
+        if(pawns.size() == 0) {
+            this.pawns.add(new Pawn(this.color, Sex.MALE, startCell));
+            placePawn( gameBoard, this.pawns.get(0), startCell);
+        }
+        else if(pawns.size() == 1) {
+            this.pawns.add(new Pawn(this.color, Sex.FEMALE, startCell));
+            placePawn( gameBoard, this.pawns.get(1), startCell);
+        }
+
+    }
+
+
+    /**
+     * place the pawn on the board
+     * @param gameBoard the board where to place the pawn
+     * @param designatedPawn the pawn that we have to place
+     * @param designatedCell the cell where place the pawn
+     */
+    public void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
+
+        int rowPosition = designatedCell.getRowPosition();
+        int columnPosition = designatedCell.getColumnPosition();
+
+        gameBoard.getCell(rowPosition, columnPosition).placePawnHere(designatedPawn);
+
+    }
+
+
+    /**
+     * remove a pawn from the board
+     * @param gameBoard we have to remove the pawn form this board
+     * @param designatedPawn the pawn to remove
+     */
+    public void removePawn(Board gameBoard, Pawn designatedPawn) {
+
+        int rowPosition = designatedPawn.getPosition().getRowPosition();
+        int columnPosition = designatedPawn.getPosition().getColumnPosition();
+
+        gameBoard.getCell(rowPosition, columnPosition).freeCell();
+    }
 
 
 }
+
+

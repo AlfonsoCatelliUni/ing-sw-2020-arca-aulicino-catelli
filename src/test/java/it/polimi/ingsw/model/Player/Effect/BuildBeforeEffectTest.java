@@ -6,11 +6,11 @@ import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.FinishState;
 import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
 import it.polimi.ingsw.model.Player.State.MoveState;
-import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

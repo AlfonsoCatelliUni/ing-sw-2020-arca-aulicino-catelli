@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Effect.*;
+import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

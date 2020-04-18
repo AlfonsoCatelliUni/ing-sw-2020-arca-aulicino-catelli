@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.STCEvents.AskNewNicknameEvent;
 import it.polimi.ingsw.events.STCEvents.UnavailableNicknameEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
@@ -9,17 +8,12 @@ import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Actions.Action;
-import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.server.PreGameLobby;
-import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.view.server.VirtualView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Controller implements Observer, ClientToServerManager {
 

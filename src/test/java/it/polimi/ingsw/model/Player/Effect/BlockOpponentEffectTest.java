@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Consequence.BlockConsequence;
 import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Player.Card;
-import it.polimi.ingsw.model.Sex;
+import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,14 +1,11 @@
 package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Board.Board;
-import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
-import it.polimi.ingsw.model.Sex;
+import it.polimi.ingsw.model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

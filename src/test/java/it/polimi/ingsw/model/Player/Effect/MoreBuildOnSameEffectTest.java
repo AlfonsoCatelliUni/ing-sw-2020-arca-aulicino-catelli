@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.BuildAndFinishState;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.FinishState;

@@ -8,6 +8,9 @@ import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
+/**
+ * this decorator gives the possibility to build twice, but player can not build for the second time on the perimeter cells
+ */
 public class BuildInsideCellEffect extends EffectDecorator {
 
 
@@ -20,6 +23,12 @@ public class BuildInsideCellEffect extends EffectDecorator {
     // ======================================================================================
 
 
+    /**
+     * this method returns the cells where a pawn can build but if it's the second time to build, it removes the perimeter cells
+     * @param gameBoard the game board where the pawn can build on
+     * @param designatedPawn the pawn that's designated to build
+     * @return the list of cells available to be built
+     */
     @Override
     public List<Cell> wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
 

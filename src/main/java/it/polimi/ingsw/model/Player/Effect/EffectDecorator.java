@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.StateInterface;
-import it.polimi.ingsw.model.Sex;
 
 
 import java.util.List;

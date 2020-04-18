@@ -5,7 +5,7 @@ package it.polimi.ingsw.model.Actions;
  * this action is used to return the player the set of possible actions
  * and it's used to indicate that the player have chose to do a build action
  */
-public class BuildAction implements Action {
+public class BuildAction extends GeneralAction implements Action {
 
 
     private String actionID;
@@ -47,6 +47,12 @@ public class BuildAction implements Action {
 
     public String getActionID(){
         return this.actionID;
+    }
+
+
+    @Override
+    public Boolean isBuildAction() {
+        return true;
     }
 
 

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.Actions;
 
-public class ForceAction implements Action{
+public class ForceAction extends GeneralAction implements Action{
 
 
     private String actionID;
@@ -22,6 +22,11 @@ public class ForceAction implements Action{
         return actionID;
     }
 
+
+    @Override
+    public Boolean isForceAction() {
+        return true;
+    }
 
 
 }

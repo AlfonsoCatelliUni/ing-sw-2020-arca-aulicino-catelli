@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.Actions;
 
-public class DestroyAction implements Action {
+public class DestroyAction extends GeneralAction implements Action {
 
 
     private String actionID;
@@ -20,6 +20,12 @@ public class DestroyAction implements Action {
     @Override
     public String getActionID() {
         return this.actionID;
+    }
+
+
+    @Override
+    public Boolean isDestroyAction() {
+        return true;
     }
 
 

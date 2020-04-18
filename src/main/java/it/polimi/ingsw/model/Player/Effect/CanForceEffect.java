@@ -27,7 +27,7 @@ public class CanForceEffect extends EffectDecorator {
         List<Cell> opponentNeighboringCell = new ArrayList<>();
 
         for (Cell c : neighboringCell){
-            if (c.getPawnInThisCell() != null && gameBoard.getSymmetrical( designatedPawn.getPosition(), c ) != null)
+            if (c.getPawnInThisCell() != null && gameBoard.getSymmetrical( designatedPawn.getPosition(), c ) != null && c.getPawnInThisCell().getColor() != designatedPawn.getColor())
                 opponentNeighboringCell.add(c);
         }
         return opponentNeighboringCell;

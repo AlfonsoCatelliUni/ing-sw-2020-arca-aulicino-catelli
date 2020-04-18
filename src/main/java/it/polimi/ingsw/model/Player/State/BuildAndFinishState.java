@@ -16,18 +16,12 @@ public class BuildAndFinishState implements StateInterface {
     private final Effect effect;
 
 
-    private final List<Action> actions;
-
 
     // ======================================================================================
 
 
     public BuildAndFinishState(Effect effect) {
         this.effect = effect;
-
-        this.actions = new ArrayList<>();
-        this.actions.add(new BuildAction());
-        this.actions.add(new FinishAction());
     }
 
 
@@ -36,10 +30,11 @@ public class BuildAndFinishState implements StateInterface {
 
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<Action> possibleActions = new ArrayList<>(actions);
+        List<Action> possibleActions = new ArrayList<>();
+        possibleActions.add(new FinishAction());
 
-        if(effect.wherePawnCanBuild(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(BuildAction.class));
+        if(effect.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new BuildAction());
         }
 
         return possibleActions;

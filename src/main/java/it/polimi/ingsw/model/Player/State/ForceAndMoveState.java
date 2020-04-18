@@ -16,18 +16,11 @@ public class ForceAndMoveState implements StateInterface {
     private final Effect effect;
 
 
-    private final List<Action> actions;
-
-
     // ======================================================================================
 
 
     public ForceAndMoveState(Effect effect) {
         this.effect = effect;
-
-        this.actions = new ArrayList<>();
-        this.actions.add(new ForceAction());
-        this.actions.add(new MoveAction());
     }
 
 
@@ -36,13 +29,13 @@ public class ForceAndMoveState implements StateInterface {
 
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<Action> possibleActions = new ArrayList<>(actions);
+        List<Action> possibleActions = new ArrayList<>();
 
-        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(MoveAction.class));
+        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new MoveAction());
         }
-        if(effect.wherePawnCanForce(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(ForceAction.class));
+        if(effect.wherePawnCanForce(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new ForceAction());
         }
 
         return possibleActions;

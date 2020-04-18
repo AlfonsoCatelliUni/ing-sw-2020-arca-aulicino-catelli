@@ -15,19 +15,11 @@ public class MoveAndBuildState implements StateInterface {
 
     private final Effect effect;
 
-
-    private final List<Action> actions;
-
-
     // ======================================================================================
 
 
     public MoveAndBuildState(Effect effect) {
         this.effect = effect;
-
-        this.actions = new ArrayList<>();
-        this.actions.add(new MoveAction());
-        this.actions.add(new BuildAction());
     }
 
 
@@ -36,13 +28,13 @@ public class MoveAndBuildState implements StateInterface {
 
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<Action> possibleActions = new ArrayList<>(actions);
+        List<Action> possibleActions = new ArrayList<>();
 
-        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(MoveAction.class));
+        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new MoveAction());
         }
-        if(effect.wherePawnCanBuild(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(BuildAction.class));
+        if(effect.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new BuildAction());
         }
 
         return possibleActions;

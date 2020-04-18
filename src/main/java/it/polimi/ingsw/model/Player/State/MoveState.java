@@ -14,18 +14,11 @@ public class MoveState implements StateInterface {
 
     private final Effect effect;
 
-
-    private final List<Action> actions;
-
-
     // ======================================================================================
 
 
     public MoveState(Effect effect) {
         this.effect = effect;
-
-        this.actions = new ArrayList<>();
-        this.actions.add(new MoveAction());
     }
 
 
@@ -34,10 +27,10 @@ public class MoveState implements StateInterface {
 
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<Action> possibleActions = new ArrayList<>(actions);
+        List<Action> possibleActions = new ArrayList<>();
 
-        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() == 0) {
-            possibleActions.removeIf(a -> a.getClass().equals(MoveAction.class));
+        if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() > 0) {
+            possibleActions.add(new MoveAction());
         }
 
         return possibleActions;

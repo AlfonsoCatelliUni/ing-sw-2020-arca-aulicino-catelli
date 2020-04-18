@@ -236,11 +236,11 @@ public class Player {
 
     /**
      * this method only calls the destroy of its effect
-     * @param gameBoard the game board
      * @param designatedCell the cell where I want to destroy a block
+     * @param buildings the list of all buildings in the game
      */
-    public void destroy(Board gameBoard, Cell designatedCell) {
-        //TODO : fare destroy in effect
+    public void destroy(Cell designatedCell, List<Building> buildings) {
+        this.effect.destroy(designatedCell, buildings);
     }
 
 

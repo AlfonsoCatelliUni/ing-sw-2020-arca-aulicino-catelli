@@ -18,6 +18,9 @@ public class MoreBuildInsideEffect extends EffectDecorator {
     }
 
 
+    /**
+     * this method is the same of basic method but if player built once, he may build another time
+     */
     @Override
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 

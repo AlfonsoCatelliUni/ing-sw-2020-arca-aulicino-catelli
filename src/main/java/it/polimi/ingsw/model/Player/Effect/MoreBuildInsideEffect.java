@@ -25,8 +25,9 @@ public class MoreBuildInsideEffect extends EffectDecorator {
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
         if (super.effect.getState().getClass().equals(BuildState.class)) {
-            changeState(new BuildAndFinishState(this));
             effect = new BuildInsideCellEffect(effect);
+            changeState(new BuildAndFinishState(this));
+
 
         }
 

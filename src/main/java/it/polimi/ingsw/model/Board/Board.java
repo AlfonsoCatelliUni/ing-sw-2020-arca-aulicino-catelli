@@ -206,6 +206,7 @@ public class Board {
         designatedCell.destroyRoof(newRoof);
     }
 
+
     // ======================================================================================
 
 
@@ -249,6 +250,7 @@ public class Board {
         }
 
     }
+
 
     public Cell getSymmetrical(Cell centralCell, Cell opponentCell) {
         int centralRow = centralCell.getRowPosition();

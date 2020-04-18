@@ -30,7 +30,7 @@ class SwitchEffectTest {
     private Player massiPlayer;
     private Player giammaPlayer;
 
-    List<Building> buildings;
+    private List<Building> buildings;
 
     @BeforeEach
     void setUp() {

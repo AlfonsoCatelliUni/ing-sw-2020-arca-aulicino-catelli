@@ -12,10 +12,16 @@ import it.polimi.ingsw.model.Player.State.MoveState;
  * this decorator gives the possibility to move again each time the pawn moves onto perimeter space
  */
 public class MovePerimeterAgainEffect extends EffectDecorator {
+
+
     public MovePerimeterAgainEffect(Effect e) {
         super(e);
         this.effect.changeState(new MoveState(this));
     }
+
+
+    // ======================================================================================
+
 
     /**
      * This method is similar to basic, but the player can move again each time pawn moves onto perimeter space
@@ -36,4 +42,7 @@ public class MovePerimeterAgainEffect extends EffectDecorator {
         return consequence;
 
     }
+
+
+
 }

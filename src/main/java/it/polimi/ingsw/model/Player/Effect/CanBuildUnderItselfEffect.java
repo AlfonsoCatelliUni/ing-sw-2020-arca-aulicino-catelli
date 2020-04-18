@@ -8,10 +8,15 @@ import it.polimi.ingsw.model.Player.State.MoveState;
 import java.util.List;
 
 public class CanBuildUnderItselfEffect extends EffectDecorator {
+
+
     public CanBuildUnderItselfEffect(Effect e) {
         super(e);
         this.effect.changeState(new MoveState(this));
     }
+
+
+    // ======================================================================================
 
 
     /**

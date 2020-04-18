@@ -8,9 +8,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CanDestroyEffect extends EffectDecorator {
+
+
     public CanDestroyEffect(Effect e) {
         super(e);
     }
+
+
+    // ======================================================================================
+
 
     /**
      * this method controls where the not-moved pawn can destroy
@@ -20,7 +26,12 @@ public class CanDestroyEffect extends EffectDecorator {
      */
     @Override
     public List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn) {
-        return wherePawnCanBuild(gameBoard, designatedPawn).stream().filter(cell -> cell.getHeight()>0).collect(Collectors.toList());
+
+
+
+
+        return wherePawnCanBuild(gameBoard, designatedPawn).stream().filter(cell -> cell.getHeight() > 0).collect(Collectors.toList());
+
 
     }
 

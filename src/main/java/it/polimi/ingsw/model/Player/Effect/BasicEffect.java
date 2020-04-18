@@ -237,7 +237,7 @@ public class BasicEffect implements Effect {
      */
     @Override
     public void destroy(Cell designatedCell, List<Building> buildings) {
-
+        throw new RuntimeException("Invalid Command!");
     }
 
 

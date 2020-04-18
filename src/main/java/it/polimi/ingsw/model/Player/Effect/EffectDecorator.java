@@ -21,8 +21,7 @@ public class EffectDecorator implements Effect {
     protected Effect effect;
 
 
-    // ======================================================================================
-    // MARK : Constructor Section
+    // MARK : Constructor Section ======================================================================================
 
 
     public EffectDecorator (Effect e){
@@ -30,8 +29,7 @@ public class EffectDecorator implements Effect {
     }
 
 
-    // ======================================================================================
-    // MARK : Getter Section
+    // MARK : Getter Section ======================================================================================
 
 
     @Override
@@ -46,8 +44,7 @@ public class EffectDecorator implements Effect {
     }
 
 
-    // ======================================================================================
-    // MARK : Setter Section
+    // MARK : Setter Section ======================================================================================
 
 
     @Override
@@ -56,8 +53,7 @@ public class EffectDecorator implements Effect {
     }
 
 
-    // ======================================================================================
-    // MARK : Possibilities Control Section
+    // MARK : Possibilities Control Section ======================================================================================
 
 
     @Override
@@ -96,8 +92,7 @@ public class EffectDecorator implements Effect {
     }
 
 
-    // ======================================================================================
-    // MARK : Real Actions Section
+    // MARK : Real Actions Section ======================================================================================
 
 
     @Override
@@ -124,8 +119,7 @@ public class EffectDecorator implements Effect {
     }
 
 
-    // ======================================================================================
-    // MARK : Pawn Placing Section
+    // MARK : Pawn Placing Section ======================================================================================
 
 
     @Override

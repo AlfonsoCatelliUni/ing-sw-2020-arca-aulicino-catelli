@@ -265,7 +265,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    /* devo eliminare il player nel caso non possa muovere nessuna pedina */
+    /**
+     * this method is needed to remove the pawns of a losing player
+     * @param playerName the losing player
+     */
     public void removePlayer(String playerName) {
 
         Player player = getPlayerByName(playerName);
@@ -451,12 +454,21 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @param nickname is the nickname of the player that I want
+     * @return the player with the given nickname
+     */
+    public Player getPlayerByName(String nickname) {
+        return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
+    }
+
+
     public List<Cell> getAvailablePawns(String nickname) {
 
         Player player = getPlayerByName(nickname);
         List<Pawn> playerPawns = player.getPawns();
 
-        List<Action> possibleActions = new ArrayList<>();
+        List<Action> possibleActions;
         List<Cell> availablePawns = new ArrayList<>();
 
         for (Pawn p : playerPawns ) {
@@ -515,20 +527,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.resetPlayerStatus();
     }
-
-
-    /**
-     * @param nickname is the nickname of the player that I want
-     * @return the player with the given nickname
-     */
-    public Player getPlayerByName(String nickname) {
-        return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
-    }
-
-
-
-
-
 
 
 

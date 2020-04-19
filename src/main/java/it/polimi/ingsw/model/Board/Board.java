@@ -266,9 +266,17 @@ public class Board {
     }
 
 
+    /**
+     * this method returns the symmetrical Cell considering the central cell and the opposite cell
+     * @param centralCell the central cell of the symmetry
+     * @param opponentCell the opposite cell to do the symmetry
+     * @return the symmetrical Cell in order of the central Cell input and the opposite cell
+     */
     public Cell getSymmetrical(Cell centralCell, Cell opponentCell) {
+
         int centralRow = centralCell.getRowPosition();
         int centralColumn = centralCell.getColumnPosition();
+
         int opponentRow = opponentCell.getRowPosition();
         int opponentColumn = opponentCell.getColumnPosition();
 
@@ -276,8 +284,8 @@ public class Board {
         int symmetricalColumn = centralColumn + (centralColumn - opponentColumn);
 
         if ( 0 <= symmetricalRow && symmetricalRow <= 4 && 0 <= symmetricalColumn && symmetricalColumn <= 4 )
-            if (matrixBoard[symmetricalRow][symmetricalColumn].getIsFree())
                 return matrixBoard[symmetricalRow][symmetricalColumn];
+
         return null;
     }
 

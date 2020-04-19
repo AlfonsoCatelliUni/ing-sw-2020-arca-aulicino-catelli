@@ -281,5 +281,32 @@ class BoardTest {
     }
 
 
+    @Test
+    void getSymmetrical() {
 
+        Cell correctCell;
+        Cell returnedCell;
+
+        returnedCell = gameBoard.getSymmetrical(gameBoard.getCell(2,2), gameBoard.getCell(2,3));
+        correctCell = gameBoard.getCell(2,1);
+        assertEquals(correctCell, returnedCell);
+
+        returnedCell = gameBoard.getSymmetrical(gameBoard.getCell(0,0), gameBoard.getCell(0,1));
+        assertNull(returnedCell);
+
+        returnedCell = gameBoard.getSymmetrical(gameBoard.getCell(0,4), gameBoard.getCell(0,3));
+        assertNull(returnedCell);
+
+        returnedCell = gameBoard.getSymmetrical(gameBoard.getCell(4,4), gameBoard.getCell(4,3));
+        assertNull(returnedCell);
+
+        returnedCell = gameBoard.getSymmetrical(gameBoard.getCell(4,0), gameBoard.getCell(4,1));
+        assertNull(returnedCell);
+
+        returnedCell = gameBoard.getSymmetrical(gameBoard.getCell(4,3), gameBoard.getCell(4,2));
+        correctCell = gameBoard.getCell(4,4);
+        assertEquals(correctCell, returnedCell);
+
+
+    }
 }

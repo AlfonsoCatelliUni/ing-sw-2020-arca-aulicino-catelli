@@ -7,21 +7,17 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Pawn;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveState implements StateEffectInterface {
-
-
-    private Effect effect;
+public class MoveState extends StateEffect {
 
 
     // ======================================================================================
 
 
     public MoveState(Effect effect) {
-        this.effect = effect;
+        super(effect);
     }
 
 
@@ -34,22 +30,18 @@ public class MoveState implements StateEffectInterface {
      * @param designatedPawn is the pawn chosen by the current player
      * @return a list of possible actions that can be done by the designatedPawn
      */
-    public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
+    @Override
+    public List<Action> GetPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
         List<Action> possibleActions = new ArrayList<>();
 
-        List<Cell> list = effect.wherePawnCanMove(gameBoard, designatedPawn);
+        List<Cell> list = super.effect.wherePawnCanMove(gameBoard, designatedPawn);
 
         if(list.size() > 0) {
             possibleActions.add(new MoveAction());
         }
 
         return possibleActions;
-    }
-
-
-    public void setEffect(Effect effect) {
-        this.effect = effect;
     }
 
 

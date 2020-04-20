@@ -3,29 +3,21 @@ package it.polimi.ingsw.model.Player.State;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.DestroyAction;
 import it.polimi.ingsw.model.Actions.FinishAction;
-import it.polimi.ingsw.model.Actions.GeneralAction;
 import it.polimi.ingsw.model.Board.Board;
-import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Pawn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class DestroyAndFinishState implements StateEffectInterface {
-
-
-    private Effect effect;
+public class DestroyAndFinishState extends StateEffect {
 
 
     // ======================================================================================
 
 
     public DestroyAndFinishState(Effect effect) {
-        this.effect = effect;
+        super(effect);
     }
 
 
@@ -39,7 +31,8 @@ public class DestroyAndFinishState implements StateEffectInterface {
      * @param designatedPawn is the pawn chosen by the current player
      * @return a list of possible actions that can be done by the designatedPawn
      */
-    public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
+    @Override
+    public List<Action> GetPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
         Pawn notMovedPawn = null;
 
@@ -54,17 +47,11 @@ public class DestroyAndFinishState implements StateEffectInterface {
         List<Action> possibleActions = new ArrayList<>();
         possibleActions.add(new FinishAction());
 
-        if(effect.wherePawnCanDestroy(gameBoard, notMovedPawn).size() > 0) {
+        if(super.effect.wherePawnCanDestroy(gameBoard, notMovedPawn).size() > 0) {
             possibleActions.add(new DestroyAction());
         }
 
         return possibleActions;
     }
-
-
-    public void setEffect(Effect effect) {
-        this.effect = effect;
-    }
-
 
 }

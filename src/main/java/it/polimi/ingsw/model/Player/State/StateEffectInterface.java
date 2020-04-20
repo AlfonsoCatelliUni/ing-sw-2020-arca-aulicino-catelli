@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StateEffectInterface {
 
-    List<Action> checkPossibleActions(Board board, Pawn designatedPawn);
+    List<Action> GetPossibleActions(Board board, Pawn designatedPawn);
 
 
     void setEffect(Effect effect);

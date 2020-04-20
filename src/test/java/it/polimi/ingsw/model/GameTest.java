@@ -114,6 +114,9 @@ class GameTest {
     }
 
 
+    /**
+     * this method calls only the pawnBuild from Player class that's already tested
+     */
     @Test
     void movePawn() {
     }

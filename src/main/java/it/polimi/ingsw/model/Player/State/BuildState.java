@@ -9,17 +9,14 @@ import it.polimi.ingsw.model.Player.Pawn;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildState implements StateEffectInterface {
-
-
-    private Effect effect;
+public class BuildState extends StateEffect {
 
 
     // ======================================================================================
 
 
     public BuildState(Effect effect) {
-        this.effect = effect;
+        super(effect);
     }
 
 
@@ -32,21 +29,16 @@ public class BuildState implements StateEffectInterface {
      * @param designatedPawn is the pawn chosen by the current player
      * @return a list of possible actions that can be done by the designatedPawn
      */
-    public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
+    @Override
+    public List<Action> GetPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
         List<Action> possibleActions = new ArrayList<>();
 
-        if(effect.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0) {
+        if(super.effect.wherePawnCanBuild(gameBoard, designatedPawn).size() > 0) {
             possibleActions.add(new BuildAction());
         }
 
         return possibleActions;
     }
-
-
-    public void setEffect(Effect effect) {
-        this.effect = effect;
-    }
-
 
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Consequence.BlockConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
@@ -42,10 +43,6 @@ class GameTest {
         game = new Game("Alfonso", "Massi");
         gameBoard = new Board();
         buildings = gameBoard.getBuildings();
-
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
-        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
 
 
         alfoEffect = new BasicEffect();
@@ -287,5 +284,40 @@ class GameTest {
 
     @Test
     void getAvailablePawns() {
+
+        List<Cell> retPawnsCell;
+        List<Cell> correctPawnsCell = new ArrayList<>();
+
+        Game gameTest = new Game("player", "opponentPlayer");
+
+        retPawnsCell = gameTest.getAvailablePawns("player");
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,0));
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
+
+        assertEquals(correctPawnsCell, retPawnsCell);
+
+        //now one pawn cannot move
+        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(1));
+
+        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(1));
+
+        correctPawnsCell.clear();
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
+        retPawnsCell = gameTest.getAvailablePawns("player");
+
+        assertEquals(correctPawnsCell, retPawnsCell);
+
+        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(1));
+
+        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(1));
+
+        retPawnsCell = gameTest.getAvailablePawns("player");
+        assertEquals(0, retPawnsCell.size());
+
+
     }
 }

@@ -334,4 +334,39 @@ class BoardTest {
 
 
     }
+
+    @Test
+    void getNumberOfCompleteTowers() {
+
+        assertEquals(0, gameBoard.getNumberOfCompleteTowers());
+
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(3));
+
+
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(3));
+
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
+
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(3));
+
+        //not a complete tower
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(3));
+
+        assertEquals(4, gameBoard.getNumberOfCompleteTowers());
+
+    }
 }

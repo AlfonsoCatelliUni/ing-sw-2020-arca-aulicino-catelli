@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -48,6 +50,47 @@ class CellTest {
     }
 
 
+    @Test
+    void isPerimeter() {
+
+        Board gameBoard = new Board();
+
+        assertEquals(0, gameBoard.getCell(0,0).getRowPosition());
+        assertEquals(0, gameBoard.getCell(0,0).getColumnPosition());
+
+
+        /* case the cell is perimetral */
+
+        for(int i = 0; i < 5; i++)
+           assertEquals(true, gameBoard.getCell(i, 0).isPerimeter());
+
+        for(int i = 0; i < 5; i++)
+            assertEquals(true, gameBoard.getCell(i, 4).isPerimeter());
+
+        for(int i = 0; i < 5; i++)
+            assertEquals(true, gameBoard.getCell(0, i).isPerimeter());
+
+        for(int i = 0; i < 5; i++)
+            assertEquals(true, gameBoard.getCell(4, i).isPerimeter());
+
+        /* case the cell is not perimetral */
+
+        // internal coordinates for i
+        for(int i = 1; i < 4; i++)
+            assertEquals(false, gameBoard.getCell(i, 1).isPerimeter());
+
+        // internal coordinates for i
+        for(int i = 1; i < 4; i++)
+            assertEquals(false, gameBoard.getCell(i, 2).isPerimeter());
+
+        // internal coordinates for i
+        for(int i = 1; i < 4; i++)
+            assertEquals(false, gameBoard.getCell(i, 3).isPerimeter());
+
+
+
+    }
+
     /**
      * testing if a only initialized cell is considered free and
      * if adding and removing a pawn a cell set it free
@@ -89,6 +132,38 @@ class CellTest {
 
     }
 
+    @Test
+    void destroyRoof() {
+
+        Board gameBoard = new Board();
+        List<Building> buildings = gameBoard.getBuildings();
+
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(2));
+
+        assertEquals(1, buildings.get(0).getPlacedNumber());
+        assertEquals(1, buildings.get(1).getPlacedNumber());
+        assertEquals(1, buildings.get(2).getPlacedNumber());
+
+
+        gameBoard.getCell(0,0).destroyRoof(buildings.get(1));
+
+        assertEquals(0, buildings.get(2).getPlacedNumber());
+        assertEquals(2, gameBoard.getCell(0,0).getHeight());
+
+        gameBoard.getCell(0,0).destroyRoof(buildings.get(0));
+
+        assertEquals(0, buildings.get(1).getPlacedNumber());
+        assertEquals(1, gameBoard.getCell(0,0).getHeight());
+
+        gameBoard.getCell(0,0).destroyRoof(new Building(0,25));
+
+        assertEquals(0, buildings.get(0).getPlacedNumber());
+        assertEquals(0, gameBoard.getCell(0,0).getHeight());
+
+
+    }
 
     @Test
     void placePawnHere() {
@@ -108,5 +183,14 @@ class CellTest {
 
     }
 
+    @Test
+    void setHeight() {
 
+        Board gameBoard = new Board();
+
+        gameBoard.getCell(0,0).setHeight(1);
+
+        assertEquals(1, gameBoard.getCell(0,0).getHeight());
+
+    }
 }

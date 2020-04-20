@@ -270,7 +270,5 @@ class GameTest {
 
         retPawnsCell = gameTest.getAvailablePawns("player");
         assertEquals(0, retPawnsCell.size());
-
-
     }
 }

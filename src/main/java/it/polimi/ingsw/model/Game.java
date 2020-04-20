@@ -179,11 +179,11 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param column the column of the pawn that wants force an opponent pawn
      * @return the list of the cells where are present
      */
-    public List<Cell> wherePawnCanForce(String playerName, int row, int column){
+    public List<Cell> getOpponentsNeighboring(String playerName, int row, int column){
 
         Player player = getPlayerByName(playerName);
 
-        return player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(row,column));
+        return player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(row,column));
     }
 
 

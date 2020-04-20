@@ -180,6 +180,19 @@ public class Board {
         return retCellList;
     }
 
+    public List<Cell> getOpponentsNeighboring(Pawn designatedPawn) {
+        List<Cell> neighboringCells = getNeighboring(designatedPawn.getPosition());
+        List<Cell> retCellList = new ArrayList<>();
+
+        for (Cell c : neighboringCells) {
+            if (c.getBuilderHere()) {
+                if (c.getPawnInThisCell().getColor() != designatedPawn.getColor())
+                    retCellList.add(c);
+            }
+        }
+        return retCellList;
+    }
+
 
     /**
      * can i get the type of building that can be built on this cell ?

@@ -20,7 +20,7 @@ public class BuildOnSameCellEffect extends EffectDecorator{
     public BuildOnSameCellEffect(Effect e, Cell cellBefore) {
         super(e);
         this.cellBefore = cellBefore;
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

@@ -15,7 +15,7 @@ public class DestroyEffect extends EffectDecorator {
 
     public DestroyEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

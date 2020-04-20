@@ -19,73 +19,102 @@ class CanPushOpponentEffectTest {
 
     private Board gameBoard;
 
-    private Player player;
+    private Effect alfoEffect;
+    private Effect massiEffect;
+    private Effect giammaEffect;
 
-    private Player opponentPlayer;
+    private Card alfoCard;
+    private Card massiCard;
+    private Card giammaCard;
 
-    private List<Building> buildings;
+    private Player alfoPlayer;
+    private Player massiPlayer;
+    private Player giammaPlayer;
+
+    List<Building> buildings;
 
 
     @BeforeEach
     void setUp() {
 
         gameBoard = new Board();
-
-        player = new Player("Player", Color.WHITE, new Card("Minotauro",true, "effect"),new CanPushOpponentEffect(new BasicEffect()));
-
-        opponentPlayer = new Player("Opponent", Color.BLUE, new Card("Minotauro",true, "effect"),new BasicEffect());
-
         buildings = gameBoard.getBuildings();
 
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(1,0).buildOnThisCell(buildings.get(2));
+        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
+
+        gameBoard.getCell(1,1).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(1,2).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(1,3).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(2,1).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(2,3).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(3,1).buildOnThisCell(buildings.get(3));
+        gameBoard.getCell(3,2).buildOnThisCell(buildings.get(3));
+
+        gameBoard.getCell(4,4).buildOnThisCell(buildings.get(0));
+        gameBoard.getCell(4,4).buildOnThisCell(buildings.get(1));
+        gameBoard.getCell(4,4).buildOnThisCell(buildings.get(2));
+
+        alfoEffect = new BasicEffect();
+        alfoEffect = new CanPushOpponentEffect(alfoEffect);
+        alfoCard = new Card("switch_card", true, "switch_effect");
+
+        alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
+
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,0));
+        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(2,2));
+
+
+        massiEffect = new BasicEffect();
+        massiCard = new Card("massi_card", true, "massi_effect");
+
+        massiPlayer = new Player("massi", Color.GREY, massiCard, massiEffect);
+
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(1,0));
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(3,3));
+
     }
+
 
     @Test
     void wherePawnCanMove() {
 
         List<Cell> availableCellsToMove;
-        List<Cell> expectedCellsToMove = new ArrayList<>();
+        List<Cell> correctCellsToMove = new ArrayList<>();
 
-        //the opposite cell is free so player can move there
-        player.initPawn(gameBoard, gameBoard.getCell(2,2));
-        opponentPlayer.initPawn(gameBoard, gameBoard.getCell(1,2));
+        //the pawn in the center of the board is surrounded by dome except for one cell
+        //this cell is occupied by an enemy pawn that can be forced into a three level tower
+        availableCellsToMove = alfoPlayer.wherePawnCanMove(gameBoard, alfoPlayer.getPawnInCoordinates(2,2));
+        correctCellsToMove.add(gameBoard.getCell(3,3));
 
-        expectedCellsToMove.add(gameBoard.getCell(1,1));
-        expectedCellsToMove.add(gameBoard.getCell(1,3));
-        expectedCellsToMove.add(gameBoard.getCell(2,1));
-        expectedCellsToMove.add(gameBoard.getCell(2,3));
-        expectedCellsToMove.add(gameBoard.getCell(3,1));
-        expectedCellsToMove.add(gameBoard.getCell(3,2));
-        expectedCellsToMove.add(gameBoard.getCell(3,3));
-        expectedCellsToMove.add(gameBoard.getCell(1,2));
-
-        availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(2,2));
-
-        assertEquals(expectedCellsToMove,availableCellsToMove);
-
-        expectedCellsToMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        correctCellsToMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
         availableCellsToMove.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
 
+        assertEquals(correctCellsToMove.size(), availableCellsToMove.size());
+        for(int i = 0; i < correctCellsToMove.size(); i++)
+            assertEquals(correctCellsToMove.get(i), availableCellsToMove.get(i));
 
 
-        //the opposite cell isn't free so player can't move there
-        opponentPlayer.initPawn(gameBoard,gameBoard.getCell(0,2));
+        //now, the cell where previously I was able to force the opponent pawn into, is occupied by a dome
+        //my pawn now can't move
+        gameBoard.getCell(4,4).buildOnThisCell(buildings.get(3));
+        availableCellsToMove = alfoPlayer.wherePawnCanMove(gameBoard, alfoPlayer.getPawnInCoordinates(2,2));
+        correctCellsToMove.clear();
 
-        expectedCellsToMove.remove(gameBoard.getCell(1,2));
+        assertEquals(correctCellsToMove.size(), availableCellsToMove.size());
 
-        availableCellsToMove = player.wherePawnCanMove(gameBoard,gameBoard.getPawnByCoordinates(2,2));
 
-        assertEquals(expectedCellsToMove,availableCellsToMove);
+        //the pawn cannot move up and is surrounded all by dome except for a cell where there is a pawn in a three level tower
+        alfoPlayer.setEffect(new NotMoveUpEffect(alfoPlayer.getEffect()));
 
-        //statement coverage if canMoveUp is false
+        availableCellsToMove = alfoPlayer.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(0,0));
+        correctCellsToMove.clear();
 
-        player.setEffect(new NotMoveUpEffect(player.getEffect()));
-
-        gameBoard.getCell(2,1).buildOnThisCell(new Building(1,18));
-
-        expectedCellsToMove.remove(gameBoard.getCell(2,1));
-        availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(2,2));
-
-        assertEquals(expectedCellsToMove,availableCellsToMove);
+        assertEquals(correctCellsToMove.size(), availableCellsToMove.size());
 
 
 

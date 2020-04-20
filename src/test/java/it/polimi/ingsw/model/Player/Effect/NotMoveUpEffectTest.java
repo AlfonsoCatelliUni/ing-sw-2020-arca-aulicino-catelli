@@ -40,7 +40,7 @@ class NotMoveUpEffectTest {
         card = new Card("test", true, "test");
         buildings = gameBoard.getBuildings();
 
-        player_1 = new Player("alfo", Color.WHITE, new Card("alfo's card", true, "alfo's effect"),new NotMoveUpEffect(new BasicEffect()));
+        player_1 = new Player("alfo", Color.WHITE, new Card("alfo's card", true, "alfo's effect"), new BuildBeforeEffect(new BasicEffect()));
         player_2 = new Player("giammi", Color.WHITE, new Card("giammi's card", true, "giammi's effect"),new NotMoveUpEffect(new BasicEffect()));
         player_3 = new Player("massi", Color.WHITE, new Card("massi's card", true, "massi's effect"),new NotMoveUpEffect(new BasicEffect()));
 
@@ -55,6 +55,9 @@ class NotMoveUpEffectTest {
 
     @Test
     void wherePawnCanMove() {
+
+        
+        player_1.setEffect(new NotMoveUpEffect(player_1.getEffect()));
 
         /* case when the player can move only in one cell */
 
@@ -92,4 +95,6 @@ class NotMoveUpEffectTest {
 
 
     }
+
+
 }

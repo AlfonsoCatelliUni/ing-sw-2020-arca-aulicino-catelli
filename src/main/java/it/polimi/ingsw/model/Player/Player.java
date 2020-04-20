@@ -172,8 +172,8 @@ public class Player {
      * @param designatedPawn the pawn that I want to force
      * @return the list of cells
      */
-    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
-        return this.effect.wherePawnCanForce(gameBoard, designatedPawn);
+    public List<Cell> getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.getOpponentsNeighboring(gameBoard, designatedPawn);
     }
 
 

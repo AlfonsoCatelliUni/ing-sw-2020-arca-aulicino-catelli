@@ -12,6 +12,7 @@ public class CanDestroyEffect extends EffectDecorator {
 
     public CanDestroyEffect(Effect e) {
         super(e);
+        this.effect.getState().setEffect(this);
     }
 
 

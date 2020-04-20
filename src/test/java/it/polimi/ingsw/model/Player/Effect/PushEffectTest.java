@@ -28,21 +28,25 @@ class PushEffectTest {
 
     }
 
+
     @Test
     void move() {
 
         player.initPawn(gameBoard, gameBoard.getCell(2,2));
         opponentPlayer.initPawn(gameBoard, gameBoard.getCell(1,2));
 
-        player.move(gameBoard,gameBoard.getPawnByCoordinates(2,2),gameBoard.getCell(1,2));
+        player.move(gameBoard, gameBoard.getPawnByCoordinates(2,2), gameBoard.getCell(1,2));
 
-        assertEquals(true,gameBoard.getCell(0,2).getBuilderHere());
-        assertEquals(true,gameBoard.getCell(1,2).getBuilderHere());
-        assertEquals(false,gameBoard.getCell(2,2).getBuilderHere());
+        assertEquals(true, gameBoard.getCell(0,2).getBuilderHere());
+        assertEquals(true, gameBoard.getCell(1,2).getBuilderHere());
+        assertEquals(false, gameBoard.getCell(2,2).getBuilderHere());
+        assertEquals(true, opponentPlayer.getPawnInCoordinates(0,2).getForcedMove());
 
         //statement coverage: basic movePawn if there is no builder in designatedCell
-        player.move(gameBoard, gameBoard.getPawnByCoordinates(1,2),gameBoard.getCell(1,3));
-        assertEquals(false,gameBoard.getCell(1,2).getBuilderHere());
-        assertEquals(true,gameBoard.getCell(1,3).getBuilderHere());
+        player.move(gameBoard, gameBoard.getPawnByCoordinates(1,2), gameBoard.getCell(1,3));
+        assertEquals(false, gameBoard.getCell(1,2).getBuilderHere());
+        assertEquals(true, gameBoard.getCell(1,3).getBuilderHere());
     }
+
+
 }

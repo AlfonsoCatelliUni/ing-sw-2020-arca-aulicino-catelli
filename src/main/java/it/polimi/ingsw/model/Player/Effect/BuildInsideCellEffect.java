@@ -16,7 +16,7 @@ public class BuildInsideCellEffect extends EffectDecorator {
 
     public BuildInsideCellEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

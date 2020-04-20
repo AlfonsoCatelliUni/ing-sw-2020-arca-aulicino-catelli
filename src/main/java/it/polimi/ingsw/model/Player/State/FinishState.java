@@ -10,9 +10,10 @@ import it.polimi.ingsw.model.Player.Pawn;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FinishState implements StateInterface {
+public class FinishState implements StateEffectInterface {
 
-    private final Effect effect;
+
+    private Effect effect;
 
 
     // ======================================================================================
@@ -36,6 +37,11 @@ public class FinishState implements StateInterface {
         List<Action> possibleActions = new ArrayList<>();
         possibleActions.add(new FinishAction());
         return possibleActions;
+    }
+
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
     }
 
 

@@ -309,4 +309,29 @@ class BoardTest {
 
 
     }
+
+    @Test
+    void getOpponentsNeighboring() {
+        Pawn pawn = new Pawn(Color.WHITE, Sex.MALE, gameBoard.getCell(0,0));
+
+        gameBoard.getCell(0,0).placePawnHere(pawn);
+        gameBoard.getCell(1,0).placePawnHere(new Pawn(Color.WHITE, Sex.FEMALE, gameBoard.getCell(1,0)));
+
+        gameBoard.getCell(0,1).placePawnHere(new Pawn(Color.BLUE, Sex.FEMALE, gameBoard.getCell(0,1)));
+
+
+        List<Cell> returnedCell = gameBoard.getOpponentsNeighboring(pawn);
+        List<Cell> correctNeighboring = new ArrayList<>();
+        correctNeighboring.add(gameBoard.getCell(0,1));
+
+        assertEquals(correctNeighboring, returnedCell);
+
+        gameBoard.getCell(0,1).freeCell();
+
+        returnedCell = gameBoard.getOpponentsNeighboring(pawn);
+
+        assertEquals(0, returnedCell.size());
+
+
+    }
 }

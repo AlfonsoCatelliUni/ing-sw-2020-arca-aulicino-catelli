@@ -175,7 +175,6 @@ public class BasicEffect implements Effect {
         if ( oldPawnHeight == 2 && nextPosition.getHeight() == 3
                 && !designatedPawn.getForcedMove() && designatedPawn.getHasMoved() ) {
             return new VictoryConsequence();
-            //TODO : mettere nome alla conseguenza
         }
 
         return new NoConsequence();
@@ -212,7 +211,6 @@ public class BasicEffect implements Effect {
 
         if( !designatedBuilding.isAvailable()) {
             return new DestroyTowersConsequence();
-            //TODO : mettere nome alla conseguenza
         }
 
         return new NoConsequence();

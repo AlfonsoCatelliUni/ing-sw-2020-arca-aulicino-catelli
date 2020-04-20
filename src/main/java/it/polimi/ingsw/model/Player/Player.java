@@ -273,11 +273,7 @@ public class Player {
      * @param designatedCell the cell where place the pawn
      */
     public void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
-
-        int rowPosition = designatedCell.getRowPosition();
-        int columnPosition = designatedCell.getColumnPosition();
-
-        gameBoard.getCell(rowPosition, columnPosition).placePawnHere(designatedPawn);
+        effect.placePawn(gameBoard, designatedPawn, designatedCell);
 
     }
 
@@ -288,11 +284,7 @@ public class Player {
      * @param designatedPawn the pawn to remove
      */
     public void removePawn(Board gameBoard, Pawn designatedPawn) {
-
-        int rowPosition = designatedPawn.getPosition().getRowPosition();
-        int columnPosition = designatedPawn.getPosition().getColumnPosition();
-
-        gameBoard.getCell(rowPosition, columnPosition).freeCell();
+        effect.removePawn(gameBoard, designatedPawn);
     }
 
 

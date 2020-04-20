@@ -30,17 +30,14 @@ public class CanPushOpponentEffect extends EffectDecorator {
     public List<Cell> wherePawnCanMove(Board gameBoard, Pawn designatedPawn) {
         List<Cell> availableCellsToMove = super.wherePawnCanMove(gameBoard, designatedPawn);
 
-        List<Cell> neighboringCells = gameBoard.getNeighboring( designatedPawn.getPosition() );
+        List<Cell> opponentNeighboringCells = gameBoard.getOpponentsNeighboring( designatedPawn );
 
         int diffRow = 0;
         int diffColumn = 0;
 
-        for ( Cell c : neighboringCells ) {
-            if (c.getBuilderHere() && c.getPawnInThisCell().getColor() != designatedPawn.getColor()) {
-
+        for ( Cell c : opponentNeighboringCells ) {
                 diffRow = c.getRowPosition() - designatedPawn.getPosition().getRowPosition();
                 diffColumn = c.getColumnPosition() - designatedPawn.getPosition().getColumnPosition();
-
 
                 if( c.getRowPosition()+diffRow >= 0 && c.getRowPosition()+diffRow <= 4 &&
                         c.getColumnPosition()+diffColumn >= 0 && c.getColumnPosition()+diffColumn <= 4) {
@@ -50,9 +47,6 @@ public class CanPushOpponentEffect extends EffectDecorator {
                 }
 
             }
-
-
-        }
 
         return availableCellsToMove;
     }

@@ -74,11 +74,17 @@ class BasicEffectTest {
     }
 
 
+    /**
+     * this method is just a setter
+     */
     @Test
     void changeState() {
     }
 
 
+    /**
+     * this method only calls the checkPossibleActions method of the state
+     */
     @Test
     void getPossibleActions() {
     }
@@ -116,7 +122,7 @@ class BasicEffectTest {
         correctCellsToMove.clear();
 
 
-        /* corner case, cannot move up, there's a dome in a cell and a level one in another cell*/
+        /* corner case, cannot move up, there's a dome in a cell and a level one in another cell */
         alfoPlayer.setEffect(new NotMoveUpEffect(alfoEffect.getEffect()));
         gameBoard.getCell(1,1).buildOnThisCell(buildings.get(3));
         gameBoard.getCell(0,1).buildOnThisCell(buildings.get(0));
@@ -152,16 +158,31 @@ class BasicEffectTest {
 
         correctCellsToMove.clear();
 
+        /* case when the player cannot move because is surrounded by cells with ah higher level and he cannot move up */
 
+        gameBoard.getCell(3,3).buildOnThisCell(buildings.get(0));
+
+        correctCellsToMove.clear();
+
+        availableCellsToMove = alfoPlayer.wherePawnCanMove(gameBoard, pawns.get(1));
+
+
+        assertEquals(correctCellsToMove, availableCellsToMove);
 
     }
 
 
+    /**
+     * this method only calls the gameboard.getCellsAvailableToBuild, already tested
+     */
     @Test
     void wherePawnCanBuild() {
     }
 
 
+    /**
+     * this method only calls the gameboard.getPossibleBuildingOnCell, already tested
+     */
     @Test
     void getPossibleBuildingOnCell() {
     }
@@ -171,7 +192,9 @@ class BasicEffectTest {
     void wherePawnCanForce() {
     }
 
-
+    /**
+     * shouldn't be called by a player with a basic effect
+     */
     @Test
     void wherePawnCanDestroy() {
     }
@@ -262,13 +285,31 @@ class BasicEffectTest {
     }
 
 
+    /**
+     * shouldn't be called by a player with a basic effect
+     */
     @Test
     void destroy() {
     }
 
 
+    /**
+     * this method only calls the gameboard.PlacePawnHere
+     */
     @Test
     void placePawn() {
+        massiPlayer.initPawn(gameBoard, gameBoard.getCell(4,4));
+
+        massiPlayer.removePawn(gameBoard, gameBoard.getPawnByCoordinates(4,4));
+        massiPlayer.placePawn(gameBoard, gameBoard.getPawnByCoordinates(4,4), gameBoard.getCell(3,4));
+
+        assertEquals(false, gameBoard.getCell(4,4).getBuilderHere());
+        assertEquals(true, gameBoard.getCell(4,4).getIsFree());
+        assertNull(gameBoard.getCell(4, 4).getPawnInThisCell());
+
+        assertEquals(true, gameBoard.getCell(3,4).getBuilderHere());
+        assertEquals(false, gameBoard.getCell(3,4).getIsFree());
+
     }
 
 

@@ -41,7 +41,7 @@ class PlayerTest {
     }
 
     /**
-     * this method only calls the same method in player.effect
+     * this method only calls resetPawnStatus for each player's pawn
      */
     @Test
     void resetPlayerStatus() {

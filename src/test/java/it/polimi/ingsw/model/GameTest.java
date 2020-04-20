@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 class GameTest {
 
@@ -140,13 +139,45 @@ class GameTest {
     @Test
     void newCurrentPlayer() {
 
+        Player currentPlayer = game.getPlayers().get(0);
 
+        assertEquals(currentPlayer, game.getCurrentPlayer());
+
+        Player newCurrentPlayer = game.getPlayers().get(1);
+
+        game.newCurrentPlayer();
+
+        assertEquals(newCurrentPlayer, game.getCurrentPlayer());
+
+        /* after the turn of both the players, the rotation restarts */
+
+        game.newCurrentPlayer();
+
+        assertEquals(currentPlayer, game.getCurrentPlayer());
 
     }
 
 
+
     @Test
     void removePlayer() {
+
+        /* This method removes the pawns from the board too
+        * Player 1 pawns are in [0,0] and [0,1] */
+
+        assertNotEquals(null, game.getGameBoard().getCell(0,0).getPawnInThisCell());
+        assertNotEquals(null, game.getGameBoard().getCell(0,1).getPawnInThisCell());
+
+        game.removePlayer("Alfonso");
+
+        assertNull(game.getGameBoard().getCell(0, 0).getPawnInThisCell());
+        assertNull(game.getGameBoard().getCell(0, 1).getPawnInThisCell());
+
+        /* there's only one player, so throws a new VictoryConsequence to the ReceiveConsequence method
+        * Debugging, we saw it throws that */
+
+
+
     }
 
 
@@ -182,6 +213,19 @@ class GameTest {
 
     @Test
     void nextCurrentPlayer() {
+
+        assertEquals(0, game.getIndexCurrentPlayer());
+
+        game.newCurrentPlayer();
+
+        assertEquals(1, game.getIndexCurrentPlayer());
+
+        /* after the turn of both the players, the rotation restarts */
+
+        game.newCurrentPlayer();
+
+        assertEquals(0, game.getIndexCurrentPlayer());
+
     }
 
 
@@ -234,6 +278,9 @@ class GameTest {
     void wherePawnCanDestroy() {
     }
 
+    /**
+     * this method only calls the player.resetPlayerStatus method
+     */
     @Test
     void resetPlayerStatus() {
     }

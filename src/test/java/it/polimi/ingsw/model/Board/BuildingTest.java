@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.Board;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class BuildingTest {
@@ -13,6 +15,8 @@ class BuildingTest {
         Boolean available = building.isAvailable();
 
         assertEquals(true, available);
+        assertEquals(2, building.getQuantity());
+        assertEquals(1, building.getLevel());
 
         building.increasePlacedQuantity();
         building.increasePlacedQuantity();
@@ -84,5 +88,14 @@ class BuildingTest {
     }
 
 
+    @Test
+    void setPlacedNumber() {
 
+        Building building = new Building(0, 12);
+
+        building.setPlacedNumber(13);
+
+        assertEquals(13, building.getPlacedNumber());
+
+    }
 }

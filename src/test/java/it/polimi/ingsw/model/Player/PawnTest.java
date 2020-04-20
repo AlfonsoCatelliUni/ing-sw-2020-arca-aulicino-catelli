@@ -29,6 +29,8 @@ class PawnTest {
         Cell movedTo = pawn.moveTo(nextPosition);
 
         assertEquals(false, pawn.getGoneUp());
+        assertEquals(Color.GREY, pawn.getColor());
+        assertEquals(Sex.FEMALE, pawn.getSex());
 
 
         //Goes up

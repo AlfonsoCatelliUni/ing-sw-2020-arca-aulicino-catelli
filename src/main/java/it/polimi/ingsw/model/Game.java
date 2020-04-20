@@ -458,9 +458,14 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : Support Methods ======================================================================================
 
 
-    public boolean isValid(Building building) {
+    public boolean isValidCoordinate(int row, int column) {
+        return row >= 0 && row <= 4 && column >= 0 && column <= 4;
+    }
+
+
+    public boolean isValid(int buildingLevel) {
         for ( Building b : lastBuildingsList ) {
-            if(b.getLevel() == building.getLevel()) {
+            if(b.getLevel() == buildingLevel) {
                 return true;
             }
         }
@@ -469,9 +474,9 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    public boolean isValid(Cell cell) {
+    public boolean isValid(int row, int column) {
         for( Cell c : lastCellsList ) {
-            if(c.getRowPosition() == cell.getRowPosition() && c.getColumnPosition() == cell.getColumnPosition()) {
+            if(c.getRowPosition() == row && c.getColumnPosition() == column) {
                 return true;
             }
         }
@@ -488,6 +493,21 @@ public class Game extends Observable implements GameConsequenceHandler {
         }
 
         return false;
+    }
+
+
+    public List<Building> getLastBuildingsList() {
+        return this.lastBuildingsList;
+    }
+
+
+    public List<Cell> getLastCellsList() {
+        return this.lastCellsList;
+    }
+
+
+    public List<Action> getLastActionsList() {
+        return this.lastActionsList;
     }
 
 

@@ -2,6 +2,7 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.model.Actions.Action;
 
 public class ChosenMoveActionEvent implements ClientToServerEvent {
 
@@ -9,7 +10,7 @@ public class ChosenMoveActionEvent implements ClientToServerEvent {
     private String playerNickname;
 
 
-    private String actionID;
+    private Action action;
 
 
     private int pawnRow;
@@ -21,9 +22,9 @@ public class ChosenMoveActionEvent implements ClientToServerEvent {
     // ======================================================================================
 
 
-    public ChosenMoveActionEvent(String playerNickname, int pawnRow, int pawnColumn) {
+    public ChosenMoveActionEvent(String playerNickname, Action action, int pawnRow, int pawnColumn) {
         this.playerNickname = playerNickname;
-        this.actionID = "move";
+        this.action = action;
 
         this.pawnRow = pawnRow;
         this.pawnColumn = pawnColumn;
@@ -42,13 +43,13 @@ public class ChosenMoveActionEvent implements ClientToServerEvent {
     // ======================================================================================
 
 
-    public String getActionID() {
-        return this.actionID;
+    public String getPlayerNickname() {
+        return this.playerNickname;
     }
 
 
-    public String getPlayerNickname() {
-        return this.playerNickname;
+    public Action getAction() {
+        return this.action;
     }
 
 

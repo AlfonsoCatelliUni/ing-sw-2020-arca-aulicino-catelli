@@ -11,6 +11,9 @@ import java.util.List;
 public class PreGameLobby {
 
 
+    private int numberOfPlayers;
+
+
     /**
      * this is the list of the nicknames of the player in the current Lobby
      */
@@ -71,6 +74,11 @@ public class PreGameLobby {
 
 
     // ======================================================================================
+
+
+    public List<String> getConnectedPlayers() {
+        return this.playersNicknames;
+    }
 
 
     /**
@@ -219,6 +227,10 @@ public class PreGameLobby {
 
     }
 
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
+    }
 
 
 }

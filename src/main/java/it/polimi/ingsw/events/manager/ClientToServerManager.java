@@ -17,6 +17,8 @@ public interface ClientToServerManager {
 
     void manageEvent(DisconnectionEvent event);
 
+    void manageEvent(ChosenPlayerNumberEvent event);
+
 
     // ======================================================================================
     // MARK : Game Based Events

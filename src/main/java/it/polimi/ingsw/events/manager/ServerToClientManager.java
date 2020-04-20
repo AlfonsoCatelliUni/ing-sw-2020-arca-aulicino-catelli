@@ -12,6 +12,9 @@ public interface ServerToClientManager {
     // ======================================================================================
     // MARK : Network And Update Events
 
+    void manageEvent(FirstConnectedEvent event);
+
+    void manageEvent(SuccessfullyConnectedEvent event);
 
     void manageEvent(NotifyStatusEvent event);
 
@@ -35,6 +38,14 @@ public interface ServerToClientManager {
     void manageEvent(GivePossibleCellsToBuildEvent event);
 
 
+
+    void manageEvent(InvalidChosenActionEvent event);
+
+    void manageEvent(InvalidChosenCellEvent event);
+
+
+
+    void manageEvent(LosingByNoActionEvent event);
 
 
 }

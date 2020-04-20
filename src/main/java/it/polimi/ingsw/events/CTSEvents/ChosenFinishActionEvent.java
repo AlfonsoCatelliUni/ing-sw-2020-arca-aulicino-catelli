@@ -2,6 +2,7 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
+import it.polimi.ingsw.model.Actions.Action;
 
 public class ChosenFinishActionEvent implements ClientToServerEvent {
 
@@ -9,24 +10,15 @@ public class ChosenFinishActionEvent implements ClientToServerEvent {
     private String playerNickname;
 
 
-    private String actionID;
-
-
-    private int pawnRow;
-
-
-    private int pawnColumn;
+    private Action action;
 
 
     // ======================================================================================
 
 
-    public ChosenFinishActionEvent(String playerNickname, int pawnRow, int pawnColumn) {
+    public ChosenFinishActionEvent(String playerNickname, Action action) {
         this.playerNickname = playerNickname;
-        this.actionID = "finish";
-
-        this.pawnRow = pawnRow;
-        this.pawnColumn = pawnColumn;
+        this.action = action;
     }
 
 
@@ -42,8 +34,8 @@ public class ChosenFinishActionEvent implements ClientToServerEvent {
     // ======================================================================================
 
 
-    public String getActionID() {
-        return this.actionID;
+    public Action getAction() {
+        return this.action;
     }
 
 
@@ -52,12 +44,4 @@ public class ChosenFinishActionEvent implements ClientToServerEvent {
     }
 
 
-    public int getPawnRow() {
-        return this.pawnRow;
-    }
-
-
-    public int getPawnColumn() {
-        return this.pawnColumn;
-    }
 }

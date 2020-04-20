@@ -41,19 +41,15 @@ public class DestroyAndFinishState implements StateEffectInterface {
      */
     public List<Action> checkPossibleActions(Board gameBoard, Pawn designatedPawn) {
 
-        List<Cell> matrixBoard = gameBoard.matrix();
-
-        Cell designatedCell = matrixBoard.stream()
-                .filter(Cell::getBuilderHere)
-                .filter(cell -> cell.getPawnInThisCell().getColor().equals(designatedPawn.getColor()))
-                .filter(cell -> !(cell.getPawnInThisCell().getSex().equals(designatedPawn.getSex())))
-                .findFirst().orElse(null);
-
         Pawn notMovedPawn = null;
 
-        if(designatedCell != null)
-            notMovedPawn = designatedCell.getPawnInThisCell();
+        List<Pawn> pawns = gameBoard.getPawnsByColor(designatedPawn.getColor());
 
+        for (Pawn p : pawns ) {
+            if(!p.getHasMoved()) {
+                notMovedPawn = p;
+            }
+        }
 
         List<Action> possibleActions = new ArrayList<>();
         possibleActions.add(new FinishAction());

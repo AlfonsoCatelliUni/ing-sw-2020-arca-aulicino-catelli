@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Pawn;
 
 import java.lang.reflect.Array;
@@ -109,6 +110,39 @@ public class Board {
 
 
     /**
+     * all the pawns placed on the board
+     * @return the list of all pawns
+     */
+    public List<Pawn> getAllPawns() {
+        List<Pawn> allPawns = new ArrayList<>();
+
+        for(int row = 0; row < ROW; row++) {
+            for (int column = 0; column < COLUMN; column++) {
+                if(matrixBoard[row][column].getBuilderHere()) {
+                    allPawns.add(matrixBoard[row][column].getPawnInThisCell());
+                }
+            }
+        }
+
+        return allPawns;
+    }
+
+
+    /**
+     * return all the pawns of the designated color
+     * @param color the color of the pawns that I wants
+     * @return the list of the pawns
+     */
+    public List<Pawn> getPawnsByColor(Color color) {
+        List<Pawn> pawns = getAllPawns();
+
+        pawns.removeIf(p -> !p.getColor().equals(color));
+
+        return pawns;
+    }
+
+
+    /**
      * select all the cells that are neighbor in the pawn and are not taller than 1 level and free
      * @param chosenPawn the selected pawn
      * @return where the selected pawn can move
@@ -180,6 +214,13 @@ public class Board {
         return retCellList;
     }
 
+
+    /**
+     * indicates the designated pawn's neighboring cells where is present
+     * an opponent pawn
+     * @param designatedPawn the pawn that wants his neighboring opponents
+     * @return the list of the cells
+     */
     public List<Cell> getOpponentsNeighboring(Pawn designatedPawn) {
         List<Cell> neighboringCells = getNeighboring(designatedPawn.getPosition());
         List<Cell> retCellList = new ArrayList<>();

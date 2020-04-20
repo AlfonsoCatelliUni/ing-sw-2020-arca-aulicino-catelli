@@ -1,6 +1,11 @@
 package it.polimi.ingsw.model.Actions;
 
-public class DestroyAction extends GeneralAction implements Action {
+
+/**
+ * this action is used to return the player the set of possible actions
+ * and it's used to indicate that the player have chosen to do a destroy action
+ */
+public class DestroyAction implements Action {
 
 
     private String actionID;
@@ -20,12 +25,6 @@ public class DestroyAction extends GeneralAction implements Action {
     @Override
     public String getActionID() {
         return this.actionID;
-    }
-
-
-    @Override
-    public Boolean isDestroyAction() {
-        return true;
     }
 
 

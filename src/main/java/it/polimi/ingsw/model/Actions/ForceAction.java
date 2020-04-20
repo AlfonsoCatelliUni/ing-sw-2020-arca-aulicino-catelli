@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model.Actions;
 
-public class ForceAction extends GeneralAction implements Action{
+/**
+ * this action is used to return the player the set of possible actions
+ * and it's used to indicate that the player have chosen to force action
+ */
+public class ForceAction implements Action{
 
 
     private String actionID;
@@ -20,12 +24,6 @@ public class ForceAction extends GeneralAction implements Action{
     @Override
     public String getActionID() {
         return actionID;
-    }
-
-
-    @Override
-    public Boolean isForceAction() {
-        return true;
     }
 
 

@@ -3,7 +3,7 @@ package it.polimi.ingsw.model.Consequence;
 import it.polimi.ingsw.model.GameConsequenceHandler;
 
 /**
- * consequence used with Pattern Visitor
+ * consequence used with Pattern Visitor, some actions generate different consequence managed in Game using the pattern
  */
 public interface Consequence {
 

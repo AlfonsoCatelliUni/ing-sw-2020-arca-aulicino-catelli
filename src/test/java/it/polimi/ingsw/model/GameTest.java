@@ -68,6 +68,13 @@ class GameTest {
         massiPlayer.initPawn(gameBoard, gameBoard.getCell(0,4));
         massiPlayer.initPawn(gameBoard, gameBoard.getCell(1,1));
 
+        giammaEffect = new BasicEffect();
+        giammaEffect = new BlockOpponentEffect(giammaEffect);
+
+        giammaCard = new Card("giammi_card", true, "giammi_effect");
+
+        giammaPlayer = new Player("giammi", Color.WHITE, giammaCard,giammaEffect);
+
     }
 
 
@@ -140,17 +147,22 @@ class GameTest {
     @Test
     void receiveConsequence() {
 
-        //TODO : dovrebbe andare ma causa test Decoratore Statico non funzionanti non sono riuscito a farlo runnare
-
         for(Effect e = alfoPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
             assertNotEquals(NotMoveUpEffect.class, e.getClass());
         }
 
-        game.receiveConsequence(new BlockConsequence("massi"));
+        game.newCurrentPlayer();
 
-        assertEquals(NotMoveUpEffect.class, alfoPlayer.getEffect().getClass());
+        Player player = game.getPlayers().get(1);
+        player.setEffect(new BlockOpponentEffect(game.getPlayers().get(1).getEffect()));
 
-        for(Effect e = massiPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
+        gameBoard.getCell(0,3).buildOnThisCell(buildings.get(0));
+
+        game.receiveConsequence(player.move(gameBoard, gameBoard.getPawnByCoordinates(0,4), gameBoard.getCell(0,3)));
+
+        assertEquals(NotMoveUpEffect.class, game.getPlayers().get(0).getEffect().getClass());
+
+        for(Effect e = player.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
             assertNotEquals(NotMoveUpEffect.class, e.getClass());
         }
 
@@ -159,20 +171,6 @@ class GameTest {
 
     @Test
     void doConsequence() {
-    }
-
-    @Test
-    void testDoConsequence() {
-    }
-
-
-    @Test
-    void testDoConsequence1() {
-    }
-
-
-    @Test
-    void testNewCurrentPlayer() {
     }
 
 
@@ -230,4 +228,11 @@ class GameTest {
     void wherePawnCanDestroy() {
     }
 
+    @Test
+    void resetPlayerStatus() {
+    }
+
+    @Test
+    void getAvailablePawns() {
+    }
 }

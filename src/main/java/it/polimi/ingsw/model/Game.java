@@ -108,6 +108,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         players.get(1).initPawn(gameBoard, gameBoard.getCell(4,4));
         players.get(1).initPawn(gameBoard, gameBoard.getCell(4,3));
 
+        this.currentPlayer = players.get(0);
+
 
     }
 

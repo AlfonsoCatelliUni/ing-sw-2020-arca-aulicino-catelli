@@ -79,10 +79,9 @@ public class EffectDecorator implements Effect {
         return this.effect.getPossibleBuildingOnCell(gameBoard, designatedCell);
     }
 
-
     @Override
-    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
-        return this.effect.wherePawnCanForce(gameBoard, designatedPawn);
+    public List<Cell> getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn) {
+        return this.effect.getOpponentsNeighboring(gameBoard, designatedPawn);
     }
 
 

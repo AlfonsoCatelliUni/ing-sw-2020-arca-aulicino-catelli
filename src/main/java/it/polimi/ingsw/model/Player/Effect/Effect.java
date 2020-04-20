@@ -55,7 +55,7 @@ public interface Effect {
     List<Building> getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell);
 
 
-    List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn);
+    List<Cell> getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn);
 
 
     List<Cell> wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);

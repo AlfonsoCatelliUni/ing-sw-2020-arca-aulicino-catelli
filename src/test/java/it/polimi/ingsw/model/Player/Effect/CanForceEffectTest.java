@@ -45,7 +45,7 @@ class CanForceEffectTest {
 
         correctCells.add(gameBoard.getCell(0,1));
 
-        possibleCells = player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(1,1));
+        possibleCells = player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(1,1));
 
         assertEquals(correctCells.size(), possibleCells.size());
         for (i = 0; i < correctCells.size(); i++)
@@ -55,14 +55,14 @@ class CanForceEffectTest {
 
         player.initPawn(gameBoard, gameBoard.getCell(2,1));
 
-        possibleCells = player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(1,1));
+        possibleCells = player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(1,1));
 
         assertEquals(0, possibleCells.size());
 
         //now there is also another opponent pawn
         opponentPlayer.initPawn(gameBoard,gameBoard.getCell(1,2));
 
-        possibleCells = player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(1,1));
+        possibleCells = player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(1,1));
 
         correctCells.clear();
         correctCells.add(gameBoard.getCell(1,2));
@@ -75,7 +75,7 @@ class CanForceEffectTest {
         opponentPlayer.initPawn(gameBoard, gameBoard.getCell(0,1));
         opponentPlayer.move(gameBoard, gameBoard.getPawnByCoordinates(0,1), gameBoard.getCell(1,0));
 
-        possibleCells = player.wherePawnCanForce(gameBoard, gameBoard.getPawnByCoordinates(1,1));
+        possibleCells = player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(1,1));
 
         assertEquals(0, possibleCells.size());
 

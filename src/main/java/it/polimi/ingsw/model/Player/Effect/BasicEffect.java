@@ -80,7 +80,7 @@ public class BasicEffect implements Effect {
      */
     @Override
     public List<Action> getPossibleActions(Board gameBoard, Pawn designatedPawn) {
-        return state.checkPossibleActions(gameBoard, designatedPawn);
+        return state.GetPossibleActions(gameBoard, designatedPawn);
     }
 
 

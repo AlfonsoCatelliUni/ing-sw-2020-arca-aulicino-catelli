@@ -586,5 +586,8 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : Testing Methods ======================================================================================
 
 
-
+    /* ONLY USING FOR TESTING*/
+    public Board getGameBoard() {
+        return gameBoard;
+    }
 }

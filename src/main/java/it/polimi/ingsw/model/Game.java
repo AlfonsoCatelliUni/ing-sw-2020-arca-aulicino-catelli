@@ -34,6 +34,13 @@ public class Game extends Observable implements GameConsequenceHandler {
     private int indexCurrentPlayer;
 
 
+    private List<Cell> lastCellsList;
+
+    private List<Action> lastActionsList;
+
+    private List<Building> lastBuildingsList;
+
+
     // MARK : Constructors ======================================================================================
 
 
@@ -128,7 +135,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        return player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+        lastActionsList = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+
+        return new ArrayList<>(lastActionsList);
     }
 
 
@@ -142,7 +151,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        return player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+        lastCellsList = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+
+        return new ArrayList<>(lastCellsList);
     }
 
 
@@ -156,7 +167,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        return player.wherePawnCanBuild(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+        lastCellsList = player.wherePawnCanBuild(gameBoard, gameBoard.getPawnByCoordinates(row, column));
+
+        return new ArrayList<>(lastCellsList);
     }
 
 
@@ -170,7 +183,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        return player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column));
+        lastBuildingsList = player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column));
+
+        return new ArrayList<>(lastBuildingsList);
     }
 
 
@@ -185,7 +200,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        return player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(row,column));
+        lastCellsList = player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(row,column));
+
+        return new ArrayList<>(lastCellsList);
     }
 
 
@@ -200,7 +217,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Pawn notMovedPawn = player.getPawns().stream().filter(pawn -> !pawn.getHasMoved()).findAny().get();
 
-        return player.wherePawnCanDestroy(gameBoard, notMovedPawn);
+        lastCellsList = player.wherePawnCanDestroy(gameBoard, notMovedPawn);
+
+        return new ArrayList<>(lastCellsList);
 
     }
 
@@ -439,6 +458,39 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : Support Methods ======================================================================================
 
 
+    public boolean isValid(Building building) {
+        for ( Building b : lastBuildingsList ) {
+            if(b.getLevel() == building.getLevel()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public boolean isValid(Cell cell) {
+        for( Cell c : lastCellsList ) {
+            if(c.getRowPosition() == cell.getRowPosition() && c.getColumnPosition() == cell.getColumnPosition()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    public boolean isValid(Action action) {
+        for(Action a : lastActionsList) {
+            if(a.getActionID().equals(action.getActionID())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     public List<String> getAllNames() {
 
         List<String> names = new ArrayList<>();
@@ -529,6 +581,9 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.resetPlayerStatus();
     }
+
+
+    // MARK : Testing Methods ======================================================================================
 
 
 

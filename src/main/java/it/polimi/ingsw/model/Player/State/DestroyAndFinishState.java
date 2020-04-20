@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class DestroyAndFinishState implements StateInterface {
+public class DestroyAndFinishState implements StateEffectInterface {
 
 
-    private final Effect effect;
+    private Effect effect;
 
 
     // ======================================================================================
@@ -63,6 +63,11 @@ public class DestroyAndFinishState implements StateInterface {
         }
 
         return possibleActions;
+    }
+
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
     }
 
 

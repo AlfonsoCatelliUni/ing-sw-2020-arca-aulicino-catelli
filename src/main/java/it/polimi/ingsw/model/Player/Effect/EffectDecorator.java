@@ -6,8 +6,7 @@ import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.State.MoveState;
-import it.polimi.ingsw.model.Player.State.StateInterface;
+import it.polimi.ingsw.model.Player.State.StateEffectInterface;
 
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class EffectDecorator implements Effect {
 
 
     @Override
-    public StateInterface getState() {
+    public StateEffectInterface getState() {
         return this.effect.getState();
     }
 
@@ -48,7 +47,7 @@ public class EffectDecorator implements Effect {
 
 
     @Override
-    public void changeState(StateInterface state) {
+    public void changeState(StateEffectInterface state) {
         this.effect.changeState(state);
     }
 

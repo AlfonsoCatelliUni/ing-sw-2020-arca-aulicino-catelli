@@ -13,7 +13,7 @@ public class CanPushOpponentEffect extends EffectDecorator {
 
     public CanPushOpponentEffect(Effect e){
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

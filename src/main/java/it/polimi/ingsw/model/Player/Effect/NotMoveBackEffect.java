@@ -19,7 +19,7 @@ public class NotMoveBackEffect extends EffectDecorator {
     public NotMoveBackEffect(Effect e, Cell startCell) {
         super(e);
         this.startCell = startCell;
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

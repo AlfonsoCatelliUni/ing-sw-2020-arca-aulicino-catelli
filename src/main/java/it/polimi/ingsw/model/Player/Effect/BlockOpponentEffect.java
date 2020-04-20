@@ -16,7 +16,7 @@ public class BlockOpponentEffect extends EffectDecorator {
 
     public BlockOpponentEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

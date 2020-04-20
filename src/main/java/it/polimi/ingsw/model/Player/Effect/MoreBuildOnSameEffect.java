@@ -17,7 +17,7 @@ public class MoreBuildOnSameEffect extends EffectDecorator {
 
     public MoreBuildOnSameEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

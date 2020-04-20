@@ -12,10 +12,8 @@ import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.FinishState;
 import it.polimi.ingsw.model.Player.State.MoveState;
-import it.polimi.ingsw.model.Player.State.StateInterface;
+import it.polimi.ingsw.model.Player.State.StateEffectInterface;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +24,7 @@ import java.util.List;
 public class BasicEffect implements Effect {
 
 
-    private StateInterface state;
+    private StateEffectInterface state;
 
 
     // MARK : Constructor Section ======================================================================================
@@ -44,7 +42,7 @@ public class BasicEffect implements Effect {
 
 
     @Override
-    public StateInterface getState() {
+    public StateEffectInterface getState() {
         return this.state;
     }
 
@@ -64,7 +62,7 @@ public class BasicEffect implements Effect {
      * @param state the new state that I want to set
      */
     @Override
-    public void changeState(StateInterface state) {
+    public void changeState(StateEffectInterface state) {
         this.state = state;
     }
 

@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 
-import it.polimi.ingsw.model.Player.State.StateInterface;
+import it.polimi.ingsw.model.Player.State.StateEffectInterface;
 
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface Effect {
     //<editor-fold desc="Getter Section">
 
 
-    StateInterface getState();
+    StateEffectInterface getState();
 
 
     Effect getEffect();
@@ -33,7 +33,7 @@ public interface Effect {
     //<editor-fold desc="Setter Section">
 
 
-    void changeState(StateInterface state);
+    void changeState(StateEffectInterface state);
 
 
     //</editor-fold>

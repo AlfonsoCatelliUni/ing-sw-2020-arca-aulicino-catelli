@@ -19,7 +19,7 @@ public class BuildNotOnSameCellEffect extends EffectDecorator {
     public BuildNotOnSameCellEffect(Effect e, Cell cellBefore) {
         super(e);
         this.cellBefore = cellBefore;
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

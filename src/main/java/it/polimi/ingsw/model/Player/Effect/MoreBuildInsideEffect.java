@@ -16,7 +16,7 @@ public class MoreBuildInsideEffect extends EffectDecorator {
 
     public MoreBuildInsideEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

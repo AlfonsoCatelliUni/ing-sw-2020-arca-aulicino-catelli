@@ -7,12 +7,12 @@ import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
-public class NotMoveUpEffect extends EffectDecorator{
+public class NotMoveUpEffect extends EffectDecorator {
 
 
     public NotMoveUpEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

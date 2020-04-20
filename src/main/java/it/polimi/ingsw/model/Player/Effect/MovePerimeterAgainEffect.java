@@ -16,7 +16,7 @@ public class MovePerimeterAgainEffect extends EffectDecorator {
 
     public MovePerimeterAgainEffect(Effect e) {
         super(e);
-        this.effect.changeState(new MoveState(this));
+        this.effect.getState().setEffect(this);
     }
 
 

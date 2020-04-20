@@ -41,7 +41,7 @@ class PlayerTest {
     }
 
     /**
-     * this method only calls the same method in player.effect
+     * this method only calls resetPawnStatus for each player's pawn
      */
     @Test
     void resetPlayerStatus() {
@@ -126,6 +126,9 @@ class PlayerTest {
         assertEquals(Sex.MALE, alfoPlayer.getPawns().get(0).getSex());
         assertEquals(Color.BLUE, alfoPlayer.getPawns().get(0).getColor());
 
+        assertEquals(Color.BLUE, alfoPlayer.getColor());
+        assertEquals(alfoCard, alfoPlayer.getCard());
+
         alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,1));
 
         assertEquals(gameBoard.getCell(0,1), alfoPlayer.getPawns().get(1).getPosition());
@@ -156,6 +159,10 @@ class PlayerTest {
     void placePawn() {
     }
 
+
+    /**
+     * this method only calls the same method in player.effect
+     */
     @Test
     void removePawn() {
     }

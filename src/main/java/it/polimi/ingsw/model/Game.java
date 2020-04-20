@@ -95,32 +95,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    /* USED ONLY FOR TESTING */
-    public Game(String playerName, String opponentName) {
-
-        super();
-
-        this.gameBoard = new Board();
-        this.players = new ArrayList<>();
-        this.currentPlayer = null;
-        this.indexCurrentPlayer = 0;
-
-
-        players.add(new Player(playerName, Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
-        players.add(new Player(opponentName, Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
-
-        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,0));
-        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,1));
-
-        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,4));
-        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,3));
-
-        this.currentPlayer = players.get(0);
-
-
-    }
-
-
     // MARK : Main Functional Methods ======================================================================================
 
 
@@ -606,5 +580,43 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : Testing Methods ======================================================================================
 
 
+    /* USED ONLY FOR TESTING */
+    public Game(String playerName, String opponentName) {
 
+        super();
+
+        this.gameBoard = new Board();
+        this.players = new ArrayList<>();
+        this.currentPlayer = null;
+        this.indexCurrentPlayer = 0;
+
+
+        players.add(new Player(playerName, Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+        players.add(new Player(opponentName, Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+
+        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,0));
+        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,1));
+
+        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,4));
+        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,3));
+
+        this.currentPlayer = players.get(0);
+
+
+    }
+
+    /* USED ONLY FOR TESTING */
+    public Player getCurrentPlayer() {
+        return this.currentPlayer;
+    }
+
+    /* USED ONLY FOR TESTING */
+    public Board getGameBoard() {
+        return this.gameBoard;
+    }
+
+    /* USED ONLY FOR TESTING */
+    public int getIndexCurrentPlayer() {
+        return this.indexCurrentPlayer;
+    }
 }

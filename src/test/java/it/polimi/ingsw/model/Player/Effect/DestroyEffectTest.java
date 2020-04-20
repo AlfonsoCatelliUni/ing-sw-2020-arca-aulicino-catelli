@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
+import it.polimi.ingsw.model.Player.State.FinishState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +46,7 @@ class DestroyEffectTest {
 
         alfoEffect = new BasicEffect();
         alfoEffect = new DestroyEffect(alfoEffect);
-        alfoCard = new Card("switch_card", true, "switch_effect");
+        alfoCard = new Card("destroy_card", true, "destroy_effect");
 
         alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
 
@@ -69,10 +70,13 @@ class DestroyEffectTest {
 
         alfoPlayer.move(gameBoard, alfoPlayer.getPawnInCoordinates(2,3), gameBoard.getCell(3,3));
 
+        alfoPlayer.build(gameBoard.getPawnByCoordinates(3,3), gameBoard.getCell(3,4), 1, buildings);
+
         //A pawn wants to destroy the third level of a tower
         gameBoard.getCell(2,2).buildOnThisCell(buildings.get(0));
         gameBoard.getCell(2,2).buildOnThisCell(buildings.get(1));
         alfoPlayer.destroy(gameBoard.getCell(2,2), buildings);
+        assertEquals(FinishState.class, alfoPlayer.getEffect().getState().getClass());
 
 
 

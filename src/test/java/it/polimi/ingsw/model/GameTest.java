@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Consequence.BlockConsequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
@@ -12,8 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 class GameTest {
 
@@ -43,10 +43,6 @@ class GameTest {
         game = new Game("Alfonso", "Massi");
         gameBoard = new Board();
         buildings = gameBoard.getBuildings();
-
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(0));
-        gameBoard.getCell(0,0).buildOnThisCell(buildings.get(1));
-        gameBoard.getCell(0,1).buildOnThisCell(buildings.get(3));
 
 
         alfoEffect = new BasicEffect();
@@ -140,13 +136,45 @@ class GameTest {
     @Test
     void newCurrentPlayer() {
 
+        Player currentPlayer = game.getPlayers().get(0);
 
+        assertEquals(currentPlayer, game.getCurrentPlayer());
+
+        Player newCurrentPlayer = game.getPlayers().get(1);
+
+        game.newCurrentPlayer();
+
+        assertEquals(newCurrentPlayer, game.getCurrentPlayer());
+
+        /* after the turn of both the players, the rotation restarts */
+
+        game.newCurrentPlayer();
+
+        assertEquals(currentPlayer, game.getCurrentPlayer());
 
     }
 
 
+
     @Test
     void removePlayer() {
+
+        /* This method removes the pawns from the board too
+        * Player 1 pawns are in [0,0] and [0,1] */
+
+        assertNotEquals(null, game.getGameBoard().getCell(0,0).getPawnInThisCell());
+        assertNotEquals(null, game.getGameBoard().getCell(0,1).getPawnInThisCell());
+
+        game.removePlayer("Alfonso");
+
+        assertNull(game.getGameBoard().getCell(0, 0).getPawnInThisCell());
+        assertNull(game.getGameBoard().getCell(0, 1).getPawnInThisCell());
+
+        /* there's only one player, so throws a new VictoryConsequence to the ReceiveConsequence method
+        * Debugging, we saw it throws that */
+
+
+
     }
 
 
@@ -182,6 +210,19 @@ class GameTest {
 
     @Test
     void nextCurrentPlayer() {
+
+        assertEquals(0, game.getIndexCurrentPlayer());
+
+        game.newCurrentPlayer();
+
+        assertEquals(1, game.getIndexCurrentPlayer());
+
+        /* after the turn of both the players, the rotation restarts */
+
+        game.newCurrentPlayer();
+
+        assertEquals(0, game.getIndexCurrentPlayer());
+
     }
 
 
@@ -234,11 +275,47 @@ class GameTest {
     void wherePawnCanDestroy() {
     }
 
+    /**
+     * this method only calls the player.resetPlayerStatus method
+     */
     @Test
     void resetPlayerStatus() {
     }
 
     @Test
     void getAvailablePawns() {
+
+        List<Cell> retPawnsCell;
+        List<Cell> correctPawnsCell = new ArrayList<>();
+
+        Game gameTest = new Game("player", "opponentPlayer");
+
+        retPawnsCell = gameTest.getAvailablePawns("player");
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,0));
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
+
+        assertEquals(correctPawnsCell, retPawnsCell);
+
+        //now one pawn cannot move
+        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(1));
+
+        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(1));
+
+        correctPawnsCell.clear();
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
+        retPawnsCell = gameTest.getAvailablePawns("player");
+
+        assertEquals(correctPawnsCell, retPawnsCell);
+
+        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(1));
+
+        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(1));
+
+        retPawnsCell = gameTest.getAvailablePawns("player");
+        assertEquals(0, retPawnsCell.size());
     }
 }

@@ -28,14 +28,14 @@ public class CanForceEffect extends EffectDecorator {
      * @return a list of cells that are the positions of the opponent player's pawn that can be forced
      */
     @Override
-    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
+    public List<Cell> getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn) {
 
-        List<Cell> neighboringCell = gameBoard.getNeighboring( designatedPawn.getPosition() );
+        List<Cell> opponentsCell = super.getOpponentsNeighboring(gameBoard, designatedPawn);
         List<Cell> opponentNeighboringCell = new ArrayList<>();
 
-        for (Cell c : neighboringCell){
-            if (c.getBuilderHere() && gameBoard.getSymmetrical( designatedPawn.getPosition(), c ) != null)
-                if (gameBoard.getSymmetrical( designatedPawn.getPosition(), c ).getIsFree() && c.getPawnInThisCell().getColor() != designatedPawn.getColor())
+        for (Cell c : opponentsCell){
+            if (gameBoard.getSymmetrical( designatedPawn.getPosition(), c ) != null && c.getPawnInThisCell().getColor() != designatedPawn.getColor())
+                if (gameBoard.getSymmetrical( designatedPawn.getPosition(), c ).getIsFree())
                     opponentNeighboringCell.add(c);
         }
         return opponentNeighboringCell;

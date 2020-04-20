@@ -120,14 +120,14 @@ public class BasicEffect implements Effect {
 
 
     /**
-     * the standard method that return the cells where a pawn can be forced to go
-     * @param gameBoard the game board
-     * @param designatedPawn the pawn that I want to force
-     * @return the list of cells
+     * this method returns the list of the cell where there are opponents pawn against designatedPawn
+     * @param gameBoard the game board where the pawn is
+     * @param designatedPawn the pawn from which opponents must be found
+     * @return the list of cell where the opponents pawn are onto
      */
     @Override
-    public List<Cell> wherePawnCanForce(Board gameBoard, Pawn designatedPawn) {
-        throw new RuntimeException("You're not enough strong to use the Force, Young Padawan!");
+    public List<Cell> getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn) {
+        return gameBoard.getOpponentsNeighboring(designatedPawn);
     }
 
 

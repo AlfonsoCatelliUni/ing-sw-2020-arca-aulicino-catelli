@@ -30,12 +30,10 @@ public class CanSwitchOpponentEffect extends EffectDecorator {
 
         List<Cell> availableCellsToMove = super.wherePawnCanMove(gameBoard, designatedPawn);
 
-        List<Cell> neighboringCells = gameBoard.getNeighboring( designatedPawn.getPosition() );
+        List<Cell> neighboringCells = super.getOpponentsNeighboring(gameBoard, designatedPawn );
 
         for (Cell c : neighboringCells ) {
-            if ( !availableCellsToMove.contains(c) && c.getBuilderHere() &&
-                    c.getPawnInThisCell().getColor() != designatedPawn.getColor() &&
-                    c.getHeight() - designatedPawn.getHeight() <= 1 ) {
+            if ( !availableCellsToMove.contains(c) && c.getHeight() - designatedPawn.getHeight() <= 1 ) {
                 availableCellsToMove.add(c);
             }
         }

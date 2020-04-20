@@ -41,7 +41,7 @@ public class ForceAndMoveState implements StateEffectInterface {
         if(effect.wherePawnCanMove(gameBoard, designatedPawn).size() > 0) {
             possibleActions.add(new MoveAction());
         }
-        if(effect.wherePawnCanForce(gameBoard, designatedPawn).size() > 0) {
+        if(effect.getOpponentsNeighboring(gameBoard, designatedPawn).size() > 0) {
             possibleActions.add(new ForceAction());
         }
 

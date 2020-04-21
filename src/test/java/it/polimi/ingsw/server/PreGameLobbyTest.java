@@ -153,7 +153,6 @@ class PreGameLobbyTest {
         preGameLobby.addCard(nicknames.get(2), pickedCard.get(2).getName());
 
 
-
     }
 
 

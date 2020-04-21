@@ -12,11 +12,15 @@ public interface ServerToClientManager {
     // ======================================================================================
     // MARK : Network And Update Events
 
+    void manageEvent(ConnectionEstablishedEvent event);
+
     void manageEvent(FirstConnectedEvent event);
 
     void manageEvent(SuccessfullyConnectedEvent event);
 
     void manageEvent(NotifyStatusEvent event);
+
+    void manageEvent(DisconnectionEvent event);
 
 
     // ======================================================================================

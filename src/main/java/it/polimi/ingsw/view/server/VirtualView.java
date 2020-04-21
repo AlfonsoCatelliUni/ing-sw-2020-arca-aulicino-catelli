@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.server;
 
+import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
@@ -23,7 +24,12 @@ public class VirtualView extends Observable implements Observer {
 
 
     public VirtualView() {
+        //ID_Connection and Nickname_ID mapping, initial empty
         connectionMap = new HashMap<>();
+        nicknameMap = new HashMap<>();
+
+
+
     }
 
 

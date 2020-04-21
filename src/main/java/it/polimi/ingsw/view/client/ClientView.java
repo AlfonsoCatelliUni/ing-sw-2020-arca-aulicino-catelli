@@ -1,25 +1,26 @@
 package it.polimi.ingsw.view.client;
 
 
+import it.polimi.ingsw.events.STCEvents.DisconnectionEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
-public class ClientView implements Runnable{
+public class ClientView implements Runnable {
+
 
     private final ObjectInputStream inputStream;
-
     private final ObjectOutputStream outputStream;
 
     private final ServerToClientManager userManager;
 
-    //istanziata nella start connection della cli, viene creato un thread per ogni giocatore
+
+    // ======================================================================================
+
+
     public ClientView(Socket socket, ServerToClientManager userManager) {
 
         this.userManager = userManager;
@@ -32,35 +33,40 @@ public class ClientView implements Runnable{
             tempIn = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
         }
         catch (IOException e){
-            System.err.println("Error while creating RemoteViewSocket");
+            System.err.println("Error while creating ClientView");
         }
 
         this.inputStream = tempIn;
         this.outputStream = tempOut;
     }
 
+
+    // ======================================================================================
+
+
     @Override
     public void run() {
 
         try {
 
-            while (true) {
+            while(true) {
 
-                ServerToClientEvent event = (ServerToClientEvent) inputStream.readObject();
+                ServerToClientEvent event = (ServerToClientEvent)inputStream.readObject();
 
                 userManager.receiveEvent(event);
             }
 
         }
-        catch (IOException | ClassNotFoundException e){
+        catch (Exception e){
             System.err.println("Error while receiving new Question object through SOCKET");
             e.printStackTrace();
-            //viene disconnesso il client
+            userManager.receiveEvent(new DisconnectionEvent());
         }
 
     }
 
-    public void sendCTSEvent(ClientToServerEvent event){
+
+    public void sendCTSEvent(ClientToServerEvent event) {
 
         try {
             outputStream.writeObject(event);
@@ -68,9 +74,10 @@ public class ClientView implements Runnable{
         } catch (IOException e) {
             System.err.println("Error while trying writeObject on client side");
             e.printStackTrace();
-            //viene disconnesso il client
+            userManager.receiveEvent(new DisconnectionEvent());
         }
 
     }
+
 
 }

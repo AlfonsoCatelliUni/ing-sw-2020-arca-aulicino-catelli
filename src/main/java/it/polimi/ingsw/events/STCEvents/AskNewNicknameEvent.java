@@ -3,7 +3,9 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-public class AskNewNicknameEvent implements ServerToClientEvent {
+import java.io.Serializable;
+
+public class AskNewNicknameEvent implements ServerToClientEvent, Serializable {
 
 
     private String nickname;

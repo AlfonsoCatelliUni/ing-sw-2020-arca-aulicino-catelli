@@ -3,10 +3,12 @@ package it.polimi.ingsw.events.CTSEvents;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
-public class ChosenPlayerNumberEvent implements ClientToServerEvent {
+import java.io.Serializable;
+
+public class ChosenPlayerNumberEvent implements ClientToServerEvent, Serializable {
 
 
-    private String nickname;
+    //private String nickname;
 
 
     private Integer number;
@@ -29,9 +31,9 @@ public class ChosenPlayerNumberEvent implements ClientToServerEvent {
     }
 
 
-    public String getNickname() {
-        return this.nickname;
-    }
+//    public String getNickname() {
+//        return this.nickname;
+//    }
 
 
     public Integer getNumber() {

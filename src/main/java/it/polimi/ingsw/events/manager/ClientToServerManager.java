@@ -15,7 +15,7 @@ public interface ClientToServerManager {
 
     void manageEvent(NewConnectionEvent event);
 
-    void manageEvent(DisconnectionEvent event);
+    void manageEvent(ClientDisconnectionEvent event);
 
     void manageEvent(ChosenPlayerNumberEvent event);
 

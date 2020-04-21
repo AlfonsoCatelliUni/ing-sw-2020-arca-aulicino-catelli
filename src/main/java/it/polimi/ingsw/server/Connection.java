@@ -2,9 +2,11 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
+import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -19,6 +21,8 @@ public class Connection implements Runnable {
 
     private Boolean active;
 
+    private VirtualView receiver;
+
 
     // ======================================================================================
 
@@ -31,6 +35,7 @@ public class Connection implements Runnable {
 
         try {
             input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            System.out.println("sto inizializzando output");
             output = new ObjectOutputStream(socket.getOutputStream());
         }
         catch (Exception e){
@@ -48,11 +53,11 @@ public class Connection implements Runnable {
 
         try {
 
-            while(getActive()) {
 
-                //TODO : set the receiver
+
+            while(getActive()) {
                 ClientToServerEvent event = (ClientToServerEvent)input.readObject();
-                //receiver.receiveAnswer(event);
+                receiver.update(event);
             }
 
         }
@@ -94,6 +99,7 @@ public class Connection implements Runnable {
     public void sendEvent(ServerToClientEvent event) {
 
         try {
+            System.out.println(output);
             output.writeObject(event);
             output.flush();
         }

@@ -38,6 +38,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     public Controller() {
         this.virtualView = new VirtualView();
+
         this.preGameLobby = new PreGameLobby();
 
     }
@@ -106,7 +107,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
-    public void manageEvent(DisconnectionEvent event) {
+    public void manageEvent(ClientDisconnectionEvent event) {
 
     }
 
@@ -115,7 +116,7 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenPlayerNumberEvent event) {
 
-        String nickname = event.getNickname();
+        //String nickname = event.getNickname();
 
         Integer numberOfPlayers = event.getNumber();
 

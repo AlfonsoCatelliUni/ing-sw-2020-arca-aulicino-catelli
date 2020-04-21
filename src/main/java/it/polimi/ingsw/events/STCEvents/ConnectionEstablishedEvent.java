@@ -4,23 +4,22 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class SuccessfullyConnectedEvent implements ServerToClientEvent, Serializable {
+public class ConnectionEstablishedEvent implements ServerToClientEvent, Serializable {
 
-
-    private List<String> connectedPlayers;
+    private Integer ID;
 
 
     // ======================================================================================
 
 
-    public SuccessfullyConnectedEvent(List<String> connectedPlayers) {
-        this.connectedPlayers = connectedPlayers;
+    public ConnectionEstablishedEvent(Integer ID) {
+        this.ID = ID;
     }
 
 
     // ======================================================================================
+
 
     @Override
     public void accept(ServerToClientManager visitor) {
@@ -28,8 +27,11 @@ public class SuccessfullyConnectedEvent implements ServerToClientEvent, Serializ
     }
 
 
-    public List<String> getConnectedPlayers() {
-        return connectedPlayers;
+    // ======================================================================================
+
+
+    public Integer getID() {
+        return this.ID;
     }
 
 

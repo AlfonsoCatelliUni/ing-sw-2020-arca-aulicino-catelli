@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.events.STCEvents.ConnectionEstablishedEvent;
 import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.IOException;
@@ -13,7 +14,10 @@ import java.util.logging.Level;
 
 public class Server {
 
-    private static final int SOCKET_PORT = 12345;
+    private static final int SOCKET_PORT = 6969;
+
+
+    private Controller controller;
 
 
     private ServerSocket serverSocket;
@@ -32,6 +36,8 @@ public class Server {
 
 
     public Server() {
+
+        controller = new Controller();
 
         this.executor = Executors.newFixedThreadPool(128);
         this.randomGen = new Random();
@@ -85,11 +91,12 @@ public class Server {
                 System.out.println("New socket bounded at the player with ID: " + id);
 
                 executor.submit(connection);
+                //new Thread(connection).start();
 
                 //Sends the temporary id to the player
                 //The player will send it back with all the necessary information (nickname)
                 //TODO : mandare messaggio di assegnazione connectionID e richiesta del nickname
-                //connection.sendEvent();
+                connection.sendEvent(new ConnectionEstablishedEvent(id));
             }
         }
         catch(IOException e) {

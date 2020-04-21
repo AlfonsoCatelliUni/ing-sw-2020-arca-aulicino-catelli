@@ -41,7 +41,6 @@ public class BlockOpponentEffect extends EffectDecorator {
 
         if( !(resultAction instanceof VictoryConsequence) && nextPosition.getHeight() - oldHeight == 1) {
             return new BlockConsequence();
-            //TODO : mettere il nome nella conseguenza
         }
 
         return resultAction;

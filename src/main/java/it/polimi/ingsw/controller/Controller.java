@@ -281,7 +281,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
 
     }
-
+    
 
     @Override
     public void manageEvent(ChosenCellToBuildEvent event) {

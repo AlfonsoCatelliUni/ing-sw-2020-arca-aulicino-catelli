@@ -32,7 +32,6 @@ public class DownTwoEffect extends EffectDecorator {
 
         if( oldHeight - nextPosition.getHeight() >= 2 ) {
             return new VictoryConsequence();
-            //TODO : mettere il nome alla conseguenza
         }
 
         return resultAction;

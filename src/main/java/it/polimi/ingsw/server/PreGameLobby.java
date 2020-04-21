@@ -66,10 +66,10 @@ public class PreGameLobby {
         this.effectsClassMap = new HashMap<>();
         this.effectsClassMap = fillMap();
         this.playerPawnPoints = new HashMap<>();
+        this.pickedCards = new ArrayList<>();
+        this.playerCardMap = new HashMap<>();
 
         this.allCards = JsonHandler.deserializeCardList();
-        pickedCards = fillGodsDeck(allCards);
-
     }
 
 
@@ -89,6 +89,7 @@ public class PreGameLobby {
 
         Map<String, Effect> playerDecoratorMap = new HashMap<>();
 
+        //Basic Gods
         playerDecoratorMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect ( new BasicEffect())));
         playerDecoratorMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
         playerDecoratorMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
@@ -100,6 +101,14 @@ public class PreGameLobby {
         playerDecoratorMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
         playerDecoratorMap.put("Pan", new DownTwoEffect(new BasicEffect()));
         playerDecoratorMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
+
+
+        //Advanced Gods
+        playerDecoratorMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
+        playerDecoratorMap.put("Charon", new CanForceEffect(new BasicEffect()));
+        playerDecoratorMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
+        playerDecoratorMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));
+        playerDecoratorMap.put("Zeus", new CanBuildUnderItselfEffect(new BasicEffect()));
 
 
         return playerDecoratorMap;
@@ -115,15 +124,7 @@ public class PreGameLobby {
 
         playersNicknames.add(nickname);
 
-        /*
-        List<Point> defaultPoints = new ArrayList<>();
-        defaultPoints.add(new Point(-1,-1));
-        defaultPoints.add(new Point(-1,-1));
-        playerPawnPoints.put(nickname, defaultPoints);
-
-         */
-
-        if (playersNicknames.size() == MAXPLAYERS - 1)
+        if (playersNicknames.size() == MAXPLAYERS)
             closeWaitingRoom();
 
     }
@@ -137,6 +138,13 @@ public class PreGameLobby {
     public void addCard (String nickname, String cardName) {
 
         Card chosenCard = pickedCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
+
+        if(chosenCard == null) {
+            throw new RuntimeException("Invalid Chosen Card!");
+        }
+        if(playerCardMap.containsKey(nickname)) {
+            throw new RuntimeException("Invalid Nickname!");
+        }
 
         playerCardMap.put( nickname, chosenCard );
         pickedCards.remove(chosenCard);
@@ -153,6 +161,11 @@ public class PreGameLobby {
         }
 
         return false;
+    }
+
+
+    public List<Card> getPickedCards() {
+        return this.pickedCards;
     }
 
 
@@ -199,32 +212,31 @@ public class PreGameLobby {
     }
 
 
-    protected List<Card> fillGodsDeck(List<Card> cards) {
+    protected void fillGodsDeck(List<Card> cards) {
 
         int cardsQuantity = playersNicknames.size();
         Random random = new Random();
-        List<Card> godsDeck = new ArrayList<>();
+        List<Integer> cardsIndex = new ArrayList<>();
 
+        Integer num = random.nextInt(cards.size());
 
-        for (int i = 0; i < cardsQuantity; i++) {
+        while(cardsIndex.size() < cardsQuantity) {
 
-            int num = random.nextInt(cards.size());
-
-            if (cardsQuantity == 3 && cards.get(i).isAvailable3P()) {
-                godsDeck.add(this.allCards.get(num));
-            }
-            else {
-                i--;
+            if(!cardsIndex.contains(num)) {
+                cardsIndex.add(num);
             }
 
+            num = random.nextInt(cards.size());
         }
 
-        return godsDeck;
+        for (Integer i : cardsIndex ) {
+            pickedCards.add(allCards.get(i));
+        }
     }
 
 
     private void closeWaitingRoom() {
-
+        fillGodsDeck(allCards);
     }
 
 

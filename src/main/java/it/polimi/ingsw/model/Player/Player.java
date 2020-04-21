@@ -248,7 +248,7 @@ public class Player {
 
 
     /**
-     * this method initiate one male pawn and one female pawn and place them on the board
+     * this method initializes one male pawn and one female pawn and place them on the board
      * @param gameBoard the board where we have to place the pawns
      * @param startCell the cell where to place the pawn initiated
      */

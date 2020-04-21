@@ -619,4 +619,16 @@ public class Game extends Observable implements GameConsequenceHandler {
     public int getIndexCurrentPlayer() {
         return this.indexCurrentPlayer;
     }
+
+    /* USED ONLY FOR TESTING */
+    public Game(List<Player> players){
+        gameBoard = new Board();
+        this.players = players;
+        indexCurrentPlayer = 0;
+        currentPlayer = players.get(0);
+
+        lastActionsList = null;
+        lastBuildingsList = null;
+        lastCellsList = null;
+    }
 }

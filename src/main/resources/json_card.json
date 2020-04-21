@@ -47,10 +47,40 @@
       "available3P": true,
       "effect": "panEffect"
     },
-  {
+    {
     "name": "Prometheus",
     "available2P": true,
     "available3P": true,
     "effect": "prometheusEffect"
+    },
+  {
+    "name": "Ares",
+    "available2P": true,
+    "available3P": true,
+    "effect": "aresEffect"
+  },
+  {
+    "name": "Charon",
+    "available2P": true,
+    "available3P": true,
+    "effect": "charonEffect"
+  },
+  {
+    "name": "Hestia",
+    "available2P": true,
+    "available3P": true,
+    "effect": "hestiaEffect"
+  },
+  {
+    "name": "Triton",
+    "available2P": true,
+    "available3P": true,
+    "effect": "tritonEffect"
+  },
+  {
+    "name": "Zeus",
+    "available2P": true,
+    "available3P": true,
+    "effect": "zeusEffect"
   }
 ]

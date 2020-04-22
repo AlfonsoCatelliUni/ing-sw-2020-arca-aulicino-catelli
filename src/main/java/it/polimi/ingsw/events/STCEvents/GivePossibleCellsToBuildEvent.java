@@ -18,14 +18,19 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
     public String actionID;
 
 
+    public boolean isValid;
+
+
     // ======================================================================================
 
 
-    public GivePossibleCellsToBuildEvent(String receiverNickname, List<Cell> cellsAvailableToBuild) {
+    public GivePossibleCellsToBuildEvent(String receiverNickname, List<Cell> cellsAvailableToBuild, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.actionID = "build";
 
         this.cellsAvailableToBuild = cellsAvailableToBuild;
+
+        this.isValid = isValid;
     }
 
 

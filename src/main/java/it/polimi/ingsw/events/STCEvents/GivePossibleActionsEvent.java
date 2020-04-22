@@ -15,12 +15,16 @@ public class GivePossibleActionsEvent extends ServerToClientEvent {
     public List<Action> actions;
 
 
+    public boolean isValid;
+
+
     // ======================================================================================
 
 
-    public GivePossibleActionsEvent(String receiverNickname, List<Action> actions) {
+    public GivePossibleActionsEvent(String receiverNickname, List<Action> actions, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.actions = actions;
+        this.isValid = isValid;
     }
 
 

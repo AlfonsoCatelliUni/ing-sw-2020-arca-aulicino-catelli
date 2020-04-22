@@ -190,13 +190,8 @@ public class PreGameLobby {
     }
 
 
-    public List<String> getPickedCardsNames() {
-
-        List<String> cardNames = new ArrayList<>();
-        for(Card card : pickedCards) {
-            cardNames.add(card.getName() + "\nThis card effect is: " + card.getEffect());
-        }
-        return cardNames;
+    public List<Card> getPickedCards() {
+        return this.pickedCards;
     }
 
 

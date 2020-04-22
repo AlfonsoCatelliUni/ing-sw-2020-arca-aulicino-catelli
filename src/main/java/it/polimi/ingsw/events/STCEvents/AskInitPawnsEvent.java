@@ -8,12 +8,15 @@ public class AskInitPawnsEvent extends ServerToClientEvent {
 
     public String nickname;
 
+    public boolean isValid;
+
 
     // ======================================================================================
 
 
-    public AskInitPawnsEvent(String nickname) {
+    public AskInitPawnsEvent(String nickname, boolean isValid) {
         this.nickname = nickname;
+        this.isValid = isValid;
     }
 
     // ======================================================================================

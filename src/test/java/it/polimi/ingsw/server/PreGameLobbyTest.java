@@ -107,7 +107,6 @@ class PreGameLobbyTest {
     }
 
 
-/*
     @Test
     void isCardAvailable() {
 
@@ -156,7 +155,7 @@ class PreGameLobbyTest {
 
     }
 
-  */
+
 
 
     @Test

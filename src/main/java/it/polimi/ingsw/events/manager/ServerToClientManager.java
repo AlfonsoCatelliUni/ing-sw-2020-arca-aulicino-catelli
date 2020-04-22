@@ -46,13 +46,7 @@ public interface ServerToClientManager {
 
     void manageEvent(GivePossibleCellsToBuildEvent event);
 
-
-
-    void manageEvent(InvalidChosenActionEvent event);
-
-    void manageEvent(InvalidChosenCellEvent event);
-
-    void manageEvent(InvalidChosenCardEvent event);
+    void manageEvent(GivePossibleBuildingsEvent event);
 
 
 

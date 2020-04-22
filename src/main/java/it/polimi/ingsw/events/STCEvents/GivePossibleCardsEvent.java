@@ -15,12 +15,16 @@ public class GivePossibleCardsEvent extends ServerToClientEvent {
     public List<Card> cards;
 
 
+    public boolean isValid;
+
+
     // ======================================================================================
 
 
-    public GivePossibleCardsEvent(String receiverNickname, List<Card> cards) {
+    public GivePossibleCardsEvent(String receiverNickname, List<Card> cards, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.cards = cards;
+        this.isValid = isValid;
     }
 
 

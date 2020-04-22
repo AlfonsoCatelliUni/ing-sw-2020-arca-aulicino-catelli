@@ -18,14 +18,19 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
     public String actionID;
 
 
+    public boolean isValid;
+
+
     // ======================================================================================
 
 
-    public GivePossibleCellsToMoveEvent(String receiverNickname, List<Cell> cellsAvailableToMove) {
+    public GivePossibleCellsToMoveEvent(String receiverNickname, List<Cell> cellsAvailableToMove, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.actionID = "move";
 
         this.cellsAvailableToMove = cellsAvailableToMove;
+
+        this.isValid = isValid;
     }
 
 

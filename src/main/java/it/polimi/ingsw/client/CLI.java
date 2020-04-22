@@ -175,6 +175,12 @@ public class CLI implements ServerToClientManager {
 
 
     @Override
+    public void manageEvent(UnavailableNicknameEvent event) {
+
+    }
+
+
+    @Override
     public void manageEvent(NotifyStatusEvent event) {
 
     }
@@ -197,10 +203,7 @@ public class CLI implements ServerToClientManager {
     }
 
 
-    @Override
-    public void manageEvent(UnavailableNicknameEvent event) {
 
-    }
 
 
     @Override

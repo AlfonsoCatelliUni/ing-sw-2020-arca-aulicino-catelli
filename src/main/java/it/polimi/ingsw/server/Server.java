@@ -93,9 +93,6 @@ public class Server {
                 executor.submit(connection);
                 //new Thread(connection).start();
 
-                //Sends the temporary id to the player
-                //The player will send it back with all the necessary information (nickname)
-                //TODO : mandare messaggio di assegnazione connectionID e richiesta del nickname
                 connection.sendEvent(new ConnectionEstablishedEvent(id));
             }
         }

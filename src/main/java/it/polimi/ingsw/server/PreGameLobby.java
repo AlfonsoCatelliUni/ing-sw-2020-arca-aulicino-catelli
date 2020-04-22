@@ -245,4 +245,24 @@ public class PreGameLobby {
     }
 
 
+    public boolean deletePlayerInformation(String nickname) {
+
+        try {
+            playersNicknames.removeIf(n -> n.equals(nickname));
+
+            playerCardMap.remove(nickname);
+            playerPawnPoints.remove(nickname);
+            numberOfPlayers--;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+
 }

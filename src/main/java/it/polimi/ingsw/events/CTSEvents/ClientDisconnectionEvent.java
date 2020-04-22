@@ -8,19 +8,26 @@ import java.io.Serializable;
 public class ClientDisconnectionEvent extends ClientToServerEvent {
 
 
+    public Integer ID;
+
     public String playerNickname;
 
 
     // ======================================================================================
 
 
-    public ClientDisconnectionEvent(String playerNickname) {
+    public ClientDisconnectionEvent(Integer ID, String playerNickname) {
+        this.ID = ID;
         this.playerNickname = playerNickname;
     }
 
 
-    public ClientDisconnectionEvent() {
-        this("");
+    public ClientDisconnectionEvent(Integer ID) {
+        this(ID,"");
+    }
+
+    public ClientDisconnectionEvent(String playerNickname) {
+        this(-1, playerNickname);
     }
 
 

@@ -85,10 +85,8 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(NewConnectionEvent event) {
 
-        //Integer ID = event.getID();
         Integer ID = event.ID;
 
-        //String nickname = event.getNickname();
         String nickname = event.nickname;
 
         Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);
@@ -118,6 +116,30 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ClientDisconnectionEvent event) {
+
+        String disconnectedPlayer = virtualView.removeNicknameIDConnection(event.ID);
+        if(disconnectedPlayer == null)
+            throw new RuntimeException("It's strange, but the ID of the player is corrupt!");
+
+
+        if(preGameLobby != null) {
+
+            //if the nickname is not available than the player was really connected in the preGameLobby
+            if(!preGameLobby.isNicknameAvailable(disconnectedPlayer)) {
+                //TODO : verificare deletePlayer
+                preGameLobby.deletePlayerInformation(disconnectedPlayer);
+            }
+            else
+                throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
+
+        }
+        else if(game != null) {
+
+            //togliere le informazioni del player dal game
+            game.tearDownGame();
+
+        }
+
 
     }
 

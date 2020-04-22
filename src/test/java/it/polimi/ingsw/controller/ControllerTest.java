@@ -1,5 +1,7 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.client.ClientJsonHandler;
+import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
@@ -92,29 +94,49 @@ class ControllerTest {
     void generateJsonActions() {
 
         String generatedJson = "";
+        List<String> generatedList = new ArrayList<>();
         List<Action> actionList = new ArrayList<>();
 
+        //first test with two elements
         actionList.add(new MoveAction());
         actionList.add(new BuildAction());
 
         generatedJson = controller.generateJsonActions(actionList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateActionsList(generatedJson);
+        System.out.println(generatedList);
+
+
+        //second test with a new element
         actionList.add(new FinishAction());
 
         generatedJson = controller.generateJsonActions(actionList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateActionsList(generatedJson);
+        System.out.println(generatedList);
+
+
+        //third test with two removed elements
         actionList.removeIf(a -> a.getClass().equals(MoveAction.class));
         actionList.removeIf(a -> a.getClass().equals(BuildAction.class));
 
         generatedJson = controller.generateJsonActions(actionList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateActionsList(generatedJson);
+        System.out.println(generatedList);
+
+
+        //fourth test with a new element
         actionList.add(new DestroyAction());
 
         generatedJson = controller.generateJsonActions(actionList);
         System.out.println(generatedJson);
+
+        generatedList = ClientJsonHandler.generateActionsList(generatedJson);
+        System.out.println(generatedList);
 
 
     }
@@ -124,8 +146,11 @@ class ControllerTest {
     void generateJsonCells() {
 
         String generatedJson = "";
+        List<Couple<Integer, Integer>> generatedList = new ArrayList<>();
         List<Cell> cellsList = new ArrayList<>();
 
+
+        //first test with a three cells list
         cellsList.add(new Cell(1,1));
         cellsList.add(new Cell(0,0));
         cellsList.add(new Cell(1,2));
@@ -133,20 +158,46 @@ class ControllerTest {
         generatedJson = controller.generateJsonCells(cellsList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateCellsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+        //second test with a new cell
         cellsList.add(new Cell(0,1));
 
         generatedJson = controller.generateJsonCells(cellsList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateCellsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+        //third test with a removed cell
         cellsList.removeIf(c -> c.getRowPosition() == 0 && c.getColumnPosition() == 0);
 
         generatedJson = controller.generateJsonCells(cellsList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateCellsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+        //last test with empty list
         cellsList.clear();
 
         generatedJson = controller.generateJsonCells(cellsList);
         System.out.println(generatedJson);
+
+        generatedList = ClientJsonHandler.generateCellsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
 
 
     }
@@ -156,23 +207,45 @@ class ControllerTest {
     void generateJsonBuildings() {
 
         String generatedJson = "";
+        List<Couple<Integer, Boolean>> generatedList = new ArrayList<>();
         List<Building> buildingList = new ArrayList<>();
 
+
+        //
         buildingList.add(new Building(1,30));
         buildingList.add(new Building(2,30));
 
         generatedJson = controller.generateJsonBuildings(buildingList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateBuildingsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+        //
         buildingList.add(new Building(4, 30));
 
         generatedJson = controller.generateJsonBuildings(buildingList);
         System.out.println(generatedJson);
 
+        generatedList = ClientJsonHandler.generateBuildingsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+        //last test with empty list
         buildingList.clear();
 
         generatedJson = controller.generateJsonBuildings(buildingList);
         System.out.println(generatedJson);
+
+        generatedList = ClientJsonHandler.generateBuildingsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
 
 
     }
@@ -182,6 +255,7 @@ class ControllerTest {
     void generateJsonCards() {
 
         String generatedJson = "";
+        List<Couple<String, String>> generatedList = new ArrayList<>();
         List<Card> cardList = new ArrayList<>();
 
         generatedJson = controller.generateJsonCards(cardList);
@@ -190,19 +264,45 @@ class ControllerTest {
         cardList.add(new Card("Apollo", true, "effetto_apollo"));
         cardList.add(new Card("Artemide", true, "effetto_artemide"));
 
+        generatedList = ClientJsonHandler.generateCardsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+
         generatedJson = controller.generateJsonCards(cardList);
         System.out.println(generatedJson);
 
         cardList.add(new Card("Atlas", true, "effetto_atlas"));
         cardList.removeIf(c -> c.getName().equals("Apollo"));
 
+        generatedList = ClientJsonHandler.generateCardsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
+
         generatedJson = controller.generateJsonCards(cardList);
         System.out.println(generatedJson);
+
+        generatedList = ClientJsonHandler.generateCardsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
+
+
 
         cardList.add(new Card("Zeus", true, "effetto_zeus"));
 
         generatedJson = controller.generateJsonCards(cardList);
         System.out.println(generatedJson);
+
+        generatedList = ClientJsonHandler.generateCardsList(generatedJson);
+        for(int i = 0; i < generatedList.size(); i++)
+            System.out.print(generatedList.get(i).getFirst()+"-"+generatedList.get(i).getSecond()+" ");
+        System.out.println();
 
     }
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.events.STCEvents.ClosedWaitingRoomEvent;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.*;
 import it.polimi.ingsw.model.Player.Effect.*;
 import it.polimi.ingsw.observer.Observable;
@@ -192,6 +193,22 @@ public class PreGameLobby {
 
     public List<Card> getPickedCards() {
         return this.pickedCards;
+    }
+
+    public List<Cell> getInitialOccupiedCell() {
+        List<String> keys = new ArrayList<>(playerPawnPoints.keySet());
+        List<Cell> occupiedCells = new ArrayList<>();
+
+        for (String k : keys) {
+
+            List<Point> pointList = playerPawnPoints.get(k);
+
+            for (Point p : pointList) {
+                occupiedCells.add(new Cell(p.x, p.y));
+            }
+
+        }
+        return occupiedCells;
     }
 
 

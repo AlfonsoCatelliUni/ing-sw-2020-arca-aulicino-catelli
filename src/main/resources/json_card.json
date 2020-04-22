@@ -2,71 +2,71 @@
     {
       "name": "Apollo",
       "available3P": true,
-      "effect": "Your Move : Your Worker may move into an opponent Worker's space (using normal movement rules) and force theri Worker to the space yours just vacated (swapping their positions)."
+      "effect": "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force theri Worker to the space yours just vacated (swapping their positions)."
     },
     {
       "name": "Artemis",
       "available3P": true,
-      "effect": "artemisEffect"
+      "effect": "Your Move: Your Worker may move one additional time, but not back to its initial space."
     },
     {
       "name": "Athena",
       "available3P": true,
-      "effect": "athenaEffect"
+      "effect": "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn."
     },
     {
       "name": "Atlas",
       "available3P": true,
-      "effect": "atlasEffect"
+      "effect": "Your Build: Your Worker may build a dome at any level."
     },
     {
       "name": "Demeter",
       "available3P": true,
-      "effect": "demeterEffect"
+      "effect": "Your Build: Your Worker may build one additional time, but not on the same space."
     },
     {
       "name": "Hephaestus",
       "available3P": true,
-      "effect": "hephaestusEffect"
+      "effect": "Your Build: Your Worker may build one additional block (not dome) on top of your first block."
     },
     {
       "name": "Minotaur",
       "available3P": true,
-      "effect": "minotaurEffect"
+      "effect": "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level."
     },
     {
       "name": "Pan",
       "available3P": true,
-      "effect": "panEffect"
+      "effect": "Win Condition: You also win if your Worker moves down two or more levels."
     },
     {
     "name": "Prometheus",
     "available3P": true,
-    "effect": "prometheusEffect"
+    "effect": "Your Turn: If your Worker does not move up, it may build both before and after moving."
     },
   {
     "name": "Ares",
     "available3P": true,
-    "effect": "aresEffect"
+    "effect": "End of Your Turn: You may remove an unoccupied block (not dome) neighboring your\nunmoved Worker. You also remove any Tokens on the block."
   },
   {
     "name": "Charon",
     "available3P": true,
-    "effect": "charonEffect"
+    "effect": "Your Move: Before your Worker moves, you may force a neighboring opponent Worker to the space directly on the other side of your Worker, if that space is unoccupied"
   },
   {
     "name": "Hestia",
     "available3P": true,
-    "effect": "hestiaEffect"
+    "effect": "Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space."
   },
   {
     "name": "Triton",
     "available3P": true,
-    "effect": "tritonEffect"
+    "effect": "Your Move: Each time your Worker moves into a perimeter space, it may immediately move again."
   },
   {
     "name": "Zeus",
     "available3P": true,
-    "effect": "zeusEffect"
+    "effect": "Your Build: Your Worker may build a block under itself."
   }
 ]

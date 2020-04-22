@@ -12,13 +12,13 @@ public class GivePossibleCardsEvent extends ServerToClientEvent {
     public String receiverNickname;
 
 
-    public List<Card> cards;
+    public List<String> cards;
 
 
     // ======================================================================================
 
 
-    public GivePossibleCardsEvent(String receiverNickname, List<Card> cards) {
+    public GivePossibleCardsEvent(String receiverNickname, List<String> cards) {
         this.receiverNickname = receiverNickname;
         this.cards = cards;
     }

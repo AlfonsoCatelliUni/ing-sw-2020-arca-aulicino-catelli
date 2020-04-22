@@ -112,7 +112,7 @@ public class Controller implements Observer, ClientToServerManager {
 
                 virtualView.sendMessage(new ClosedWaitingRoomEvent());
 
-                List<Card> cards = new ArrayList<>(preGameLobby.getPickedCards());
+                List<String> cards = new ArrayList<>(preGameLobby.getPickedCardsNames());
                 String firstPlayer = connectedPlayers.get(0);
 
                 virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cards));

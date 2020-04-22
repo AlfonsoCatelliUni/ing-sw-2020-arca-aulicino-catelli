@@ -149,7 +149,7 @@ public class PreGameLobby {
             }
         }, 120000); // 2 minutes timer
 
-        if (playersNicknames.size() == MAXPLAYERS)
+        if (playersNicknames.size() == numberOfPlayers)
             closeWaitingRoom();
 
     }
@@ -189,8 +189,13 @@ public class PreGameLobby {
     }
 
 
-    public List<Card> getPickedCards() {
-        return this.pickedCards;
+    public List<String> getPickedCardsNames() {
+
+        List<String> cardNames = new ArrayList<>();
+        for(Card card : pickedCards) {
+            cardNames.add(card.getName() + "\nThis card effect is: " + card.getEffect());
+        }
+        return cardNames;
     }
 
 

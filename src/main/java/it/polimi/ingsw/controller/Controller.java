@@ -7,6 +7,7 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.ClientToServerEvent;
@@ -14,6 +15,8 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.server.PreGameLobby;
 import it.polimi.ingsw.view.server.VirtualView;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ public class Controller implements Observer, ClientToServerManager {
     private Game game;
 
 
-    // ======================================================================================
+    // MARK : Constructor Section ======================================================================================
 
 
     public Controller(Game game) {
@@ -51,16 +54,7 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    // ======================================================================================
-
-    //TODO : dec
-    /*
-    @Override
-    public void update(Object event) {
-        throw new RuntimeException("Yo, Unknown Event Type... This is NOT your hood, men!");
-    }
-
-     */
+    // MARK : Pattern Visitor Methods ======================================================================================
 
 
     @Override
@@ -81,7 +75,97 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    // ======================================================================================
+    // MARK : Json Generator Section ======================================================================================
+
+
+    public String generateJsonActions(List<Action> actions) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Action a : actions ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cell coordinate into the Json
+            cellObj.put("action_id", a.getActionID());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonCells(List<Cell> cells) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Cell c : cells ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cell coordinate into the Json
+            cellObj.put("row", c.getRowPosition());
+            cellObj.put("column", c.getColumnPosition());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonBuildings(List<Building> buildings) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Building b : buildings ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the building info into the Json
+            cellObj.put("level", b.getLevel());
+            cellObj.put("is_dome", b.getIsDome());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonCards(List<Card> cards) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Card c : cards ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cards info into the Json
+            cellObj.put("name", c.getName());
+            cellObj.put("effect", c.getEffect());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    // MARK : Network Event Manager Section ======================================================================================
 
 
     @Override
@@ -192,7 +276,7 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    // ======================================================================================
+    // MARK : Game Based Event Manager Section ======================================================================================
 
 
     @Override
@@ -383,7 +467,7 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    // ======================================================================================
+    // MARK : Support Methods Section ======================================================================================
 
 
 

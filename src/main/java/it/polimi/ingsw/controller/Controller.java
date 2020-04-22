@@ -314,10 +314,20 @@ public class Controller implements Observer, ClientToServerManager {
         /* before I control that the selected spot is really free */
         if(isSpotFree) {
             preGameLobby.addNewPawnCoordinates(event.playerNickname, event.pawnRow, event.pawnColumn);
+            int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
+            index++;
+
+            if(index < preGameLobby.getNumberOfPlayers() - 1) {
+                //serializzare celle occupate prese dalla pregamelobby e passarle al costruttore
+                //virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(index), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(index), true, ));
+            }
+            else {
+                //virtualView.sendMessage(new StartGameEvent());
+            }
         }
         else {
             //TODO : mandare messaggio di inserimento del nome del giocatore
-            //virtualView.sendMessage();
+            //virtualView.sendMessageTo()
         }
 
 
@@ -340,9 +350,10 @@ public class Controller implements Observer, ClientToServerManager {
 
                 virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer, preGameLobby.getPickedCards(), true));
 
-            } else
+            } else {
                 //inviare richiesta inizializzazione pawn al primo giocatore
-                virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(0),true) );
+                virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(0), true, "[]"));
+            }
         }
         else {
             virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname, preGameLobby.getPickedCards(), false));

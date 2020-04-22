@@ -6,6 +6,7 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Board.Building;
+import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.ClientToServerEvent;
@@ -14,6 +15,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.server.PreGameLobby;
 import it.polimi.ingsw.view.server.VirtualView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller implements Observer, ClientToServerManager {
@@ -39,7 +41,7 @@ public class Controller implements Observer, ClientToServerManager {
     public Controller() {
         this.virtualView = new VirtualView(this);
 
-        this.preGameLobby = new PreGameLobby();
+        this.preGameLobby = new PreGameLobby(virtualView);
 
     }
 
@@ -91,21 +93,41 @@ public class Controller implements Observer, ClientToServerManager {
 
         Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);
 
-        if(isNicknameFree) {
+
+        if( isNicknameFree && !preGameLobby.getClosed() ) {
             //TODO : la addPlayer in PreGameLobby potrebbe essere sync
             preGameLobby.addPlayer(nickname);
             virtualView.newNicknameID(nickname, ID);
 
             List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
 
+            //if there's only one player connected to the waitingRoom, than this is the first one
+            //and he has to choose the number of the players for the new match
             if(connectedPlayers.size() == 1) {
                 virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
             }
+            //if the waitingRoom is filled than we broadcast a message that communicates this event
+            //and we ask the first entered player to choose his card
+            else if(connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {
+
+                virtualView.sendMessage(new ClosedWaitingRoomEvent());
+
+                List<Card> cards = new ArrayList<>(preGameLobby.getPickedCards());
+                String firstPlayer = connectedPlayers.get(0);
+
+                virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cards));
+            }
+            //if is an intermediate connection than nothing happens
             else {
                 virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers));
             }
 
         }
+        //if the waitingRoom is already closed than we disconnect the player
+        else if(preGameLobby.getClosed()) {
+            virtualView.sendMessageTo(ID, new UnableToEnterWaitingRoomEvent());
+        }
+        //if the chosen nickname is already taken we ask to enter it again
         else {
             virtualView.sendMessageTo(ID, new UnavailableNicknameEvent());
         }
@@ -126,8 +148,11 @@ public class Controller implements Observer, ClientToServerManager {
 
             //if the nickname is not available than the player was really connected in the preGameLobby
             if(!preGameLobby.isNicknameAvailable(disconnectedPlayer)) {
-                //TODO : verificare deletePlayer
-                preGameLobby.deletePlayerInformation(disconnectedPlayer);
+
+                if(preGameLobby.getClosed()) {
+                    preGameLobby.deletePlayerInformation(disconnectedPlayer);
+                }
+
             }
             else
                 throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
@@ -135,12 +160,11 @@ public class Controller implements Observer, ClientToServerManager {
         }
         else if(game != null) {
 
-            //togliere le informazioni del player dal game
+            //TODO : fare tearDownGame
             game.tearDownGame();
-
         }
 
-
+        virtualView.sendMessage(new DisconnectionEvent());
     }
 
 

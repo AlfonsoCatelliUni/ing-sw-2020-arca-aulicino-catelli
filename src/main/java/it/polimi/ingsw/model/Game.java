@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
+import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.model.Consequence.*;
 import it.polimi.ingsw.model.Player.Effect.BasicEffect;
 import it.polimi.ingsw.model.Player.Effect.Effect;
@@ -211,6 +212,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Consequence moveResult = player.move(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
+
         updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
 
         receiveConsequence(moveResult);
@@ -395,7 +397,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     @Override
     public void doConsequence(VictoryConsequence consequence) {
-        updateAllObservers( new VictoryEvent(consequence.getNickname()) );
+        updateAllObservers(new VictoryEvent(consequence.getNickname()));
     }
 
 

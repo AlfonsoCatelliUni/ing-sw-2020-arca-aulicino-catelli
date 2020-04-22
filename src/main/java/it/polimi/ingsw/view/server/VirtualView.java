@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.server;
 
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -23,12 +24,12 @@ public class VirtualView extends Observable implements Observer {
     // ======================================================================================
 
 
-    public VirtualView() {
+    public VirtualView(Controller controller) {
         //ID_Connection and Nickname_ID mapping, initial empty
         connectionMap = new HashMap<>();
         nicknameMap = new HashMap<>();
 
-
+        this.addObserver(controller);
 
     }
 
@@ -48,11 +49,14 @@ public class VirtualView extends Observable implements Observer {
 
     // ======================================================================================
 
-
+    //TODO : dec
+    /*
     @Override
     public void update(Object event) {
         throw new RuntimeException("Unknown Event Type!");
     }
+
+     */
 
 
     @Override

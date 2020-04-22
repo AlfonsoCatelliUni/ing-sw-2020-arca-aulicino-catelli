@@ -20,7 +20,7 @@ public class MatchSimulationTest  {
 
     private VirtualView virtualView;
 
-    private Controller controller;
+    private Controller controller = null;
 
     private List<String> nicknames;
 
@@ -30,7 +30,7 @@ public class MatchSimulationTest  {
     @BeforeEach
     void setUp() {
 
-        virtualView = new VirtualView();
+        virtualView = new VirtualView(controller);
         //controller = new Controller();
 
         random = new Random();
@@ -50,7 +50,7 @@ public class MatchSimulationTest  {
         int randomID = 1;
 
         if(VirtualView.isValidID(randomID)) {
-            VirtualView.newConnection(randomID, new Connection(0, new Socket()));
+            //VirtualView.newConnection(randomID, new Connection(0, new Socket()));
         }
 
         virtualView.update(new NewConnectionEvent(randomID, nicknames.get(0)));

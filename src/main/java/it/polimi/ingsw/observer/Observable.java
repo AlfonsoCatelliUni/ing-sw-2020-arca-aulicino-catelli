@@ -1,5 +1,8 @@
 package it.polimi.ingsw.observer;
 
+import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.events.ServerToClientEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +27,25 @@ public class Observable {
         this.observers.add(observer);
     }
 
+    //TODO : dec
+//    public void updateAllObservers(Object event){
+//        for(Observer o : observers) {
+//            o.update(event);
+//        }
+//    }
 
-    public void updateAllObservers(Object event){
+    public void updateAllObservers(ClientToServerEvent event){
         for(Observer o : observers) {
             o.update(event);
         }
     }
 
+
+    public void updateAllObservers(ServerToClientEvent event){
+        for(Observer o : observers) {
+            o.update(event);
+        }
+    }
 
 
 }

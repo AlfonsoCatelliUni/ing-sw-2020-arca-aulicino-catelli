@@ -46,7 +46,6 @@ public class CLI implements ServerToClientManager {
     }
 
 
-
     public void run() {
 
         System.out.print("Insert the server IP : ");
@@ -120,19 +119,38 @@ public class CLI implements ServerToClientManager {
             nickname = input.nextLine();
         }
 
-        clientView.sendCTSEvent( new NewConnectionEvent(event.getID(),nickname));
+        clientView.sendCTSEvent( new NewConnectionEvent(event.getID(), nickname));
     }
-
 
 
     @Override
     public void manageEvent(FirstConnectedEvent event) {
 
-        System.out.print("Quanti giocatori deve avere la partita (te compreso) : 2 o 3 ?");
+        System.out.print("Do you want a 2 or 3 players game ? ");
         int playersNumber = Integer.parseInt(input.nextLine());
 
+        if(playersNumber == 420) {
+            System.out.println("nice try, but shady things are done in the back room!");
+            System.out.println(
+                    "      #~~\n" +
+                    "     )#(\n" +
+                    "    ( # )\n" +
+                    "     ___\n" +
+                    "    |   |\n" +
+                    "    |   |\n" +
+                    "    |   |\n" +
+                    "    |   |\n" +
+                    "    |   |\n" +
+                    "___ |   |\n" +
+                    "\\  \\|   |\n" +
+                    " \\  |   |\n" +
+                    " /-------\\\n" +
+                    "(_________)\n" +
+                    " \\_______/");
+        }
+
         while(playersNumber != 2 && playersNumber != 3) {
-            System.out.print("Only 2 or 3 players : ");
+            System.out.print("Game is available only in 2 or 3 players, choose one of this options : ");
             playersNumber = Integer.parseInt(input.nextLine());
         }
 
@@ -142,6 +160,10 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(SuccessfullyConnectedEvent event) {
+
+        for (String nickname : event.getConnectedPlayers() ) {
+            System.out.println(nickname);
+        }
 
     }
 
@@ -154,7 +176,9 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(DisconnectionEvent event) {
-
+        System.out.println("YOU HAVE BEEN DISCONNECTED!");
+        this.clientView = null;
+        System.exit(0);
     }
 
 

@@ -50,7 +50,6 @@ public class ClientView implements Runnable {
         try {
 
             while(true) {
-
                 ServerToClientEvent event = (ServerToClientEvent)inputStream.readObject();
 
                 userManager.receiveEvent(event);

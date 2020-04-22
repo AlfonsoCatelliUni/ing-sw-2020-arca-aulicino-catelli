@@ -37,20 +37,25 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     public Controller() {
-        this.virtualView = new VirtualView();
+        this.virtualView = new VirtualView(this);
 
         this.preGameLobby = new PreGameLobby();
 
     }
 
 
+    public VirtualView getVirtualView() {
+        return this.virtualView;
+    }
+
+
     // ======================================================================================
 
-
-    @Override
-    public void update(Object event) {
-        throw new RuntimeException("Yo, Unknown Event Type... This is NOT your hood, men!");
-    }
+//TODO : dec
+//    @Override
+//    public void update(Object event) {
+//        throw new RuntimeException("Yo, Unknown Event Type... This is NOT your hood, men!");
+//    }
 
 
     @Override
@@ -127,6 +132,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         else {
             preGameLobby.setNumberOfPlayers(2);
+
         }
 
     }

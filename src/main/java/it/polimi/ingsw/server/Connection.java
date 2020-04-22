@@ -27,15 +27,15 @@ public class Connection implements Runnable {
     // ======================================================================================
 
 
-    public Connection(Integer connectionID, Socket socket) {
+    public Connection(Integer connectionID, Socket socket, VirtualView receiver) {
         this.active = true;
 
         this.connectionID = connectionID;
         this.socket = socket;
+        this.receiver = receiver;
 
         try {
             input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            System.out.println("sto inizializzando output");
             output = new ObjectOutputStream(socket.getOutputStream());
         }
         catch (Exception e){
@@ -53,13 +53,14 @@ public class Connection implements Runnable {
 
         try {
 
-
-
             while(getActive()) {
                 ClientToServerEvent event = (ClientToServerEvent)input.readObject();
                 receiver.update(event);
             }
 
+        }
+        catch (EOFException e) {
+            System.err.println("The socket with ID : " + connectionID + " has been disconnected!");
         }
         catch(IOException | ClassNotFoundException e ) {
             System.err.println("SOCKET exception: disconnecting " + connectionID);
@@ -76,7 +77,7 @@ public class Connection implements Runnable {
     private void close() {
         //TODO : change system.out.print
         closeConnection();
-        System.out.println("Closed!");
+        System.out.println("The socket of ID : " + connectionID + " is closed!");
     }
 
 
@@ -99,7 +100,6 @@ public class Connection implements Runnable {
     public void sendEvent(ServerToClientEvent event) {
 
         try {
-            System.out.println(output);
             output.writeObject(event);
             output.flush();
         }

@@ -84,7 +84,7 @@ public class Server {
                     id = randomGen.nextInt(69420);
                 } while(!VirtualView.isValidID(id));
 
-                Connection connection = new Connection(id, socket);
+                Connection connection = new Connection(id, socket, controller.getVirtualView());
 
                 VirtualView.newConnection(id, connection);
 

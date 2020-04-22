@@ -21,7 +21,7 @@ class PreGameLobbyTest {
     @BeforeEach
     void setUp() {
 
-        //preGameLobby = new PreGameLobby();
+        preGameLobby = new PreGameLobby();
 
         nicknames = new ArrayList<>();
         nicknames.add("Alfonso");
@@ -106,7 +106,7 @@ class PreGameLobbyTest {
     void addCard() {
     }
 
-/*
+
     @Test
     void isCardAvailable() {
 
@@ -155,7 +155,7 @@ class PreGameLobbyTest {
 
     }
 
-  */
+
 
 
     @Test

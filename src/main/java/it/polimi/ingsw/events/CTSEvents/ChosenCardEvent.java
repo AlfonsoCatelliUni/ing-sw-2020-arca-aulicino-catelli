@@ -2,6 +2,7 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
+import it.polimi.ingsw.model.Player.Card;
 
 public class ChosenCardEvent extends ClientToServerEvent {
 
@@ -9,13 +10,13 @@ public class ChosenCardEvent extends ClientToServerEvent {
     public String playerNickname;
 
 
-    public String card;
+    public Card card;
 
 
     // ======================================================================================
 
 
-    public ChosenCardEvent(String playerNickname, String card) {
+    public ChosenCardEvent(String playerNickname, Card card) {
         this.playerNickname = playerNickname;
         this.card = card;
     }

@@ -6,6 +6,7 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Board.Building;
+import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.Player;
@@ -155,6 +156,32 @@ public class Controller implements Observer, ClientToServerManager {
             // writing the cards info into the Json
             cellObj.put("name", c.getName());
             cellObj.put("effect", c.getEffect());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonPlayersInfo(List<String> players,
+                                        List<Color> colors,
+                                        List<Card> cards) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for(int i = 0; i < players.size(); i++) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cards info into the Json
+            cellObj.put("nickname", players.get(i));
+            cellObj.put("color", colors.get(i).toString());
+            cellObj.put("card", cards.get(i).getName());
+            cellObj.put("effect", cards.get(i).getEffect());
 
             jsonList.add(cellObj);
         }

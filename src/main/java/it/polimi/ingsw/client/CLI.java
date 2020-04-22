@@ -254,18 +254,7 @@ public class CLI implements ServerToClientManager {
 
 
     @Override
-    public void manageEvent(InvalidChosenActionEvent event) {
-
-    }
-
-
-    @Override
-    public void manageEvent(InvalidChosenCellEvent event) {
-
-    }
-
-    @Override
-    public void manageEvent(InvalidChosenCardEvent event) {
+    public void manageEvent(GivePossibleBuildingsEvent event) {
 
     }
 

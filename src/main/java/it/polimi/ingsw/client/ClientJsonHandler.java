@@ -110,4 +110,29 @@ public class ClientJsonHandler {
     }
 
 
+
+    public static List<FormattedPlayerInfo> generatePlayersList(String playersString) {
+
+        List<FormattedPlayerInfo> players = new ArrayList<>();
+        JsonArray playersJson = parser.parse(playersString).getAsJsonArray();
+
+        for(int i = 0; i < playersJson.size(); i++){
+            FormattedPlayerInfo player = generateSinglePlayer(playersJson.get(i).getAsJsonObject());
+            players.add(player);
+        }
+
+        return players;
+    }
+
+    private static FormattedPlayerInfo generateSinglePlayer(JsonObject playerJson) {
+
+        String nickname = playerJson.get("nickname").getAsString();
+        String color = playerJson.get("color").getAsString();
+        String card = playerJson.get("card").getAsString();
+        String effect = playerJson.get("effect").getAsString();
+
+        return FormattedPlayerInfo.create(nickname, color, Couple.create(card, effect));
+    }
+
+
 }

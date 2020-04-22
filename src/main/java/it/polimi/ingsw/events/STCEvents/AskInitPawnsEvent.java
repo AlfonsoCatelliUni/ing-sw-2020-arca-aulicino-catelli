@@ -3,6 +3,8 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
+import java.awt.*;
+
 public class AskInitPawnsEvent extends ServerToClientEvent {
 
 
@@ -10,13 +12,16 @@ public class AskInitPawnsEvent extends ServerToClientEvent {
 
     public boolean isValid;
 
+    public String info;
+
 
     // ======================================================================================
 
 
-    public AskInitPawnsEvent(String nickname, boolean isValid) {
+    public AskInitPawnsEvent(String nickname, boolean isValid, String info) {
         this.nickname = nickname;
         this.isValid = isValid;
+        this.info = info;
     }
 
     // ======================================================================================

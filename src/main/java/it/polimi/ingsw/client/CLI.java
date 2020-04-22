@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.client.ClientView;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI implements ServerToClientManager {
@@ -221,7 +222,9 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
-        
+
+        //List<Couple<Integer, Integer>> occupiedCells = ClientJsonHandler.generateCellsList(event.info);
+
     }
 
 
@@ -251,20 +254,13 @@ public class CLI implements ServerToClientManager {
 
     }
 
-
     @Override
-    public void manageEvent(InvalidChosenActionEvent event) {
-
-    }
-
-
-    @Override
-    public void manageEvent(InvalidChosenCellEvent event) {
+    public void manageEvent(GivePossibleBuildingsEvent event) {
 
     }
 
     @Override
-    public void manageEvent(InvalidChosenCardEvent event) {
+    public void manageEvent(StartGameEvent event) {
 
     }
 

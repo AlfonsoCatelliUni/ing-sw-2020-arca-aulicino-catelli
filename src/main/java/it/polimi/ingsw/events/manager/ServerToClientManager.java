@@ -49,6 +49,7 @@ public interface ServerToClientManager {
     void manageEvent(GivePossibleBuildingsEvent event);
 
 
+    void manageEvent(StartGameEvent event);
 
     void manageEvent(LosingByNoActionEvent event);
 

@@ -11,13 +11,13 @@ public class InvalidChosenCardEvent extends ServerToClientEvent {
     public String receiverNickname;
 
 
-    public List<Card> cards;
+    public List<String> cards;
 
 
     // ======================================================================================
 
 
-    public InvalidChosenCardEvent(String receiverNickname, List<Card> cards) {
+    public InvalidChosenCardEvent(String receiverNickname, List<String> cards) {
         this.receiverNickname = receiverNickname;
         this.cards = cards;
     }

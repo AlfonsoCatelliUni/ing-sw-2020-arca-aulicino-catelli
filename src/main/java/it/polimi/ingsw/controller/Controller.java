@@ -227,14 +227,14 @@ public class Controller implements Observer, ClientToServerManager {
             if (index < preGameLobby.getNumberOfPlayers() - 1) {
                 String nextPlayer = preGameLobby.getConnectedPlayers().get(index);
 
-                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer, preGameLobby.getPickedCards()));
+                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer, preGameLobby.getPickedCardsNames()));
 
             } else
                 //inviare richiesta inizializzazione pawn al primo giocatore
                 virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(0)) );
         }
         else {
-            virtualView.sendMessageTo(event.playerNickname, new InvalidChosenCardEvent(event.playerNickname, preGameLobby.getPickedCards()));
+            virtualView.sendMessageTo(event.playerNickname, new InvalidChosenCardEvent(event.playerNickname, preGameLobby.getPickedCardsNames()));
         }
 
 

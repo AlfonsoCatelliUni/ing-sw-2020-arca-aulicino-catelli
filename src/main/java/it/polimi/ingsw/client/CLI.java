@@ -227,8 +227,6 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
-        System.out.println(event.receiverNickname);
-        System.out.println(event.cards.get(0).getName());
 
         System.out.println(event.receiverNickname);
         System.out.println(event.cards.get(0));

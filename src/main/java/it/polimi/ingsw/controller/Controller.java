@@ -51,11 +51,14 @@ public class Controller implements Observer, ClientToServerManager {
 
     // ======================================================================================
 
-//TODO : dec
-//    @Override
-//    public void update(Object event) {
-//        throw new RuntimeException("Yo, Unknown Event Type... This is NOT your hood, men!");
-//    }
+    //TODO : dec
+    /*
+    @Override
+    public void update(Object event) {
+        throw new RuntimeException("Yo, Unknown Event Type... This is NOT your hood, men!");
+    }
+
+     */
 
 
     @Override
@@ -82,9 +85,11 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(NewConnectionEvent event) {
 
-        Integer ID = event.getID();
+        //Integer ID = event.getID();
+        Integer ID = event.ID;
 
-        String nickname = event.getNickname();
+        //String nickname = event.getNickname();
+        String nickname = event.nickname;
 
         Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);
 
@@ -96,7 +101,7 @@ public class Controller implements Observer, ClientToServerManager {
             List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
 
             if(connectedPlayers.size() == 1) {
-                virtualView.sendMessageTo(nickname, new FirstConnectedEvent());
+                virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
             }
             else {
                 virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers));
@@ -121,14 +126,16 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenPlayerNumberEvent event) {
 
-        //String nickname = event.getNickname();
+        String nickname = event.nickname;
 
         Integer numberOfPlayers = event.getNumber();
+
+        List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
 
         if(numberOfPlayers == 2 || numberOfPlayers == 3) {
             preGameLobby.setNumberOfPlayers(numberOfPlayers);
 
-            //virtualView.sendMessageTo(nickname, new );
+            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers));
         }
         else {
             preGameLobby.setNumberOfPlayers(2);

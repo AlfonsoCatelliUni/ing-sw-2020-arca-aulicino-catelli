@@ -6,13 +6,13 @@ import it.polimi.ingsw.model.Actions.Action;
 
 import java.util.List;
 
-public class InvalidChosenActionEvent implements ServerToClientEvent {
+public class InvalidChosenActionEvent extends ServerToClientEvent {
 
 
-    private String nickname;
+    public String nickname;
 
 
-    private List<Action> possibleActions;
+    public List<Action> possibleActions;
 
 
     // ======================================================================================

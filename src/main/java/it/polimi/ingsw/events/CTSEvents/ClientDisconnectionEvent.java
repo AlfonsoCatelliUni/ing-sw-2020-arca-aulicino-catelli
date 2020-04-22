@@ -5,7 +5,7 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 
 import java.io.Serializable;
 
-public class ClientDisconnectionEvent implements ClientToServerEvent, Serializable {
+public class ClientDisconnectionEvent extends ClientToServerEvent {
 
 
     private String playerNickname;

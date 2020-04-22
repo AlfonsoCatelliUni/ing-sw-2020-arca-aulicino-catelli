@@ -2,8 +2,10 @@ package it.polimi.ingsw.events;
 
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-public interface ServerToClientEvent {
+import java.io.Serializable;
 
-    void accept(ServerToClientManager visitor);
+public abstract class ServerToClientEvent implements Serializable {
+
+    public abstract void accept(ServerToClientManager visitor);
 
 }

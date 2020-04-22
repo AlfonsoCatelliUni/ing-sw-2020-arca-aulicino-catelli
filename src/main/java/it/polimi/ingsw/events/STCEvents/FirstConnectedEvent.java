@@ -5,7 +5,15 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 import java.io.Serializable;
 
-public class FirstConnectedEvent implements ServerToClientEvent, Serializable {
+public class FirstConnectedEvent extends ServerToClientEvent {
+
+
+    public String nickname;
+
+
+    public FirstConnectedEvent(String nickname) {
+        this.nickname = nickname;
+    }
 
 
     @Override

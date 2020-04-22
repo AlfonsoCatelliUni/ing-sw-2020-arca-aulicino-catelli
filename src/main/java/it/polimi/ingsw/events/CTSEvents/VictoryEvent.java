@@ -4,7 +4,7 @@ import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
 
-public class VictoryEvent implements ClientToServerEvent {
+public class VictoryEvent extends ClientToServerEvent {
 
 
     private String winnerNickname;

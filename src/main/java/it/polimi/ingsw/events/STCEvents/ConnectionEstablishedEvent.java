@@ -5,7 +5,7 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 import java.io.Serializable;
 
-public class ConnectionEstablishedEvent implements ServerToClientEvent, Serializable {
+public class ConnectionEstablishedEvent extends ServerToClientEvent {
 
     private Integer ID;
 

@@ -6,9 +6,6 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.SQLOutput;
-import java.util.Scanner;
-import java.util.logging.Level;
 
 public class Connection implements Runnable {
 

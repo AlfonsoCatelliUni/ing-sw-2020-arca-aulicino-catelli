@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Actions.Action;
 
 import java.util.List;
 
-public class GivePossibleActionsEvent implements ServerToClientEvent {
+public class GivePossibleActionsEvent extends ServerToClientEvent {
 
 
     private String receiverNickname;

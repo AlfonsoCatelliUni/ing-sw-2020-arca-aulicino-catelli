@@ -3,15 +3,12 @@ package it.polimi.ingsw.events.CTSEvents;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
-import java.io.Serializable;
-
-public class NewConnectionEvent implements ClientToServerEvent, Serializable {
+public class NewConnectionEvent extends ClientToServerEvent {
 
 
-    private Integer ID;
+    public Integer ID;
 
-
-    private String nickname;
+    public String nickname;
 
 
     // ======================================================================================

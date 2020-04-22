@@ -5,20 +5,21 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 
 import java.io.Serializable;
 
-public class ChosenPlayerNumberEvent implements ClientToServerEvent, Serializable {
+public class ChosenPlayerNumberEvent extends ClientToServerEvent {
 
 
-    //private String nickname;
+    public String nickname;
 
 
-    private Integer number;
+    public Integer number;
 
 
     // ======================================================================================
 
 
-    public ChosenPlayerNumberEvent(Integer number) {
+    public ChosenPlayerNumberEvent(String nickname, Integer number) {
         this.number = number;
+        this.nickname = nickname;
     }
 
 
@@ -29,11 +30,6 @@ public class ChosenPlayerNumberEvent implements ClientToServerEvent, Serializabl
     public void accept(ClientToServerManager visitor) {
         visitor.manageEvent(this);
     }
-
-
-//    public String getNickname() {
-//        return this.nickname;
-//    }
 
 
     public Integer getNumber() {

@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Player.Card;
 
 import java.util.List;
 
-public class GivePossibleCardsEvent implements ServerToClientEvent {
+public class GivePossibleCardsEvent extends ServerToClientEvent {
 
 
     private String receiverNickname;

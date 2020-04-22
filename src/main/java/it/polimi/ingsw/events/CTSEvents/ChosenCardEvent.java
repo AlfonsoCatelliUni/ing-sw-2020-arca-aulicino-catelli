@@ -3,7 +3,7 @@ package it.polimi.ingsw.events.CTSEvents;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
-public class ChosenCardEvent implements ClientToServerEvent {
+public class ChosenCardEvent extends ClientToServerEvent {
 
 
     private String playerNickname;

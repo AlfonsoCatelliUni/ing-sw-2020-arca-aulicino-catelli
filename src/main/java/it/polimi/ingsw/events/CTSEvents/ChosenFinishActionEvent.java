@@ -4,7 +4,7 @@ import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.Action;
 
-public class ChosenFinishActionEvent implements ClientToServerEvent {
+public class ChosenFinishActionEvent extends ClientToServerEvent {
 
 
     private String playerNickname;

@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.List;
 
-public class InvalidChosenCellEvent implements ServerToClientEvent {
+public class InvalidChosenCellEvent extends ServerToClientEvent {
 
 
     private String nickname;

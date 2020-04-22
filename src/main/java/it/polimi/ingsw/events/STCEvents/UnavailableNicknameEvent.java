@@ -5,7 +5,7 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 import java.io.Serializable;
 
-public class UnavailableNicknameEvent implements ServerToClientEvent, Serializable {
+public class UnavailableNicknameEvent extends ServerToClientEvent {
 
 
     @Override

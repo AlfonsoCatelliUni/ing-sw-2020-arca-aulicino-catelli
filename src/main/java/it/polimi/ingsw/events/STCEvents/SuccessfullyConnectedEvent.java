@@ -6,10 +6,10 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 import java.io.Serializable;
 import java.util.List;
 
-public class SuccessfullyConnectedEvent implements ServerToClientEvent, Serializable {
+public class SuccessfullyConnectedEvent extends ServerToClientEvent {
 
 
-    private List<String> connectedPlayers;
+    public List<String> connectedPlayers;
 
 
     // ======================================================================================

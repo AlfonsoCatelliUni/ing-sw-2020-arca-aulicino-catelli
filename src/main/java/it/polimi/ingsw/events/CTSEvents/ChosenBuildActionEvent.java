@@ -4,7 +4,9 @@ import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.Action;
 
-public class ChosenBuildActionEvent implements ClientToServerEvent {
+import java.io.Serializable;
+
+public class ChosenBuildActionEvent extends ClientToServerEvent {
 
 
     private String playerNickname;

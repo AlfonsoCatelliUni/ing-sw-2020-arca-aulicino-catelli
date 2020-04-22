@@ -3,7 +3,7 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-public class LosingByNoActionEvent implements ServerToClientEvent {
+public class LosingByNoActionEvent extends ServerToClientEvent {
 
 
     private String nickname;

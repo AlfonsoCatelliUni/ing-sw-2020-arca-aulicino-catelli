@@ -6,7 +6,7 @@ import it.polimi.ingsw.model.Board.Cell;
 
 import java.util.List;
 
-public class GivePossibleCellsToMoveEvent implements ServerToClientEvent {
+public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
 
 
     private String receiverNickname;

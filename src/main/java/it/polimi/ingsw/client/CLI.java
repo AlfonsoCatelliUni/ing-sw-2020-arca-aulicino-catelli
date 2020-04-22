@@ -18,11 +18,12 @@ public class CLI implements ServerToClientManager {
     private String ipAddress;
     private final int port;
 
-
     private final Scanner input;
 
 
     private ClientView clientView;
+
+    private String nickname;
 
 
     // ======================================================================================
@@ -32,7 +33,9 @@ public class CLI implements ServerToClientManager {
         this.ipAddress = "127.0.0.1";
         this.port = 6969;
 
-        input = new Scanner(System.in);
+        this.input = new Scanner(System.in);
+
+        this.nickname = "";
 
     }
 
@@ -120,11 +123,14 @@ public class CLI implements ServerToClientManager {
         }
 
         clientView.sendCTSEvent( new NewConnectionEvent(event.getID(), nickname));
+
     }
 
 
     @Override
     public void manageEvent(FirstConnectedEvent event) {
+
+        this.nickname = event.nickname;
 
         System.out.print("Do you want a 2 or 3 players game ? ");
         int playersNumber = Integer.parseInt(input.nextLine());
@@ -154,14 +160,14 @@ public class CLI implements ServerToClientManager {
             playersNumber = Integer.parseInt(input.nextLine());
         }
 
-        clientView.sendCTSEvent( new ChosenPlayerNumberEvent(playersNumber));
+        clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, playersNumber));
     }
 
 
     @Override
     public void manageEvent(SuccessfullyConnectedEvent event) {
 
-        for (String nickname : event.getConnectedPlayers() ) {
+        for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
 

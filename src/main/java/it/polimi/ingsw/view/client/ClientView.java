@@ -57,7 +57,7 @@ public class ClientView implements Runnable {
 
         }
         catch (Exception e){
-            System.err.println("Error while receiving new Question object through SOCKET");
+            System.err.println("There's an error while receiving a ServerToClientEvent, please fix me!");
             e.printStackTrace();
             userManager.receiveEvent(new DisconnectionEvent());
         }

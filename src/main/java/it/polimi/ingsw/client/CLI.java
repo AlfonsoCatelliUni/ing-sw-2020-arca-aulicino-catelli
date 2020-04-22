@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.events.CTSEvents.ChosenCardEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenPlayerNumberEvent;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.STCEvents.*;
@@ -232,8 +233,26 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
+        Integer choiceNum;
+
         System.out.println(event.receiverNickname);
-        System.out.println(event.cards.get(0));
+        List<Couple<String, String>> cards = ClientJsonHandler.generateCardsList(event.info);
+
+        for(int i = 0; i < cards.size(); i++){
+            System.out.println( i+")\tGod Name : "+cards.get(i).getFirst()+"\n\tGod Effect : "+cards.get(i).getSecond());
+        }
+
+        System.out.print("\nInsert the number to choose your God : ");
+        choiceNum = Integer.parseInt(input.nextLine());
+
+        while (choiceNum > cards.size() || choiceNum < 0) {
+            System.out.println("Invalid choice!");
+            System.out.print("Insert the number to choose your God : ");
+            choiceNum = Integer.parseInt(input.nextLine());
+        }
+
+        //TODO : da un errore OEFException
+        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
 
     }
 

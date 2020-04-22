@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.events.STCEvents.ClosedWaitingRoomEvent;
 import it.polimi.ingsw.model.Player.*;
 import it.polimi.ingsw.model.Player.Effect.*;

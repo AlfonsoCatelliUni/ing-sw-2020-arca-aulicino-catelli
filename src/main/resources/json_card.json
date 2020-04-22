@@ -1,85 +1,71 @@
 [
     {
       "name": "Apollo",
-      "available2P": true,
       "available3P": true,
-      "effect": "apolloEffect"
+      "effect": "Your Move : Your Worker may move into an opponent Worker's space (using normal movement rules) and force theri Worker to the space yours just vacated (swapping their positions)."
     },
     {
       "name": "Artemis",
-      "available2P": true,
       "available3P": true,
       "effect": "artemisEffect"
     },
     {
       "name": "Athena",
-      "available2P": true,
       "available3P": true,
       "effect": "athenaEffect"
     },
     {
       "name": "Atlas",
-      "available2P": true,
       "available3P": true,
       "effect": "atlasEffect"
     },
     {
       "name": "Demeter",
-      "available2P": true,
       "available3P": true,
       "effect": "demeterEffect"
     },
     {
       "name": "Hephaestus",
-      "available2P": true,
       "available3P": true,
       "effect": "hephaestusEffect"
     },
     {
       "name": "Minotaur",
-      "available2P": true,
       "available3P": true,
       "effect": "minotaurEffect"
     },
     {
       "name": "Pan",
-      "available2P": true,
       "available3P": true,
       "effect": "panEffect"
     },
     {
     "name": "Prometheus",
-    "available2P": true,
     "available3P": true,
     "effect": "prometheusEffect"
     },
   {
     "name": "Ares",
-    "available2P": true,
     "available3P": true,
     "effect": "aresEffect"
   },
   {
     "name": "Charon",
-    "available2P": true,
     "available3P": true,
     "effect": "charonEffect"
   },
   {
     "name": "Hestia",
-    "available2P": true,
     "available3P": true,
     "effect": "hestiaEffect"
   },
   {
     "name": "Triton",
-    "available2P": true,
     "available3P": true,
     "effect": "tritonEffect"
   },
   {
     "name": "Zeus",
-    "available2P": true,
     "available3P": true,
     "effect": "zeusEffect"
   }

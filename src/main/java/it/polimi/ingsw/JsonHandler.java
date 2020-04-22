@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.Player.Card;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 public class JsonHandler {
 
@@ -27,8 +28,8 @@ public class JsonHandler {
     // ======================================================================================
 
 
-    public static ArrayList<Building> deserializeBuildingList() {
-        ArrayList<Building> buildings = new ArrayList<>();
+    public static List<Building> deserializeBuildingList() {
+        List<Building> buildings = new ArrayList<>();
 
         JsonArray buildingsJson = myJsonParser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(buildingPath)))).getAsJsonArray();
 
@@ -50,8 +51,8 @@ public class JsonHandler {
     }
 
 
-    public static ArrayList<Card> deserializeCardList() {
-        ArrayList<Card> cards = new ArrayList<>();
+    public static List<Card> deserializeCardList() {
+        List<Card> cards = new ArrayList<>();
 
         JsonArray cardsJson = myJsonParser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(cardPath)))).getAsJsonArray();
 
@@ -67,7 +68,6 @@ public class JsonHandler {
     private static Card deserializeCard(JsonObject buildingJson) {
 
         String name = buildingJson.get("name").getAsString();
-        boolean available2P = buildingJson.get("available2P").getAsBoolean();
         boolean available3P = buildingJson.get("available3P").getAsBoolean();
         String effect = buildingJson.get("effect").getAsString();
 

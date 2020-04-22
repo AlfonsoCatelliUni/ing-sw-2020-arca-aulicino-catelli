@@ -65,7 +65,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public PreGameLobby(VirtualView virtualView) {
+    public PreGameLobby() {
 
         this.numberOfPlayers = -1;
         this.closed = false;
@@ -149,7 +149,7 @@ public class PreGameLobby {
             }
         }, 120000); // 2 minutes timer
 
-        if (playersNicknames.size() == MAXPLAYERS)
+        if (playersNicknames.size() == numberOfPlayers)
             closeWaitingRoom();
 
     }

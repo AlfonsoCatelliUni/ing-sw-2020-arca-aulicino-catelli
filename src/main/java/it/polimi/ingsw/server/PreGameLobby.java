@@ -65,7 +65,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public PreGameLobby(VirtualView virtualView) {
+    public PreGameLobby() {
 
         this.numberOfPlayers = -1;
         this.closed = false;

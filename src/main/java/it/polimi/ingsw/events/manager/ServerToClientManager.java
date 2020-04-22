@@ -32,6 +32,8 @@ public interface ServerToClientManager {
 
     void manageEvent(AskNewNicknameEvent event);
 
+    void manageEvent(AskInitPawnsEvent event);
+
     void manageEvent(UnavailableNicknameEvent event);
 
     void manageEvent(GivePossibleCardsEvent event);
@@ -49,6 +51,8 @@ public interface ServerToClientManager {
     void manageEvent(InvalidChosenActionEvent event);
 
     void manageEvent(InvalidChosenCellEvent event);
+
+    void manageEvent(InvalidChosenCardEvent event);
 
 
 

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.events.CTSEvents.ClientDisconnectionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -56,11 +57,8 @@ public class Connection implements Runnable {
             }
 
         }
-        catch (EOFException e) {
-            System.err.println("The socket with ID : " + connectionID + " has been disconnected!");
-        }
         catch(IOException | ClassNotFoundException e ) {
-            System.err.println("SOCKET exception: disconnecting " + connectionID);
+            System.err.println("The socket with ID : " + connectionID + " has been disconnected!");
             e.printStackTrace();
         }
         finally {
@@ -72,16 +70,13 @@ public class Connection implements Runnable {
 
 
     private void close() {
-        //TODO : change system.out.print
         closeConnection();
+        receiver.update(new ClientDisconnectionEvent(connectionID));
         System.out.println("The socket of ID : " + connectionID + " is closed!");
     }
 
 
     public synchronized void closeConnection() {
-
-        //TODO : sendEvent( DisconnectionEvent )
-        //send("Connection closed from the server side");
 
         try {
             socket.close();

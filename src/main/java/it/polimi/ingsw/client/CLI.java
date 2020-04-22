@@ -175,6 +175,12 @@ public class CLI implements ServerToClientManager {
 
 
     @Override
+    public void manageEvent(UnavailableNicknameEvent event) {
+
+    }
+
+
+    @Override
     public void manageEvent(NotifyStatusEvent event) {
 
     }
@@ -188,17 +194,28 @@ public class CLI implements ServerToClientManager {
     }
 
 
+    @Override
+    public void manageEvent(UnableToEnterWaitingRoomEvent event) {
+        System.out.println("---THE WAITING ROOM IS FILLED!---");
+        System.out.println();
+        System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
+        this.clientView = null;
+        System.exit(0);
+    }
+
+
+
     // ======================================================================================
 
 
     @Override
-    public void manageEvent(AskNewNicknameEvent event) {
-
+    public void manageEvent(ClosedWaitingRoomEvent event) {
+        System.out.println("THE WAITING ROOM IS NOW CLOSED!");
     }
 
 
     @Override
-    public void manageEvent(UnavailableNicknameEvent event) {
+    public void manageEvent(AskNewNicknameEvent event) {
 
     }
 

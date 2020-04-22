@@ -106,6 +106,29 @@ public class VirtualView extends Observable implements Observer {
     }
 
 
+    public String removeNicknameIDConnection(Integer ID) {
+
+        String nickname = "";
+
+        try{
+            for(String key : nicknameMap.keySet()) {
+                if(nicknameMap.get(key).equals(ID)){
+                    nickname = key;
+                    nicknameMap.remove(key);
+                    connectionMap.remove(ID);
+                    break;
+                }
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return nickname;
+    }
+
+
 
 
 }

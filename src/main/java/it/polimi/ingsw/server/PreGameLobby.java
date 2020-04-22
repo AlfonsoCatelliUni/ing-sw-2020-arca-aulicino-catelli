@@ -1,8 +1,11 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.events.STCEvents.ClosedWaitingRoomEvent;
 import it.polimi.ingsw.model.Player.*;
 import it.polimi.ingsw.model.Player.Effect.*;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.view.server.VirtualView;
 
 import java.awt.*;
 import java.util.*;
@@ -12,6 +15,8 @@ public class PreGameLobby {
 
 
     private int numberOfPlayers;
+
+    private Boolean closed;
 
 
     /**
@@ -60,7 +65,10 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public PreGameLobby() {
+    public PreGameLobby(VirtualView virtualView) {
+
+        this.numberOfPlayers = -1;
+        this.closed = false;
 
         this.playersNicknames = new ArrayList<>();
         this.effectsClassMap = new HashMap<>();
@@ -76,8 +84,18 @@ public class PreGameLobby {
     // ======================================================================================
 
 
+    public Boolean getClosed() {
+        return this.closed;
+    }
+
+
     public List<String> getConnectedPlayers() {
         return this.playersNicknames;
+    }
+
+
+    public int getNumberOfPlayers() {
+        return this.numberOfPlayers;
     }
 
 
@@ -123,6 +141,13 @@ public class PreGameLobby {
         }
 
         playersNicknames.add(nickname);
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                closeWaitingRoom();
+            }
+        }, 120000); // 2 minutes timer
 
         if (playersNicknames.size() == MAXPLAYERS)
             closeWaitingRoom();
@@ -221,7 +246,7 @@ public class PreGameLobby {
     }
 
 
-    protected void fillGodsDeck(List<Card> cards) {
+    protected void pickCards(List<Card> cards) {
 
         int cardsQuantity = playersNicknames.size();
         Random random = new Random();
@@ -245,13 +270,35 @@ public class PreGameLobby {
 
 
     private void closeWaitingRoom() {
-        fillGodsDeck(allCards);
+        this.closed = true;
+
+        pickCards(allCards);
     }
 
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
     }
+
+
+    public boolean deletePlayerInformation(String nickname) {
+
+        try {
+            playersNicknames.removeIf(n -> n.equals(nickname));
+
+            playerCardMap.remove(nickname);
+            playerPawnPoints.remove(nickname);
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+
+        return true;
+    }
+
 
 
     // ONLY USED FOR TESTING

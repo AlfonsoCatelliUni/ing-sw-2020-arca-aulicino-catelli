@@ -22,10 +22,13 @@ public interface ServerToClientManager {
 
     void manageEvent(DisconnectionEvent event);
 
+    void manageEvent(UnableToEnterWaitingRoomEvent event);
+
 
     // ======================================================================================
     // MARK : Game Based Events
 
+    void manageEvent(ClosedWaitingRoomEvent event);
 
     void manageEvent(AskNewNicknameEvent event);
 

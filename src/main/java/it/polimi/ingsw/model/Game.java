@@ -579,6 +579,13 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    //TODO : fare tearDownGame
+    public boolean tearDownGame() {
+
+        return true;
+    }
+
+
     // MARK : Testing Methods ======================================================================================
 
 

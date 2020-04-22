@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class UnavailableNicknameEvent extends ServerToClientEvent {
 
 
+    public Integer ID;
+
     @Override
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);

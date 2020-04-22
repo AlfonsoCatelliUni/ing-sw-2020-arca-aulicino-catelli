@@ -128,7 +128,8 @@ public class Controller implements Observer, ClientToServerManager {
 
         String nickname = event.nickname;
 
-        Integer numberOfPlayers = event.getNumber();
+        //Integer numberOfPlayers = event.getNumber();
+        Integer numberOfPlayers = event.number;
 
         List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
 
@@ -151,11 +152,11 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenInitialPawnCellEvent event) {
 
-        Boolean isSpotFree = preGameLobby.isSpotFree(event.getPawnRow(), event.getPawnColumn());
+        Boolean isSpotFree = preGameLobby.isSpotFree(event.pawnRow, event.pawnColumn);
 
         /* before I control that the selected spot is really free */
         if(isSpotFree) {
-            preGameLobby.addNewPawnCoordinates(event.getPlayerNickname(), event.getPawnRow(), event.getPawnColumn());
+            preGameLobby.addNewPawnCoordinates(event.playerNickname, event.pawnRow, event.pawnColumn);
         }
         else {
             //TODO : mandare messaggio di inserimento del nome del giocatore
@@ -169,10 +170,10 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenCardEvent event) {
 
-        Boolean isCardAvailable = preGameLobby.isCardAvailable(event.getCard());
+        Boolean isCardAvailable = preGameLobby.isCardAvailable(event.card);
 
         if(isCardAvailable) {
-            preGameLobby.addCard(event.getPlayerNickname(), event.getCard());
+            preGameLobby.addCard(event.playerNickname, event.card);
         }
         else {
             //TODO : mandare messaggio
@@ -194,12 +195,12 @@ public class Controller implements Observer, ClientToServerManager {
 //                break;
 //            }
 //        }
-        String nickname = event.getPlayerNickname();
+        String nickname = event.playerNickname;
 
-        Action chosenAction = event.getAction();
+        Action chosenAction = event.action;
 
-        int row = event.getPawnRow();
-        int column = event.getPawnColumn();
+        int row = event.pawnRow;
+        int column = event.pawnColumn;
 
 
         if( game.isValid(chosenAction) ) {
@@ -220,12 +221,11 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenBuildActionEvent event) {
 
-        String nickname = event.getPlayerNickname();
+        String nickname = event.playerNickname;
 
-        Action chosenAction = event.getAction();
-
-        int row = event.getPawnRow();
-        int column = event.getPawnColumn();
+        Action chosenAction = event.action;
+        int row = event.pawnRow;
+        int column = event.pawnColumn;
 
         //here there's the control to verify that the chosen action is valid
         if( game.isValid(chosenAction) ) {
@@ -248,9 +248,9 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenFinishActionEvent event) {
-        String nickname = event.getPlayerNickname();
+        String nickname = event.playerNickname;
 
-        Action chosenAction = event.getAction();
+        Action chosenAction = event.action;
 
         if( game.isValid(chosenAction) ) {
             //TODO : devo chiamare il next current player
@@ -268,13 +268,13 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenCellToMoveEvent event) {
 
-        String nickname = event.getPlayerNickname();
+        String nickname = event.playerNickname;
 
-        int row = event.getPawnRow();
-        int column = event.getPawnColumn();
+        int row = event.pawnRow;
+        int column = event.pawnColumn;
 
-        int nextRow = event.getNextRow();
-        int nextColumn = event.getNextColumn();
+        int nextRow = event.nextRow;
+        int nextColumn = event.nextColumn;
 
         if(game.isValidCoordinate(row, column)
                 &&  game.isValidCoordinate(nextRow, nextColumn)
@@ -299,13 +299,13 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenCellToBuildEvent event) {
-        String nickname = event.getPlayerNickname();
+        String nickname = event.playerNickname;
 
-        int row = event.getPawnRow();
-        int column = event.getPawnColumn();
+        int row = event.pawnRow;
+        int column = event.pawnColumn;
 
-        int nextRow = event.getNextRow();
-        int nextColumn = event.getNextColumn();
+        int nextRow = event.nextRow;
+        int nextColumn = event.nextColumn;
 
         if(game.isValidCoordinate(row, column)
                 &&  game.isValidCoordinate(nextRow, nextColumn)
@@ -330,7 +330,7 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(VictoryEvent event) {
 
-        Player winnerPlayer = game.getPlayerByName(event.getWinnerNickname());
+        Player winnerPlayer = game.getPlayerByName(event.winnerNickname);
 
 
 

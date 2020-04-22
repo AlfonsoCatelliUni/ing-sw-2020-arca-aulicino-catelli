@@ -9,16 +9,16 @@ import java.io.Serializable;
 public class ChosenBuildActionEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
-    private Action action;
+    public Action action;
 
 
-    private int pawnRow;
+    public int pawnRow;
 
 
-    private int pawnColumn;
+    public int pawnColumn;
 
 
     // ======================================================================================
@@ -45,24 +45,24 @@ public class ChosenBuildActionEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public Action getAction() {
-        return this.action;
-    }
-
-
-    public String getPlayerNickname() {
-        return this.playerNickname;
-    }
-
-
-    public int getPawnRow() {
-        return this.pawnRow;
-    }
-
-
-    public int getPawnColumn() {
-        return this.pawnColumn;
-    }
+//    public Action getAction() {
+//        return this.action;
+//    }
+//
+//
+//    public String getPlayerNickname() {
+//        return this.playerNickname;
+//    }
+//
+//
+//    public int getPawnRow() {
+//        return this.pawnRow;
+//    }
+//
+//
+//    public int getPawnColumn() {
+//        return this.pawnColumn;
+//    }
 
 
 }

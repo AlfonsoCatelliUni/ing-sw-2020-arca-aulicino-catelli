@@ -7,10 +7,10 @@ import it.polimi.ingsw.model.Actions.Action;
 public class ChosenFinishActionEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
-    private Action action;
+    public Action action;
 
 
     // ======================================================================================
@@ -34,14 +34,14 @@ public class ChosenFinishActionEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public Action getAction() {
-        return this.action;
-    }
-
-
-    public String getPlayerNickname() {
-        return this.playerNickname;
-    }
+//    public Action getAction() {
+//        return this.action;
+//    }
+//
+//
+//    public String getPlayerNickname() {
+//        return this.playerNickname;
+//    }
 
 
 }

@@ -6,22 +6,22 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 public class ChosenCellToBuildEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
-    private String actionID;
+    public String actionID;
 
 
-    private int pawnRow;
+    public int pawnRow;
 
-    private int pawnColumn;
+    public int pawnColumn;
 
 
-    private int nextRow;
+    public int nextRow;
 
-    private int nextColumn;
+    public int nextColumn;
 
-    private int chosenLevel;
+    public int chosenLevel;
 
 
     // ======================================================================================
@@ -53,36 +53,36 @@ public class ChosenCellToBuildEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public String getActionID() {
-        return this.actionID;
-    }
-
-
-    public String getPlayerNickname() {
-        return this.playerNickname;
-    }
-
-
-    public int getPawnRow() {
-        return this.pawnRow;
-    }
-
-
-    public int getPawnColumn() {
-        return this.pawnColumn;
-    }
-
-
-    public int getNextRow() {
-        return this.nextRow;
-    }
-
-
-    public int getNextColumn() {
-        return this.nextColumn;
-    }
-
-    public int getChosenLevel() {
-        return this.chosenLevel;
-    }
+//    public String getActionID() {
+//        return this.actionID;
+//    }
+//
+//
+//    public String getPlayerNickname() {
+//        return this.playerNickname;
+//    }
+//
+//
+//    public int getPawnRow() {
+//        return this.pawnRow;
+//    }
+//
+//
+//    public int getPawnColumn() {
+//        return this.pawnColumn;
+//    }
+//
+//
+//    public int getNextRow() {
+//        return this.nextRow;
+//    }
+//
+//
+//    public int getNextColumn() {
+//        return this.nextColumn;
+//    }
+//
+//    public int getChosenLevel() {
+//        return this.chosenLevel;
+//    }
 }

@@ -122,7 +122,7 @@ public class CLI implements ServerToClientManager {
             nickname = input.nextLine();
         }
 
-        clientView.sendCTSEvent( new NewConnectionEvent(event.getID(), nickname));
+        clientView.sendCTSEvent( new NewConnectionEvent(event.ID, nickname));
 
     }
 

@@ -9,10 +9,10 @@ import java.util.List;
 public class GivePossibleActionsEvent extends ServerToClientEvent {
 
 
-    private String receiverNickname;
+    public String receiverNickname;
 
 
-    private List<Action> actions;
+    public List<Action> actions;
 
 
     // ======================================================================================
@@ -36,14 +36,14 @@ public class GivePossibleActionsEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public String getReceiverNickname() {
-        return this.receiverNickname;
-    }
-
-
-    public List<Action> getActions() {
-        return this.actions;
-    }
+//    public String getReceiverNickname() {
+//        return this.receiverNickname;
+//    }
+//
+//
+//    public List<Action> getActions() {
+//        return this.actions;
+//    }
 
 
 }

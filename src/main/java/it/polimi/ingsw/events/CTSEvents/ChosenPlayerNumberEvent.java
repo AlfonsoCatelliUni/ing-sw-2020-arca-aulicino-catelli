@@ -32,9 +32,9 @@ public class ChosenPlayerNumberEvent extends ClientToServerEvent {
     }
 
 
-    public Integer getNumber() {
-        return this.number;
-    }
+//    public Integer getNumber() {
+//        return this.number;
+//    }
 
 
 

@@ -6,7 +6,7 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 public class DisconnectionEvent extends ServerToClientEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
     // ======================================================================================

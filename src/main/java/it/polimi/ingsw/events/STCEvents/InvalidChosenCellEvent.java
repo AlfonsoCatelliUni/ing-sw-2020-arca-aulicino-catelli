@@ -9,10 +9,10 @@ import java.util.List;
 public class InvalidChosenCellEvent extends ServerToClientEvent {
 
 
-    private String nickname;
+    public String nickname;
 
 
-    private List<Cell> availableCells;
+    public List<Cell> availableCells;
 
 
     // ======================================================================================
@@ -33,14 +33,14 @@ public class InvalidChosenCellEvent extends ServerToClientEvent {
     }
 
 
-    public String getNickname() {
-        return this.nickname;
-    }
-
-
-    public List<Cell> getAvailableCells() {
-        return this.availableCells;
-    }
+//    public String getNickname() {
+//        return this.nickname;
+//    }
+//
+//
+//    public List<Cell> getAvailableCells() {
+//        return this.availableCells;
+//    }
 
 
 }

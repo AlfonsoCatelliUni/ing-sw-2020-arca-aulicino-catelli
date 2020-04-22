@@ -7,7 +7,7 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 public class VictoryEvent extends ClientToServerEvent {
 
 
-    private String winnerNickname;
+    public String winnerNickname;
 
 
     // ======================================================================================
@@ -27,9 +27,9 @@ public class VictoryEvent extends ClientToServerEvent {
     }
 
 
-    public String getWinnerNickname() {
-        return this.winnerNickname;
-    }
+//    public String getWinnerNickname() {
+//        return this.winnerNickname;
+//    }
 
 
 }

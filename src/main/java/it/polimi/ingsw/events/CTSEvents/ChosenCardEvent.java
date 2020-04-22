@@ -6,10 +6,10 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 public class ChosenCardEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
-    private String card;
+    public String card;
 
 
     // ======================================================================================
@@ -33,14 +33,14 @@ public class ChosenCardEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public String getCard() {
-        return this.card;
-    }
-
-
-    public String getPlayerNickname() {
-        return this.playerNickname;
-    }
+//    public String getCard() {
+//        return this.card;
+//    }
+//
+//
+//    public String getPlayerNickname() {
+//        return this.playerNickname;
+//    }
 
 
 }

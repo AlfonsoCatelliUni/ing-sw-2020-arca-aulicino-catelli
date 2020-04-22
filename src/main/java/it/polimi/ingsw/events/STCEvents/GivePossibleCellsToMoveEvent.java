@@ -9,13 +9,13 @@ import java.util.List;
 public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
 
 
-    private String receiverNickname;
+    public String receiverNickname;
 
 
-    private List<Cell> cellsAvailableToMove;
+    public List<Cell> cellsAvailableToMove;
 
 
-    private String actionID;
+    public String actionID;
 
 
     // ======================================================================================
@@ -41,14 +41,14 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public String getReceiverNickname() {
-        return this.receiverNickname;
-    }
-
-
-    public List<Cell> getCellsAvailableToMove() {
-        return this.cellsAvailableToMove;
-    }
+//    public String getReceiverNickname() {
+//        return this.receiverNickname;
+//    }
+//
+//
+//    public List<Cell> getCellsAvailableToMove() {
+//        return this.cellsAvailableToMove;
+//    }
 
 
 }

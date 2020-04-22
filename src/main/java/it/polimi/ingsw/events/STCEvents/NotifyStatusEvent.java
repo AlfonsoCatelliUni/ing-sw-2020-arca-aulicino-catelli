@@ -6,7 +6,7 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 public class NotifyStatusEvent extends ServerToClientEvent {
 
 
-    private String status;
+    public String status;
 
 
     // ======================================================================================
@@ -26,9 +26,9 @@ public class NotifyStatusEvent extends ServerToClientEvent {
     }
 
 
-    public String getStatus(){
-        return this.status;
-    }
+//    public String getStatus(){
+//        return this.status;
+//    }
 
 
 

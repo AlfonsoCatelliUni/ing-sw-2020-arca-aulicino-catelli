@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 public class ConnectionEstablishedEvent extends ServerToClientEvent {
 
-    private Integer ID;
+
+    public Integer ID;
 
 
     // ======================================================================================
@@ -30,9 +31,9 @@ public class ConnectionEstablishedEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public Integer getID() {
-        return this.ID;
-    }
+//    public Integer getID() {
+//        return this.ID;
+//    }
 
 
 }

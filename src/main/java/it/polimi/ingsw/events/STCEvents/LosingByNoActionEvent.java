@@ -6,10 +6,9 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 public class LosingByNoActionEvent extends ServerToClientEvent {
 
 
-    private String nickname;
+    public String nickname;
 
-
-    private String sadMessage;
+    public String sadMessage;
 
 
     // ======================================================================================

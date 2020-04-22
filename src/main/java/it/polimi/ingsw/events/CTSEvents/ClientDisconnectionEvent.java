@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ClientDisconnectionEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
     // ======================================================================================

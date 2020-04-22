@@ -6,15 +6,15 @@ import it.polimi.ingsw.events.manager.ClientToServerManager;
 public class ChosenInitialPawnCellEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
-    private String actionID;
+    public String actionID;
 
 
-    private int pawnRow;
+    public int pawnRow;
 
-    private int pawnColumn;
+    public int pawnColumn;
 
 
     // ======================================================================================
@@ -41,24 +41,24 @@ public class ChosenInitialPawnCellEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public String getActionID() {
-        return this.actionID;
-    }
-
-
-    public String getPlayerNickname() {
-        return this.playerNickname;
-    }
-
-
-    public int getPawnRow() {
-        return this.pawnRow;
-    }
-
-
-    public int getPawnColumn() {
-        return this.pawnColumn;
-    }
+//    public String getActionID() {
+//        return this.actionID;
+//    }
+//
+//
+//    public String getPlayerNickname() {
+//        return this.playerNickname;
+//    }
+//
+//
+//    public int getPawnRow() {
+//        return this.pawnRow;
+//    }
+//
+//
+//    public int getPawnColumn() {
+//        return this.pawnColumn;
+//    }
 
 
 }

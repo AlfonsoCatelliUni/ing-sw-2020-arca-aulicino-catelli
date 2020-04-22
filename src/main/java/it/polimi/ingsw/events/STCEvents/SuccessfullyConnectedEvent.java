@@ -28,9 +28,9 @@ public class SuccessfullyConnectedEvent extends ServerToClientEvent {
     }
 
 
-    public List<String> getConnectedPlayers() {
-        return connectedPlayers;
-    }
+//    public List<String> getConnectedPlayers() {
+//        return connectedPlayers;
+//    }
 
 
 }

@@ -7,16 +7,16 @@ import it.polimi.ingsw.model.Actions.Action;
 public class ChosenMoveActionEvent extends ClientToServerEvent {
 
 
-    private String playerNickname;
+    public String playerNickname;
 
 
-    private Action action;
+    public Action action;
 
 
-    private int pawnRow;
+    public int pawnRow;
 
 
-    private int pawnColumn;
+    public int pawnColumn;
 
 
     // ======================================================================================
@@ -43,24 +43,24 @@ public class ChosenMoveActionEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public String getPlayerNickname() {
-        return this.playerNickname;
-    }
-
-
-    public Action getAction() {
-        return this.action;
-    }
-
-
-    public int getPawnRow() {
-        return this.pawnRow;
-    }
-
-
-    public int getPawnColumn() {
-        return this.pawnColumn;
-    }
+//    public String getPlayerNickname() {
+//        return this.playerNickname;
+//    }
+//
+//
+//    public Action getAction() {
+//        return this.action;
+//    }
+//
+//
+//    public int getPawnRow() {
+//        return this.pawnRow;
+//    }
+//
+//
+//    public int getPawnColumn() {
+//        return this.pawnColumn;
+//    }
 
 
 }

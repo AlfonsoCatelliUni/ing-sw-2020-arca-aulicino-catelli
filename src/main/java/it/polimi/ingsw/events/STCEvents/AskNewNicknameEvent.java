@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class AskNewNicknameEvent extends ServerToClientEvent {
 
 
-    private String nickname;
+    public String nickname;
 
 
     // ======================================================================================
@@ -31,9 +31,9 @@ public class AskNewNicknameEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public String getNickname() {
-        return this.nickname;
-    }
+//    public String getNickname() {
+//        return this.nickname;
+//    }
 
 
 }

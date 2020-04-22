@@ -36,14 +36,14 @@ public class InvalidChosenActionEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public String getNickname() {
-        return this.nickname;
-    }
-
-
-    public List<Action> getPossibleActions() {
-        return this.possibleActions;
-    }
+//    public String getNickname() {
+//        return this.nickname;
+//    }
+//
+//
+//    public List<Action> getPossibleActions() {
+//        return this.possibleActions;
+//    }
 
 
 

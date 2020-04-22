@@ -65,7 +65,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public PreGameLobby(VirtualView virtualView) {
+    public PreGameLobby() {
 
         this.numberOfPlayers = -1;
         this.closed = false;
@@ -149,7 +149,7 @@ public class PreGameLobby {
             }
         }, 120000); // 2 minutes timer
 
-        if (playersNicknames.size() == MAXPLAYERS)
+        if (playersNicknames.size() == numberOfPlayers)
             closeWaitingRoom();
 
     }
@@ -189,8 +189,13 @@ public class PreGameLobby {
     }
 
 
-    public List<Card> getPickedCards() {
-        return this.pickedCards;
+    public List<String> getPickedCardsNames() {
+
+        List<String> cardNames = new ArrayList<>();
+        for(Card card : pickedCards) {
+            cardNames.add(card.getName() + "\nThis card effect is: " + card.getEffect());
+        }
+        return cardNames;
     }
 
 
@@ -198,15 +203,24 @@ public class PreGameLobby {
 
         Point pawnPoint = new Point(row, column);
 
-        List<Point> points =  playerPawnPoints.get(nickname);
+        List<Point> points = playerPawnPoints.get(nickname);
 
-        if(isSpotFree(pawnPoint) && points.size() < 2) {
+        if (!isSpotFree(pawnPoint))
+            throw new RuntimeException("A sleeping Snorlax is blocking the spot. You've to find the Poke Flute to wake him up!");
+        if (points != null){
+            if(points.size() < 2) {
+                points.add(pawnPoint);
+                playerPawnPoints.put(nickname, points);
+            }
+            else throw new RuntimeException("how many pawns do you think you have?");
+        }
+        else {
+            points = new ArrayList<>();
             points.add(pawnPoint);
             playerPawnPoints.put(nickname, points);
+
         }
-        else if(!isSpotFree(pawnPoint)) {
-            throw new RuntimeException("A sleeping Snorlax is blocking the spot. You've to find the Poke Flute to wake him up!");
-        }
+
 
     }
 
@@ -292,4 +306,8 @@ public class PreGameLobby {
 
 
 
+    // ONLY USED FOR TESTING
+    public Map<String, List<Point>> getPlayerPawnPoints() {
+        return playerPawnPoints;
+    }
 }

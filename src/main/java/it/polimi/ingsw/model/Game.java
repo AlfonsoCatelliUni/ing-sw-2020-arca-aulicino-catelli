@@ -98,6 +98,32 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     // MARK : Main Functional Methods ======================================================================================
 
+    /**
+     * this method checks the cell where pawns which can do at least one action are onto, if the list is empty, player loses
+     * @param nickname the player who has the pawns
+     * @return list of cell of the pawns
+     */
+    public List<Cell> getAvailablePawns(String nickname) {
+
+        Player player = getPlayerByName(nickname);
+        List<Pawn> playerPawns = player.getPawns();
+
+        List<Action> possibleActions;
+        List<Cell> availablePawns = new ArrayList<>();
+
+        for (Pawn p : playerPawns ) {
+            possibleActions = player.getPossibleActions(gameBoard, p);
+
+            if (possibleActions.size() != 0) {
+                availablePawns.add(p.getPosition());
+            }
+
+            possibleActions.clear();
+        }
+
+        return new ArrayList<>(availablePawns);
+    }
+
 
     /**
      * which are the possible actions that i can do with the selected pawn
@@ -510,28 +536,6 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     public Player getPlayerByName(String nickname) {
         return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
-    }
-
-
-    public List<Cell> getAvailablePawns(String nickname) {
-
-        Player player = getPlayerByName(nickname);
-        List<Pawn> playerPawns = player.getPawns();
-
-        List<Action> possibleActions;
-        List<Cell> availablePawns = new ArrayList<>();
-
-        for (Pawn p : playerPawns ) {
-            possibleActions = player.getPossibleActions(gameBoard, p);
-
-            if (possibleActions.size() != 0) {
-                availablePawns.add(p.getPosition());
-            }
-
-            possibleActions.clear();
-        }
-
-        return new ArrayList<>(availablePawns);
     }
 
 

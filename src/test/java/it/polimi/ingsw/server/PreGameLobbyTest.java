@@ -106,7 +106,7 @@ class PreGameLobbyTest {
     void addCard() {
     }
 
-
+/*
     @Test
     void isCardAvailable() {
 
@@ -155,9 +155,32 @@ class PreGameLobbyTest {
 
     }
 
+  */
+
 
     @Test
     void addNewPawnCoordinates() {
+
+        preGameLobby.addNewPawnCoordinates("Alfonso",0,0);
+        preGameLobby.addNewPawnCoordinates("Alfonso",1,1);
+
+        assertThrows(RuntimeException.class, () -> {
+            preGameLobby.addNewPawnCoordinates("Massi",1,1);
+        });
+
+
+
+        assertEquals(2, preGameLobby.getPlayerPawnPoints().get("Alfonso").size());
+        assertEquals(0, preGameLobby.getPlayerPawnPoints().get("Alfonso").get(0).x);
+        assertEquals(0, preGameLobby.getPlayerPawnPoints().get("Alfonso").get(0).y);
+
+        assertEquals(1, preGameLobby.getPlayerPawnPoints().get("Alfonso").get(1).x);
+        assertEquals(1, preGameLobby.getPlayerPawnPoints().get("Alfonso").get(1).y);
+
+        assertThrows(RuntimeException.class, () -> {
+            preGameLobby.addNewPawnCoordinates("Alfonso", 3,4);
+        });
+
     }
 
 

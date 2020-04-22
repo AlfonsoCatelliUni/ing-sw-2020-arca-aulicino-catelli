@@ -6,8 +6,7 @@ import it.polimi.ingsw.model.Player.Card;
 
 import java.util.List;
 
-public class GivePossibleCardsEvent extends ServerToClientEvent {
-
+public class InvalidChosenCardEvent extends ServerToClientEvent {
 
     public String receiverNickname;
 
@@ -18,7 +17,7 @@ public class GivePossibleCardsEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public GivePossibleCardsEvent(String receiverNickname, List<String> cards) {
+    public InvalidChosenCardEvent(String receiverNickname, List<String> cards) {
         this.receiverNickname = receiverNickname;
         this.cards = cards;
     }
@@ -34,16 +33,4 @@ public class GivePossibleCardsEvent extends ServerToClientEvent {
 
 
     // ======================================================================================
-
-
-//    public String getReceiverNickname() {
-//        return this.receiverNickname;
-//    }
-//
-//
-//    public List<Card> getCards() {
-//        return this.cards;
-//    }
-
-
 }

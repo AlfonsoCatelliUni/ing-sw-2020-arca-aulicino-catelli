@@ -2,48 +2,26 @@ package it.polimi.ingsw.events.STCEvents;
 
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Player.Card;
 
-import java.util.List;
-
-public class GivePossibleCardsEvent extends ServerToClientEvent {
+public class AskInitPawnsEvent extends ServerToClientEvent {
 
 
-    public String receiverNickname;
-
-
-    public List<String> cards;
+    public String nickname;
 
 
     // ======================================================================================
 
 
-    public GivePossibleCardsEvent(String receiverNickname, List<String> cards) {
-        this.receiverNickname = receiverNickname;
-        this.cards = cards;
+    public AskInitPawnsEvent(String nickname) {
+        this.nickname = nickname;
     }
 
-
     // ======================================================================================
-
 
     @Override
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
 
-
     // ======================================================================================
-
-
-//    public String getReceiverNickname() {
-//        return this.receiverNickname;
-//    }
-//
-//
-//    public List<Card> getCards() {
-//        return this.cards;
-//    }
-
-
 }

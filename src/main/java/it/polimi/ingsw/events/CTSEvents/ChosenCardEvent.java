@@ -26,7 +26,7 @@ public class ChosenCardEvent extends ClientToServerEvent {
 
     @Override
     public void accept(ClientToServerManager visitor) {
-        visitor.receiveEvent(this);
+        visitor.manageEvent(this);
     }
 
 

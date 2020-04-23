@@ -345,7 +345,7 @@ public class Controller implements Observer, ClientToServerManager {
             int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
             index++;
 
-            if (index < preGameLobby.getNumberOfPlayers() - 1) {
+            if (index < preGameLobby.getNumberOfPlayers()) {
                 String nextPlayer = preGameLobby.getConnectedPlayers().get(index);
 
                 virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer, generateJsonCards(preGameLobby.getPickedCards()), true));

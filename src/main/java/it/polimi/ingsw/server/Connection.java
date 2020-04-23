@@ -61,9 +61,6 @@ public class Connection implements Runnable {
             System.err.println("The socket with ID : " + connectionID + " has been disconnected!");
             e.printStackTrace();
         }
-        finally {
-            close();
-        }
 
 
     }

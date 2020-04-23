@@ -27,7 +27,7 @@ public class ChosenFinishActionEvent extends ClientToServerEvent {
 
     @Override
     public void accept(ClientToServerManager visitor) {
-        visitor.receiveEvent(this);
+        visitor.manageEvent(this);
     }
 
 

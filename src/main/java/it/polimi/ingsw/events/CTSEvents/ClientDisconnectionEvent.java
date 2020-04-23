@@ -36,7 +36,7 @@ public class ClientDisconnectionEvent extends ClientToServerEvent {
 
     @Override
     public void accept(ClientToServerManager visitor) {
-        visitor.receiveEvent(this);
+        visitor.manageEvent(this);
     }
 
 

@@ -101,6 +101,20 @@ public class PreGameLobby {
     }
 
 
+    public Map<String, Effect> getEffectsClassMap() {
+        return effectsClassMap;
+    }
+
+
+    public Map<String, Card> getPlayerCardMap() {
+        return playerCardMap;
+    }
+
+    public Card getCardOfPlayer(String p){
+        return playerCardMap.get(p);
+    }
+
+
     /**
      * build the map that connects the name of the card to its correct decorator class
      * @return the map of card-playerType
@@ -194,6 +208,7 @@ public class PreGameLobby {
     public List<Card> getPickedCards() {
         return this.pickedCards;
     }
+
 
     public List<Cell> getInitialOccupiedCell() {
         List<String> keys = new ArrayList<>(playerPawnPoints.keySet());

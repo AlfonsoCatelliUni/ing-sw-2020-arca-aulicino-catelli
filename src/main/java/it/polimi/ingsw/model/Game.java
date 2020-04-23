@@ -30,14 +30,20 @@ public class Game extends Observable implements GameConsequenceHandler {
     private List<Player> players;
 
 
+    private List<String> playersNickname;
+
+
     private Player currentPlayer;
+
 
     private int indexCurrentPlayer;
 
 
     private List<Cell> lastCellsList;
 
+
     private List<Action> lastActionsList;
+
 
     private List<Building> lastBuildingsList;
 
@@ -51,30 +57,20 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param colors is the enumeration of possible colors assignable to the players
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
      * @param playerDecoratorMap is where is mapped a god's name to his decoration
-     * @param playerPawnPoints is where is mapped a nickname's player to the coordinates of his pawns
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Effect> playerDecoratorMap, Map<String, List<Point>> playerPawnPoints) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Effect> playerDecoratorMap) {
 
         super();
 
         this.gameBoard = new Board();
-
         this.players = new ArrayList<>();
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
+        this.playersNickname = playersNickname;
+
 
         for (int i = 0; i < playersNickname.size(); i++) {
-
             players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)), playerDecoratorMap.get(playersNickname.get(i))));
-
-            // here i save the initial cells of the two pawns
-            Cell firstPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(0).x, playerPawnPoints.get(playersNickname.get(i)).get(0).y);
-            Cell secondPawnCell = gameBoard.getCell(playerPawnPoints.get(playersNickname.get(i)).get(1).x, playerPawnPoints.get(playersNickname.get(i)).get(1).y);
-
-            // first placing of the pawn into the board
-            players.get(i).initPawn(gameBoard, firstPawnCell);
-            players.get(i).initPawn(gameBoard, secondPawnCell);
-
         }
 
         currentPlayer = players.get(indexCurrentPlayer);
@@ -97,6 +93,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     // MARK : Main Functional Methods ======================================================================================
+
 
     /**
      * this method checks the cell where pawns which can do at least one action are onto, if the list is empty, player loses
@@ -522,6 +519,11 @@ public class Game extends Observable implements GameConsequenceHandler {
         }
 
         return names;
+    }
+
+
+    public List<String> getPlayersNickname() {
+        return playersNickname;
     }
 
 

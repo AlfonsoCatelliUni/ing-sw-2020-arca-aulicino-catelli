@@ -11,12 +11,13 @@ public class SuccessfullyConnectedEvent extends ServerToClientEvent {
 
     public List<String> connectedPlayers;
 
-
+    public String nickname;
     // ======================================================================================
 
 
-    public SuccessfullyConnectedEvent(List<String> connectedPlayers) {
+    public SuccessfullyConnectedEvent(List<String> connectedPlayers, String nickname) {
         this.connectedPlayers = connectedPlayers;
+        this.nickname = nickname;
     }
 
 

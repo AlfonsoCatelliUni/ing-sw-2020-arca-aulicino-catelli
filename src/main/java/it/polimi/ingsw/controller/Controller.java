@@ -221,6 +221,8 @@ public class Controller implements Observer, ClientToServerManager {
             //and we ask the first entered player to choose his card
             else if(connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {
 
+                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+
                 virtualView.sendMessage(new ClosedWaitingRoomEvent());
 
                 List<Card> cards = preGameLobby.getPickedCards();
@@ -230,7 +232,7 @@ public class Controller implements Observer, ClientToServerManager {
             }
             //if is an intermediate connection than nothing happens
             else {
-                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers));
+                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
             }
 
         }
@@ -293,7 +295,7 @@ public class Controller implements Observer, ClientToServerManager {
         if(numberOfPlayers == 2 || numberOfPlayers == 3) {
             preGameLobby.setNumberOfPlayers(numberOfPlayers);
 
-            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers));
+            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
         }
         else {
             preGameLobby.setNumberOfPlayers(2);
@@ -309,9 +311,10 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenInitialPawnCellEvent event) {
 
+        /*
         Boolean isSpotFree = preGameLobby.isSpotFree(event.pawnRow, event.pawnColumn);
 
-        /* before I control that the selected spot is really free */
+        // before I control that the selected spot is really free
         if(isSpotFree) {
             preGameLobby.addNewPawnCoordinates(event.playerNickname, event.pawnRow, event.pawnColumn);
             int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
@@ -330,8 +333,11 @@ public class Controller implements Observer, ClientToServerManager {
             //virtualView.sendMessageTo()
         }
 
+         */
 
     }
+
+
 
 
     @Override

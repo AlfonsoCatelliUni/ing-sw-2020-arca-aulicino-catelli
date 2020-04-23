@@ -144,12 +144,15 @@ public class PreGameLobby {
 
         playersNicknames.add(nickname);
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                closeWaitingRoom();
-            }
-        }, 120000); // 2 minutes timer
+        // TODO : mettere a posto il fatto che alla scadenza del timer faccia la close quando playersNickname < numberOfPlayers
+        if(playersNicknames.size() == 1) {
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    closeWaitingRoom();
+                }
+            }, 120000); // 2 minutes timer
+        }
 
         if (playersNicknames.size() == numberOfPlayers)
             closeWaitingRoom();
@@ -287,10 +290,18 @@ public class PreGameLobby {
     }
 
 
-    private void closeWaitingRoom() {
-        this.closed = true;
+    /**
+     * synchronized because there could be conflicts with the timer
+     */
+    private synchronized void closeWaitingRoom() {
 
-        pickCards(allCards);
+        if(!closed) {
+
+            this.closed = true;
+            pickCards(allCards);
+
+        }
+
     }
 
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.events.CTSEvents.ChosenCardEvent;
+import it.polimi.ingsw.events.CTSEvents.ChosenInitialPawnCellEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenPlayerNumberEvent;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.STCEvents.*;
@@ -169,6 +170,8 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(SuccessfullyConnectedEvent event) {
 
+        this.nickname = event.nickname;
+
         for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
@@ -225,35 +228,120 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
 
-        //List<Couple<Integer, Integer>> occupiedCells = ClientJsonHandler.generateCellsList(event.info);
+        List<Couple<Integer, Integer>> occupiedCells = ClientJsonHandler.generateCellsList(event.info);
 
+        if(occupiedCells.size() != 0) {
+            System.out.println("You can't place your pawns in this positions: ");
+            for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+                System.out.println("[" + occupiedCell.getFirst() + "]" + " " + "[" + occupiedCell.getSecond() + "]");
+            }
+        }
+
+        System.out.println("Chose the position of your male pawn");
+
+        System.out.println("Row Position:");
+        int maleRowPosition = Integer.parseInt(input.nextLine());
+
+        System.out.println("Column Position:");
+        int maleColumnPosition = Integer.parseInt(input.nextLine());
+
+        boolean correctPosition = false;
+
+        while(!correctPosition) {
+
+            for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+
+                if (maleRowPosition != occupiedCell.getFirst() &&
+                        maleColumnPosition != occupiedCell.getSecond()) {
+                    correctPosition = true;
+                    break;
+                }
+            }
+
+            if(!correctPosition) {
+                System.out.println("This Position is already occupied");
+                System.out.println("Chose the position of your male pawn");
+
+                System.out.println("Row Position:");
+                maleRowPosition = Integer.parseInt(input.nextLine());
+
+                System.out.println("Column Position:");
+                maleColumnPosition = Integer.parseInt(input.nextLine());
+
+            }
+
+        }
+
+        System.out.println("Chose the position of your female pawn");
+
+        System.out.println("Row Position:");
+        int femaleRowPosition = Integer.parseInt(input.nextLine());
+
+        System.out.println("Column Position:");
+        int femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+        correctPosition = false;
+
+        while(!correctPosition) {
+
+            for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+
+                if (femaleRowPosition != occupiedCell.getFirst() &&
+                        femaleColumnPosition != occupiedCell.getSecond() &&
+                        femaleRowPosition != maleRowPosition &&
+                        femaleColumnPosition != maleColumnPosition) {
+                    correctPosition = true;
+                    break;
+                }
+            }
+
+            if(!correctPosition) {
+                System.out.println("This Position is already occupied");
+                System.out.println("Chose the position of your female pawn");
+
+                System.out.println("Row Position:");
+                femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                System.out.println("Column Position:");
+                femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+            }
+
+            clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
+
+        }
     }
 
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
-        Integer choiceNum;
+        if(event.isValid) {
+            int choiceNum;
 
-        System.out.println(event.receiverNickname);
-        List<Couple<String, String>> cards = ClientJsonHandler.generateCardsList(event.info);
+            //System.out.println(event.receiverNickname);
+            List<Couple<String, String>> cards = ClientJsonHandler.generateCardsList(event.info);
 
-        for(int i = 0; i < cards.size(); i++){
-            System.out.println( i+")\tGod Name : "+cards.get(i).getFirst()+"\n\tGod Effect : "+cards.get(i).getSecond());
-        }
+            for (int i = 0; i < cards.size(); i++) {
+                System.out.println(i + ")\tGod Name : " + cards.get(i).getFirst() + "\n\tGod Effect : " + cards.get(i).getSecond());
+            }
 
-        System.out.print("\nInsert the number to choose your God : ");
-        choiceNum = Integer.parseInt(input.nextLine());
-
-        while (choiceNum > cards.size() || choiceNum < 0) {
-            System.out.println("Invalid choice!");
-            System.out.print("Insert the number to choose your God : ");
+            System.out.print("\nInsert the number to choose your God : ");
             choiceNum = Integer.parseInt(input.nextLine());
+
+            while (choiceNum > cards.size() || choiceNum < 0) {
+                System.out.println("Invalid choice!");
+                System.out.print("Insert the number to choose your God : ");
+                choiceNum = Integer.parseInt(input.nextLine());
+            }
+
+            //TODO : da un errore OEFException
+            clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
+
         }
-
-        //TODO : da un errore OEFException
-        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
-
+        else {
+            System.out.println("non dovrebbe essere qui");
+        }
     }
 
 

@@ -12,20 +12,29 @@ public class ChosenInitialPawnCellEvent extends ClientToServerEvent {
     public String actionID;
 
 
-    public int pawnRow;
+    public int malePawnRow;
 
-    public int pawnColumn;
+    public int malePawnColumn;
+
+    public int femalePawnRow;
+
+    public int femalePawnColumn;
 
 
     // ======================================================================================
 
 
-    public ChosenInitialPawnCellEvent(String playerNickname, int pawnRow, int pawnColumn) {
+    public ChosenInitialPawnCellEvent(String playerNickname, int malePawnRow, int malePawnColumn, int femalePawnRow, int femalePawnColumn) {
         this.playerNickname = playerNickname;
         this.actionID = "init_pawn";
 
-        this.pawnRow = pawnRow;
-        this.pawnColumn = pawnColumn;
+        this.malePawnRow = malePawnRow;
+        this.malePawnColumn = malePawnColumn;
+
+        this.femalePawnRow = femalePawnRow;
+        this.femalePawnColumn = femalePawnColumn;
+
+
     }
 
 

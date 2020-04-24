@@ -95,6 +95,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     // MARK : Main Functional Methods ======================================================================================
 
+
     public List<Cell> getPawnsCoordinateByPlayer(String nickname){
         Player player = getPlayerByName(nickname);
         List<Cell> cells = new ArrayList<>();
@@ -109,12 +110,14 @@ public class Game extends Observable implements GameConsequenceHandler {
         return cells;
     }
 
+
     public List<Cell> getAllPawnsCoordinates(){
         List<Cell> cells = new ArrayList<>();
         for (String name : playersNickname)
             cells.addAll(getPawnsCoordinateByPlayer(name));
         return cells;
     }
+
 
     public void initializePawn(String nickname, int row, int column){
         Player player = getPlayerByName(nickname);
@@ -488,6 +491,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     public boolean isValidCoordinate(int row, int column) {
         return row >= 0 && row <= 4 && column >= 0 && column <= 4;
     }
+
 
     public boolean isValidSpot(int row, int column){
         return !gameBoard.getCell(row, column).getBuilderHere();

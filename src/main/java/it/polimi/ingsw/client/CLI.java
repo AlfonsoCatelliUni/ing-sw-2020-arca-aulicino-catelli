@@ -221,6 +221,11 @@ public class CLI implements ServerToClientManager {
 
 
     @Override
+    public void manageEvent(RoomNotFilled event) {
+        System.out.println(event.message);
+    }
+
+    @Override
     public void manageEvent(AskNewNicknameEvent event) {
 
     }

@@ -28,6 +28,9 @@ public interface ClientToServerManager {
 
     void manageEvent(ChosenCardEvent event);
 
+
+    void manageEvent(ChosenPawnToUseEvent event);
+
     void manageEvent(ChosenMoveActionEvent event);
 
     void manageEvent(ChosenBuildActionEvent event);
@@ -39,6 +42,8 @@ public interface ClientToServerManager {
     void manageEvent(ChosenCellToMoveEvent event);
 
     void manageEvent(ChosenCellToBuildEvent event);
+
+    void manageEvent(ChosenBuildingEvent event);
 
 
 

@@ -10,7 +10,7 @@ public class ChosenMoveActionEvent extends ClientToServerEvent {
     public String playerNickname;
 
 
-    public Action action;
+    public String action;
 
 
     public int pawnRow;
@@ -22,7 +22,7 @@ public class ChosenMoveActionEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public ChosenMoveActionEvent(String playerNickname, Action action, int pawnRow, int pawnColumn) {
+    public ChosenMoveActionEvent(String playerNickname, String action, int pawnRow, int pawnColumn) {
         this.playerNickname = playerNickname;
         this.action = action;
 

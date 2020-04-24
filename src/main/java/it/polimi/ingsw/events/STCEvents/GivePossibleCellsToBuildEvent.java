@@ -12,7 +12,7 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
     public String receiverNickname;
 
 
-    public List<Cell> cellsAvailableToBuild;
+    public String cellsAvailableToBuild;
 
 
     public String actionID;
@@ -24,7 +24,7 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public GivePossibleCellsToBuildEvent(String receiverNickname, List<Cell> cellsAvailableToBuild, boolean isValid) {
+    public GivePossibleCellsToBuildEvent(String receiverNickname, String cellsAvailableToBuild, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.actionID = "build";
 

@@ -10,13 +10,13 @@ public class ChosenFinishActionEvent extends ClientToServerEvent {
     public String playerNickname;
 
 
-    public Action action;
+    public String action;
 
 
     // ======================================================================================
 
 
-    public ChosenFinishActionEvent(String playerNickname, Action action) {
+    public ChosenFinishActionEvent(String playerNickname, String action) {
         this.playerNickname = playerNickname;
         this.action = action;
     }

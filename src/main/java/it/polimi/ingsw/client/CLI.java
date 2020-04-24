@@ -1,12 +1,11 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.events.CTSEvents.ChosenCardEvent;
-import it.polimi.ingsw.events.CTSEvents.ChosenInitialPawnCellEvent;
-import it.polimi.ingsw.events.CTSEvents.ChosenPlayerNumberEvent;
-import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
+import it.polimi.ingsw.events.CTSEvents.*;
+import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
+import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.view.client.ClientView;
 
 import java.io.IOException;
@@ -481,6 +480,92 @@ public class CLI implements ServerToClientManager {
 
     }
 
+    @Override
+    public void manageEvent(AskWhichPawnsUseEvent event) {
+
+        if(!event.isValid) {
+            System.out.println("An error has occurred, please reinsert the position");
+        }
+
+        List<Couple<Integer, Integer>> coordinatesAvailablePawns = ClientJsonHandler.generateCellsList(event.info);
+
+
+        /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
+        int rowPosition = 0;
+
+        int columnPosition = 0;
+
+        //the player can choose witch pawn can use
+        if(coordinatesAvailablePawns.size() == 1) {
+
+            System.out.println("You can do your action only with the pawn with coordinates: " +
+                    "[" + coordinatesAvailablePawns.get(0).getFirst() + "," + coordinatesAvailablePawns.get(0).getSecond() + "]");
+
+            rowPosition = coordinatesAvailablePawns.get(0).getFirst();
+            columnPosition = coordinatesAvailablePawns.get(0).getSecond();
+
+        }
+        if(coordinatesAvailablePawns.size() == 2) {
+
+            System.out.println("Choose the coordinates of the pawn you want to move: ");
+
+            for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
+
+                System.out.println("[" + coordinatesAvailablePawn.getFirst() + "," + coordinatesAvailablePawn.getSecond() + "]\n");
+
+            }
+
+            boolean isCorrect;
+
+            do {
+
+                isCorrect = false;
+
+                System.out.println("Row position: ");
+                rowPosition = Integer.parseInt(input.nextLine());
+
+                while (rowPosition < 0 || rowPosition > 4) {
+
+                    System.out.println("Invalid position");
+                    System.out.println("Row Position:");
+                    rowPosition = Integer.parseInt(input.nextLine());
+                }
+
+                System.out.println("Column position: ");
+                columnPosition = Integer.parseInt(input.nextLine());
+
+                while (columnPosition < 0 || columnPosition > 4) {
+
+                    System.out.println("Invalid position");
+                    System.out.println("Column Position:");
+                    columnPosition = Integer.parseInt(input.nextLine());
+                }
+
+                for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
+
+                    if (rowPosition == coordinatesAvailablePawn.getFirst() &&
+                            columnPosition == coordinatesAvailablePawn.getSecond()) {
+
+                        isCorrect = true;
+                        break;
+
+                    }
+
+                }
+
+                if(!isCorrect) {
+                    System.out.println("None of your pawns are in this cell, please reinsert the coordinates");
+                }
+
+            } while(!isCorrect);
+
+
+        }
+
+        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
+
+    }
+
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
@@ -507,7 +592,6 @@ public class CLI implements ServerToClientManager {
             choiceNum = Integer.parseInt(input.nextLine());
         }
 
-        //TODO : da un errore OEFException
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
 
         System.out.println("Please wait until it's your turn");
@@ -541,6 +625,29 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(StartGameEvent event) {
 
+        System.out.println("The game starts right now!");
+        System.out.println("   _____             _             _       _ \n" +
+                "  / ____|           | |           (_)     (_)\n" +
+                " | (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ \n" +
+                "  \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |\n" +
+                "  ____) | (_| | | | | || (_) | |  | | | | | |\n" +
+                " |_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|\n" +
+                "                                             \n" +
+                "                                             ");
+
+        // <nameCard, effectCard>
+        List<FormattedPlayerInfo> playersInfo = ClientJsonHandler.generatePlayersList(event.info);
+
+        System.out.println("The players for this game are:\n");
+
+        for (FormattedPlayerInfo formattedPlayerInfo : playersInfo) {
+            System.out.println(formattedPlayerInfo.getNickname() +
+                    "\tColor: " + formattedPlayerInfo.getColor() +
+                    "\tCard: " + formattedPlayerInfo.getCard().getFirst() +
+                    "\tCard effect: " + formattedPlayerInfo.getCard().getSecond() +
+                    "\n");
+        }
+
     }
 
 
@@ -548,9 +655,6 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(LosingByNoActionEvent event) {
 
     }
-
-
-
 
 
 }

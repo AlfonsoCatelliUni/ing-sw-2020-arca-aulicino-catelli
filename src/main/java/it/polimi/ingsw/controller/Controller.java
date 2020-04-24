@@ -5,6 +5,7 @@ import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.Action;
+import it.polimi.ingsw.model.Actions.MoveAction;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
@@ -212,6 +213,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     // MARK : Network Event Manager Section ======================================================================================
+    // MARK : Controller Function Section ======================================================================================
 
 
     public void startGame (){
@@ -228,7 +230,9 @@ public class Controller implements Observer, ClientToServerManager {
 
        String cardsInfo = generateJsonCards(cards);
 
-       virtualView.sendMessage(new StartGameEvent(colors, preGameLobby.getConnectedPlayers(), cardsInfo ));
+       String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
+
+       virtualView.sendMessage(new StartGameEvent(info));
 
        preGameLobby = null;
 
@@ -237,6 +241,49 @@ public class Controller implements Observer, ClientToServerManager {
        virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true, "[]"));
     }
 
+
+    public void firstTurnGame(){
+        String firstPlayer = game.getPlayersNickname().get(0);
+
+        List<Cell> availablePawnsCell = game.getAvailablePawns(firstPlayer);
+
+        if (availablePawnsCell.size() == 0){
+            virtualView.sendMessageTo(firstPlayer, new LosingByNoActionEvent(firstPlayer, "So Sad"));
+        }
+        else {
+            String infoCell = generateJsonCells(availablePawnsCell);
+            virtualView.sendMessageTo(firstPlayer, new AskWhichPawnsUseEvent(firstPlayer, true, infoCell));
+        }
+    }
+
+    public void endTurn(){
+
+        String playerTurnEnded = game.getCurrentPlayer().getName();
+
+        int index = game.getPlayersNickname().indexOf(playerTurnEnded);
+        index++;
+
+        if (index < game.getPlayersNickname().size()){
+            String nextPlayer = game.getPlayersNickname().get(index);
+            List<Cell> availablePawnsCell = game.getAvailablePawns(nextPlayer);
+
+            String infoCell = generateJsonCells(availablePawnsCell);
+
+            virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, infoCell));
+
+        }
+        else {
+            firstTurnGame();
+        }
+
+
+
+
+
+    }
+
+
+    // MARK : Network Event Manager Section ======================================================================================
 
     @Override
     public void manageEvent(NewConnectionEvent event) {
@@ -255,6 +302,7 @@ public class Controller implements Observer, ClientToServerManager {
             virtualView.newNicknameID(nickname, ID);
 
             List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
+
 
             //if there's only one player connected to the waitingRoom, than this is the first one
             //and he has to choose the number of the players for the new match
@@ -347,7 +395,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
 
-        
+
     }
 
 
@@ -357,7 +405,6 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenInitialPawnCellEvent event) {
 
-     // TODO : cambiare metodi e passare al game
 
         boolean isMaleSpotFree = game.isValidSpot(event.malePawnRow, event.malePawnColumn);
 
@@ -379,8 +426,7 @@ public class Controller implements Observer, ClientToServerManager {
                 virtualView.sendMessageTo(game.getPlayersNickname().get(index), new AskInitPawnsEvent(game.getPlayersNickname().get(index), true, info ));
             }
             else {
-                //TODO: pensare inizio primo turno effettivo
-                //virtualView.sendMessageTo(game.getPlayersNickname().get(0), ne);
+                firstTurnGame();
             }
         }
         else {
@@ -423,39 +469,52 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
+    @Override
+    public void manageEvent(ChosenPawnToUseEvent event) {
+
+        String player = event.playerNickname;
+        int row = event.pawnRow;
+        int column = event.pawnColumn;
+
+        boolean isValid = game.isValid(row, column);
+
+        if (isValid) {
+
+            List<Action> possibleActions = game.getPossibleActions(player, row, column);
+            String actionsInfo = generateJsonActions(possibleActions);
+
+            virtualView.sendMessageTo(player, new GivePossibleActionsEvent(player, actionsInfo, true));
+
+        } else {
+            List<Cell> availablePawnsCell = game.getAvailablePawns(player);
+            String infoCell = generateJsonCells(availablePawnsCell);
+
+            virtualView.sendMessageTo(player, new AskWhichPawnsUseEvent(player, false, infoCell));
+
+        }
+    }
 
     @Override
     public void manageEvent(ChosenMoveActionEvent event) {
 
-        List<Action> actionsAvailable = game.getPossibleActions(event.playerNickname, event.pawnRow, event.pawnColumn);
-
-        boolean validAction = false;
-
-        for(Action a : actionsAvailable) {
-            if (a.getActionID().equals(event.action.getActionID())) {
-                validAction = true;
-                break;
-            }
-        }
         String nickname = event.playerNickname;
-
-        Action chosenAction = event.action;
-
+        String chosenAction = event.action;
         int row = event.pawnRow;
         int column = event.pawnColumn;
 
 
         if( game.isValid(chosenAction) ) {
-            //TODO : cambiare in point
-            List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
 
-            virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, availableCellsToMove,true));
+            List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
+            String cellInfo = generateJsonCells(availableCellsToMove);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
         }
         else {
             List<Action> possibleActions = game.getLastActionsList();
+            String actionInfo = generateJsonActions(possibleActions);
 
-            //TODO : cambiare e mettere sendMessageTo
-            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, possibleActions, false));
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionInfo, false));
         }
     }
 
@@ -464,26 +523,26 @@ public class Controller implements Observer, ClientToServerManager {
     public void manageEvent(ChosenBuildActionEvent event) {
 
         String nickname = event.playerNickname;
-
-        Action chosenAction = event.action;
+        String chosenAction = event.action;
         int row = event.pawnRow;
         int column = event.pawnColumn;
 
         //here there's the control to verify that the chosen action is valid
         if( game.isValid(chosenAction) ) {
             //if it's ok the game automatically return the cells available to this action
-            //TODO : cambiare in point
-            List<Cell> availableCellsToBuild = game.wherePawnCanBuild(nickname, row, column);
 
-            virtualView.sendMessage(new GivePossibleCellsToBuildEvent(nickname, availableCellsToBuild, true));
+            List<Cell> availableCellsToBuild = game.wherePawnCanBuild(nickname, row, column);
+            String cellsInfo = generateJsonCells(availableCellsToBuild);
+
+            virtualView.sendMessage(new GivePossibleCellsToBuildEvent(nickname, cellsInfo, true));
         }
         else {
             //if it's not ok than the game automatically return the last possible actions list
             //because the game state isn't changed
             List<Action> possibleActions = game.getLastActionsList();
+            String actionsInfo = generateJsonActions(possibleActions);
 
-            //TODO : cambiare e mettere sendMessageTo
-            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, possibleActions, false));
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
         }
     }
 
@@ -492,7 +551,7 @@ public class Controller implements Observer, ClientToServerManager {
     public void manageEvent(ChosenFinishActionEvent event) {
         String nickname = event.playerNickname;
 
-        Action chosenAction = event.action;
+        String chosenAction = event.action;
 
         if( game.isValid(chosenAction) ) {
             //TODO : devo chiamare il next current player
@@ -501,7 +560,8 @@ public class Controller implements Observer, ClientToServerManager {
             //virtualView.sendMessageTo();
         }
         else {
-            List<Action> availableActions = game.getLastActionsList();
+            String actionsInfo = generateJsonActions(game.getLastActionsList());
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
         }
 
     }
@@ -518,25 +578,24 @@ public class Controller implements Observer, ClientToServerManager {
         int nextRow = event.nextRow;
         int nextColumn = event.nextColumn;
 
-        if(game.isValidCoordinate(row, column)
-                &&  game.isValidCoordinate(nextRow, nextColumn)
-                &&  game.isValid(nextRow, nextColumn)) {
+        if(game.isValidCoordinate(row, column) &&  game.isValid(nextRow, nextColumn)) {
             //THAT'S IMPORTANT!
             game.movePawn(nickname, row, column, nextRow, nextColumn);
 
             List<Action> availableActions = game.getPossibleActions(nickname, nextRow, nextColumn);
             if(availableActions.size() > 0) {
-                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, availableActions, true));
+                String actionsInfo = generateJsonActions(availableActions);
+                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
             }
             else {
                 virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "OMG! YOU ARE SO BAD AT THIS GAME! LOSER!"));
             }
         }
         else {
+            List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
+            String cellInfo = generateJsonCells(availableCellsToMove);
 
-            List<Action> possibleActions = game.getPossibleActions(nickname, row, column);
-
-            virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, game.wherePawnCanMove(nickname, row, column), false));
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
         }
 
     }
@@ -552,25 +611,30 @@ public class Controller implements Observer, ClientToServerManager {
         int nextRow = event.nextRow;
         int nextColumn = event.nextColumn;
 
-        if(game.isValidCoordinate(row, column)
-                &&  game.isValidCoordinate(nextRow, nextColumn)
-                &&  game.isValid(nextRow, nextColumn)) {
+        if(game.isValidCoordinate(row, column) && game.isValid(nextRow, nextColumn)) {
             //THAT'S IMPORTANT!
 
             List<Building> availableBuildings = game.getPossibleBuildingOnCell(nickname, nextRow, nextColumn);
             if(availableBuildings.size() > 0) {
-                //TODO : fare l'evento GivePossibleBuildingsEvent
-                virtualView.sendMessageTo(nickname, new GivePossibleBuildingsEvent(nickname, availableBuildings, true));
+                String buildingInfo = generateJsonBuildings(availableBuildings);
+                virtualView.sendMessageTo(nickname, new GivePossibleBuildingsEvent(nickname, buildingInfo, true));
             }
             else {
                 throw new RuntimeException("I don't really know what's happen here, please control some of your code! It's something with the buildings on a cell. :/");
             }
         }
         else {
-            virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, game.getLastCellsList(), false));
+            String cellsInfo = generateJsonCells(game.getLastCellsList());
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));
         }
     }
 
+
+    @Override
+    public void manageEvent(ChosenBuildingEvent event) {
+        //TODO : fare la gestione
+
+    }
 
     @Override
     public void manageEvent(VictoryEvent event) {

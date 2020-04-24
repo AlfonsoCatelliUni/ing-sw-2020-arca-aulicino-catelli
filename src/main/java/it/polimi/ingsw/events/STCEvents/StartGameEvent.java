@@ -13,12 +13,13 @@ public class StartGameEvent extends ServerToClientEvent {
 
     public List<String> playersNickname;
 
-    public List<String> playersCard;
+    public String playersCard;
 
 
-    public StartGameEvent(List<Color> playersColor, List<String> playersNickname) {
+    public StartGameEvent(List<Color> playersColor, List<String> playersNickname, String card) {
         this.playersColor = playersColor;
         this.playersNickname = playersNickname;
+        this.playersCard = card;
     }
 
     @Override

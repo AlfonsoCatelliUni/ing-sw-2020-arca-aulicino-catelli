@@ -194,6 +194,29 @@ public class Controller implements Observer, ClientToServerManager {
 
     // MARK : Network Event Manager Section ======================================================================================
 
+    public void startGame (){
+    // TODO: vedere come gestire i vari costruttori
+
+       List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
+
+       Game game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
+
+       List<Card> cards = new ArrayList<>();
+
+       for (String name : preGameLobby.getConnectedPlayers())
+           cards.add(preGameLobby.getCardOfPlayer(name));
+
+       String cardsInfo = generateJsonCards(cards);
+
+       virtualView.sendMessage(new StartGameEvent(colors, preGameLobby.getConnectedPlayers(), cardsInfo ));
+
+       preGameLobby = null;
+
+       String firstPlayer = game.getPlayersNickname().get(0);
+
+       virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true, "[]"));
+    }
+
 
     @Override
     public void manageEvent(NewConnectionEvent event) {
@@ -311,18 +334,20 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenInitialPawnCellEvent event) {
 
-        /*
-        Boolean isSpotFree = preGameLobby.isSpotFree(event.pawnRow, event.pawnColumn);
+     // TODO : cambiare metodi e passare al game
 
-        // before I control that the selected spot is really free
-        if(isSpotFree) {
+        Boolean isMaleSpotFree = preGameLobby.isSpotFree(event.pawnRow, event.pawnColumn);
+
+        /* before I control that the selected spot is really free */
+        if(isMaleSpotFree) {
             preGameLobby.addNewPawnCoordinates(event.playerNickname, event.pawnRow, event.pawnColumn);
             int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
             index++;
 
-            if(index < preGameLobby.getNumberOfPlayers() - 1) {
-                //serializzare celle occupate prese dalla pregamelobby e passarle al costruttore
-                //virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(index), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(index), true, ));
+            if(index < preGameLobby.getNumberOfPlayers()) {
+                List <Cell> occupiedCell = preGameLobby.getInitialOccupiedCell();
+                String info = generateJsonCells(occupiedCell);
+                virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(index), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(index), true, info ));
             }
             else {
                 //virtualView.sendMessage(new StartGameEvent());
@@ -333,7 +358,6 @@ public class Controller implements Observer, ClientToServerManager {
             //virtualView.sendMessageTo()
         }
 
-         */
 
     }
 
@@ -357,8 +381,9 @@ public class Controller implements Observer, ClientToServerManager {
                 virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer, generateJsonCards(preGameLobby.getPickedCards()), true));
 
             } else {
+                startGame();
                 //inviare richiesta inizializzazione pawn al primo giocatore
-                virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(0), true, "[]"));
+                //virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(0), true, "[]"));
             }
         }
         else {

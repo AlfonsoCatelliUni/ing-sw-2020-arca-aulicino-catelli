@@ -199,7 +199,7 @@ public class Controller implements Observer, ClientToServerManager {
 
        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
-       Game game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
+       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
 
        List<Card> cards = new ArrayList<>();
 
@@ -353,7 +353,7 @@ public class Controller implements Observer, ClientToServerManager {
             if(index < game.getPlayersNickname().size()) {
                 List <Cell> occupiedCell = game.getAllPawnsCoordinates();
                 String info = generateJsonCells(occupiedCell);
-                virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(index), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(index), true, info ));
+                virtualView.sendMessageTo(game.getPlayersNickname().get(index), new AskInitPawnsEvent(game.getPlayersNickname().get(index), true, info ));
             }
             else {
                 //TODO: pensare inizio primo turno effettivo

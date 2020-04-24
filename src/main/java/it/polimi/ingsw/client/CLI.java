@@ -235,81 +235,231 @@ public class CLI implements ServerToClientManager {
             for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
                 System.out.println("[" + occupiedCell.getFirst() + "]" + " " + "[" + occupiedCell.getSecond() + "]");
             }
-        }
 
-        System.out.println("Chose the position of your male pawn");
+            //male pawn choosing
+            System.out.println("Chose the position of your male pawn");
 
-        System.out.println("Row Position:");
-        int maleRowPosition = Integer.parseInt(input.nextLine());
+            System.out.println("Row Position:");
+            int maleRowPosition = Integer.parseInt(input.nextLine());
 
-        System.out.println("Column Position:");
-        int maleColumnPosition = Integer.parseInt(input.nextLine());
+            while( maleRowPosition < 0 || maleRowPosition > 4) {
 
-        boolean correctPosition = false;
-
-        while(!correctPosition) {
-
-            for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
-
-                if (maleRowPosition != occupiedCell.getFirst() &&
-                        maleColumnPosition != occupiedCell.getSecond()) {
-                    correctPosition = true;
-                    break;
-                }
-            }
-
-            if(!correctPosition) {
-                System.out.println("This Position is already occupied");
-                System.out.println("Chose the position of your male pawn");
-
+                System.out.println("Invalid position");
                 System.out.println("Row Position:");
                 maleRowPosition = Integer.parseInt(input.nextLine());
+            }
 
+            System.out.println("Column Position:");
+            int maleColumnPosition = Integer.parseInt(input.nextLine());
+
+            while( maleColumnPosition < 0 || maleColumnPosition > 4) {
+
+                System.out.println("Invalid position");
                 System.out.println("Column Position:");
                 maleColumnPosition = Integer.parseInt(input.nextLine());
-
             }
 
-        }
+            boolean isOccupied;
 
-        System.out.println("Chose the position of your female pawn");
+            do {
 
-        System.out.println("Row Position:");
-        int femaleRowPosition = Integer.parseInt(input.nextLine());
+                isOccupied = false;
 
-        System.out.println("Column Position:");
-        int femaleColumnPosition = Integer.parseInt(input.nextLine());
-
-        correctPosition = false;
-
-        while(!correctPosition) {
-
-            for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
-
-                if (femaleRowPosition != occupiedCell.getFirst() &&
-                        femaleColumnPosition != occupiedCell.getSecond() &&
-                        femaleRowPosition != maleRowPosition &&
-                        femaleColumnPosition != maleColumnPosition) {
-                    correctPosition = true;
-                    break;
+                for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+                    //occupied position
+                    if (maleRowPosition == occupiedCell.getFirst() &&
+                            maleColumnPosition == occupiedCell.getSecond()) {
+                        isOccupied = true;
+                        break;
+                    }
                 }
-            }
 
-            if(!correctPosition) {
-                System.out.println("This Position is already occupied");
-                System.out.println("Chose the position of your female pawn");
+                if(isOccupied) {
+                    System.out.println("This Position is already occupied");
+                    System.out.println("Chose the position of your male pawn");
 
+                    System.out.println("Row Position:");
+                    maleRowPosition = Integer.parseInt(input.nextLine());
+
+                    while( maleRowPosition < 0 || maleRowPosition > 4) {
+
+                        System.out.println("Invalid position");
+                        System.out.println("Row Position:");
+                        maleRowPosition = Integer.parseInt(input.nextLine());
+                    }
+
+                    System.out.println("Column Position:");
+                    maleColumnPosition = Integer.parseInt(input.nextLine());
+
+                    while( maleColumnPosition < 0 || maleColumnPosition > 4) {
+
+                        System.out.println("Invalid position");
+                        System.out.println("Column Position:");
+                        maleColumnPosition = Integer.parseInt(input.nextLine());
+                    }
+
+                }
+
+            } while(isOccupied);
+
+            //female pawn choosing
+            System.out.println("Chose the position of your female pawn");
+
+            System.out.println("Row Position:");
+            int femaleRowPosition = Integer.parseInt(input.nextLine());
+
+            while( femaleRowPosition < 0 || femaleRowPosition > 4) {
+
+                System.out.println("Invalid position");
                 System.out.println("Row Position:");
                 femaleRowPosition = Integer.parseInt(input.nextLine());
+            }
 
+            System.out.println("Column Position:");
+            int femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+            while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
+
+                System.out.println("Invalid position");
                 System.out.println("Column Position:");
                 femaleColumnPosition = Integer.parseInt(input.nextLine());
-
             }
+
+            do {
+
+                isOccupied = false;
+
+                for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+
+                    if (femaleRowPosition == occupiedCell.getFirst() &&
+                            femaleColumnPosition == occupiedCell.getSecond() ||
+                            femaleRowPosition == maleRowPosition &&
+                            femaleColumnPosition == maleColumnPosition) {
+                        isOccupied = true;
+                        break;
+                    }
+                }
+
+                if(isOccupied) {
+                    System.out.println("This Position is already occupied");
+                    System.out.println("Chose the position of your female pawn");
+
+                    System.out.println("Row Position:");
+                    femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                    while( femaleRowPosition < 0 || femaleRowPosition > 4) {
+
+                        System.out.println("Invalid position");
+                        System.out.println("Row Position:");
+                        femaleRowPosition = Integer.parseInt(input.nextLine());
+                    }
+
+                    System.out.println("Column Position:");
+                    femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                    while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
+
+                        System.out.println("Invalid position");
+                        System.out.println("Column Position:");
+                        femaleColumnPosition = Integer.parseInt(input.nextLine());
+                    }
+
+                }
+
+            } while (isOccupied);
 
             clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
 
         }
+        else {
+
+            //male pawn choosing
+            System.out.println("Chose the position of your male pawn");
+
+            System.out.println("Row Position:");
+            int maleRowPosition = Integer.parseInt(input.nextLine());
+
+            while( maleRowPosition < 0 || maleRowPosition > 4) {
+
+                System.out.println("Invalid position");
+                System.out.println("Row Position:");
+                maleRowPosition = Integer.parseInt(input.nextLine());
+            }
+
+            System.out.println("Column Position:");
+            int maleColumnPosition = Integer.parseInt(input.nextLine());
+
+            while( maleColumnPosition < 0 || maleColumnPosition > 4) {
+
+                System.out.println("Invalid position");
+                System.out.println("Column Position:");
+                maleColumnPosition = Integer.parseInt(input.nextLine());
+            }
+
+            //female pawn choosing
+            System.out.println("Chose the position of your female pawn");
+
+            System.out.println("Row Position:");
+            int femaleRowPosition = Integer.parseInt(input.nextLine());
+
+            while( femaleRowPosition < 0 || femaleRowPosition > 4) {
+
+                System.out.println("Invalid position");
+                System.out.println("Row Position:");
+                femaleRowPosition = Integer.parseInt(input.nextLine());
+            }
+
+            System.out.println("Column Position:");
+            int femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+            while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
+
+                System.out.println("Invalid position");
+                System.out.println("Column Position:");
+                femaleColumnPosition = Integer.parseInt(input.nextLine());
+            }
+
+            boolean isOccupied;
+
+            do {
+
+                isOccupied = femaleRowPosition != maleRowPosition &&
+                        femaleColumnPosition != maleColumnPosition;
+
+                if(isOccupied) {
+                    System.out.println("This Position is already occupied");
+                    System.out.println("Chose the position of your female pawn");
+
+                    System.out.println("Row Position:");
+                    femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                    while( femaleRowPosition < 0 || femaleRowPosition > 4) {
+
+                        System.out.println("Invalid position");
+                        System.out.println("Row Position:");
+                        femaleRowPosition = Integer.parseInt(input.nextLine());
+                    }
+
+                    System.out.println("Column Position:");
+                    femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                    while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
+
+                        System.out.println("Invalid position");
+                        System.out.println("Column Position:");
+                        femaleColumnPosition = Integer.parseInt(input.nextLine());
+                    }
+
+                }
+
+            } while(isOccupied);
+
+            clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
+
+
+        }
+
+
     }
 
 

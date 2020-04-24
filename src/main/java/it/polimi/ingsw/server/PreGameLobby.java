@@ -7,9 +7,11 @@ import it.polimi.ingsw.model.Player.Effect.*;
 
 import java.util.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PreGameLobby {
 
+    private final String regex = "^[aA-zZ]\\w{5,29}$";
 
     private int numberOfPlayers;
 
@@ -197,7 +199,7 @@ public class PreGameLobby {
         if(chosenCard == null) {
             throw new RuntimeException("Invalid Chosen Card!");
         }
-        if(playerCardMap.containsKey(nickname)) {
+        if(playerCardMap.containsKey(nickname) || !playersNicknames.contains(nickname)) {
             throw new RuntimeException("Invalid Nickname!");
         }
 
@@ -233,15 +235,12 @@ public class PreGameLobby {
     public void deletePlayerInformation(String nickname) {
 
         try {
-
             playersNicknames.removeIf(n -> n.equals(nickname));
             playerCardMap.remove(nickname);
-
         }
         catch(Exception e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -251,6 +250,11 @@ public class PreGameLobby {
 
     public Boolean isNicknameAvailable(String nickname) {
         return !playersNicknames.contains(nickname);
+    }
+
+
+    public Boolean isNicknameValid(String nickname) {
+        return Pattern.matches(regex, nickname);
     }
 
 

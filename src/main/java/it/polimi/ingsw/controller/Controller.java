@@ -246,9 +246,10 @@ public class Controller implements Observer, ClientToServerManager {
         String nickname = event.nickname;
 
         Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);
+        Boolean isNicknameValid = preGameLobby.isNicknameValid(nickname);
 
 
-        if( isNicknameFree && !preGameLobby.getClosed() ) {
+        if( isNicknameFree && isNicknameValid && !preGameLobby.getClosed() ) {
             //TODO : la addPlayer in PreGameLobby potrebbe essere sync
             preGameLobby.addPlayer(nickname);
             virtualView.newNicknameID(nickname, ID);

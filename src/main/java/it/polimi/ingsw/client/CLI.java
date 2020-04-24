@@ -14,12 +14,16 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class CLI implements ServerToClientManager {
 
 
+    private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
+
     private String ipAddress;
     private final int port;
+
 
     private final Scanner input;
 
@@ -117,11 +121,11 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(ConnectionEstablishedEvent event) {
 
-        System.out.print("Insert your nickname (max. 45 characters) : ");
+        System.out.print("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
         String nickname = input.nextLine();
 
-        while(nickname.length() > 45) {
-            System.out.print("I said less than 45 characters! Reinsert a shorter one : ");
+        while( !(Pattern.matches(nickname, nicknamePattern)) ) {
+            System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
 
@@ -224,6 +228,7 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(RoomNotFilled event) {
         System.out.println(event.message);
     }
+
 
     @Override
     public void manageEvent(AskNewNicknameEvent event) {

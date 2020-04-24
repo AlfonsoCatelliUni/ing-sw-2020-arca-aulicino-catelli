@@ -43,6 +43,8 @@ public interface ClientToServerManager {
 
     void manageEvent(ChosenCellToBuildEvent event);
 
+    void manageEvent(ChosenBuildingEvent event);
+
 
 
     void manageEvent(VictoryEvent event);

@@ -12,7 +12,7 @@ public class ChosenBuildActionEvent extends ClientToServerEvent {
     public String playerNickname;
 
 
-    public Action action;
+    public String action;
 
 
     public int pawnRow;
@@ -24,7 +24,7 @@ public class ChosenBuildActionEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public ChosenBuildActionEvent(String playerNickname, Action action, int pawnRow, int pawnColumn) {
+    public ChosenBuildActionEvent(String playerNickname, String action, int pawnRow, int pawnColumn) {
         this.playerNickname = playerNickname;
         this.action = action;
 

@@ -521,9 +521,9 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    public boolean isValid(Action action) {
+    public boolean isValid(String actionID) {
         for(Action a : lastActionsList) {
-            if(a.getActionID().equals(action.getActionID())) {
+            if(a.getActionID().equals(actionID)) {
                 return true;
             }
         }

@@ -10,12 +10,12 @@ public class GivePossibleBuildingsEvent extends ServerToClientEvent {
 
     public String receiverNickname;
 
-    public List<Building> buildings;
+    public String buildings;
 
     public boolean isValid;
 
 
-    public GivePossibleBuildingsEvent(String receiverNickname,List<Building> buildings, boolean isValid) {
+    public GivePossibleBuildingsEvent(String receiverNickname, String buildings, boolean isValid) {
 
         this.receiverNickname = receiverNickname;
         this.buildings = buildings;

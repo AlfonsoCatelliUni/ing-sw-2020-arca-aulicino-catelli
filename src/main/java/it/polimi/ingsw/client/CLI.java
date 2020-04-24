@@ -476,6 +476,11 @@ public class CLI implements ServerToClientManager {
 
     }
 
+    @Override
+    public void manageEvent(AskWhichPawnsUseEvent event) {
+
+    }
+
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {

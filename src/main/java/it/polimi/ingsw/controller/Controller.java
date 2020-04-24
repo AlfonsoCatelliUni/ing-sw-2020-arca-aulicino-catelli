@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
-import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.ClientToServerEvent;
@@ -21,6 +20,8 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Controller implements Observer, ClientToServerManager {
 
@@ -191,29 +192,52 @@ public class Controller implements Observer, ClientToServerManager {
         return generatedJSON;
     }
 
+
+    public void countdownStart() {
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                int numberOfConnected = preGameLobby.getConnectedPlayers().size();
+                int lobbySize = preGameLobby.getNumberOfPlayers();
+
+                if(numberOfConnected < lobbySize) {
+                    virtualView.sendMessage(new RoomNotFilled("Room Not Filled In Time!"));
+                    virtualView.sendMessage(new DisconnectionEvent());
+                }
+            }
+        }, 120000); // 2 minutes timer
+
+    }
+
+
+    // MARK : Network Event Manager Section ======================================================================================
     // MARK : Controller Function Section ======================================================================================
 
+
     public void startGame (){
-        // TODO: vedere come gestire i vari costruttori
+    // TODO: vedere come gestire i vari costruttori
 
-        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
+       List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
-        game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
+       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
 
-        List<Card> cards = new ArrayList<>();
+       List<Card> cards = new ArrayList<>();
 
-        for (String name : preGameLobby.getConnectedPlayers())
-            cards.add(preGameLobby.getCardOfPlayer(name));
+       for (String name : preGameLobby.getConnectedPlayers())
+           cards.add(preGameLobby.getCardOfPlayer(name));
 
-        String cardsInfo = generateJsonCards(cards);
+       String cardsInfo = generateJsonCards(cards);
 
-        virtualView.sendMessage(new StartGameEvent(colors, preGameLobby.getConnectedPlayers(), cardsInfo ));
+       String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
 
-        preGameLobby = null;
+       virtualView.sendMessage(new StartGameEvent(info));
 
-        String firstPlayer = game.getPlayersNickname().get(0);
+       preGameLobby = null;
 
-        virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true, "[]"));
+       String firstPlayer = game.getPlayersNickname().get(0);
+
+       virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true, "[]"));
     }
 
 
@@ -254,6 +278,7 @@ public class Controller implements Observer, ClientToServerManager {
             //and he has to choose the number of the players for the new match
             if(connectedPlayers.size() == 1) {
                 virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
+                countdownStart();
             }
             //if the waitingRoom is filled than we broadcast a message that communicates this event
             //and we ask the first entered player to choose his card
@@ -339,6 +364,7 @@ public class Controller implements Observer, ClientToServerManager {
             preGameLobby.setNumberOfPlayers(2);
 
         }
+
 
     }
 
@@ -435,7 +461,7 @@ public class Controller implements Observer, ClientToServerManager {
             List<Cell> availablePawnsCell = game.getAvailablePawns(player);
             String infoCell = generateJsonCells(availablePawnsCell);
             virtualView.sendMessageTo(player, new AskWhichPawnsUseEvent(player, false, infoCell));
-            
+
         }
     }
 

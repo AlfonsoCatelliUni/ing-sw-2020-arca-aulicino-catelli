@@ -30,6 +30,8 @@ public interface ServerToClientManager {
 
     void manageEvent(ClosedWaitingRoomEvent event);
 
+    void manageEvent(RoomNotFilled event);
+
     void manageEvent(AskNewNicknameEvent event);
 
     void manageEvent(AskInitPawnsEvent event);
@@ -39,6 +41,7 @@ public interface ServerToClientManager {
     void manageEvent(UnavailableNicknameEvent event);
 
     void manageEvent(GivePossibleCardsEvent event);
+
 
 
 

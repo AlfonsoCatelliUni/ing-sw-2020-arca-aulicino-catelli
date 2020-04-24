@@ -34,17 +34,4 @@ public class NewConnectionEvent extends ClientToServerEvent {
     }
 
 
-    // ======================================================================================
-
-
-//    public Integer getID() {
-//        return this.ID;
-//    }
-//
-//
-//    public String getNickname() {
-//        return this.nickname;
-//    }
-
-
 }

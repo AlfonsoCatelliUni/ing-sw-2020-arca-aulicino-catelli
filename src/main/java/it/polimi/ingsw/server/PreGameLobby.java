@@ -1,15 +1,10 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
-import it.polimi.ingsw.client.Couple;
-import it.polimi.ingsw.events.STCEvents.ClosedWaitingRoomEvent;
-import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Player.*;
 import it.polimi.ingsw.model.Player.Effect.*;
-import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.view.server.VirtualView;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -18,6 +13,10 @@ public class PreGameLobby {
 
     private int numberOfPlayers;
 
+
+    /**
+     * Closed indicates if this PreGameLobby is closed to new connections
+     */
     private Boolean closed;
 
 
@@ -52,12 +51,6 @@ public class PreGameLobby {
     private Map<String, Card> playerCardMap;
 
 
-    /**
-     * this map the player to the points where its pawns are going to be placed once the game is started
-     */
-    private Map<String, List<Point>> playerPawnPoints;
-
-
     private final static int MAXPLAYERS = 3;
 
 
@@ -69,13 +62,17 @@ public class PreGameLobby {
 
     public PreGameLobby() {
 
+        //players init
         this.numberOfPlayers = -1;
         this.closed = false;
 
         this.playersNicknames = new ArrayList<>();
+
+        //effect init
         this.effectsClassMap = new HashMap<>();
         this.effectsClassMap = fillMap();
-        this.playerPawnPoints = new HashMap<>();
+
+        //cards init
         this.pickedCards = new ArrayList<>();
         this.playerCardMap = new HashMap<>();
 
@@ -91,13 +88,18 @@ public class PreGameLobby {
     }
 
 
-    public List<String> getConnectedPlayers() {
-        return this.playersNicknames;
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
     }
 
 
     public int getNumberOfPlayers() {
         return this.numberOfPlayers;
+    }
+
+
+    public List<String> getConnectedPlayers() {
+        return this.playersNicknames;
     }
 
 
@@ -110,16 +112,25 @@ public class PreGameLobby {
         return playerCardMap;
     }
 
+
     public Card getCardOfPlayer(String p){
         return playerCardMap.get(p);
     }
+
+
+    public List<Card> getPickedCards() {
+        return this.pickedCards;
+    }
+
+
+    // ======================================================================================
 
 
     /**
      * build the map that connects the name of the card to its correct decorator class
      * @return the map of card-playerType
      */
-    protected Map<String, Effect> fillMap() {
+    private Map<String, Effect> fillMap() {
 
         Map<String, Effect> playerDecoratorMap = new HashMap<>();
 
@@ -149,6 +160,20 @@ public class PreGameLobby {
     }
 
 
+    /**
+     * synchronized because there could be conflicts with the timer
+     */
+    private synchronized void closeWaitingRoom() {
+
+        if(!closed) {
+            this.closed = true;
+            pickCards(allCards);
+
+        }
+
+    }
+
+
     public void addPlayer(String nickname) {
 
         //fare controllo prima di chiamare addPlayer
@@ -158,24 +183,10 @@ public class PreGameLobby {
 
         playersNicknames.add(nickname);
 
-        // TODO : mettere a posto il fatto che alla scadenza del timer faccia la close quando playersNickname < numberOfPlayers
-        if(playersNicknames.size() == 1) {
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    closeWaitingRoom();
-                }
-            }, 120000); // 2 minutes timer
-        }
 
         if (playersNicknames.size() == numberOfPlayers)
             closeWaitingRoom();
 
-    }
-
-
-    public Boolean isNicknameAvailable(String nickname) {
-        return !playersNicknames.contains(nickname);
     }
 
 
@@ -193,92 +204,6 @@ public class PreGameLobby {
         playerCardMap.put( nickname, chosenCard );
         pickedCards.remove(chosenCard);
 
-    }
-
-
-    public Boolean isCardAvailable(String cardName) {
-
-        for ( Card c : pickedCards ) {
-            if(c.getName().equals(cardName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    public List<Card> getPickedCards() {
-        return this.pickedCards;
-    }
-
-
-    public List<Cell> getInitialOccupiedCell() {
-        List<String> keys = new ArrayList<>(playerPawnPoints.keySet());
-        List<Cell> occupiedCells = new ArrayList<>();
-
-        for (String k : keys) {
-
-            List<Point> pointList = playerPawnPoints.get(k);
-
-            for (Point p : pointList) {
-                occupiedCells.add(new Cell(p.x, p.y));
-            }
-
-        }
-        return occupiedCells;
-    }
-
-
-    public void addNewPawnCoordinates(String nickname, int row, int column) {
-
-        Point pawnPoint = new Point(row, column);
-
-        List<Point> points = playerPawnPoints.get(nickname);
-
-        if (!isSpotFree(pawnPoint))
-            throw new RuntimeException("A sleeping Snorlax is blocking the spot. You've to find the Poke Flute to wake him up!");
-        if (points != null){
-            if(points.size() < 2) {
-                points.add(pawnPoint);
-                playerPawnPoints.put(nickname, points);
-            }
-            else throw new RuntimeException("how many pawns do you think you have?");
-        }
-        else {
-            points = new ArrayList<>();
-            points.add(pawnPoint);
-            playerPawnPoints.put(nickname, points);
-
-        }
-
-
-    }
-
-
-    public Boolean isSpotFree(int row, int column) {
-        Point spot = new Point(row, column);
-        return isSpotFree(spot);
-    }
-
-
-    private Boolean isSpotFree(Point spot){
-        List<String> keys = new ArrayList<>(playerPawnPoints.keySet());
-
-        for ( String k : keys ) {
-
-            List<Point> pointList = playerPawnPoints.get(k);
-            for (Point p : pointList ) {
-
-                if(spot.equals(p)) {
-                    return false;
-                }
-
-            }
-
-        }
-
-        return true;
     }
 
 
@@ -305,53 +230,49 @@ public class PreGameLobby {
     }
 
 
-    /**
-     * synchronized because there could be conflicts with the timer
-     */
-    private synchronized void closeWaitingRoom() {
-
-        if(!closed) {
-
-            this.closed = true;
-            pickCards(allCards);
-
-        }
-
-    }
-
-
-    public void setNumberOfPlayers(int numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
-    }
-
-
-    public boolean deletePlayerInformation(String nickname) {
+    public void deletePlayerInformation(String nickname) {
 
         try {
-            playersNicknames.removeIf(n -> n.equals(nickname));
 
+            playersNicknames.removeIf(n -> n.equals(nickname));
             playerCardMap.remove(nickname);
-            playerPawnPoints.remove(nickname);
 
         }
         catch(Exception e) {
             e.printStackTrace();
-            return false;
         }
 
 
-        return true;
     }
 
 
+    // ======================================================================================
 
-    // ONLY USED FOR TESTING
-    public Map<String, List<Point>> getPlayerPawnPoints() {
-        return playerPawnPoints;
+
+    public Boolean isNicknameAvailable(String nickname) {
+        return !playersNicknames.contains(nickname);
     }
+
+
+    public Boolean isCardAvailable(String cardName) {
+
+        for ( Card c : pickedCards ) {
+            if(c.getName().equals(cardName)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    // ======================================================================================
+
 
     // ONLY USED FOR TESTING
     public List<Card> getAllCards() {
         return allCards;
     }
+
+
 }

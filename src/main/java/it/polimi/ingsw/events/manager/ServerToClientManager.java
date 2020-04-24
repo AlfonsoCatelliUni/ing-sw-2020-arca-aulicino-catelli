@@ -58,5 +58,7 @@ public interface ServerToClientManager {
 
     void manageEvent(LosingByNoActionEvent event);
 
+    void manageEvent(EndGameSTCEvent event);
+
 
 }

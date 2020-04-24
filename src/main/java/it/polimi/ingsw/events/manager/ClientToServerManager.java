@@ -28,8 +28,6 @@ public interface ClientToServerManager {
 
     void manageEvent(ChosenCardEvent event);
 
-
-
     void manageEvent(ChosenMoveActionEvent event);
 
     void manageEvent(ChosenBuildActionEvent event);

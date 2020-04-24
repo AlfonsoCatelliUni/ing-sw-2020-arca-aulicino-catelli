@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
-import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.events.ClientToServerEvent;
@@ -21,6 +20,8 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Controller implements Observer, ClientToServerManager {
 
@@ -192,7 +193,26 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    public void countdownStart() {
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                int numberOfConnected = preGameLobby.getConnectedPlayers().size();
+                int lobbySize = preGameLobby.getNumberOfPlayers();
+
+                if(numberOfConnected < lobbySize) {
+                    virtualView.sendMessage(new RoomNotFilled("Room Not Filled In Time!"));
+                    virtualView.sendMessage(new DisconnectionEvent());
+                }
+            }
+        }, 120000); // 2 minutes timer
+
+    }
+
+
     // MARK : Network Event Manager Section ======================================================================================
+
 
     public void startGame (){
     // TODO: vedere come gestire i vari costruttori
@@ -241,6 +261,7 @@ public class Controller implements Observer, ClientToServerManager {
             //and he has to choose the number of the players for the new match
             if(connectedPlayers.size() == 1) {
                 virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
+                countdownStart();
             }
             //if the waitingRoom is filled than we broadcast a message that communicates this event
             //and we ask the first entered player to choose his card
@@ -327,6 +348,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
 
+        
     }
 
 
@@ -370,8 +392,6 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     }
-
-
 
 
     @Override

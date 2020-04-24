@@ -49,15 +49,6 @@ public class VirtualView extends Observable implements Observer {
 
     // ======================================================================================
 
-    //TODO : dec
-    /*
-    @Override
-    public void update(Object event) {
-        throw new RuntimeException("Unknown Event Type!");
-    }
-
-     */
-
 
     @Override
     public void update(ServerToClientEvent event) {

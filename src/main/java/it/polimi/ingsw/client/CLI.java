@@ -531,6 +531,29 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(StartGameEvent event) {
 
+        System.out.println("The game starts right now!");
+        System.out.println("   _____             _             _       _ \n" +
+                "  / ____|           | |           (_)     (_)\n" +
+                " | (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ \n" +
+                "  \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |\n" +
+                "  ____) | (_| | | | | || (_) | |  | | | | | |\n" +
+                " |_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|\n" +
+                "                                             \n" +
+                "                                             ");
+
+        // <nameCard, effectCard>
+        List<FormattedPlayerInfo> playersInfo = ClientJsonHandler.generatePlayersList(event.info);
+
+        System.out.println("The players for this game are:\n");
+
+        for (FormattedPlayerInfo formattedPlayerInfo : playersInfo) {
+            System.out.println(formattedPlayerInfo.getNickname() +
+                    "\tColor: " + formattedPlayerInfo.getColor() +
+                    "\tCard: " + formattedPlayerInfo.getCard().getFirst() +
+                    "\tCard effect: " + formattedPlayerInfo.getCard().getSecond() +
+                    "\n");
+        }
+
     }
 
 
@@ -538,9 +561,6 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(LosingByNoActionEvent event) {
 
     }
-
-
-
 
 
 }

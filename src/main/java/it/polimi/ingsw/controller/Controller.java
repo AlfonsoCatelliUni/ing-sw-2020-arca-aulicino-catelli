@@ -208,7 +208,9 @@ public class Controller implements Observer, ClientToServerManager {
 
        String cardsInfo = generateJsonCards(cards);
 
-       virtualView.sendMessage(new StartGameEvent(colors, preGameLobby.getConnectedPlayers(), cardsInfo ));
+       String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
+
+       virtualView.sendMessage(new StartGameEvent(info));
 
        preGameLobby = null;
 

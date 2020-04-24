@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
@@ -120,6 +122,7 @@ class PlayerTest {
     @Test
     void initPawn() {
 
+        List<Pawn> pawns = alfoPlayer.getPawns();
         alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,0));
 
         assertEquals(gameBoard.getCell(0,0), alfoPlayer.getPawns().get(0).getPosition());

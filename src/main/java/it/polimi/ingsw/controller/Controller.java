@@ -336,26 +336,34 @@ public class Controller implements Observer, ClientToServerManager {
 
      // TODO : cambiare metodi e passare al game
 
-        Boolean isMaleSpotFree = preGameLobby.isSpotFree(event.pawnRow, event.pawnColumn);
+        boolean isMaleSpotFree = game.isValidSpot(event.malePawnRow, event.malePawnColumn);
+
+        boolean isFemaleSpotFree = game.isValidSpot(event.femalePawnRow, event.femalePawnColumn);
+
 
         /* before I control that the selected spot is really free */
-        if(isMaleSpotFree) {
-            preGameLobby.addNewPawnCoordinates(event.playerNickname, event.pawnRow, event.pawnColumn);
-            int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
+        if(isMaleSpotFree && isFemaleSpotFree) {
+            game.initializePawn(event.playerNickname, event.malePawnRow, event.malePawnColumn);
+
+            game.initializePawn(event.playerNickname, event.femalePawnRow, event.femalePawnColumn);
+
+            int index = game.getPlayersNickname().indexOf(event.playerNickname);
             index++;
 
-            if(index < preGameLobby.getNumberOfPlayers()) {
-                List <Cell> occupiedCell = preGameLobby.getInitialOccupiedCell();
+            if(index < game.getPlayersNickname().size()) {
+                List <Cell> occupiedCell = game.getAllPawnsCoordinates();
                 String info = generateJsonCells(occupiedCell);
                 virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(index), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(index), true, info ));
             }
             else {
-                //virtualView.sendMessage(new StartGameEvent());
+                //TODO: pensare inizio primo turno effettivo
+                //virtualView.sendMessageTo(game.getPlayersNickname().get(0), ne);
             }
         }
         else {
-            //TODO : mandare messaggio di inserimento del nome del giocatore
-            //virtualView.sendMessageTo()
+            List <Cell> occupiedCell = game.getAllPawnsCoordinates();
+            String info = generateJsonCells(occupiedCell);
+            virtualView.sendMessageTo(event.playerNickname, new AskInitPawnsEvent(event.playerNickname, false, info));
         }
 
 

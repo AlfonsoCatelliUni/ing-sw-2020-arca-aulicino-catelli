@@ -349,4 +349,9 @@ public class PreGameLobby {
     public Map<String, List<Point>> getPlayerPawnPoints() {
         return playerPawnPoints;
     }
+
+    // ONLY USED FOR TESTING
+    public List<Card> getAllCards() {
+        return allCards;
+    }
 }

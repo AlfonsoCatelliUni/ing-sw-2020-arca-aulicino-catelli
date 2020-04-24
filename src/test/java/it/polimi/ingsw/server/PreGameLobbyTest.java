@@ -28,6 +28,7 @@ class PreGameLobbyTest {
         nicknames.add("Massi");
         nicknames.add("Giamma");
 
+
     }
 
 
@@ -104,6 +105,31 @@ class PreGameLobbyTest {
 
     @Test
     void addCard() {
+
+        preGameLobby.setNumberOfPlayers(2);
+        preGameLobby.addPlayer(nicknames.get(0));
+        preGameLobby.addPlayer(nicknames.get(1));
+
+
+        String card = preGameLobby.getPickedCards().get(0).getName();
+
+        preGameLobby.addCard("Alfonso", card);
+
+        assertEquals(card, preGameLobby.getPlayerCardMap().get("Alfonso").getName());
+
+        for (Card c : preGameLobby.getPickedCards()){
+            assertNotEquals(card, c.getName());
+        }
+
+        assertThrows(RuntimeException.class, () -> {
+            preGameLobby.addCard("Alfonso","CIAO");
+        });
+
+        assertThrows(RuntimeException.class, () -> {
+            preGameLobby.addCard("Alfonso",preGameLobby.getPickedCards().get(1).getName());
+        });
+
+
     }
 
 
@@ -194,4 +220,7 @@ class PreGameLobbyTest {
     }
 
 
+    @Test
+    void pickCards() {
+    }
 }

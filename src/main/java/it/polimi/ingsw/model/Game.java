@@ -146,6 +146,7 @@ public class Game extends Observable implements GameConsequenceHandler {
             possibleActions.clear();
         }
 
+        lastCellsList = availablePawns;
         return new ArrayList<>(availablePawns);
     }
 
@@ -507,7 +508,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     public boolean isValid(int row, int column) {
         for( Cell c : lastCellsList ) {
-            if(c.getRowPosition() == row && c.getColumnPosition() == column) {
+            if(c.getRowPosition() == row && c.getColumnPosition() == column && isValidCoordinate(row, column)) {
                 return true;
             }
         }

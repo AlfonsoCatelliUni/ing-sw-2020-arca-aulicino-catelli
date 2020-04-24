@@ -34,6 +34,8 @@ public interface ServerToClientManager {
 
     void manageEvent(AskInitPawnsEvent event);
 
+    void manageEvent(AskWhichPawnsUseEvent event);
+
     void manageEvent(UnavailableNicknameEvent event);
 
     void manageEvent(GivePossibleCardsEvent event);

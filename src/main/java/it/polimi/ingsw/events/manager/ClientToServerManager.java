@@ -29,6 +29,7 @@ public interface ClientToServerManager {
     void manageEvent(ChosenCardEvent event);
 
 
+    void manageEvent(ChosenPawnToUseEvent event);
 
     void manageEvent(ChosenMoveActionEvent event);
 

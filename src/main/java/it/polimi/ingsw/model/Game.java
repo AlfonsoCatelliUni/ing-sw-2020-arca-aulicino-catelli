@@ -70,7 +70,8 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
         for (int i = 0; i < playersNickname.size(); i++) {
-            players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)), playerDecoratorMap.get(playersNickname.get(i))));
+            players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)),
+                    playerDecoratorMap.get(nicknameCardMap.get(playersNickname.get(i)).getName())));
         }
 
         currentPlayer = players.get(indexCurrentPlayer);

@@ -135,7 +135,7 @@ public class CLI implements ServerToClientManager {
 
         this.nickname = event.nickname;
 
-        System.out.print("Do you want a 2 or 3 players game ? ");
+        System.out.print("Do you want a 2 or 3 players game? ");
         int playersNumber = Integer.parseInt(input.nextLine());
 
         if(playersNumber == 420) {
@@ -172,6 +172,7 @@ public class CLI implements ServerToClientManager {
 
         this.nickname = event.nickname;
 
+        System.out.println("The temporary players are: ");
         for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
@@ -230,10 +231,13 @@ public class CLI implements ServerToClientManager {
 
         List<Couple<Integer, Integer>> occupiedCells = ClientJsonHandler.generateCellsList(event.info);
 
+        if(!event.isValid)
+            System.out.println("An error has occurred, please reinsert the positions");
+
         if(occupiedCells.size() != 0) {
             System.out.println("You can't place your pawns in this positions: ");
             for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
-                System.out.println("[" + occupiedCell.getFirst() + "]" + " " + "[" + occupiedCell.getSecond() + "]");
+                System.out.println("[" + occupiedCell.getFirst() + "," + occupiedCell.getSecond() + "]");
             }
 
             //male pawn choosing
@@ -370,6 +374,9 @@ public class CLI implements ServerToClientManager {
 
             clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
 
+            System.out.println("Please wait until it's your turn");
+
+
         }
         else {
 
@@ -423,8 +430,8 @@ public class CLI implements ServerToClientManager {
 
             do {
 
-                isOccupied = femaleRowPosition != maleRowPosition &&
-                        femaleColumnPosition != maleColumnPosition;
+                isOccupied = femaleRowPosition == maleRowPosition &&
+                        femaleColumnPosition == maleColumnPosition;
 
                 if(isOccupied) {
                     System.out.println("This Position is already occupied");
@@ -456,6 +463,8 @@ public class CLI implements ServerToClientManager {
 
             clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
 
+            System.out.println("Please wait until it's your turn");
+
 
         }
 
@@ -466,32 +475,33 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
-        if(event.isValid) {
-            int choiceNum;
+        if(!event.isValid) {
+            System.out.println("An error has occurred, please reinsert the positions");
 
-            //System.out.println(event.receiverNickname);
-            List<Couple<String, String>> cards = ClientJsonHandler.generateCardsList(event.info);
+        }
 
-            for (int i = 0; i < cards.size(); i++) {
+        int choiceNum;
+
+        List<Couple<String, String>> cards = ClientJsonHandler.generateCardsList(event.info);
+
+        for (int i = 0; i < cards.size(); i++) {
                 System.out.println(i + ")\tGod Name : " + cards.get(i).getFirst() + "\n\tGod Effect : " + cards.get(i).getSecond());
             }
 
-            System.out.print("\nInsert the number to choose your God : ");
+        System.out.print("\nInsert the number to choose your God : ");
+        choiceNum = Integer.parseInt(input.nextLine());
+
+        while (choiceNum > cards.size() || choiceNum < 0) {
+            System.out.println("Invalid choice!");
+            System.out.print("Insert the number to choose your God : ");
             choiceNum = Integer.parseInt(input.nextLine());
-
-            while (choiceNum > cards.size() || choiceNum < 0) {
-                System.out.println("Invalid choice!");
-                System.out.print("Insert the number to choose your God : ");
-                choiceNum = Integer.parseInt(input.nextLine());
-            }
-
-            //TODO : da un errore OEFException
-            clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
-
         }
-        else {
-            System.out.println("non dovrebbe essere qui");
-        }
+
+        //TODO : da un errore OEFException
+        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
+
+        System.out.println("Please wait until it's your turn");
+
     }
 
 

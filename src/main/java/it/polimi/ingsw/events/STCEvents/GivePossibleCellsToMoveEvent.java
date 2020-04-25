@@ -4,6 +4,7 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.model.Board.Cell;
 
+import java.awt.*;
 import java.util.List;
 
 public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
@@ -12,7 +13,7 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
     public String receiverNickname;
 
 
-    public String cellsAvailableToMove;
+    public List<Point> cellsAvailableToMove;
 
 
     public String actionID;
@@ -24,7 +25,7 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public GivePossibleCellsToMoveEvent(String receiverNickname, String cellsAvailableToMove, boolean isValid) {
+    public GivePossibleCellsToMoveEvent(String receiverNickname, List<Point> cellsAvailableToMove, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.actionID = "move";
 
@@ -44,16 +45,6 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
 
 
     // ======================================================================================
-
-
-//    public String getReceiverNickname() {
-//        return this.receiverNickname;
-//    }
-//
-//
-//    public List<Cell> getCellsAvailableToMove() {
-//        return this.cellsAvailableToMove;
-//    }
 
 
 }

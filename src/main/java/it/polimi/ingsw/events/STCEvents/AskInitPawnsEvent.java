@@ -4,6 +4,8 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AskInitPawnsEvent extends ServerToClientEvent {
 
@@ -12,16 +14,22 @@ public class AskInitPawnsEvent extends ServerToClientEvent {
 
     public boolean isValid;
 
-    public String info;
+    public List<Point> info;
 
 
     // ======================================================================================
 
 
-    public AskInitPawnsEvent(String nickname, boolean isValid, String info) {
+    public AskInitPawnsEvent(String nickname, boolean isValid, List<Point> info) {
         this.nickname = nickname;
         this.isValid = isValid;
         this.info = info;
+    }
+
+    public AskInitPawnsEvent(String nickname, boolean isValid){
+        this.nickname = nickname;
+        this.isValid = isValid;
+        this.info = new ArrayList<>();
     }
 
     // ======================================================================================

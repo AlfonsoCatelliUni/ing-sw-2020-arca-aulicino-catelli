@@ -10,9 +10,11 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class CLI implements ServerToClientManager {
@@ -225,15 +227,15 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
 
-        List<Couple<Integer, Integer>> occupiedCells = ClientJsonHandler.generateCellsList(event.info);
+        List<Point> occupiedCells = event.info;
 
         if(!event.isValid)
             System.out.println("An error has occurred, please reinsert the positions");
 
         if(occupiedCells.size() != 0) {
             System.out.println("You can't place your pawns in this positions: ");
-            for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
-                System.out.println("[" + occupiedCell.getFirst() + "," + occupiedCell.getSecond() + "]");
+            for (Point occupiedCell : occupiedCells) {
+                System.out.println("[" + occupiedCell.getX() + "," + occupiedCell.getY() + "]");
             }
 
             //male pawn choosing
@@ -265,10 +267,10 @@ public class CLI implements ServerToClientManager {
 
                 isOccupied = false;
 
-                for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+                for (Point occupiedCell : occupiedCells) {
                     //occupied position
-                    if (maleRowPosition == occupiedCell.getFirst() &&
-                            maleColumnPosition == occupiedCell.getSecond()) {
+                    if (maleRowPosition == occupiedCell.getX() &&
+                            maleColumnPosition == occupiedCell.getY()) {
                         isOccupied = true;
                         break;
                     }
@@ -329,10 +331,10 @@ public class CLI implements ServerToClientManager {
 
                 isOccupied = false;
 
-                for (Couple<Integer, Integer> occupiedCell : occupiedCells) {
+                for (Point occupiedCell : occupiedCells) {
 
-                    if (femaleRowPosition == occupiedCell.getFirst() &&
-                            femaleColumnPosition == occupiedCell.getSecond() ||
+                    if (femaleRowPosition == occupiedCell.getX() &&
+                            femaleColumnPosition == occupiedCell.getY() ||
                             femaleRowPosition == maleRowPosition &&
                             femaleColumnPosition == maleColumnPosition) {
                         isOccupied = true;
@@ -470,94 +472,102 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(AskWhichPawnsUseEvent event) {
 
-        if(!event.isValid) {
+        if (!event.isValid) {
             System.out.println("An error has occurred, please reinsert the position");
         }
 
-        List<Couple<Integer, Integer>> coordinatesAvailablePawns = ClientJsonHandler.generateCellsList(event.info);
+        List<Point> points = event.info;
 
+        int x = points.get(0).x;
 
-        /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
-        int rowPosition = 0;
-
-        int columnPosition = 0;
-
-        //the player can choose witch pawn can use
-        if(coordinatesAvailablePawns.size() == 1) {
-
-            System.out.println("You can do your action only with the pawn with coordinates: " +
-                    "[" + coordinatesAvailablePawns.get(0).getFirst() + "," + coordinatesAvailablePawns.get(0).getSecond() + "]");
-
-            rowPosition = coordinatesAvailablePawns.get(0).getFirst();
-            columnPosition = coordinatesAvailablePawns.get(0).getSecond();
-
-        }
-        if(coordinatesAvailablePawns.size() == 2) {
-
-            System.out.println("Choose the coordinates of the pawn you want to move: ");
-
-            for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
-
-                System.out.println("[" + coordinatesAvailablePawn.getFirst() + "," + coordinatesAvailablePawn.getSecond() + "]\n");
-
-            }
-
-            boolean isCorrect;
-
-            do {
-
-                isCorrect = false;
-
-                System.out.println("Row position: ");
-                rowPosition = Integer.parseInt(input.nextLine());
-
-                while (rowPosition < 0 || rowPosition > 4) {
-
-                    System.out.println("Invalid position");
-                    System.out.println("Row Position:");
-                    rowPosition = Integer.parseInt(input.nextLine());
-                }
-
-                System.out.println("Column position: ");
-                columnPosition = Integer.parseInt(input.nextLine());
-
-                while (columnPosition < 0 || columnPosition > 4) {
-
-                    System.out.println("Invalid position");
-                    System.out.println("Column Position:");
-                    columnPosition = Integer.parseInt(input.nextLine());
-                }
-
-                for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
-
-                    if (rowPosition == coordinatesAvailablePawn.getFirst() &&
-                            columnPosition == coordinatesAvailablePawn.getSecond()) {
-
-                        isCorrect = true;
-                        break;
-
-                    }
-
-                }
-
-                if(!isCorrect) {
-                    System.out.println("None of your pawns are in this cell, please reinsert the coordinates");
-                }
-
-            } while(!isCorrect);
-
-
-        }
-
-        this.rowUsedPawn = rowPosition;
-
-        this.columnUsedPawn = columnPosition;
-
-        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
+        System.out.println(x);
 
     }
 
-
+//        List<Couple<Integer, Integer>> coordinatesAvailablePawns = ClientJsonHandler.generateCellsList(event.info);
+//
+//
+//        /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
+//        int rowPosition = 0;
+//
+//        int columnPosition = 0;
+//
+//        //the player can choose witch pawn can use
+//        if(coordinatesAvailablePawns.size() == 1) {
+//
+//            System.out.println("You can do your action only with the pawn with coordinates: " +
+//                    "[" + coordinatesAvailablePawns.get(0).getFirst() + "," + coordinatesAvailablePawns.get(0).getSecond() + "]");
+//
+//            rowPosition = coordinatesAvailablePawns.get(0).getFirst();
+//            columnPosition = coordinatesAvailablePawns.get(0).getSecond();
+//
+//        }
+//        if(coordinatesAvailablePawns.size() == 2) {
+//
+//            System.out.println("Choose the coordinates of the pawn you want to move: ");
+//
+//            for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
+//
+//                System.out.println("[" + coordinatesAvailablePawn.getFirst() + "," + coordinatesAvailablePawn.getSecond() + "]\n");
+//
+//            }
+//
+//            boolean isCorrect;
+//
+//            do {
+//
+//                isCorrect = false;
+//
+//                System.out.println("Row position: ");
+//                rowPosition = Integer.parseInt(input.nextLine());
+//
+//                while (rowPosition < 0 || rowPosition > 4) {
+//
+//                    System.out.println("Invalid position");
+//                    System.out.println("Row Position:");
+//                    rowPosition = Integer.parseInt(input.nextLine());
+//                }
+//
+//                System.out.println("Column position: ");
+//                columnPosition = Integer.parseInt(input.nextLine());
+//
+//                while (columnPosition < 0 || columnPosition > 4) {
+//
+//                    System.out.println("Invalid position");
+//                    System.out.println("Column Position:");
+//                    columnPosition = Integer.parseInt(input.nextLine());
+//                }
+//
+//                for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
+//
+//                    if (rowPosition == coordinatesAvailablePawn.getFirst() &&
+//                            columnPosition == coordinatesAvailablePawn.getSecond()) {
+//
+//                        isCorrect = true;
+//                        break;
+//
+//                    }
+//
+//                }
+//
+//                if(!isCorrect) {
+//                    System.out.println("None of your pawns are in this cell, please reinsert the coordinates");
+//                }
+//
+//            } while(!isCorrect);
+//
+//
+//        }
+//
+//        this.rowUsedPawn = rowPosition;
+//
+//        this.columnUsedPawn = columnPosition;
+//
+//        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
+//
+//    }
+//
+//
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
@@ -594,7 +604,7 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleActionsEvent event) {
 
-        List<String> possibleActions = ClientJsonHandler.generateActionsList(event.actions);
+        List<String> possibleActions = event.actions;
 
         System.out.println("Your possible actions are: ");
 

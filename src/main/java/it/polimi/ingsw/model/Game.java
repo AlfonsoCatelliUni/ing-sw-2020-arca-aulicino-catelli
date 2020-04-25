@@ -290,6 +290,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         Cell designatedCell = gameBoard.getCell(buildRow, buildColumn);
 
         player.build(designatedPawn, designatedCell, level, gameBoard.getBuildings());
+
+
     }
 
 

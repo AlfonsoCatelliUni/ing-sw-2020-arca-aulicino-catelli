@@ -19,6 +19,7 @@ import it.polimi.ingsw.view.server.VirtualView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -219,7 +220,7 @@ public class Controller implements Observer, ClientToServerManager {
 
        String firstPlayer = game.getPlayersNickname().get(0);
 
-       virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true, "[]"));
+       virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true));
     }
 
 
@@ -252,8 +253,12 @@ public class Controller implements Observer, ClientToServerManager {
             virtualView.sendMessageTo(firstPlayer, new LosingByNoActionEvent(firstPlayer, "So Sad"));
         }
         else {
-            String infoCell = generateJsonCells(availablePawnsCell);
-            virtualView.sendMessageTo(firstPlayer, new AskWhichPawnsUseEvent(firstPlayer, true, infoCell));
+            List<Point> points = new ArrayList<>();
+            for (Cell c : availablePawnsCell){
+                points.add(new Point(c.getRowPosition(),c.getColumnPosition()));
+            }
+
+            virtualView.sendMessageTo(firstPlayer, new AskWhichPawnsUseEvent(firstPlayer, true, points));
         }
     }
 
@@ -271,7 +276,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             String infoCell = generateJsonCells(availablePawnsCell);
 
-            virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, infoCell));
+            //virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, infoCell));
 
         }
         else {
@@ -425,7 +430,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             if(index < game.getPlayersNickname().size()) {
                 List <Cell> occupiedCell = game.getAllPawnsCoordinates();
-                String info = generateJsonCells(occupiedCell);
+                List<Point> info = generatePointsByCells(occupiedCell);
                 virtualView.sendMessageTo(game.getPlayersNickname().get(index), new AskInitPawnsEvent(game.getPlayersNickname().get(index), true, info ));
             }
             else {
@@ -434,7 +439,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         else {
             List <Cell> occupiedCell = game.getAllPawnsCoordinates();
-            String info = generateJsonCells(occupiedCell);
+            List<Point> info = generatePointsByCells(occupiedCell);
             virtualView.sendMessageTo(event.playerNickname, new AskInitPawnsEvent(event.playerNickname, false, info));
         }
 
@@ -460,8 +465,6 @@ public class Controller implements Observer, ClientToServerManager {
 
             } else {
                 startGame();
-                //inviare richiesta inizializzazione pawn al primo giocatore
-                //virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new AskInitPawnsEvent(preGameLobby.getConnectedPlayers().get(0), true, "[]"));
             }
         }
         else {
@@ -485,13 +488,13 @@ public class Controller implements Observer, ClientToServerManager {
         if (isValid) {
 
             List<Action> possibleActions = game.getPossibleActions(player, row, column);
-            String actionsInfo = generateJsonActions(possibleActions);
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
             virtualView.sendMessageTo(player, new GivePossibleActionsEvent(player, actionsInfo, true));
 
         } else {
             List<Cell> availablePawnsCell = game.getAvailablePawns(player);
-            String infoCell = generateJsonCells(availablePawnsCell);
+            List<Point> infoCell = generatePointsByCells(availablePawnsCell);
 
             virtualView.sendMessageTo(player, new AskWhichPawnsUseEvent(player, false, infoCell));
 
@@ -511,15 +514,15 @@ public class Controller implements Observer, ClientToServerManager {
         if( game.isValid(chosenAction) ) {
 
             List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
-            String cellInfo = generateJsonCells(availableCellsToMove);
+            List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
         }
         else {
             List<Action> possibleActions = game.getLastActionsList();
-            String actionInfo = generateJsonActions(possibleActions);
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
-            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionInfo, false));
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
         }
     }
 
@@ -537,7 +540,7 @@ public class Controller implements Observer, ClientToServerManager {
             //if it's ok the game automatically return the cells available to this action
 
             List<Cell> availableCellsToBuild = game.wherePawnCanBuild(nickname, row, column);
-            String cellsInfo = generateJsonCells(availableCellsToBuild);
+            List<Point> cellsInfo = generatePointsByCells(availableCellsToBuild);
 
             virtualView.sendMessage(new GivePossibleCellsToBuildEvent(nickname, cellsInfo, true));
         }
@@ -545,10 +548,14 @@ public class Controller implements Observer, ClientToServerManager {
             //if it's not ok than the game automatically return the last possible actions list
             //because the game state isn't changed
             List<Action> possibleActions = game.getLastActionsList();
-            String actionsInfo = generateJsonActions(possibleActions);
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
             virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
         }
+    }
+
+    @Override
+    public void manageEvent(ChosenDestroyActionEvent event) {
     }
 
 
@@ -565,7 +572,7 @@ public class Controller implements Observer, ClientToServerManager {
             //virtualView.sendMessageTo();
         }
         else {
-            String actionsInfo = generateJsonActions(game.getLastActionsList());
+            List<String> actionsInfo = generateActionIDByActions((game.getLastActionsList()));
             virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
         }
 
@@ -589,7 +596,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             List<Action> availableActions = game.getPossibleActions(nickname, nextRow, nextColumn);
             if(availableActions.size() > 0) {
-                String actionsInfo = generateJsonActions(availableActions);
+                List<String> actionsInfo = generateActionIDByActions(availableActions);
                 virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
             }
             else {
@@ -598,7 +605,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         else {
             List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
-            String cellInfo = generateJsonCells(availableCellsToMove);
+            List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
         }
@@ -621,7 +628,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             List<Building> availableBuildings = game.getPossibleBuildingOnCell(nickname, nextRow, nextColumn);
             if(availableBuildings.size() > 0) {
-                String buildingInfo = generateJsonBuildings(availableBuildings);
+                List<Integer> buildingInfo = generateLevelByBuilding(availableBuildings);
                 virtualView.sendMessageTo(nickname, new GivePossibleBuildingsEvent(nickname, buildingInfo, true));
             }
             else {
@@ -629,7 +636,7 @@ public class Controller implements Observer, ClientToServerManager {
             }
         }
         else {
-            String cellsInfo = generateJsonCells(game.getLastCellsList());
+            List<Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));
         }
     }
@@ -650,7 +657,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             List <Action> possibleActions = game.getPossibleActions(player, pawnRow, pawnColumn);
             if (possibleActions.size()>0) {
-                String actionsInfo = generateJsonActions(possibleActions);
+                List<String> actionsInfo = generateActionIDByActions(possibleActions);
                 virtualView.sendMessageTo(player, new GivePossibleActionsEvent(player, actionsInfo, true));
             }
             else {
@@ -659,7 +666,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         else {
             List<Building> availableBuildings = game.getPossibleBuildingOnCell(player, buildRow, buildColumn);
-            String buildingInfo = generateJsonBuildings(availableBuildings);
+            List<Integer> buildingInfo = generateLevelByBuilding(availableBuildings);
 
             virtualView.sendMessageTo(player, new GivePossibleBuildingsEvent(player, buildingInfo, false ));
         }
@@ -684,6 +691,35 @@ public class Controller implements Observer, ClientToServerManager {
 
     // MARK : Support Methods Section ======================================================================================
 
+
+    public Point generatePointByCell (Cell c){
+        return new Point(c.getRowPosition(), c.getColumnPosition());
+    }
+
+    public List<Point> generatePointsByCells(List<Cell> cells){
+
+        List <Point> points = new ArrayList<>();
+
+        for (Cell c : cells){
+            points.add(generatePointByCell(c));
+        }
+        return points;
+
+    }
+
+    public List<String> generateActionIDByActions(List<Action> actions){
+        List<String> actionsID = new ArrayList<>();
+        for (Action a : actions)
+            actionsID.add(a.getActionID());
+        return actionsID;
+    }
+
+    public List<Integer> generateLevelByBuilding(List<Building> buildings){
+        List<Integer> levels = new ArrayList<>();
+        for (Building b : buildings)
+            levels.add(b.getLevel());
+        return levels;
+    }
 
 
 

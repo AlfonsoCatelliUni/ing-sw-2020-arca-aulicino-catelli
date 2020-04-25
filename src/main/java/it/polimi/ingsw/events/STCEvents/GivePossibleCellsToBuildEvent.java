@@ -4,6 +4,7 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.model.Board.Cell;
 
+import java.awt.*;
 import java.util.List;
 
 public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
@@ -12,7 +13,7 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
     public String receiverNickname;
 
 
-    public String cellsAvailableToBuild;
+    public List<Point> cellsAvailableToBuild;
 
 
     public String actionID;
@@ -24,7 +25,7 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public GivePossibleCellsToBuildEvent(String receiverNickname, String cellsAvailableToBuild, boolean isValid) {
+    public GivePossibleCellsToBuildEvent(String receiverNickname, List<Point> cellsAvailableToBuild, boolean isValid) {
         this.receiverNickname = receiverNickname;
         this.actionID = "build";
 

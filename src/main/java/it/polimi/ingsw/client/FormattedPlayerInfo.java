@@ -14,7 +14,7 @@ public class FormattedPlayerInfo {
     // ======================================================================================
 
 
-    private FormattedPlayerInfo(String nickname, String color, Couple<String, String> card) {
+    public FormattedPlayerInfo(String nickname, String color, Couple<String, String> card) {
         this.nickname = nickname;
         this.color = color;
         this.card = card;

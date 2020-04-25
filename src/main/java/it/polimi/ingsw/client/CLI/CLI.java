@@ -1,11 +1,12 @@
-package it.polimi.ingsw.client;
+package it.polimi.ingsw.client.CLI;
 
+import it.polimi.ingsw.client.ClientJsonHandler;
+import it.polimi.ingsw.client.Couple;
+import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.view.client.ClientView;
 
 import java.io.IOException;
@@ -635,6 +636,7 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(LosingByNoActionEvent event) {
 
     }
+
 
     @Override
     public void manageEvent(EndGameSTCEvent event) {

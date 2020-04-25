@@ -151,7 +151,7 @@ public class PreGameLobby {
 
 
         //Advanced Gods
-        playerDecoratorMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
+        playerDecoratorMap.put("Ares", new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
         playerDecoratorMap.put("Charon", new CanForceEffect(new BasicEffect()));
         playerDecoratorMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
         playerDecoratorMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Player.Effect.Effect;
+
 /**
  * the Card of the player, each player chooses one card, it's a description,
  * the player will be decorated according to the card chosen
@@ -23,6 +25,9 @@ public class Card {
      * effects of the card
      */
     private String effect;
+
+
+    //private Effect eff;
 
 
     // ======================================================================================

@@ -123,6 +123,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         Player player = getPlayerByName(nickname);
 
         player.initPawn(gameBoard, gameBoard.getCell(row, column));
+
+
     }
 
 
@@ -291,7 +293,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.build(designatedPawn, designatedCell, level, gameBoard.getBuildings());
 
-
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -302,6 +304,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.force(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
 
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -316,6 +319,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         Player player = getPlayerByName(playerName);
 
         player.destroy(gameBoard.getCell(row, column), gameBoard.getBuildings());
+
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -346,6 +351,7 @@ public class Game extends Observable implements GameConsequenceHandler {
             receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
         }
 
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -417,7 +423,8 @@ public class Game extends Observable implements GameConsequenceHandler {
             JSONObject playerObj = new JSONObject();
 
             playerObj.put("name", p.getName());
-            //playerObj.put("god", p.getGodCard().getName());
+            playerObj.put("color", p.getColor());
+            playerObj.put("effect", p.getCard().getEffect());
 
             playersJson.add(playerObj);
         }

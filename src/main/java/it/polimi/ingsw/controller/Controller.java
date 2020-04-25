@@ -569,8 +569,11 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+
+    //TODO : da completare
     @Override
     public void manageEvent(ChosenDestroyActionEvent event) {
+
     }
 
 
@@ -644,18 +647,25 @@ public class Controller implements Observer, ClientToServerManager {
         int nextRow = event.nextRow;
         int nextColumn = event.nextColumn;
 
+        //controlling if has been selected a valid cell
         if(game.isValidCoordinate(row, column) && game.isValid(nextRow, nextColumn)) {
             //THAT'S IMPORTANT!
 
+            //taking the available buildings on the selected cell
             List<Building> availableBuildings = game.getPossibleBuildingOnCell(nickname, nextRow, nextColumn);
+
+            //controlling if there are available building
             if(availableBuildings.size() > 0) {
                 List<Integer> buildingInfo = generateLevelByBuilding(availableBuildings);
+
+                //sending the available buildings to the client
                 virtualView.sendMessageTo(nickname, new GivePossibleBuildingsEvent(nickname, buildingInfo, true));
             }
             else {
                 throw new RuntimeException("I don't really know what's happen here, please control some of your code! It's something with the buildings on a cell. :/");
             }
         }
+        //if the selected cell to build is invalid i ask again the cell
         else {
             List<Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));
@@ -665,6 +675,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenBuildingEvent event) {
+
         String player = event.playerNickname;
         int level = event.levelBuilding;
         int pawnRow = event.pawnRow;

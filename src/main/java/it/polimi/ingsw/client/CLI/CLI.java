@@ -28,14 +28,21 @@ public class CLI implements ServerToClientManager {
 
     private final Scanner input;
 
+    private final GraphicDrawerCLI drawer;
+
 
     private ClientView clientView;
+
 
     private String nickname;
 
     private int rowUsedPawn;
 
     private int columnUsedPawn;
+
+    private int nextActionRow;
+
+    private int nextActionColumn;
 
     // ======================================================================================
 
@@ -45,6 +52,7 @@ public class CLI implements ServerToClientManager {
         this.port = 6969;
 
         this.input = new Scanner(System.in);
+        this.drawer = new GraphicDrawerCLI();
 
         this.nickname = "";
 
@@ -605,28 +613,35 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(GivePossibleActionsEvent event) {
 
         List<String> possibleActions = event.actions;
+        Boolean isEventValid = event.isValid;
 
-        System.out.println("Your possible actions are: ");
+        int indexChosenAction = 0;
 
-        int index;
+        //if there are more then one single possible actions
+        //then I let the user to choose
+        if(possibleActions.size() > 1) {
 
-        for (index = 0; index < possibleActions.size(); index++)
-            System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
+            if(!isEventValid) {
+                System.out.println("Apparently there was an error! Reselect.");
+            }
 
-        System.out.println("Choose your next action");
+            do {
+                System.out.println("Choose your next action :");
+                for (int index = 0; index < possibleActions.size(); index++) {
+                    System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
+                }
 
-        int indexChosenAction = Integer.parseInt(input.nextLine());
+                indexChosenAction = input.nextInt();
+                if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
+                    System.err.println("Action Unavailable !");
+                }
 
-        while(indexChosenAction < 0 || indexChosenAction >= index) {
-
-            System.out.println("Invalid chosen action");
-            System.out.println("Choose your next action");
-
-            indexChosenAction = Integer.parseInt(input.nextLine());
+            } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
 
         }
 
-
+        //in case there is only one possible action I directly send the possible aciton
+        //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
         switch (possibleActions.get(indexChosenAction)) {
 
             case "Move":
@@ -650,6 +665,8 @@ public class CLI implements ServerToClientManager {
                 break;
 
             default:
+                throw new RuntimeException("Error while selecting the next action !");
+
             }
 
 
@@ -660,11 +677,92 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
+        List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
+        String actionID = event.actionID;
+        Boolean isEventValid = event.isValid;
+        int selectedCell;
+
+        if(cellsAvailableToMove.size() > 1) {
+
+            if(!isEventValid) {
+                System.out.println("Apparently there was an error! Reselect.");
+            }
+
+            do {
+                System.out.println("Choose the cell where you want to move :");
+                for(int c = 0; c < cellsAvailableToMove.size(); c++) {
+                    System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
+                }
+
+                selectedCell = input.nextInt();
+                if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
+                    System.err.println("Unavailable Choice !");
+                }
+
+
+            } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
+
+
+            nextActionRow = cellsAvailableToMove.get(selectedCell).x;
+            nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
+
+            clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+
+        }
+        else {
+            nextActionRow = cellsAvailableToMove.get(0).x;
+            nextActionColumn = cellsAvailableToMove.get(0).y;
+
+            clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+        }
+
+
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
+
+        List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
+        String actionID = event.actionID;
+        Boolean isEventValid = event.isValid;
+        int selectedCell;
+
+        //control if there's only one single cell available to build
+        //if there are more cells I let the user choose
+        if(cellsAvailableToBuild.size() > 1) {
+
+            if(!isEventValid) {
+                System.out.println("Apparently there was an error! Reselect.");
+            }
+
+            do {
+                System.out.println("Choose the cell where you want to build :");
+                for(int c = 0; c < cellsAvailableToBuild.size(); c++) {
+                    System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToBuild.get(c).x)+" - "+String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
+                }
+
+                selectedCell = input.nextInt();
+                if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
+                    System.err.println("Unavailable Choice !");
+                }
+
+
+            } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
+
+            nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
+            nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
+
+            clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+        }
+
+        //if there is only one cell I automatically fill the ChosenCellToBuildEvent
+        else {
+            nextActionRow = cellsAvailableToBuild.get(0).x;
+            nextActionColumn = cellsAvailableToBuild.get(0).y;
+
+            clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+        }
 
     }
 
@@ -672,7 +770,44 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleBuildingsEvent event) {
 
+        List<Integer> buildingsLevel = event.buildings;
+        Boolean isEventValid = event.isValid;
+        int selectedLevel;
+
+        //if there are more than one single options then I
+        //have to display them and give the possibility to choose
+        if(buildingsLevel.size() > 1) {
+
+            if(!isEventValid) {
+                System.out.println("Apparently there was an error! Reselect.");
+            }
+
+            do {
+
+                System.out.println("Choose the building to build on the selected cell :");
+                for(int b = 0; b < buildingsLevel.size(); b++) {
+                    System.out.println("["+String.valueOf(b)+"]\t"+String.valueOf(buildingsLevel.get(b))+"\n");
+                }
+
+                selectedLevel = input.nextInt();
+                if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
+                    System.err.println("Unavailable Choice !");
+                }
+
+            } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
+
+            //MARK : QUA HO USATO GLI ATTRIBUTI CHE TI DICEVO, PERCHE L'EVENTO GivePossibleBuildingsEvent NON HA DENTRO LA CELLA DOVE DEVE COSTRUIRE QUINDI ME LA SALVO QUANDO LA SELEZIONO NEL manageEvent QUA SOPRA
+            clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+
+        }
+        //in case there is only one option I automatically select
+        //that for the player
+        else {
+            clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(0), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+        }
+
     }
+
 
     @Override
     public void manageEvent(StartGameEvent event) {

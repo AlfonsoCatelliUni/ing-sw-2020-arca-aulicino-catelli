@@ -21,13 +21,11 @@ public class ChosenCellToBuildEvent extends ClientToServerEvent {
 
     public int nextColumn;
 
-    public int chosenLevel;
-
 
     // ======================================================================================
 
 
-    public ChosenCellToBuildEvent(String playerNickname, int pawnRow, int pawnColumn, int nextRow, int nextColumn, int chosenLevel) {
+    public ChosenCellToBuildEvent(String playerNickname, int pawnRow, int pawnColumn, int nextRow, int nextColumn) {
         this.playerNickname = playerNickname;
         this.actionID = "build";
 
@@ -36,8 +34,6 @@ public class ChosenCellToBuildEvent extends ClientToServerEvent {
 
         this.nextRow = nextRow;
         this.nextColumn = nextColumn;
-
-        this.chosenLevel = chosenLevel;
     }
 
 
@@ -52,37 +48,4 @@ public class ChosenCellToBuildEvent extends ClientToServerEvent {
 
     // ======================================================================================
 
-
-//    public String getActionID() {
-//        return this.actionID;
-//    }
-//
-//
-//    public String getPlayerNickname() {
-//        return this.playerNickname;
-//    }
-//
-//
-//    public int getPawnRow() {
-//        return this.pawnRow;
-//    }
-//
-//
-//    public int getPawnColumn() {
-//        return this.pawnColumn;
-//    }
-//
-//
-//    public int getNextRow() {
-//        return this.nextRow;
-//    }
-//
-//
-//    public int getNextColumn() {
-//        return this.nextColumn;
-//    }
-//
-//    public int getChosenLevel() {
-//        return this.chosenLevel;
-//    }
 }

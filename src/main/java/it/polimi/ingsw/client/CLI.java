@@ -636,5 +636,10 @@ public class CLI implements ServerToClientManager {
 
     }
 
+    @Override
+    public void manageEvent(EndGameSTCEvent event) {
+
+    }
+
 
 }

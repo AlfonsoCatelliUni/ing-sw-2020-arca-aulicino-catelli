@@ -637,8 +637,32 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenBuildingEvent event) {
-        //TODO : fare la gestione
+        String player = event.playerNickname;
+        int level = event.levelBuilding;
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+        int buildRow = event.buildRow;
+        int buildColumn = event.buildColumn;
 
+        if (game.isValid(buildRow, buildColumn) && game.isValid(level)) {
+            // IMPORTANT
+            game.pawnBuild(player, pawnRow, pawnColumn, buildRow, buildColumn, level);
+
+            List <Action> possibleActions = game.getPossibleActions(player, pawnRow, pawnColumn);
+            if (possibleActions.size()>0) {
+                String actionsInfo = generateJsonActions(possibleActions);
+                virtualView.sendMessageTo(player, new GivePossibleActionsEvent(player, actionsInfo, true));
+            }
+            else {
+                virtualView.sendMessageTo(player, new LosingByNoActionEvent(player, "So sad bro"));
+            }
+        }
+        else {
+            List<Building> availableBuildings = game.getPossibleBuildingOnCell(player, buildRow, buildColumn);
+            String buildingInfo = generateJsonBuildings(availableBuildings);
+
+            virtualView.sendMessageTo(player, new GivePossibleBuildingsEvent(player, buildingInfo, false ));
+        }
     }
 
 
@@ -646,6 +670,12 @@ public class Controller implements Observer, ClientToServerManager {
     public void manageEvent(VictoryEvent event) {
 
         Player winnerPlayer = game.getPlayerByName(event.winnerNickname);
+
+       // TODO : controllare
+
+        virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));
+
+        virtualView.sendMessage(new DisconnectionEvent());
 
 
 

@@ -14,7 +14,7 @@ public class ForceAction implements Action{
 
 
     public ForceAction() {
-        this.actionID = "force";
+        this.actionID = "Force";
     }
 
 

@@ -15,7 +15,7 @@ public class MoveAction implements Action {
 
 
     public MoveAction() {
-        this.actionID = "move";
+        this.actionID = "Move";
     }
 
 

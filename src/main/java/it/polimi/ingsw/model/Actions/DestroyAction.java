@@ -15,7 +15,7 @@ public class DestroyAction implements Action {
 
 
     public DestroyAction() {
-        this.actionID = "destroy";
+        this.actionID = "Destroy";
     }
 
 

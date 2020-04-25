@@ -35,6 +35,8 @@ public interface ClientToServerManager {
 
     void manageEvent(ChosenBuildActionEvent event);
 
+    void manageEvent(ChosenDestroyActionEvent event);
+
     void manageEvent(ChosenFinishActionEvent event);
 
 

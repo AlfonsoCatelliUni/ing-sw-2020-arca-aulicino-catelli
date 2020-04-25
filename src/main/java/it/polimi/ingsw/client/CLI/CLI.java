@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.ClientJsonHandler;
 import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.events.CTSEvents.*;
+import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
@@ -11,9 +12,7 @@ import it.polimi.ingsw.view.client.ClientView;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class CLI implements ServerToClientManager {
@@ -32,6 +31,9 @@ public class CLI implements ServerToClientManager {
 
     private String nickname;
 
+    private int rowUsedPawn;
+
+    private int columnUsedPawn;
 
     // ======================================================================================
 
@@ -43,6 +45,10 @@ public class CLI implements ServerToClientManager {
         this.input = new Scanner(System.in);
 
         this.nickname = "";
+
+        this.rowUsedPawn = -1;
+
+        this.columnUsedPawn = -1;
 
     }
 
@@ -231,7 +237,7 @@ public class CLI implements ServerToClientManager {
             }
 
             //male pawn choosing
-            System.out.println("Chose the position of your male pawn");
+            System.out.println("Choose the position of your male pawn");
 
             System.out.println("Row Position:");
             int maleRowPosition = Integer.parseInt(input.nextLine());
@@ -270,7 +276,7 @@ public class CLI implements ServerToClientManager {
 
                 if(isOccupied) {
                     System.out.println("This Position is already occupied");
-                    System.out.println("Chose the position of your male pawn");
+                    System.out.println("Choose the position of your male pawn");
 
                     System.out.println("Row Position:");
                     maleRowPosition = Integer.parseInt(input.nextLine());
@@ -297,7 +303,7 @@ public class CLI implements ServerToClientManager {
             } while(isOccupied);
 
             //female pawn choosing
-            System.out.println("Chose the position of your female pawn");
+            System.out.println("Choose the position of your female pawn");
 
             System.out.println("Row Position:");
             int femaleRowPosition = Integer.parseInt(input.nextLine());
@@ -336,7 +342,7 @@ public class CLI implements ServerToClientManager {
 
                 if(isOccupied) {
                     System.out.println("This Position is already occupied");
-                    System.out.println("Chose the position of your female pawn");
+                    System.out.println("Choose the position of your female pawn");
 
                     System.out.println("Row Position:");
                     femaleRowPosition = Integer.parseInt(input.nextLine());
@@ -371,7 +377,7 @@ public class CLI implements ServerToClientManager {
         else {
 
             //male pawn choosing
-            System.out.println("Chose the position of your male pawn");
+            System.out.println("Choose the position of your male pawn");
 
             System.out.println("Row Position:");
             int maleRowPosition = Integer.parseInt(input.nextLine());
@@ -394,7 +400,7 @@ public class CLI implements ServerToClientManager {
             }
 
             //female pawn choosing
-            System.out.println("Chose the position of your female pawn");
+            System.out.println("Choose the position of your female pawn");
 
             System.out.println("Row Position:");
             int femaleRowPosition = Integer.parseInt(input.nextLine());
@@ -425,7 +431,7 @@ public class CLI implements ServerToClientManager {
 
                 if(isOccupied) {
                     System.out.println("This Position is already occupied");
-                    System.out.println("Chose the position of your female pawn");
+                    System.out.println("Choose the position of your female pawn");
 
                     System.out.println("Row Position:");
                     femaleRowPosition = Integer.parseInt(input.nextLine());
@@ -543,6 +549,10 @@ public class CLI implements ServerToClientManager {
 
         }
 
+        this.rowUsedPawn = rowPosition;
+
+        this.columnUsedPawn = columnPosition;
+
         clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
 
     }
@@ -580,8 +590,66 @@ public class CLI implements ServerToClientManager {
     }
 
 
+    // TODO : rifinirla
     @Override
     public void manageEvent(GivePossibleActionsEvent event) {
+
+        List<String> possibleActions = ClientJsonHandler.generateActionsList(event.actions);
+
+        System.out.println("Your possible actions are: ");
+
+        int index;
+
+        for (index = 0; index < possibleActions.size(); index++)
+            System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
+
+        System.out.println("Choose your next action");
+
+        int indexChosenAction = Integer.parseInt(input.nextLine());
+
+        boolean isValid;
+
+        do {
+
+            isValid = false;
+
+            switch (possibleActions.get(indexChosenAction)) {
+
+                case "Move":
+                    isValid = true;
+                    clientView.sendCTSEvent(new ChosenMoveActionEvent(nickname, "Move", rowUsedPawn, columnUsedPawn));
+                    break;
+
+                case "Build":
+                    isValid = true;
+                    clientView.sendCTSEvent(new ChosenBuildActionEvent(nickname, "Build", rowUsedPawn, columnUsedPawn));
+                    break;
+
+                case "End turn":
+                    isValid = true;
+                    clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
+                    break;
+
+                case "Destroy":
+                    isValid = true;
+                    clientView.sendCTSEvent(new ChosenDestroyActionEvent(nickname, "Destroy", rowUsedPawn, columnUsedPawn));
+                    break;
+
+                // TODO : chosenForceAction
+                default:
+            }
+
+            if(!isValid) {
+
+                System.out.println("Invalid chosen action");
+                System.out.println("Choose your next action");
+
+                indexChosenAction = Integer.parseInt(input.nextLine());
+            }
+
+        }while(indexChosenAction < 0 || indexChosenAction >= index && !isValid);
+
+
 
     }
 

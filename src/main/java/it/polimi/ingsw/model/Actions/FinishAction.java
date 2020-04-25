@@ -15,7 +15,7 @@ public class FinishAction implements Action {
 
 
     public FinishAction() {
-        this.actionID = "end turn";
+        this.actionID = "End turn";
     }
 
 

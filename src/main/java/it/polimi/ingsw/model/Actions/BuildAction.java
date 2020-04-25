@@ -15,7 +15,7 @@ public class BuildAction implements Action {
 
 
     public BuildAction() {
-        this.actionID = "build";
+        this.actionID = "Build";
     }
 
 

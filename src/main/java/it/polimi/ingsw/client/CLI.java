@@ -123,7 +123,7 @@ public class CLI implements ServerToClientManager {
         System.out.print("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
         String nickname = input.nextLine();
 
-        while( !(Pattern.matches(nickname, nicknamePattern)) ) {
+        while( !(Pattern.matches(nicknamePattern, nickname)) ) {
             System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
@@ -140,26 +140,6 @@ public class CLI implements ServerToClientManager {
 
         System.out.print("Do you want a 2 or 3 players game? ");
         int playersNumber = Integer.parseInt(input.nextLine());
-
-        if(playersNumber == 420) {
-            System.out.println("nice try, but shady things are done in the back room!");
-            System.out.println(
-                    "      #~~\n" +
-                    "     )#(\n" +
-                    "    ( # )\n" +
-                    "     ___\n" +
-                    "    |   |\n" +
-                    "    |   |\n" +
-                    "    |   |\n" +
-                    "    |   |\n" +
-                    "    |   |\n" +
-                    "___ |   |\n" +
-                    "\\  \\|   |\n" +
-                    " \\  |   |\n" +
-                    " /-------\\\n" +
-                    "(_________)\n" +
-                    " \\_______/");
-        }
 
         while(playersNumber != 2 && playersNumber != 3) {
             System.out.print("Game is available only in 2 or 3 players, choose one of this options : ");

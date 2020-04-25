@@ -1,49 +1,49 @@
 [
-    {
-      "name": "Apollo",
-      "available3P": true,
-      "effect": "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just vacated (swapping their positions)."
-    },
-    {
-      "name": "Artemis",
-      "available3P": true,
-      "effect": "Your Move: Your Worker may move one additional time, but not back to its initial space."
-    },
-    {
-      "name": "Athena",
-      "available3P": true,
-      "effect": "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn."
-    },
-    {
-      "name": "Atlas",
-      "available3P": true,
-      "effect": "Your Build: Your Worker may build a dome at any level."
-    },
-    {
-      "name": "Demeter",
-      "available3P": true,
-      "effect": "Your Build: Your Worker may build one additional time, but not on the same space."
-    },
-    {
-      "name": "Hephaestus",
-      "available3P": true,
-      "effect": "Your Build: Your Worker may build one additional block (not dome) on top of your first block."
-    },
-    {
-      "name": "Minotaur",
-      "available3P": true,
-      "effect": "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level."
-    },
-    {
-      "name": "Pan",
-      "available3P": true,
-      "effect": "Win Condition: You also win if your Worker moves down two or more levels."
-    },
-    {
-    "name": "Prometheus",
+  {
+    "name": "Apollo",
     "available3P": true,
-    "effect": "Your Turn: If your Worker does not move up, it may build both before and after moving."
-    },
+    "effect": "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)."
+  },
+  {
+    "name": "Artemis",
+    "available3P": true,
+    "effect": "Your Move: Your Worker may move one additional time, but not back to its initial space."
+  },
+  {
+    "name": "Athena",
+    "available3P": true,
+    "effect": "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn."
+  },
+  {
+    "name": "Atlas",
+    "available3P": true,
+    "effect": "Your Build: Your Worker may build a dome at any level."
+  },
+  {
+    "name": "Demeter",
+    "available3P": true,
+    "effect": "Your Build: Your Worker may build one additional time, but not on the same space."
+  },
+  {
+    "name": "Hephaestus",
+    "available3P": true,
+    "effect": "Your Build: Your Worker may build one additional block (not dome) on top of your first block."
+  },
+  {
+    "name": "Minotaur",
+    "available3P": true,
+    "effect": "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level."
+  },
+  {
+    "name": "Pan",
+    "available3P": true,
+    "effect": "Win Condition: You also win if your Worker moves down two or more levels."
+  },
+  {
+  "name": "Prometheus",
+  "available3P": true,
+  "effect": "Your Turn: If your Worker does not move up, it may build both before and after moving."
+  },
   {
     "name": "Ares",
     "available3P": true,

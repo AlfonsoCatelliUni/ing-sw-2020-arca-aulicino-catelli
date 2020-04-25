@@ -194,25 +194,6 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    public void countdownStart() {
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                int numberOfConnected = preGameLobby.getConnectedPlayers().size();
-                int lobbySize = preGameLobby.getNumberOfPlayers();
-
-                if(numberOfConnected < lobbySize) {
-                    virtualView.sendMessage(new RoomNotFilled("Room Not Filled In Time!"));
-                    virtualView.sendMessage(new DisconnectionEvent());
-                }
-            }
-        }, 120000); // 2 minutes timer
-
-    }
-
-
-    // MARK : Network Event Manager Section ======================================================================================
     // MARK : Controller Function Section ======================================================================================
 
 
@@ -242,6 +223,26 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    public void countdownStart() {
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(preGameLobby != null) {
+                    int numberOfConnected = preGameLobby.getConnectedPlayers().size();
+                    int lobbySize = preGameLobby.getNumberOfPlayers();
+
+                    if (numberOfConnected < lobbySize) {
+                        virtualView.sendMessage(new RoomNotFilled("Room Not Filled In Time!"));
+                        virtualView.sendMessage(new DisconnectionEvent());
+                    }
+                }
+            }
+        }, 120000); // 2 minutes timer
+
+    }
+
+
     public void firstTurnGame(){
         String firstPlayer = game.getPlayersNickname().get(0);
 
@@ -255,6 +256,7 @@ public class Controller implements Observer, ClientToServerManager {
             virtualView.sendMessageTo(firstPlayer, new AskWhichPawnsUseEvent(firstPlayer, true, infoCell));
         }
     }
+
 
     public void endTurn(){
 
@@ -284,6 +286,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     // MARK : Network Event Manager Section ======================================================================================
+
 
     @Override
     public void manageEvent(NewConnectionEvent event) {
@@ -469,6 +472,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
+
     @Override
     public void manageEvent(ChosenPawnToUseEvent event) {
 
@@ -493,6 +497,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
     }
+
 
     @Override
     public void manageEvent(ChosenMoveActionEvent event) {
@@ -599,7 +604,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
 
     }
-    
+
 
     @Override
     public void manageEvent(ChosenCellToBuildEvent event) {
@@ -635,6 +640,7 @@ public class Controller implements Observer, ClientToServerManager {
         //TODO : fare la gestione
 
     }
+
 
     @Override
     public void manageEvent(VictoryEvent event) {

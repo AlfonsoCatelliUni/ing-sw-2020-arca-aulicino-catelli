@@ -137,7 +137,7 @@ public class CLI implements ServerToClientManager {
             nickname = input.nextLine();
         }
 
-        clientView.sendCTSEvent( new NewConnectionEvent(event.ID, nickname));
+        clientView.sendCTSEvent(new NewConnectionEvent(event.ID, nickname));
 
     }
 
@@ -174,6 +174,18 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(UnavailableNicknameEvent event) {
+
+        System.out.println("This nickname is already used, please insert a new nickname:");
+
+        String nickname = input.nextLine();
+
+        while( !(Pattern.matches(nicknamePattern, nickname)) ) {
+            System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            nickname = input.nextLine();
+        }
+
+        clientView.sendCTSEvent(new NewConnectionEvent(event.ID, nickname));
+
 
     }
 
@@ -215,12 +227,6 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(RoomNotFilled event) {
         System.out.println(event.message);
-    }
-
-
-    @Override
-    public void manageEvent(AskNewNicknameEvent event) {
-
     }
 
 
@@ -469,6 +475,7 @@ public class CLI implements ServerToClientManager {
 
     }
 
+
     @Override
     public void manageEvent(AskWhichPawnsUseEvent event) {
 
@@ -476,98 +483,90 @@ public class CLI implements ServerToClientManager {
             System.out.println("An error has occurred, please reinsert the position");
         }
 
-        List<Point> points = event.info;
+        List<Point> coordinatesAvailablePawns = event.info;
 
-        int x = points.get(0).x;
 
-        System.out.println(x);
+       /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
+       int rowPosition = 0;
 
-    }
+       int columnPosition = 0;
 
-//        List<Couple<Integer, Integer>> coordinatesAvailablePawns = ClientJsonHandler.generateCellsList(event.info);
-//
-//
-//        /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
-//        int rowPosition = 0;
-//
-//        int columnPosition = 0;
-//
-//        //the player can choose witch pawn can use
-//        if(coordinatesAvailablePawns.size() == 1) {
-//
-//            System.out.println("You can do your action only with the pawn with coordinates: " +
-//                    "[" + coordinatesAvailablePawns.get(0).getFirst() + "," + coordinatesAvailablePawns.get(0).getSecond() + "]");
-//
-//            rowPosition = coordinatesAvailablePawns.get(0).getFirst();
-//            columnPosition = coordinatesAvailablePawns.get(0).getSecond();
-//
-//        }
-//        if(coordinatesAvailablePawns.size() == 2) {
-//
-//            System.out.println("Choose the coordinates of the pawn you want to move: ");
-//
-//            for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
-//
-//                System.out.println("[" + coordinatesAvailablePawn.getFirst() + "," + coordinatesAvailablePawn.getSecond() + "]\n");
-//
-//            }
-//
-//            boolean isCorrect;
-//
-//            do {
-//
-//                isCorrect = false;
-//
-//                System.out.println("Row position: ");
-//                rowPosition = Integer.parseInt(input.nextLine());
-//
-//                while (rowPosition < 0 || rowPosition > 4) {
-//
-//                    System.out.println("Invalid position");
-//                    System.out.println("Row Position:");
-//                    rowPosition = Integer.parseInt(input.nextLine());
-//                }
-//
-//                System.out.println("Column position: ");
-//                columnPosition = Integer.parseInt(input.nextLine());
-//
-//                while (columnPosition < 0 || columnPosition > 4) {
-//
-//                    System.out.println("Invalid position");
-//                    System.out.println("Column Position:");
-//                    columnPosition = Integer.parseInt(input.nextLine());
-//                }
-//
-//                for (Couple<Integer, Integer> coordinatesAvailablePawn : coordinatesAvailablePawns) {
-//
-//                    if (rowPosition == coordinatesAvailablePawn.getFirst() &&
-//                            columnPosition == coordinatesAvailablePawn.getSecond()) {
-//
-//                        isCorrect = true;
-//                        break;
-//
-//                    }
-//
-//                }
-//
-//                if(!isCorrect) {
-//                    System.out.println("None of your pawns are in this cell, please reinsert the coordinates");
-//                }
-//
-//            } while(!isCorrect);
-//
-//
-//        }
-//
-//        this.rowUsedPawn = rowPosition;
-//
-//        this.columnUsedPawn = columnPosition;
-//
-//        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
-//
-//    }
-//
-//
+       //the player can choose witch pawn can use
+       if(coordinatesAvailablePawns.size() == 1) {
+
+           System.out.println("You can do your action only with the pawn with coordinates: " +
+                   "[" + coordinatesAvailablePawns.get(0).x + "," + coordinatesAvailablePawns.get(0).y + "]");
+
+           rowPosition = coordinatesAvailablePawns.get(0).x;
+           columnPosition = coordinatesAvailablePawns.get(0).y;
+
+       }
+       if(coordinatesAvailablePawns.size() == 2) {
+
+           System.out.println("Choose the coordinates of the pawn you want to move: ");
+
+           for (Point coordinatesAvailablePawn : coordinatesAvailablePawns) {
+
+               System.out.println("[" + coordinatesAvailablePawn.x + "," + coordinatesAvailablePawn.y + "]\n");
+
+           }
+
+           boolean isCorrect;
+
+           do {
+
+               isCorrect = false;
+
+               System.out.println("Row position: ");
+               rowPosition = Integer.parseInt(input.nextLine());
+
+               while (rowPosition < 0 || rowPosition > 4) {
+
+                   System.out.println("Invalid position");
+                   System.out.println("Row Position:");
+                   rowPosition = Integer.parseInt(input.nextLine());
+               }
+
+               System.out.println("Column position: ");
+               columnPosition = Integer.parseInt(input.nextLine());
+
+               while (columnPosition < 0 || columnPosition > 4) {
+
+                   System.out.println("Invalid position");
+                   System.out.println("Column Position:");
+                   columnPosition = Integer.parseInt(input.nextLine());
+               }
+
+               for (Point coordinatesAvailablePawn : coordinatesAvailablePawns) {
+
+                   if (rowPosition == coordinatesAvailablePawn.x &&
+                           columnPosition == coordinatesAvailablePawn.y) {
+
+                       isCorrect = true;
+                       break;
+
+                   }
+
+               }
+
+               if(!isCorrect) {
+                   System.out.println("None of your pawns are in this cell, please reinsert the coordinates");
+               }
+
+           } while(!isCorrect);
+
+
+       }
+
+       this.rowUsedPawn = rowPosition;
+
+       this.columnUsedPawn = columnPosition;
+
+       clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
+
+   }
+
+
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
@@ -578,29 +577,30 @@ public class CLI implements ServerToClientManager {
 
         int choiceNum;
 
-        List<Couple<String, String>> cards = ClientJsonHandler.generateCardsList(event.info);
+        List<String> cardsName = event.cardsName;
+        List<String> cardsEffect = event.cardsEffect;
 
-        for (int i = 0; i < cards.size(); i++) {
-                System.out.println(i + ")\tGod Name : " + cards.get(i).getFirst() + "\n\tGod Effect : " + cards.get(i).getSecond());
+
+        for (int i = 0; i < cardsName.size(); i++) {
+                System.out.println(i + ")\tGod Name : " + cardsName.get(i) + "\n\tGod Effect : " + cardsEffect.get(i));
             }
 
         System.out.print("\nInsert the number to choose your God : ");
         choiceNum = Integer.parseInt(input.nextLine());
 
-        while (choiceNum > cards.size() || choiceNum < 0) {
+        while (choiceNum > cardsName.size() || choiceNum < 0) {
             System.out.println("Invalid choice!");
             System.out.print("Insert the number to choose your God : ");
             choiceNum = Integer.parseInt(input.nextLine());
         }
 
-        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cards.get(choiceNum).getFirst()));
+        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
         System.out.println("Please wait until it's your turn");
 
     }
 
 
-    // TODO : rifinirla
     @Override
     public void manageEvent(GivePossibleActionsEvent event) {
 
@@ -617,47 +617,40 @@ public class CLI implements ServerToClientManager {
 
         int indexChosenAction = Integer.parseInt(input.nextLine());
 
-        boolean isValid;
+        while(indexChosenAction < 0 || indexChosenAction >= index) {
 
-        do {
+            System.out.println("Invalid chosen action");
+            System.out.println("Choose your next action");
 
-            isValid = false;
+            indexChosenAction = Integer.parseInt(input.nextLine());
 
-            switch (possibleActions.get(indexChosenAction)) {
+        }
 
-                case "Move":
-                    isValid = true;
-                    clientView.sendCTSEvent(new ChosenMoveActionEvent(nickname, "Move", rowUsedPawn, columnUsedPawn));
-                    break;
 
-                case "Build":
-                    isValid = true;
-                    clientView.sendCTSEvent(new ChosenBuildActionEvent(nickname, "Build", rowUsedPawn, columnUsedPawn));
-                    break;
+        switch (possibleActions.get(indexChosenAction)) {
 
-                case "End turn":
-                    isValid = true;
-                    clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
-                    break;
+            case "Move":
+                clientView.sendCTSEvent(new ChosenMoveActionEvent(nickname, "Move", rowUsedPawn, columnUsedPawn));
+                break;
 
-                case "Destroy":
-                    isValid = true;
-                    clientView.sendCTSEvent(new ChosenDestroyActionEvent(nickname, "Destroy", rowUsedPawn, columnUsedPawn));
-                    break;
+            case "Build":
+                clientView.sendCTSEvent(new ChosenBuildActionEvent(nickname, "Build", rowUsedPawn, columnUsedPawn));
+                break;
 
-                // TODO : chosenForceAction
-                default:
+            case "End turn":
+                clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
+                break;
+
+            case "Destroy":
+                clientView.sendCTSEvent(new ChosenDestroyActionEvent(nickname, "Destroy", rowUsedPawn, columnUsedPawn));
+                break;
+
+            case "Force":
+                clientView.sendCTSEvent(new ChosenForceActionEvent(nickname, "Force", rowUsedPawn, columnUsedPawn));
+                break;
+
+            default:
             }
-
-            if(!isValid) {
-
-                System.out.println("Invalid chosen action");
-                System.out.println("Choose your next action");
-
-                indexChosenAction = Integer.parseInt(input.nextLine());
-            }
-
-        }while(indexChosenAction < 0 || indexChosenAction >= index && !isValid);
 
 
 

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 public class Controller implements Observer, ClientToServerManager {
 
@@ -272,11 +273,14 @@ public class Controller implements Observer, ClientToServerManager {
 
         if (index < game.getPlayersNickname().size()){
             String nextPlayer = game.getPlayersNickname().get(index);
+
             List<Cell> availablePawnsCell = game.getAvailablePawns(nextPlayer);
+            List<Point> points = new ArrayList<>();
 
-            String infoCell = generateJsonCells(availablePawnsCell);
+            for(Cell c : availablePawnsCell)
+                points.add(new Point(c.getRowPosition(), c.getColumnPosition()));
 
-            //virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, infoCell));
+            virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, points));
 
         }
         else {
@@ -304,7 +308,7 @@ public class Controller implements Observer, ClientToServerManager {
         Boolean isNicknameValid = preGameLobby.isNicknameValid(nickname);
 
 
-        if( isNicknameFree && isNicknameValid && !preGameLobby.getClosed() ) {
+        if(isNicknameFree && isNicknameValid && !preGameLobby.getClosed()) {
             //TODO : la addPlayer in PreGameLobby potrebbe essere sync
             preGameLobby.addPlayer(nickname);
             virtualView.newNicknameID(nickname, ID);
@@ -326,10 +330,12 @@ public class Controller implements Observer, ClientToServerManager {
 
                 virtualView.sendMessage(new ClosedWaitingRoomEvent());
 
-                List<Card> cards = preGameLobby.getPickedCards();
+                List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
+                List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffect).collect(Collectors.toList());
+
                 String firstPlayer = connectedPlayers.get(0);
 
-                virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, generateJsonCards(cards), true));
+                virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cardsName, cardsEffect,  true));
             }
             //if is an intermediate connection than nothing happens
             else {
@@ -343,7 +349,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         //if the chosen nickname is already taken we ask to enter it again
         else {
-            virtualView.sendMessageTo(ID, new UnavailableNicknameEvent());
+            virtualView.sendMessageTo(ID, new UnavailableNicknameEvent(ID));
         }
 
 
@@ -388,7 +394,6 @@ public class Controller implements Observer, ClientToServerManager {
 
         String nickname = event.nickname;
 
-        //Integer numberOfPlayers = event.getNumber();
         Integer numberOfPlayers = event.number;
 
         List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
@@ -461,14 +466,20 @@ public class Controller implements Observer, ClientToServerManager {
             if (index < preGameLobby.getNumberOfPlayers()) {
                 String nextPlayer = preGameLobby.getConnectedPlayers().get(index);
 
-                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer, generateJsonCards(preGameLobby.getPickedCards()), true));
+                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer,
+                        preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
+                        preGameLobby.getPickedCards().stream().map(Card::getEffect).collect(Collectors.toList()),
+                        true));
 
             } else {
                 startGame();
             }
         }
         else {
-            virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname, generateJsonCards(preGameLobby.getPickedCards()), false));
+            virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname,
+                    preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
+                    preGameLobby.getPickedCards().stream().map(Card::getEffect).collect(Collectors.toList()),
+                    false));
         }
 
 
@@ -487,16 +498,19 @@ public class Controller implements Observer, ClientToServerManager {
 
         if (isValid) {
 
-            List<Action> possibleActions = game.getPossibleActions(player, row, column);
-            List<String> actionsInfo = generateActionIDByActions(possibleActions);
+            List<String> actionsInfo = generateActionIDByActions(game.getPossibleActions(player, row, column));
 
             virtualView.sendMessageTo(player, new GivePossibleActionsEvent(player, actionsInfo, true));
 
         } else {
             List<Cell> availablePawnsCell = game.getAvailablePawns(player);
-            List<Point> infoCell = generatePointsByCells(availablePawnsCell);
 
-            virtualView.sendMessageTo(player, new AskWhichPawnsUseEvent(player, false, infoCell));
+            List<Point> points = new ArrayList<>();
+
+            for(Cell c: availablePawnsCell)
+                points.add(new Point(c.getRowPosition(), c.getColumnPosition()));
+
+            virtualView.sendMessageTo(player, new AskWhichPawnsUseEvent(player, false, points));
 
         }
     }
@@ -554,8 +568,15 @@ public class Controller implements Observer, ClientToServerManager {
         }
     }
 
+
     @Override
     public void manageEvent(ChosenDestroyActionEvent event) {
+    }
+
+
+    @Override
+    public void manageEvent(ChosenForceActionEvent event) {
+
     }
 
 

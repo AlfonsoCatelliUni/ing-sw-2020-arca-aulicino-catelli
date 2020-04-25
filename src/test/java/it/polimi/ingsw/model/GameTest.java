@@ -40,6 +40,8 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
+        // TODO: fixare il construttore di test
+
         game = new Game("Alfonso", "Massi");
         gameBoard = new Board();
         buildings = gameBoard.getBuildings();
@@ -317,5 +319,65 @@ class GameTest {
 
         retPawnsCell = gameTest.getAvailablePawns("player");
         assertEquals(0, retPawnsCell.size());
+    }
+
+    @Test
+    void isValidCoordinate() {
+
+        assertTrue(game.isValidCoordinate(0,0));
+        assertTrue(game.isValidCoordinate(0,1));
+        assertTrue(game.isValidCoordinate(0,2));
+        assertTrue(game.isValidCoordinate(0,3));
+        assertTrue(game.isValidCoordinate(0,4));
+        assertTrue(game.isValidCoordinate(1,0));
+        assertTrue(game.isValidCoordinate(1,1));
+        assertTrue(game.isValidCoordinate(1,2));
+        assertTrue(game.isValidCoordinate(1,3));
+        assertTrue(game.isValidCoordinate(1,4));
+        assertTrue(game.isValidCoordinate(4,0));
+        assertTrue(game.isValidCoordinate(4,1));
+        assertTrue(game.isValidCoordinate(4,2));
+        assertTrue(game.isValidCoordinate(4,3));
+        assertTrue(game.isValidCoordinate(4,4));
+
+        assertFalse(game.isValidCoordinate(-1,0));
+        assertFalse(game.isValidCoordinate(-1,-1));
+        assertFalse(game.isValidCoordinate(-1,5));
+        assertFalse(game.isValidCoordinate(2,5));
+        assertFalse(game.isValidCoordinate(6,6));
+
+
+
+    }
+
+    @Test
+    void isValidSpot() {
+
+        assertTrue(game.isValidSpot(3,1));
+
+        assertFalse(game.isValidSpot(0,0));
+
+        Game gameTest2 = new Game(giammaPlayer.getName(), "opponent");
+
+        assertFalse(gameTest2.isValidSpot(4,4));
+
+
+
+    }
+
+    @Test
+    void isValid() {
+
+        List<Cell> cells = game.wherePawnCanMove("Alfonso", 0,0);
+
+        assertTrue(game.isValid(1,1));
+    }
+
+    @Test
+    void testIsValid() {
+    }
+
+    @Test
+    void testIsValid1() {
     }
 }

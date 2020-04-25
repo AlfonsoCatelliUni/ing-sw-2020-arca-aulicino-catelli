@@ -646,14 +646,24 @@ public class Game extends Observable implements GameConsequenceHandler {
         players.add(new Player(playerName, Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
         players.add(new Player(opponentName, Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
 
-        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,0));
-        players.get(0).initPawn(gameBoard, gameBoard.getCell(0,1));
-
-        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,4));
-        players.get(1).initPawn(gameBoard, gameBoard.getCell(4,3));
-
         this.currentPlayer = players.get(0);
 
+    }
+
+    /* USED ONLY FOR TESTING */
+    public Game(Player player, Player opponent) {
+
+        super();
+
+        this.gameBoard = new Board();
+        this.players = new ArrayList<>();
+        this.currentPlayer = null;
+        this.indexCurrentPlayer = 0;
+
+        players.add(player);
+        players.add(opponent);
+
+        this.currentPlayer = players.get(0);
 
     }
 

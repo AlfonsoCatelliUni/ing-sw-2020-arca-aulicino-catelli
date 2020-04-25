@@ -19,17 +19,7 @@ class GameTest {
 
     private Game game;
 
-    private Board gameBoard;
-
     private List<Player> players;
-
-    private Effect alfoEffect;
-    private Effect massiEffect;
-    private Effect giammaEffect;
-
-    private Card alfoCard;
-    private Card massiCard;
-    private Card giammaCard;
 
     private Player alfoPlayer;
     private Player massiPlayer;
@@ -43,40 +33,311 @@ class GameTest {
         // TODO: fixare il construttore di test
 
         game = new Game("Alfonso", "Massi");
-        gameBoard = new Board();
+        Board gameBoard = new Board();
         buildings = gameBoard.getBuildings();
 
 
-        alfoEffect = new BasicEffect();
+        Effect alfoEffect = new BasicEffect();
         alfoEffect = new CanPushOpponentEffect(new SwitchEffect(alfoEffect));
-        alfoCard = new Card("switch_card", true, "switch_effect");
+        Card alfoCard = new Card("switch_card", true, "switch_effect");
 
         alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
 
-        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(0,0));
-        alfoPlayer.initPawn(gameBoard, gameBoard.getCell(2,2));
 
-
-        massiEffect = new BasicEffect();
+        Effect massiEffect = new BasicEffect();
         massiEffect = new CanPushOpponentEffect(new PushEffect(massiEffect));
-        massiCard = new Card("massi_card", true, "massi_effect");
+        Card massiCard = new Card("massi_card", true, "massi_effect");
 
         massiPlayer = new Player("massi", Color.GREY, massiCard, massiEffect);
 
-        massiPlayer.initPawn(gameBoard, gameBoard.getCell(0,4));
-        massiPlayer.initPawn(gameBoard, gameBoard.getCell(1,1));
 
-        giammaEffect = new BasicEffect();
+        Effect giammaEffect = new BasicEffect();
         giammaEffect = new BlockOpponentEffect(giammaEffect);
+        Card giammaCard = new Card("giammi_card", true, "giammi_effect");
 
-        giammaCard = new Card("giammi_card", true, "giammi_effect");
-
-        giammaPlayer = new Player("giammi", Color.WHITE, giammaCard,giammaEffect);
+        giammaPlayer = new Player("giammi", Color.WHITE, giammaCard, giammaEffect);
 
     }
 
 
     // ======================================================================================
+
+
+    @Test
+    void newCurrentPlayer() {
+
+        Player currentPlayer = game.getPlayers().get(0);
+
+        assertEquals(currentPlayer, game.getCurrentPlayer());
+
+        Player newCurrentPlayer = game.getPlayers().get(1);
+
+        game.newCurrentPlayer();
+
+        assertEquals(newCurrentPlayer, game.getCurrentPlayer());
+
+        /* after the turn of both the players, the rotation restarts */
+
+        game.newCurrentPlayer();
+
+        assertEquals(currentPlayer, game.getCurrentPlayer());
+
+    }
+
+
+    @Test
+    void removePlayer() {
+
+        /* This method removes the pawns from the board too
+        * Player 1 pawns are in [0,0] and [0,1] */
+
+        game.initializePawn("Alfonso", 0,0);
+        game.initializePawn("Alfonso", 0,1);
+
+        assertNotEquals(null, game.getGameBoard().getCell(0,0).getPawnInThisCell());
+        assertNotEquals(null, game.getGameBoard().getCell(0,1).getPawnInThisCell());
+
+        game.removePlayer("Alfonso");
+
+        assertNull(game.getGameBoard().getCell(0, 0).getPawnInThisCell());
+        assertNull(game.getGameBoard().getCell(0, 1).getPawnInThisCell());
+
+        /* there's only one player, so throws a new VictoryConsequence to the ReceiveConsequence method
+        * Debugging, we saw it throws that */
+
+
+
+    }
+
+
+    @Test
+    void receiveConsequence() {
+
+        Game gameTest2 = new Game(alfoPlayer, massiPlayer);
+        gameTest2.initializePawn(alfoPlayer.getName(), 0,0);
+        gameTest2.initializePawn(alfoPlayer.getName(), 0,1);
+
+        gameTest2.initializePawn(massiPlayer.getName(), 0,4);
+
+        for(Effect e = alfoPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
+            assertNotEquals(NotMoveUpEffect.class, e.getClass());
+        }
+
+        gameTest2.newCurrentPlayer();
+
+        Player player = gameTest2.getPlayers().get(1);
+        player.setEffect(new BlockOpponentEffect(gameTest2.getPlayers().get(1).getEffect()));
+
+        gameTest2.getGameBoard().getCell(0,3).buildOnThisCell(buildings.get(0));
+
+        gameTest2.receiveConsequence(player.move(gameTest2.getGameBoard(), gameTest2.getGameBoard().getPawnByCoordinates(0,4), gameTest2.getGameBoard().getCell(0,3)));
+
+        assertEquals(NotMoveUpEffect.class, gameTest2.getPlayers().get(0).getEffect().getClass());
+
+        for(Effect e = player.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
+            assertNotEquals(NotMoveUpEffect.class, e.getClass());
+        }
+
+    }
+
+
+    @Test
+    void doConsequence() {
+
+        Game gameTest = new Game(alfoPlayer, massiPlayer);
+
+        gameTest.doConsequence(new BlockConsequence(massiPlayer.getName()));
+
+        assertEquals(NotMoveUpEffect.class, gameTest.getPlayerByName(alfoPlayer.getName()).getEffect().getClass());
+        assertNotEquals(NotMoveUpEffect.class, gameTest.getPlayerByName(massiPlayer.getName()).getEffect().getClass());
+
+
+    }
+
+
+    @Test
+    void nextCurrentPlayer() {
+
+        assertEquals(0, game.getIndexCurrentPlayer());
+
+        game.newCurrentPlayer();
+
+        assertEquals(1, game.getIndexCurrentPlayer());
+
+        /* after the turn of both the players, the rotation restarts */
+
+        game.newCurrentPlayer();
+
+        assertEquals(0, game.getIndexCurrentPlayer());
+
+    }
+
+
+    @Test
+    void getPlayerByName() {
+
+        Game gameTest = new Game(alfoPlayer, massiPlayer);
+
+        assertEquals(alfoPlayer, gameTest.getPlayerByName(alfoPlayer.getName()));
+
+        assertEquals(massiPlayer, gameTest.getPlayerByName(massiPlayer.getName()));
+
+        assertNotEquals(alfoPlayer, gameTest.getPlayerByName(massiPlayer.getName()));
+
+    }
+
+
+    @Test
+    void generateStatusJson() {
+
+        String provaJson;
+        game.initializePawn("Alfonso", 0,0);
+
+        game.pawnBuild("Alfonso", 0,0,1,0,1);
+
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+        game.pawnBuild("Alfonso", 0,0,1,0,2);
+        game.pawnBuild("Alfonso", 0,0,1,0,3);
+
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+        game.pawnBuild("Alfonso", 0,0,1,0,4);
+
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+        game.pawnBuild("Alfonso", 0,0,1,1,4);
+
+        provaJson = game.generateStatusJson();
+        System.out.println(provaJson);
+
+    }
+
+
+    @Test
+    void getAvailablePawns() {
+
+        List<Cell> retPawnsCell;
+        List<Cell> correctPawnsCell = new ArrayList<>();
+
+        Game gameTest = new Game("player", "opponentPlayer");
+
+        gameTest.initializePawn("player", 0,0);
+        gameTest.initializePawn("player", 0,1);
+
+
+        retPawnsCell = gameTest.getAvailablePawns("player");
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,0));
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
+
+        assertEquals(correctPawnsCell, retPawnsCell);
+
+        //now one pawn cannot move
+        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(1));
+
+        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(1));
+
+        correctPawnsCell.clear();
+        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
+        retPawnsCell = gameTest.getAvailablePawns("player");
+
+        assertEquals(correctPawnsCell, retPawnsCell);
+
+        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(1));
+
+        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(0));
+        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(1));
+
+        retPawnsCell = gameTest.getAvailablePawns("player");
+        assertEquals(0, retPawnsCell.size());
+    }
+
+
+    @Test
+    void isValidCoordinate() {
+
+        assertTrue(game.isValidCoordinate(0,0));
+        assertTrue(game.isValidCoordinate(0,1));
+        assertTrue(game.isValidCoordinate(0,2));
+        assertTrue(game.isValidCoordinate(0,3));
+        assertTrue(game.isValidCoordinate(0,4));
+        assertTrue(game.isValidCoordinate(1,0));
+        assertTrue(game.isValidCoordinate(1,1));
+        assertTrue(game.isValidCoordinate(1,2));
+        assertTrue(game.isValidCoordinate(1,3));
+        assertTrue(game.isValidCoordinate(1,4));
+        assertTrue(game.isValidCoordinate(4,0));
+        assertTrue(game.isValidCoordinate(4,1));
+        assertTrue(game.isValidCoordinate(4,2));
+        assertTrue(game.isValidCoordinate(4,3));
+        assertTrue(game.isValidCoordinate(4,4));
+
+        assertFalse(game.isValidCoordinate(-1,0));
+        assertFalse(game.isValidCoordinate(-1,-1));
+        assertFalse(game.isValidCoordinate(-1,5));
+        assertFalse(game.isValidCoordinate(2,5));
+        assertFalse(game.isValidCoordinate(6,6));
+
+    }
+
+
+    @Test
+    void isValidSpot() {
+
+        game.initializePawn("Alfonso", 0,0);
+
+        assertTrue(game.isValidSpot(3,1));
+
+        assertFalse(game.isValidSpot(0,0));
+
+        Game gameTest2 = new Game(giammaPlayer.getName(), "opponent");
+        gameTest2.initializePawn(giammaPlayer.getName(), 4,4);
+
+        assertFalse(gameTest2.isValidSpot(4,4));
+
+
+
+    }
+
+
+    @Test
+    void isValid() {
+
+        game.initializePawn("Alfonso", 0,0);
+
+        game.wherePawnCanMove("Alfonso", 0,0);
+
+        assertTrue(game.isValid(1,1));
+
+        assertFalse(game.isValid(4,4));
+
+        game.wherePawnCanBuild("Alfonso", 0,0);
+
+        assertTrue(game.isValid(1,0));
+
+        game.getPossibleBuildingOnCell("Alfonso", 1,0);
+
+        assertTrue(game.isValid(1));
+
+        assertFalse(game.isValid(2));
+
+        game.getPossibleActions("Alfonso", 0,0 );
+
+        assertTrue(game.isValid("move"));
+
+        assertFalse(game.isValid("finish"));
+
+
+
+
+    }
+
 
 
     /**
@@ -134,134 +395,6 @@ class GameTest {
     void pawnBuild() {
     }
 
-
-    @Test
-    void newCurrentPlayer() {
-
-        Player currentPlayer = game.getPlayers().get(0);
-
-        assertEquals(currentPlayer, game.getCurrentPlayer());
-
-        Player newCurrentPlayer = game.getPlayers().get(1);
-
-        game.newCurrentPlayer();
-
-        assertEquals(newCurrentPlayer, game.getCurrentPlayer());
-
-        /* after the turn of both the players, the rotation restarts */
-
-        game.newCurrentPlayer();
-
-        assertEquals(currentPlayer, game.getCurrentPlayer());
-
-    }
-
-
-
-    @Test
-    void removePlayer() {
-
-        /* This method removes the pawns from the board too
-        * Player 1 pawns are in [0,0] and [0,1] */
-
-        assertNotEquals(null, game.getGameBoard().getCell(0,0).getPawnInThisCell());
-        assertNotEquals(null, game.getGameBoard().getCell(0,1).getPawnInThisCell());
-
-        game.removePlayer("Alfonso");
-
-        assertNull(game.getGameBoard().getCell(0, 0).getPawnInThisCell());
-        assertNull(game.getGameBoard().getCell(0, 1).getPawnInThisCell());
-
-        /* there's only one player, so throws a new VictoryConsequence to the ReceiveConsequence method
-        * Debugging, we saw it throws that */
-
-
-
-    }
-
-
-    @Test
-    void receiveConsequence() {
-
-        for(Effect e = alfoPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
-            assertNotEquals(NotMoveUpEffect.class, e.getClass());
-        }
-
-        game.newCurrentPlayer();
-
-        Player player = game.getPlayers().get(1);
-        player.setEffect(new BlockOpponentEffect(game.getPlayers().get(1).getEffect()));
-
-        gameBoard.getCell(0,3).buildOnThisCell(buildings.get(0));
-
-        game.receiveConsequence(player.move(gameBoard, gameBoard.getPawnByCoordinates(0,4), gameBoard.getCell(0,3)));
-
-        assertEquals(NotMoveUpEffect.class, game.getPlayers().get(0).getEffect().getClass());
-
-        for(Effect e = player.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
-            assertNotEquals(NotMoveUpEffect.class, e.getClass());
-        }
-
-    }
-
-
-    @Test
-    void doConsequence() {
-    }
-
-
-    @Test
-    void nextCurrentPlayer() {
-
-        assertEquals(0, game.getIndexCurrentPlayer());
-
-        game.newCurrentPlayer();
-
-        assertEquals(1, game.getIndexCurrentPlayer());
-
-        /* after the turn of both the players, the rotation restarts */
-
-        game.newCurrentPlayer();
-
-        assertEquals(0, game.getIndexCurrentPlayer());
-
-    }
-
-
-    @Test
-    void getPlayerByName() {
-    }
-
-
-    @Test
-    void generateStatusJson() {
-
-        String provaJson;
-
-        game.pawnBuild("Alfonso", 0,0,1,0,1);
-
-        provaJson = game.generateStatusJson();
-        System.out.println(provaJson);
-
-        game.pawnBuild("Alfonso", 0,0,1,0,2);
-        game.pawnBuild("Alfonso", 0,0,1,0,3);
-
-        provaJson = game.generateStatusJson();
-        System.out.println(provaJson);
-
-        game.pawnBuild("Alfonso", 0,0,1,0,4);
-
-        provaJson = game.generateStatusJson();
-        System.out.println(provaJson);
-
-        game.pawnBuild("Alfonso", 0,0,1,1,4);
-
-        provaJson = game.generateStatusJson();
-        System.out.println(provaJson);
-
-    }
-
-
     /**
      * this method only calls the destroyBlock in player
      */
@@ -277,107 +410,11 @@ class GameTest {
     void wherePawnCanDestroy() {
     }
 
+
     /**
      * this method only calls the player.resetPlayerStatus method
      */
     @Test
     void resetPlayerStatus() {
-    }
-
-    @Test
-    void getAvailablePawns() {
-
-        List<Cell> retPawnsCell;
-        List<Cell> correctPawnsCell = new ArrayList<>();
-
-        Game gameTest = new Game("player", "opponentPlayer");
-
-        retPawnsCell = gameTest.getAvailablePawns("player");
-        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,0));
-        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
-
-        assertEquals(correctPawnsCell, retPawnsCell);
-
-        //now one pawn cannot move
-        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(0));
-        gameTest.getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(1));
-
-        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(0));
-        gameTest.getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(1));
-
-        correctPawnsCell.clear();
-        correctPawnsCell.add(gameTest.getGameBoard().getCell(0,1));
-        retPawnsCell = gameTest.getAvailablePawns("player");
-
-        assertEquals(correctPawnsCell, retPawnsCell);
-
-        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(0));
-        gameTest.getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(1));
-
-        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(0));
-        gameTest.getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(1));
-
-        retPawnsCell = gameTest.getAvailablePawns("player");
-        assertEquals(0, retPawnsCell.size());
-    }
-
-    @Test
-    void isValidCoordinate() {
-
-        assertTrue(game.isValidCoordinate(0,0));
-        assertTrue(game.isValidCoordinate(0,1));
-        assertTrue(game.isValidCoordinate(0,2));
-        assertTrue(game.isValidCoordinate(0,3));
-        assertTrue(game.isValidCoordinate(0,4));
-        assertTrue(game.isValidCoordinate(1,0));
-        assertTrue(game.isValidCoordinate(1,1));
-        assertTrue(game.isValidCoordinate(1,2));
-        assertTrue(game.isValidCoordinate(1,3));
-        assertTrue(game.isValidCoordinate(1,4));
-        assertTrue(game.isValidCoordinate(4,0));
-        assertTrue(game.isValidCoordinate(4,1));
-        assertTrue(game.isValidCoordinate(4,2));
-        assertTrue(game.isValidCoordinate(4,3));
-        assertTrue(game.isValidCoordinate(4,4));
-
-        assertFalse(game.isValidCoordinate(-1,0));
-        assertFalse(game.isValidCoordinate(-1,-1));
-        assertFalse(game.isValidCoordinate(-1,5));
-        assertFalse(game.isValidCoordinate(2,5));
-        assertFalse(game.isValidCoordinate(6,6));
-
-
-
-    }
-
-    @Test
-    void isValidSpot() {
-
-        assertTrue(game.isValidSpot(3,1));
-
-        assertFalse(game.isValidSpot(0,0));
-
-        Game gameTest2 = new Game(giammaPlayer.getName(), "opponent");
-
-        assertFalse(gameTest2.isValidSpot(4,4));
-
-
-
-    }
-
-    @Test
-    void isValid() {
-
-        List<Cell> cells = game.wherePawnCanMove("Alfonso", 0,0);
-
-        assertTrue(game.isValid(1,1));
-    }
-
-    @Test
-    void testIsValid() {
-    }
-
-    @Test
-    void testIsValid1() {
     }
 }

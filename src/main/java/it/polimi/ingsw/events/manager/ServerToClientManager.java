@@ -6,7 +6,7 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 public interface ServerToClientManager {
 
 
-    void receiveEvent( ServerToClientEvent event );
+    void receiveEvent(ServerToClientEvent event);
 
 
     // ======================================================================================
@@ -31,8 +31,6 @@ public interface ServerToClientManager {
     void manageEvent(ClosedWaitingRoomEvent event);
 
     void manageEvent(RoomNotFilled event);
-
-    void manageEvent(AskNewNicknameEvent event);
 
     void manageEvent(AskInitPawnsEvent event);
 

@@ -46,7 +46,6 @@ public class GraphicDrawerCLI {
         drawChoicePanel();
         drawSantoriniLogo();
         drawBoardPanel();
-        fillBoardPanel();
 
         List<FormattedPlayerInfo> players = new ArrayList<>();
         players.add(new FormattedPlayerInfo("Alfonsoooooooooooooooooooooo30", "WHITE", Couple.create("Apollo", "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions).")));
@@ -55,7 +54,13 @@ public class GraphicDrawerCLI {
         setTitlePlayerPanel("players information");
         setInfoPlayerPanel(players);
 
+        List<Couple<Integer, Integer>> cellsList = new ArrayList<>();
+        cellsList.add(Couple.create(0,0));
+        cellsList.add(Couple.create(0,1));
+        cellsList.add(Couple.create(1,1));
+        cellsList.add(Couple.create(1,0));
         setTitleChoicePanel("do your choice");
+        setCellChoicesValue(cellsList);
     }
 
 
@@ -86,7 +91,6 @@ public class GraphicDrawerCLI {
         drawChoicePanel();
         drawSantoriniLogo();
         drawBoardPanel();
-        fillBoardPanel();
     }
 
 
@@ -175,7 +179,7 @@ public class GraphicDrawerCLI {
 
         }
 
-
+        fillBoardPanel();
     }
 
 
@@ -213,10 +217,16 @@ public class GraphicDrawerCLI {
                 colRef = startCol + (col * colOffset);
 
                 if(row == 0) {
-                    print(rowRef, colRef, String.valueOf(col));
+                    if(col == 0) {
+                        print(rowRef, colRef, "X");
+                    }
+                    else {
+                        print(rowRef, colRef, String.valueOf(col-1));
+                    }
+
                 }
                 else if(col == 0) {
-                    print(rowRef, colRef, String.valueOf(row));
+                    print(rowRef, colRef, String.valueOf(row-1));
                 }
                 else {
                     print(rowRef, colRef-1, getCellInfo(row, col));
@@ -347,6 +357,33 @@ public class GraphicDrawerCLI {
     }
 
 
+    public void setPlayerCardChoice( List<Couple<String, String>> cardsList) {
+
+        int startRow = 11;
+        int rowOffset = 3;
+        int refRow;
+
+
+        int numCards = cardsList.size();
+
+        if(numCards != 3 && numCards != 2) {
+            throw new RuntimeException("Invalid Number of Player Passed to InfoPlayerPanel !");
+        }
+        else {
+
+            for(int card = 0; card < numCards; card++) {
+                refRow = startRow + (card * rowOffset);
+
+                print(refRow, 11, "["+String.valueOf(card+1)+"]");
+                print(refRow, 16, cardsList.get(card).getFirst());
+                print(refRow, 57, cardsList.get(card).getSecond().substring(0, 87));
+                print(refRow+1, 57, cardsList.get(card).getSecond().substring(87));
+            }
+        }
+
+    }
+
+
     //MARK : Player Panel Section ======================================================================================
 
 
@@ -365,7 +402,7 @@ public class GraphicDrawerCLI {
             }
         }
 
-        setChoicesNumber();
+//        setChoicesNumber();
     }
 
 
@@ -381,6 +418,7 @@ public class GraphicDrawerCLI {
     }
 
 
+    /*
     private void setChoicesNumber() {
 
         int startRow = 31;
@@ -397,26 +435,51 @@ public class GraphicDrawerCLI {
         }
 
     }
+     */
 
 
-    public void setChoicesValue(List<Couple<Integer, Integer>> cellsList) {
+    public void setCellChoicesValue(List<Couple<Integer, Integer>> cellsList) {
 
         int startRow = 31;
         int rowOffset = 3;
         int refRow;
 
         String choiceValue;
+        String choiceNumber;
 
         print(29, 78, "Row - Column");
 
         for(int c = 0; c < cellsList.size(); c++) {
             refRow = startRow + (c * rowOffset);
 
-            choiceValue = String.valueOf(cellsList.get(c).getFirst()) + " - " + String.valueOf(cellsList.get(c).getFirst());
+            choiceNumber = "[" + String.valueOf(c+1) + "]";
+            print(refRow, 73, choiceNumber);
 
+            choiceValue = String.valueOf(cellsList.get(c).getFirst()) + " - " + String.valueOf(cellsList.get(c).getFirst());
             print(refRow, 80, choiceValue);
         }
 
     }
+
+
+    public void setActionChoicesValue(List<String> actionsList) {
+
+        int startRow = 31;
+        int rowOffset = 3;
+        int refRow;
+
+        print(29, 78, "Actions");
+
+        for(int a = 0; a < actionsList.size(); a++) {
+            refRow = startRow + (a * rowOffset);
+
+            print(refRow, 78, actionsList.get(a));
+        }
+
+    }
+
+
+
+
 
 }

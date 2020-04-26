@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 // code taken from StackOverflow
@@ -10,7 +11,7 @@ import java.util.Objects;
  * implementation of equals(), returning true if equals() is true on each of the contained
  * objects.
  */
-public class Couple<F, S> {
+public class Couple<F, S> implements Serializable {
 
     private final F first;
     private final S second;

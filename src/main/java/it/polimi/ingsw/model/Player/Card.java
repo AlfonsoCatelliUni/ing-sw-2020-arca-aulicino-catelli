@@ -32,6 +32,9 @@ public class Card {
     private Effect baseEffect;
 
 
+    //private Effect eff;
+
+
     // ======================================================================================
 
 

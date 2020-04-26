@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.*;
+import it.polimi.ingsw.view.server.VirtualView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -57,7 +58,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param colors is the enumeration of possible colors assignable to the players
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, VirtualView virtualView) {
 
         super();
 
@@ -66,6 +67,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
         this.playersNickname = playersNickname;
+
+        addObserver(virtualView);
 
 
         for (int i = 0; i < playersNickname.size(); i++) {
@@ -122,6 +125,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         Player player = getPlayerByName(nickname);
 
         player.initPawn(gameBoard, gameBoard.getCell(row, column));
+
+
     }
 
 
@@ -290,7 +295,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.build(designatedPawn, designatedCell, level, gameBoard.getBuildings());
 
-
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -301,6 +306,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.force(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
 
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -315,6 +321,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         Player player = getPlayerByName(playerName);
 
         player.destroy(gameBoard.getCell(row, column), gameBoard.getBuildings());
+
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -345,6 +353,7 @@ public class Game extends Observable implements GameConsequenceHandler {
             receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
         }
 
+        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
     }
 
 
@@ -416,7 +425,8 @@ public class Game extends Observable implements GameConsequenceHandler {
             JSONObject playerObj = new JSONObject();
 
             playerObj.put("name", p.getName());
-            //playerObj.put("god", p.getGodCard().getName());
+            playerObj.put("color", p.getColor());
+            playerObj.put("effect", p.getCard().getEffectDescription());
 
             playersJson.add(playerObj);
         }
@@ -625,6 +635,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     //TODO : fare tearDownGame
     public boolean tearDownGame() {
+
         return true;
     }
 

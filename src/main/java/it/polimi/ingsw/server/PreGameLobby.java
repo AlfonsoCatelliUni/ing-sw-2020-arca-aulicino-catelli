@@ -80,8 +80,10 @@ public class PreGameLobby {
     }
 
 
-    public void setNumberOfPlayers(int numberOfPlayers) {
+    public synchronized void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
+        if (playersNicknames.size() == numberOfPlayers)
+            closeWaitingRoom();
     }
 
 
@@ -119,7 +121,7 @@ public class PreGameLobby {
     /**
      * synchronized because there could be conflicts with the timer
      */
-    private synchronized void closeWaitingRoom() {
+    public synchronized void closeWaitingRoom() {
 
         if(!closed) {
             this.closed = true;
@@ -130,7 +132,7 @@ public class PreGameLobby {
     }
 
 
-    public void addPlayer(String nickname) {
+    public synchronized void addPlayer(String nickname) {
 
         //fare controllo prima di chiamare addPlayer
         if(!isNicknameAvailable(nickname)) {
@@ -186,7 +188,7 @@ public class PreGameLobby {
     }
 
 
-    public void deletePlayerInformation(String nickname) {
+    public synchronized void deletePlayerInformation(String nickname) {
 
         try {
             playersNicknames.removeIf(n -> n.equals(nickname));
@@ -202,17 +204,17 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public Boolean isNicknameAvailable(String nickname) {
+    public synchronized Boolean isNicknameAvailable(String nickname) {
         return !playersNicknames.contains(nickname);
     }
 
 
-    public Boolean isNicknameValid(String nickname) {
+    public synchronized Boolean isNicknameValid(String nickname) {
         return Pattern.matches(regex, nickname);
     }
 
 
-    public Boolean isCardAvailable(String cardName) {
+    public synchronized Boolean isCardAvailable(String cardName) {
 
         for ( Card c : pickedCards ) {
             if(c.getName().equals(cardName)) {

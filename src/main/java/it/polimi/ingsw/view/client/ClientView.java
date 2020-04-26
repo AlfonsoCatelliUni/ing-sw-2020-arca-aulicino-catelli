@@ -1,14 +1,13 @@
 package it.polimi.ingsw.view.client;
 
 
-import it.polimi.ingsw.events.STCEvents.DisconnectionEvent;
+
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientView implements Runnable {
 
@@ -18,6 +17,7 @@ public class ClientView implements Runnable {
 
 
     private final ServerToClientManager userManager;
+
 
 
     // ======================================================================================
@@ -63,7 +63,7 @@ public class ClientView implements Runnable {
         catch (Exception e) {
             System.err.println("There's an error while receiving a ServerToClientEvent, please fix me!");
             e.printStackTrace();
-            userManager.receiveEvent(new DisconnectionEvent());
+
         }
 
     }
@@ -78,7 +78,6 @@ public class ClientView implements Runnable {
         catch (IOException e) {
             System.err.println("Error while trying writeObject on client side");
             e.printStackTrace();
-            userManager.receiveEvent(new DisconnectionEvent());
         }
 
     }

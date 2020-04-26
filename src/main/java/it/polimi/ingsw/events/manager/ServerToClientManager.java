@@ -20,7 +20,7 @@ public interface ServerToClientManager {
 
     void manageEvent(NotifyStatusEvent event);
 
-    void manageEvent(DisconnectionEvent event);
+    void manageEvent(OneClientDisconnectedEvent event);
 
     void manageEvent(UnableToEnterWaitingRoomEvent event);
 
@@ -53,6 +53,8 @@ public interface ServerToClientManager {
 
 
     void manageEvent(StartGameEvent event);
+
+    void manageEvent(DisconnectionClientEvent event);
 
     void manageEvent(LosingByNoActionEvent event);
 

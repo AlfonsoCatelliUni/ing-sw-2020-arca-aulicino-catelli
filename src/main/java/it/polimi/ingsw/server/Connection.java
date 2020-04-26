@@ -59,7 +59,9 @@ public class Connection implements Runnable {
         }
         catch(IOException | ClassNotFoundException e ) {
             System.err.println("The socket with ID : " + connectionID + " has been disconnected!");
-            e.printStackTrace();
+        }
+        finally {
+            close();
         }
 
 
@@ -93,6 +95,7 @@ public class Connection implements Runnable {
             output.flush();
         }
         catch (IOException e) {
+
             System.err.println("SOCKET exception: disconnecting " + connectionID);
             e.printStackTrace();
         }

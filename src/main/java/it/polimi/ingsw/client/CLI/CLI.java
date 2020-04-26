@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.ClientJsonHandler;
-import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
@@ -140,12 +138,18 @@ public class CLI implements ServerToClientManager {
         System.out.print("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
         String nickname = input.nextLine();
 
-        while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
-            nickname = input.nextLine();
-        }
+        if (nickname.equals("exit"))
+            clientView.sendCTSEvent(new ClientDisconnectionEvent(event.ID));
 
-        clientView.sendCTSEvent(new NewConnectionEvent(event.ID, nickname));
+        else {
+            while (!(Pattern.matches(nicknamePattern, nickname))) {
+                System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+                nickname = input.nextLine();
+            }
+
+            clientView.sendCTSEvent(new NewConnectionEvent(event.ID, nickname));
+
+        }
 
     }
 
@@ -161,18 +165,23 @@ public class CLI implements ServerToClientManager {
         System.out.print("Do you want a 2 or 3 players game? ");
         int playersNumber = Integer.parseInt(input.nextLine());
 
-        while(playersNumber != 2 && playersNumber != 3) {
-            System.out.print("Game is available only in 2 or 3 players, choose one of this options : ");
-            playersNumber = Integer.parseInt(input.nextLine());
-        }
+        if (playersNumber == 4)
+            clientView.sendCTSEvent(new ClientDisconnectionEvent(nickname));
 
-        clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, playersNumber));
+
+        else {
+            while (playersNumber != 2 && playersNumber != 3) {
+                System.out.print("Game is available only in 2 or 3 players, choose one of this options : ");
+                playersNumber = Integer.parseInt(input.nextLine());
+            }
+
+            clientView.sendCTSEvent(new ChosenPlayerNumberEvent(nickname, playersNumber));
+        }
     }
 
 
     @Override
     public void manageEvent(SuccessfullyConnectedEvent event) {
-
         this.nickname = event.nickname;
 
         System.out.println("The temporary players are: ");
@@ -206,12 +215,27 @@ public class CLI implements ServerToClientManager {
         System.out.println(event.status);
     }
 
+    @Override
+    public void manageEvent(OneClientDisconnectedEvent event) {
+
+        System.out.println(event.disconnected + " is DISCONNECTED");
+
+        System.out.println("The players are now:");
+
+        for (String nickname : event.playersInside ) {
+            System.out.println(nickname);
+        }
+
+        }
+
+
 
     @Override
-    public void manageEvent(DisconnectionEvent event) {
+    public void manageEvent(DisconnectionClientEvent event) {
         System.out.println("YOU HAVE BEEN DISCONNECTED!");
         this.clientView = null;
         System.exit(0);
+
     }
 
 

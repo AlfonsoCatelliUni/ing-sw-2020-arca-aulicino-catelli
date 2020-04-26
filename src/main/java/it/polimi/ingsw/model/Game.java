@@ -364,7 +364,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * puts in a json file all the info of the game in a give moment
      * @return the status of the game in a given moment
      */
-    public String generateStatusJson(){
+    public String generateStatusJson() {
 
         String statusString = "";
 

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.ClientJsonHandler;
+import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.events.CTSEvents.*;
+import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
@@ -138,54 +140,50 @@ public class CLI implements ServerToClientManager {
         System.out.print("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
         String nickname = input.nextLine();
 
-        if (nickname.equals("exit"))
-            clientView.sendCTSEvent(new ClientDisconnectionEvent(event.ID));
-
-        else {
-            while (!(Pattern.matches(nicknamePattern, nickname))) {
-                System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
-                nickname = input.nextLine();
-            }
-
-            clientView.sendCTSEvent(new NewConnectionEvent(event.ID, nickname));
-
+        while( !(Pattern.matches(nicknamePattern, nickname)) ) {
+            System.err.println("Invalid Nickname !");
+            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            nickname = input.nextLine();
         }
+
+        clientView.sendCTSEvent(new NewConnectionEvent(event.ID, nickname));
 
     }
 
 
     //TODO : no eccezione ip sbalgiato
-    //TODO : no eccezione carta sbagliata
     //TODO : riguardare print you can't place pawn here
     @Override
     public void manageEvent(FirstConnectedEvent event) {
 
         this.nickname = event.nickname;
+        int selectedNumberOfPlayer = 0;
 
-        System.out.print("Do you want a 2 or 3 players game? ");
-        int playersNumber = Integer.parseInt(input.nextLine());
+        do {
 
-        if (playersNumber == 4)
-            clientView.sendCTSEvent(new ClientDisconnectionEvent(nickname));
+            System.out.println("Do you want a 2 or 3 players game? ");
 
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
 
-        else {
-            while (playersNumber != 2 && playersNumber != 3) {
-                System.out.print("Game is available only in 2 or 3 players, choose one of this options : ");
-                playersNumber = Integer.parseInt(input.nextLine());
+                System.out.println("Do you want a 2 or 3 players game? ");
             }
+            selectedNumberOfPlayer = input.nextInt();
 
-            clientView.sendCTSEvent(new ChosenPlayerNumberEvent(nickname, playersNumber));
-        }
+        } while( !(selectedNumberOfPlayer == 2 || selectedNumberOfPlayer == 3) );
+
+        clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, selectedNumberOfPlayer));
     }
 
 
     @Override
     public void manageEvent(SuccessfullyConnectedEvent event) {
+
         this.nickname = event.nickname;
 
-        System.out.println("The temporary players are: ");
-        for (String nickname : event.connectedPlayers ) {
+        System.out.println("The temporary players are : ");
+        for (String nickname : event.connectedPlayers) {
             System.out.println(nickname);
         }
 
@@ -195,12 +193,13 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(UnavailableNicknameEvent event) {
 
-        System.out.println("This nickname is already used, please insert a new nickname:");
+        System.out.println("This nickname is already used, please insert a new nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) :");
 
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            System.err.println("Invalid Nickname!");
+            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
 
@@ -215,27 +214,12 @@ public class CLI implements ServerToClientManager {
         System.out.println(event.status);
     }
 
-    @Override
-    public void manageEvent(OneClientDisconnectedEvent event) {
-
-        System.out.println(event.disconnected + " is DISCONNECTED");
-
-        System.out.println("The players are now:");
-
-        for (String nickname : event.playersInside ) {
-            System.out.println(nickname);
-        }
-
-        }
-
-
 
     @Override
-    public void manageEvent(DisconnectionClientEvent event) {
+    public void manageEvent(DisconnectionEvent event) {
         System.out.println("YOU HAVE BEEN DISCONNECTED!");
         this.clientView = null;
         System.exit(0);
-
     }
 
 
@@ -283,23 +267,56 @@ public class CLI implements ServerToClientManager {
             System.out.println("Choose the position of your male pawn");
 
             System.out.println("Row Position:");
-            int maleRowPosition = Integer.parseInt(input.nextLine());
+            int maleRowPosition;
 
-            while( maleRowPosition < 0 || maleRowPosition > 4) {
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+            maleRowPosition = input.nextInt();
+
+
+            while(maleRowPosition < 0 || maleRowPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Row Position:");
-                maleRowPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+                maleRowPosition = input.nextInt();
+
             }
 
             System.out.println("Column Position:");
-            int maleColumnPosition = Integer.parseInt(input.nextLine());
+            int maleColumnPosition;
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Column Position:");
+            }
+            maleColumnPosition = input.nextInt();
 
             while( maleColumnPosition < 0 || maleColumnPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Column Position:");
-                maleColumnPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Column Position:");
+                }
+                maleColumnPosition = input.nextInt();
+
             }
 
             boolean isOccupied;
@@ -322,23 +339,54 @@ public class CLI implements ServerToClientManager {
                     System.out.println("Choose the position of your male pawn");
 
                     System.out.println("Row Position:");
-                    maleRowPosition = Integer.parseInt(input.nextLine());
+
+                    while(!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        input.next();
+
+                        System.out.println("Row Position:");
+                    }
+                    maleRowPosition = input.nextInt();
+
 
                     while( maleRowPosition < 0 || maleRowPosition > 4) {
 
                         System.out.println("Invalid position");
                         System.out.println("Row Position:");
-                        maleRowPosition = Integer.parseInt(input.nextLine());
+
+                        while(!input.hasNextInt()) {
+                            System.err.println("Insert a Number!");
+                            input.next();
+
+                            System.out.println("Row Position:");
+                        }
+                        maleRowPosition = input.nextInt();
+
                     }
 
                     System.out.println("Column Position:");
-                    maleColumnPosition = Integer.parseInt(input.nextLine());
+
+                    while(!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        input.next();
+
+                        System.out.println("Row Position:");
+                    }
+                    maleColumnPosition = input.nextInt();
+
 
                     while( maleColumnPosition < 0 || maleColumnPosition > 4) {
 
                         System.out.println("Invalid position");
                         System.out.println("Column Position:");
-                        maleColumnPosition = Integer.parseInt(input.nextLine());
+
+                        while(!input.hasNextInt()) {
+                            System.err.println("Insert a Number!");
+                            input.next();
+
+                            System.out.println("Row Position:");
+                        }
+                        maleColumnPosition = input.nextInt();
                     }
 
                 }
@@ -349,23 +397,60 @@ public class CLI implements ServerToClientManager {
             System.out.println("Choose the position of your female pawn");
 
             System.out.println("Row Position:");
-            int femaleRowPosition = Integer.parseInt(input.nextLine());
+            int femaleRowPosition;
 
-            while( femaleRowPosition < 0 || femaleRowPosition > 4) {
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+
+            femaleRowPosition = input.nextInt();
+
+            while(femaleRowPosition < 0 || femaleRowPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Row Position:");
-                femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+
+                femaleRowPosition = input.nextInt();
+
             }
 
             System.out.println("Column Position:");
-            int femaleColumnPosition = Integer.parseInt(input.nextLine());
+            int femaleColumnPosition;
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+
+            femaleColumnPosition = input.nextInt();
+
 
             while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Column Position:");
-                femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+
+                femaleColumnPosition = input.nextInt();
+
             }
 
             do {
@@ -388,23 +473,59 @@ public class CLI implements ServerToClientManager {
                     System.out.println("Choose the position of your female pawn");
 
                     System.out.println("Row Position:");
-                    femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                    while(!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        input.next();
+
+                        System.out.println("Row Position:");
+                    }
+
+                    femaleRowPosition = input.nextInt();
+
 
                     while( femaleRowPosition < 0 || femaleRowPosition > 4) {
 
                         System.out.println("Invalid position");
                         System.out.println("Row Position:");
-                        femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                        while(!input.hasNextInt()) {
+                            System.err.println("Insert a Number!");
+                            input.next();
+
+                            System.out.println("Row Position:");
+                        }
+
+                        femaleRowPosition = input.nextInt();
+
                     }
 
                     System.out.println("Column Position:");
-                    femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                    while(!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        input.next();
+
+                        System.out.println("Row Position:");
+                    }
+
+                    femaleColumnPosition = input.nextInt();
+
 
                     while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
 
                         System.out.println("Invalid position");
                         System.out.println("Column Position:");
-                        femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                        while(!input.hasNextInt()) {
+                            System.err.println("Insert a Number!");
+                            input.next();
+
+                            System.out.println("Row Position:");
+                        }
+
+                        femaleColumnPosition = input.nextInt();
+
                     }
 
                 }
@@ -423,46 +544,113 @@ public class CLI implements ServerToClientManager {
             System.out.println("Choose the position of your male pawn");
 
             System.out.println("Row Position:");
-            int maleRowPosition = Integer.parseInt(input.nextLine());
+            int maleRowPosition;
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+            maleRowPosition = input.nextInt();
 
             while( maleRowPosition < 0 || maleRowPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Row Position:");
-                maleRowPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+                maleRowPosition = input.nextInt();
+
             }
 
             System.out.println("Column Position:");
-            int maleColumnPosition = Integer.parseInt(input.nextLine());
+            int maleColumnPosition;
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+            maleColumnPosition = input.nextInt();
+
 
             while( maleColumnPosition < 0 || maleColumnPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Column Position:");
-                maleColumnPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+                maleColumnPosition = input.nextInt();
+
             }
 
             //female pawn choosing
             System.out.println("Choose the position of your female pawn");
 
             System.out.println("Row Position:");
-            int femaleRowPosition = Integer.parseInt(input.nextLine());
+            int femaleRowPosition;
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+            femaleRowPosition = input.nextInt();
+
 
             while( femaleRowPosition < 0 || femaleRowPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Row Position:");
-                femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+                femaleRowPosition = input.nextInt();
+
             }
 
             System.out.println("Column Position:");
-            int femaleColumnPosition = Integer.parseInt(input.nextLine());
+            int femaleColumnPosition;
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("Row Position:");
+            }
+            femaleColumnPosition = input.nextInt();
+
 
             while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
 
                 System.out.println("Invalid position");
                 System.out.println("Column Position:");
-                femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Row Position:");
+                }
+                femaleColumnPosition = input.nextInt();
+
             }
 
             boolean isOccupied;
@@ -477,23 +665,55 @@ public class CLI implements ServerToClientManager {
                     System.out.println("Choose the position of your female pawn");
 
                     System.out.println("Row Position:");
-                    femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                    while(!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        input.next();
+
+                        System.out.println("Row Position:");
+                    }
+                    femaleRowPosition = input.nextInt();
+
 
                     while( femaleRowPosition < 0 || femaleRowPosition > 4) {
 
                         System.out.println("Invalid position");
                         System.out.println("Row Position:");
-                        femaleRowPosition = Integer.parseInt(input.nextLine());
+
+                        while(!input.hasNextInt()) {
+                            System.err.println("Insert a Number!");
+                            input.next();
+
+                            System.out.println("Row Position:");
+                        }
+                        femaleRowPosition = input.nextInt();
+
                     }
 
                     System.out.println("Column Position:");
-                    femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                    while(!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        input.next();
+
+                        System.out.println("Row Position:");
+                    }
+                    femaleColumnPosition = input.nextInt();
+
 
                     while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
 
                         System.out.println("Invalid position");
                         System.out.println("Column Position:");
-                        femaleColumnPosition = Integer.parseInt(input.nextLine());
+
+                        while(!input.hasNextInt()) {
+                            System.err.println("Insert a Number!");
+                            input.next();
+
+                            System.out.println("Row Position:");
+                        }
+                        femaleColumnPosition = input.nextInt();
+
                     }
 
                 }
@@ -553,22 +773,53 @@ public class CLI implements ServerToClientManager {
                isCorrect = false;
 
                System.out.println("Row position: ");
+
+               while(!input.hasNextInt()) {
+                   System.err.println("Insert a Number!");
+                   input.next();
+
+                   System.out.println("Row Position:");
+               }
                rowPosition = input.nextInt();
+
 
                while (rowPosition < 0 || rowPosition > 4) {
 
                    System.out.println("Invalid position");
                    System.out.println("Row Position:");
+
+                   while(!input.hasNextInt()) {
+                       System.err.println("Insert a Number!");
+                       input.next();
+
+                       System.out.println("Row Position:");
+                   }
                    rowPosition = input.nextInt();
+
                }
 
                System.out.println("Column position: ");
+
+               while(!input.hasNextInt()) {
+                   System.err.println("Insert a Number!");
+                   input.next();
+
+                   System.out.println("Row Position:");
+               }
                columnPosition = input.nextInt();
+
 
                while (columnPosition < 0 || columnPosition > 4) {
 
                    System.out.println("Invalid position");
                    System.out.println("Column Position:");
+
+                   while(!input.hasNextInt()) {
+                       System.err.println("Insert a Number!");
+                       input.next();
+
+                       System.out.println("Row Position:");
+                   }
                    columnPosition = input.nextInt();
                }
 
@@ -620,13 +871,28 @@ public class CLI implements ServerToClientManager {
                 System.out.println(i + ")\tGod Name : " + cardsName.get(i) + "\n\tGod Effect : " + cardsEffect.get(i));
             }
 
-        System.out.print("\nInsert the number to choose your God : ");
-        choiceNum = Integer.parseInt(input.nextLine());
+        System.out.print("\nInsert the number to choose your God: ");
+
+        while(!input.hasNextInt()) {
+            System.err.println("Insert a Number!");
+            input.next();
+
+            System.out.println("\nInsert the number to choose your God:");
+        }
+        choiceNum = input.nextInt();
 
         while (choiceNum >= cardsName.size() || choiceNum < 0) {
             System.out.println("Invalid choice!");
             System.out.print("Insert the number to choose your God : ");
-            choiceNum = Integer.parseInt(input.nextLine());
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+
+                System.out.println("\nInsert the number to choose your God:");
+            }
+            choiceNum = input.nextInt();
+
         }
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
@@ -653,21 +919,32 @@ public class CLI implements ServerToClientManager {
             }
 
             do {
-                System.out.println("Choose your next action :");
+                System.out.println("Choose your next action:");
                 for (int index = 0; index < possibleActions.size(); index++) {
                     System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
                 }
 
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    input.next();
+
+                    System.out.println("Choose your next action:");
+                    for (int index = 0; index < possibleActions.size(); index++) {
+                        System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
+                    }
+                }
                 indexChosenAction = input.nextInt();
+
+
                 if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
-                    System.err.println("Action Unavailable !");
+                    System.err.println("Action Unavailable!");
                 }
 
             } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
 
         }
 
-        System.out.println("Puoi solo fare  : " + possibleActions.get(indexChosenAction));
+        System.out.println("You have just a " + possibleActions.get(indexChosenAction) + "action");
         //in case there is only one possible action I directly send the possible aciton
         //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
         switch (possibleActions.get(indexChosenAction)) {
@@ -693,7 +970,7 @@ public class CLI implements ServerToClientManager {
                 break;
 
             default:
-                throw new RuntimeException("Error while selecting the next action !");
+                throw new RuntimeException("Error while selecting the next action!");
 
             }
 
@@ -717,14 +994,24 @@ public class CLI implements ServerToClientManager {
             }
 
             do {
-                System.out.println("Choose the cell where you want to move :");
+                System.out.println("Choose the cell where you want to move:");
                 for(int c = 0; c < cellsAvailableToMove.size(); c++) {
                     System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
                 }
 
+                while(!input.hasNextInt()) {
+
+                    input.next();
+                    System.err.println("Insert an Number!");
+
+                    System.out.println("Choose the cell where you want to move:");
+                    for(int c = 0; c < cellsAvailableToMove.size(); c++) {
+                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
+                    }
+                }
                 selectedCell = input.nextInt();
                 if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
-                    System.err.println("Unavailable Choice !");
+                    System.err.println("Unavailable Choice!");
                 }
 
 
@@ -750,7 +1037,6 @@ public class CLI implements ServerToClientManager {
         boolean isEventValid = event.isValid;
         int selectedCell = 0;
 
-        System.out.println("evento ricevuto Build!");
         //control if there's only one single cell available to build
         //if there are more cells I let the user choose
         if(cellsAvailableToBuild.size() > 1) {
@@ -760,14 +1046,26 @@ public class CLI implements ServerToClientManager {
             }
 
             do {
-                System.out.println("Choose the cell where you want to build :");
+                System.out.println("Choose the cell where you want to build:");
                 for (int c = 0; c < cellsAvailableToBuild.size(); c++) {
                     System.out.println("[" + String.valueOf(c) + "]\t" + String.valueOf(cellsAvailableToBuild.get(c).x) + " - " + String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
                 }
 
+                while(!input.hasNextInt()) {
+
+                    input.next();
+                    System.err.println("Insert an Number!");
+
+                    System.out.println("Choose the cell where you want to build:");
+                    for(int c = 0; c < cellsAvailableToBuild.size(); c++) {
+                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToBuild.get(c).x)+" - "+String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
+                    }
+                }
                 selectedCell = input.nextInt();
+
+
                 if (!(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size())) {
-                    System.err.println("Unavailable Choice !");
+                    System.err.println("Unavailable Choice!");
                 }
 
 
@@ -799,14 +1097,25 @@ public class CLI implements ServerToClientManager {
 
             do {
 
-                System.out.println("Choose the building to build on the selected cell :");
+                System.out.println("Choose the building to build on the selected cell:");
                 for(int b = 0; b < buildingsLevel.size(); b++) {
                     System.out.println("["+String.valueOf(b)+"]\t"+String.valueOf(buildingsLevel.get(b))+"\n");
                 }
 
+                while(!input.hasNextInt()) {
+
+                    input.next();
+                    System.err.println("Insert an Number!");
+
+                    System.out.println("Choose the building to build on the selected cell:");
+                    for(int c = 0; c < buildingsLevel.size(); c++) {
+                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(buildingsLevel.get(c)) + "\n");
+                    }
+                }
                 selectedLevel = input.nextInt();
+
                 if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
-                    System.err.println("Unavailable Choice !");
+                    System.err.println("Unavailable Choice!");
                 }
 
             } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
@@ -863,6 +1172,5 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(EndGameSTCEvent event) {
 
     }
-
 
 }

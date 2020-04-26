@@ -74,12 +74,11 @@ public class Card {
     }
 
 
-    public Effect getBaseEffect() {
-        return baseEffect;
-    }
-
-
     public void setBaseEffect(Effect baseEffect) {
         this.baseEffect = baseEffect;
+    }
+
+    public Effect getBaseEffect() {
+        return (Effect) baseEffect.clone();
     }
 }

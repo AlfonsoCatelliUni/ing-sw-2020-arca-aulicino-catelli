@@ -133,8 +133,10 @@ public class EffectDecorator implements Effect {
     }
 
 
+    @Override
+    public Object clone(){
 
+        return this.effect.clone();
 
-
-
+    }
 }

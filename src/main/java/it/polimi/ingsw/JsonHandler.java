@@ -28,6 +28,9 @@ public class JsonHandler {
     public static JsonParser myJsonParser = new JsonParser();
 
 
+    private static final Map<String, Effect> effectsClassMap = fillMap();
+
+
 
     // ======================================================================================
 
@@ -55,7 +58,7 @@ public class JsonHandler {
     }
 
 
-    public static List<Card> deserializeCardList() {
+    public static List<Card> deserializeCardList(){
         List<Card> cards = new ArrayList<>();
 
         JsonArray cardsJson = myJsonParser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(cardPath)))).getAsJsonArray();
@@ -72,17 +75,12 @@ public class JsonHandler {
     /**
      * this map each card with the corresponding decorator class
      */
-    private static Card deserializeCard(JsonObject cardJson) {
-
-
-        Map<String, Effect> effectsClassMap;
-        effectsClassMap = fillMap();
+    private static Card deserializeCard(JsonObject cardJson)  {
 
         String name = cardJson.get("name").getAsString();
         boolean available3P = cardJson.get("available3P").getAsBoolean();
         String effect = cardJson.get("effect").getAsString();
         Effect baseEffect = effectsClassMap.get(name);
-
 
         return new Card(name, available3P, effect, baseEffect);
     }

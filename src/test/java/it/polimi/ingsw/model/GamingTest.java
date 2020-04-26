@@ -5,6 +5,7 @@ import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Effect.*;
@@ -74,11 +75,22 @@ public class GamingTest {
         gameTest.pawnBuild("alfonso", 0,1, 1,1, 1);
 
 
+    }
 
 
 
+    @Test
+    void GameTestingProva() {
 
+        Board gameBoard = new Board();
 
+        Player player = new Player("nome", Color.BLUE, new Card("Apollo", true, "effect", new CanSwitchOpponentEffect(new SwitchEffect(new BasicEffect()))), new BasicEffect());
+        player.setEffect(player.getCard().getBaseEffect());
+
+        player.initPawn(gameBoard, gameBoard.getCell(0,0));
+        player.move(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
+
+        player.build(gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2), 1, gameBoard.getBuildings());
 
 
 

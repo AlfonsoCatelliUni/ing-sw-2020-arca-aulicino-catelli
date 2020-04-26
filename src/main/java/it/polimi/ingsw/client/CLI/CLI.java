@@ -150,6 +150,9 @@ public class CLI implements ServerToClientManager {
     }
 
 
+    //TODO : no eccezione ip sbalgiato
+    //TODO : no eccezione carta sbagliata
+    //TODO : riguardare print you can't place pawn here
     @Override
     public void manageEvent(FirstConnectedEvent event) {
 
@@ -200,7 +203,7 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(NotifyStatusEvent event) {
-
+        System.out.println(event.status);
     }
 
 
@@ -509,7 +512,7 @@ public class CLI implements ServerToClientManager {
            columnPosition = coordinatesAvailablePawns.get(0).y;
 
        }
-       if(coordinatesAvailablePawns.size() == 2) {
+       else if(coordinatesAvailablePawns.size() == 2) {
 
            System.out.println("Choose the coordinates of the pawn you want to move: ");
 
@@ -526,23 +529,23 @@ public class CLI implements ServerToClientManager {
                isCorrect = false;
 
                System.out.println("Row position: ");
-               rowPosition = Integer.parseInt(input.nextLine());
+               rowPosition = input.nextInt();
 
                while (rowPosition < 0 || rowPosition > 4) {
 
                    System.out.println("Invalid position");
                    System.out.println("Row Position:");
-                   rowPosition = Integer.parseInt(input.nextLine());
+                   rowPosition = input.nextInt();
                }
 
                System.out.println("Column position: ");
-               columnPosition = Integer.parseInt(input.nextLine());
+               columnPosition = input.nextInt();
 
                while (columnPosition < 0 || columnPosition > 4) {
 
                    System.out.println("Invalid position");
                    System.out.println("Column Position:");
-                   columnPosition = Integer.parseInt(input.nextLine());
+                   columnPosition = input.nextInt();
                }
 
                for (Point coordinatesAvailablePawn : coordinatesAvailablePawns) {
@@ -596,7 +599,7 @@ public class CLI implements ServerToClientManager {
         System.out.print("\nInsert the number to choose your God : ");
         choiceNum = Integer.parseInt(input.nextLine());
 
-        while (choiceNum > cardsName.size() || choiceNum < 0) {
+        while (choiceNum >= cardsName.size() || choiceNum < 0) {
             System.out.println("Invalid choice!");
             System.out.print("Insert the number to choose your God : ");
             choiceNum = Integer.parseInt(input.nextLine());
@@ -640,6 +643,7 @@ public class CLI implements ServerToClientManager {
 
         }
 
+        System.out.println("Puoi solo fare  : " + possibleActions.get(indexChosenAction));
         //in case there is only one possible action I directly send the possible aciton
         //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
         switch (possibleActions.get(indexChosenAction)) {
@@ -680,7 +684,7 @@ public class CLI implements ServerToClientManager {
         List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
         String actionID = event.actionID;
         Boolean isEventValid = event.isValid;
-        int selectedCell;
+        int selectedCell = 0;
 
         if(cellsAvailableToMove.size() > 1) {
 
@@ -702,21 +706,15 @@ public class CLI implements ServerToClientManager {
 
             } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
 
-
-            nextActionRow = cellsAvailableToMove.get(selectedCell).x;
-            nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
-
-            clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
-
-        }
-        else {
-            nextActionRow = cellsAvailableToMove.get(0).x;
-            nextActionColumn = cellsAvailableToMove.get(0).y;
-
-            clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
         }
 
+        nextActionRow = cellsAvailableToMove.get(selectedCell).x;
+        nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
 
+        clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+
+        rowUsedPawn = cellsAvailableToMove.get(selectedCell).x;
+        columnUsedPawn = cellsAvailableToMove.get(selectedCell).y;
     }
 
 
@@ -726,43 +724,36 @@ public class CLI implements ServerToClientManager {
         List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
         String actionID = event.actionID;
         Boolean isEventValid = event.isValid;
-        int selectedCell;
+        int selectedCell = 0;
 
+        System.out.println("evento ricevuto Build!");
         //control if there's only one single cell available to build
         //if there are more cells I let the user choose
         if(cellsAvailableToBuild.size() > 1) {
 
-            if(!isEventValid) {
+            if (!isEventValid) {
                 System.out.println("Apparently there was an error! Reselect.");
             }
 
             do {
                 System.out.println("Choose the cell where you want to build :");
-                for(int c = 0; c < cellsAvailableToBuild.size(); c++) {
-                    System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToBuild.get(c).x)+" - "+String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
+                for (int c = 0; c < cellsAvailableToBuild.size(); c++) {
+                    System.out.println("[" + String.valueOf(c) + "]\t" + String.valueOf(cellsAvailableToBuild.get(c).x) + " - " + String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
                 }
 
                 selectedCell = input.nextInt();
-                if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
+                if (!(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size())) {
                     System.err.println("Unavailable Choice !");
                 }
 
 
-            } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
-
-            nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
-            nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
-
-            clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+            } while (!(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()));
         }
 
-        //if there is only one cell I automatically fill the ChosenCellToBuildEvent
-        else {
-            nextActionRow = cellsAvailableToBuild.get(0).x;
-            nextActionColumn = cellsAvailableToBuild.get(0).y;
+        nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
+        nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
 
-            clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
-        }
+        clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
 
     }
 

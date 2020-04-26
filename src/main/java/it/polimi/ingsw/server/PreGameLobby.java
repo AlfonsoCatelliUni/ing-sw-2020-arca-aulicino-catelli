@@ -142,8 +142,8 @@ public class PreGameLobby {
         playerDecoratorMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
 
         playerDecoratorMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
-        playerDecoratorMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
-        playerDecoratorMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
+        playerDecoratorMap.put("Demeter", new MoreBuildNotOnSameEffect(new BasicEffect()));
+        playerDecoratorMap.put("Hephaestus", new MoreBuildOnSameEffect(new BasicEffect()));
 
         playerDecoratorMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
         playerDecoratorMap.put("Pan", new DownTwoEffect(new BasicEffect()));

@@ -13,6 +13,7 @@ import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.*;
+import it.polimi.ingsw.view.server.VirtualView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -58,7 +59,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
      * @param playerDecoratorMap is where is mapped a god's name to his decoration
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Effect> playerDecoratorMap) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Effect> playerDecoratorMap, VirtualView virtualView) {
 
         super();
 
@@ -67,6 +68,8 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
         this.playersNickname = playersNickname;
+
+        addObserver(virtualView);
 
 
         for (int i = 0; i < playersNickname.size(); i++) {

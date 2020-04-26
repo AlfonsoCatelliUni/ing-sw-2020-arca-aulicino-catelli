@@ -204,7 +204,7 @@ public class Controller implements Observer, ClientToServerManager {
 
        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
-       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
+       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap(), virtualView);
 
        List<Card> cards = new ArrayList<>();
 
@@ -264,31 +264,24 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    public void endTurn(){
+    public void endTurn(String nickname) {
 
-        String playerTurnEnded = game.getCurrentPlayer().getName();
+        int index = game.getPlayersNickname().indexOf(nickname);
 
-        int index = game.getPlayersNickname().indexOf(playerTurnEnded);
         index++;
-
-        if (index < game.getPlayersNickname().size()){
-            String nextPlayer = game.getPlayersNickname().get(index);
-
-            List<Cell> availablePawnsCell = game.getAvailablePawns(nextPlayer);
-            List<Point> points = new ArrayList<>();
-
-            for(Cell c : availablePawnsCell)
-                points.add(new Point(c.getRowPosition(), c.getColumnPosition()));
-
-            virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, points));
-
-        }
-        else {
-            firstTurnGame();
+        if(index >= game.getPlayersNickname().size()) {
+            index = 0;
         }
 
+        String nextPlayer = game.getPlayersNickname().get(index);
 
+        List<Cell> availablePawnsCell = game.getAvailablePawns(nextPlayer);
+        List<Point> points = new ArrayList<>();
 
+        for(Cell c : availablePawnsCell)
+            points.add(new Point(c.getRowPosition(), c.getColumnPosition()));
+
+        virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, points));
 
 
     }
@@ -546,6 +539,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         String nickname = event.playerNickname;
         String chosenAction = event.action;
+
         int row = event.pawnRow;
         int column = event.pawnColumn;
 
@@ -556,7 +550,7 @@ public class Controller implements Observer, ClientToServerManager {
             List<Cell> availableCellsToBuild = game.wherePawnCanBuild(nickname, row, column);
             List<Point> cellsInfo = generatePointsByCells(availableCellsToBuild);
 
-            virtualView.sendMessage(new GivePossibleCellsToBuildEvent(nickname, cellsInfo, true));
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo, true));
         }
         else {
             //if it's not ok than the game automatically return the last possible actions list
@@ -590,10 +584,7 @@ public class Controller implements Observer, ClientToServerManager {
         String chosenAction = event.action;
 
         if( game.isValid(chosenAction) ) {
-            //TODO : devo chiamare il next current player
-            game.nextCurrentPlayer();
-
-            //virtualView.sendMessageTo();
+            endTurn(event.playerNickname);
         }
         else {
             List<String> actionsInfo = generateActionIDByActions((game.getLastActionsList()));
@@ -615,6 +606,7 @@ public class Controller implements Observer, ClientToServerManager {
         int nextColumn = event.nextColumn;
 
         if(game.isValidCoordinate(row, column) &&  game.isValid(nextRow, nextColumn)) {
+
             //THAT'S IMPORTANT!
             game.movePawn(nickname, row, column, nextRow, nextColumn);
 

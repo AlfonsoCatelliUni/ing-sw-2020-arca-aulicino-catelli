@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.CLI;
 import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +34,25 @@ public class GraphicDrawerCLI {
 
 
     public GraphicDrawerCLI() {
-        screen = new char[ROWS][COLUMNS];
-        boardCellsInfo = new char[5][10];
+        this.screen = new char[ROWS][COLUMNS];
+        this.boardCellsInfo = new char[5][10];
+
+        this.playerPanelTitle = "";
+        this.playersInfo = new ArrayList<>();
+        this.cardsNameChoices = new ArrayList<>();
+        this.cardsEffectChoices = new ArrayList<>();
+
+        this.choicePanelTitle = "";
+        this.cellsChoicePanel = new ArrayList<>();
+        actionsChoicePanel = new ArrayList<>();
+        buildingsChoicePanel = new ArrayList<>();
+
+
         resetBoardCellsInfo();
-        draw();
     }
 
 
+    /*
     public void fillTest() {
         clear();
         drawPlayersPanel();
@@ -63,6 +76,8 @@ public class GraphicDrawerCLI {
         setCellChoicesValue(cellsList);
     }
 
+     */
+
 
     public static void main(String[] args) {
         GraphicDrawerCLI cli = new GraphicDrawerCLI();
@@ -77,7 +92,7 @@ public class GraphicDrawerCLI {
 
         cli.clearScreen();
 
-        cli.fillTest();
+        //cli.fillTest();
         cli.show();
     }
 
@@ -95,6 +110,8 @@ public class GraphicDrawerCLI {
 
 
     public void show() {
+
+        draw();
 
         for(int row = 0; row < ROWS; row++) {
             System.out.println( String.valueOf(screen[row]) );
@@ -238,6 +255,18 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method set the information of the cell at the passed coordinates,
+     * it takes a well-formatted string info.
+     * the first char of this string contains the height of the tower (0 to 4).
+     * the second char of this string contains the first letter of the color
+     * of the pawn, the letter is uppercase for the male pawn (B G W) and
+     * lowercase for the female pawn (b g w), if there's a dome in the cell
+     * this char will be an uppercase X, if the cell is empty there will be a '.'
+     * @param row the row coordinates of the cell in range 1 to 5
+     * @param column the column coordinates of the cell in range 1 to 5
+     * @param info a formatted string which contains the information
+     */
     public void setCellInfo(int row, int column, String info) {
 
         int refCol = column * 2;
@@ -246,8 +275,8 @@ public class GraphicDrawerCLI {
             throw new RuntimeException("Wrong Formatting CellInfo !");
         }
         else {
-            boardCellsInfo[row-1][refCol-2] = info.charAt(0);
-            boardCellsInfo[row-1][refCol-1] = info.charAt(1);
+            boardCellsInfo[row][refCol-2] = info.charAt(0);
+            boardCellsInfo[row][refCol-1] = info.charAt(1);
         }
 
     }
@@ -272,6 +301,14 @@ public class GraphicDrawerCLI {
 
     //MARK : Player Panel Section ======================================================================================
 
+    private String playerPanelTitle;
+
+    private List<FormattedPlayerInfo> playersInfo;
+
+    private List<String> cardsNameChoices;
+
+    private List<String> cardsEffectChoices;
+
 
     private void drawPlayersPanel() {
 
@@ -289,30 +326,69 @@ public class GraphicDrawerCLI {
 
 
         }
-        /*
-        print( 5, 8, empty);
-        print( 6, 8, empty);
-        print( 7, 8, empty);
-        print( 8, 8, divider);
-        print( 9, 8, empty);
-        print( 10,8, empty);
-        print( 11,8, empty);
-        print( 12,8, empty);
-        print( 13,8, empty);
-        print( 14,8, empty);
-        print( 15,8, empty);
-        print( 16,8, empty);
-        print( 17,8, empty);
-        print( 18,8, empty);
-        print( 19,8, empty);
-        print( 20,8, divider);
 
-         */
+        fillPlayersPanel();
+    }
+
+
+    private void fillPlayersPanel() {
+        fillTitlePlayerPanel(playerPanelTitle);
+        fillInfoPlayerPanel(playersInfo);
+
+        if(cardsNameChoices.size() > 0) {
+            fillPlayerCardChoice(cardsNameChoices, cardsEffectChoices);
+        }
+    }
+
+
+    public void saveTitlePlayerPanel(String title) {
+        this.playerPanelTitle = title.toUpperCase();
+    }
+
+
+    public void saveInfoPlayerPanel(List<FormattedPlayerInfo> playerInfoList) {
+        this.playersInfo = playerInfoList;
+
+        //when i set the players info the cards are all being chosen so i can eliminate the value
+        this.cardsNameChoices = new ArrayList<>();
+        this.cardsEffectChoices = new ArrayList<>();
+    }
+
+
+    public void savePlayerCardChoice(List<String> cardsNameList, List<String> cardsEffectList) {
+        this.cardsNameChoices = cardsNameList;
+        this.cardsEffectChoices = cardsEffectList;
+    }
+
+
+    private void fillPlayerCardChoice( List<String> cardsNameList, List<String> cardsEffectList) {
+
+        int startRow = 11;
+        int rowOffset = 3;
+        int refRow;
+
+
+        int numCards = cardsNameList.size();
+
+        for(int card = 0; card < numCards; card++) {
+            refRow = startRow + (card * rowOffset);
+
+            print(refRow, 11, "["+String.valueOf(card)+"]");
+            print(refRow, 16, cardsNameList.get(card));
+
+            if(cardsEffectList.get(card).length() > 87) {
+                print(refRow, 57, cardsEffectList.get(card).substring(0, 87));
+                print(refRow+1, 57, cardsEffectList.get(card).substring(87));
+            }
+            else {
+                print(refRow, 57, cardsEffectList.get(card));
+            }
+        }
 
     }
 
 
-    public void setTitlePlayerPanel(String title) {
+    private void fillTitlePlayerPanel(String title) {
 
         if(title.length() > 132)
             throw new RuntimeException("Invalid Format for Player Panel Title !");
@@ -324,7 +400,7 @@ public class GraphicDrawerCLI {
     }
 
 
-    public void setInfoPlayerPanel( List<FormattedPlayerInfo> playerInfoList ) {
+    private void fillInfoPlayerPanel( List<FormattedPlayerInfo> playerInfoList ) {
 
         //nickname length 30
         //color length 5
@@ -337,85 +413,184 @@ public class GraphicDrawerCLI {
 
         int numPlayer = playerInfoList.size();
 
-        if(numPlayer != 3 && numPlayer != 2) {
-            throw new RuntimeException("Invalid Number of Player Passed to InfoPlayerPanel !");
-        }
-        else {
+        for(int player = 0; player < numPlayer; player++) {
+            refRow = startRow + (player * rowOffset);
 
-            for(int player = 0; player < numPlayer; player++) {
-                refRow = startRow + (player * rowOffset);
+            print(refRow, 12, String.valueOf(player+1));
+            print(refRow, 16, playerInfoList.get(player).getNickname());
+            print(refRow, 49, playerInfoList.get(player).getColor());
 
-                print(refRow, 12, String.valueOf(player+1));
-                print(refRow, 16, playerInfoList.get(player).getNickname());
-                print(refRow, 49, playerInfoList.get(player).getColor());
+            if(playerInfoList.get(player).getCard().getSecond().length() > 87) {
                 print(refRow, 57, playerInfoList.get(player).getCard().getSecond().substring(0, 87));
                 print(refRow+1, 57, playerInfoList.get(player).getCard().getSecond().substring(87));
             }
-        }
-
-
-    }
-
-
-    public void setPlayerCardChoice( List<Couple<String, String>> cardsList) {
-
-        int startRow = 11;
-        int rowOffset = 3;
-        int refRow;
-
-
-        int numCards = cardsList.size();
-
-        if(numCards != 3 && numCards != 2) {
-            throw new RuntimeException("Invalid Number of Player Passed to InfoPlayerPanel !");
-        }
-        else {
-
-            for(int card = 0; card < numCards; card++) {
-                refRow = startRow + (card * rowOffset);
-
-                print(refRow, 11, "["+String.valueOf(card+1)+"]");
-                print(refRow, 16, cardsList.get(card).getFirst());
-                print(refRow, 57, cardsList.get(card).getSecond().substring(0, 87));
-                print(refRow+1, 57, cardsList.get(card).getSecond().substring(87));
+            else {
+                print(refRow, 57, playerInfoList.get(player).getCard().getSecond());
             }
+
         }
+
 
     }
 
 
     //MARK : Player Panel Section ======================================================================================
 
+    private String choicePanelTitle;
+
+    private List<Point> cellsChoicePanel;
+
+    private List<String> actionsChoicePanel;
+
+    private List<String> buildingsChoicePanel;
+
 
     private void drawChoicePanel() {
 
         int startRow = 23;
-        String divider = "+----------------------------------------------------------------------------+";
-        String empty = "|                                                                            |";
+        String divider = "+-----------------------------------------------------------------------------+";
+        String empty = "|                                                                             |";
 
         for(int row = startRow; row <= 58; row++) {
 
             if(row == 23 || row == 27 || row == 58) {
-                print(row, 70, divider);
+                print(row, 69, divider);
             } else {
-                print(row, 70, empty);
+                print(row, 69, empty);
             }
         }
 
-//        setChoicesNumber();
+        fillChoicePanel();
     }
 
 
-    public void setTitleChoicePanel(String title) {
+    private void fillChoicePanel() {
+        fillTitleChoicePanel();
+
+        if(this.cellsChoicePanel.size() > 0) {
+            fillCellsChoicePanel();
+        }
+        else if(this.actionsChoicePanel.size() > 0) {
+            fillActionsChoicesPanel();
+        }
+        else if(this.buildingsChoicePanel.size() > 0) {
+            fillBuildingsChoicePanel();
+        }
+
+    }
+
+
+    private void fillTitleChoicePanel() {
+        print(25, 72, choicePanelTitle);
+    }
+
+
+    private void fillCellsChoicePanel() {
+
+        int startRow = 31;
+        int rowOffset = 3;
+        int refRow;
+
+        int startColumn = 72;
+        int startColumnValue = 79;
+        int colOffset = 26;
+        int refColNum;
+        int refColVal;
+        int numCol = 0;
+
+        String choiceValue;
+        String choiceNumber;
+
+        print(29, 77, "Row - Column");
+
+        refColNum = startColumn;
+        refColVal = startColumnValue;
+        for(int i = 0; i < cellsChoicePanel.size(); i++) {
+
+            if(i == 9) {
+                refRow = startRow;
+                numCol = 9;
+                refColNum += colOffset;
+                refColVal += colOffset+1;
+            }
+            if(i == 18) {
+                refRow = startRow;
+                numCol = 18;
+                refColNum += colOffset;
+                refColVal += colOffset;
+            }
+
+            refRow = startRow + ((i - numCol) * rowOffset);
+
+            choiceNumber = "[" + String.valueOf(i) + "]";
+            print(refRow, refColNum, choiceNumber);
+
+            choiceValue = String.valueOf(cellsChoicePanel.get(i).x) + " - " + String.valueOf(cellsChoicePanel.get(i).y);
+            print(refRow, refColVal, choiceValue);
+
+
+        }
+
+    }
+
+
+    private void fillActionsChoicesPanel() {
+
+        int startRow = 31;
+        int rowOffset = 3;
+        int refRow;
+
+        print(29, 78, "Actions");
+
+        for(int a = 0; a < actionsChoicePanel.size(); a++) {
+            refRow = startRow + (a * rowOffset);
+
+            print(refRow, 78, actionsChoicePanel.get(a));
+        }
+
+    }
+
+    //TODO : da completare
+    private void fillBuildingsChoicePanel() {
+
+    }
+
+
+    public void saveTitleChoicePanel(String title) {
 
         if(title.length() > 72 )
             throw new RuntimeException("Invalid Format fot Choice Panel Title !");
 
-        String uppercaseTitle = title.toUpperCase();
-
-        print(25, 73, uppercaseTitle);
+        this.choicePanelTitle = title.toUpperCase();
 
     }
+
+
+    public void saveCellsChoicesValue(List<Point> cellsList) {
+        clearChoicePanelValues();
+        this.cellsChoicePanel = cellsList;
+    }
+
+
+    public void saveActionsChoicesValue(List<String> actionsList) {
+        clearChoicePanelValues();
+        this.actionsChoicePanel = actionsList;
+    }
+
+
+    public void saveBuildingsChoicesValue(List<String> buildingsList) {
+        clearChoicePanelValues();
+        this.buildingsChoicePanel = buildingsList;
+    }
+
+
+    private void clearChoicePanelValues() {
+        this.cellsChoicePanel = new ArrayList<>();
+        this.actionsChoicePanel = new ArrayList<>();
+        this.buildingsChoicePanel = new ArrayList<>();
+    }
+
+
 
 
     /*
@@ -438,45 +613,10 @@ public class GraphicDrawerCLI {
      */
 
 
-    public void setCellChoicesValue(List<Couple<Integer, Integer>> cellsList) {
-
-        int startRow = 31;
-        int rowOffset = 3;
-        int refRow;
-
-        String choiceValue;
-        String choiceNumber;
-
-        print(29, 78, "Row - Column");
-
-        for(int c = 0; c < cellsList.size(); c++) {
-            refRow = startRow + (c * rowOffset);
-
-            choiceNumber = "[" + String.valueOf(c+1) + "]";
-            print(refRow, 73, choiceNumber);
-
-            choiceValue = String.valueOf(cellsList.get(c).getFirst()) + " - " + String.valueOf(cellsList.get(c).getFirst());
-            print(refRow, 80, choiceValue);
-        }
-
-    }
 
 
-    public void setActionChoicesValue(List<String> actionsList) {
 
-        int startRow = 31;
-        int rowOffset = 3;
-        int refRow;
 
-        print(29, 78, "Actions");
-
-        for(int a = 0; a < actionsList.size(); a++) {
-            refRow = startRow + (a * rowOffset);
-
-            print(refRow, 78, actionsList.get(a));
-        }
-
-    }
 
 
 

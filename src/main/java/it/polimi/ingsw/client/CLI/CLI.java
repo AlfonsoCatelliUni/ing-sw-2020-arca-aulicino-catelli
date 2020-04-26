@@ -1,10 +1,10 @@
 package it.polimi.ingsw.client.CLI;
 
+import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.client.ClientJsonHandler;
-import it.polimi.ingsw.client.Couple;
+import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
@@ -34,6 +34,11 @@ public class CLI implements ServerToClientManager {
     private ClientView clientView;
 
 
+
+    private List<FormattedPlayerInfo> playersInfo;
+
+
+
     private String nickname;
 
     private int rowUsedPawn;
@@ -54,11 +59,15 @@ public class CLI implements ServerToClientManager {
         this.input = new Scanner(System.in);
         this.drawer = new GraphicDrawerCLI();
 
+        this.playersInfo = new ArrayList<>();
+
         this.nickname = "";
 
         this.rowUsedPawn = -1;
-
         this.columnUsedPawn = -1;
+
+        this.nextActionRow = -1;
+        this.nextActionColumn = -1;
 
     }
 
@@ -161,13 +170,13 @@ public class CLI implements ServerToClientManager {
 
         do {
 
-            System.out.println("Do you want a 2 or 3 players game? ");
+            System.out.println("Do you want a 2 or 3 players game ? ");
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
+                System.err.println("Insert a Number !");
                 input.next();
 
-                System.out.println("Do you want a 2 or 3 players game? ");
+                System.out.println("Do you want a 2 or 3 players game ? ");
             }
             selectedNumberOfPlayer = input.nextInt();
 
@@ -183,7 +192,7 @@ public class CLI implements ServerToClientManager {
         this.nickname = event.nickname;
 
         System.out.println("The temporary players are : ");
-        for (String nickname : event.connectedPlayers) {
+        for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
 
@@ -198,7 +207,7 @@ public class CLI implements ServerToClientManager {
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.err.println("Invalid Nickname!");
+            System.err.println("Invalid Nickname !");
             System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
@@ -211,15 +220,31 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(NotifyStatusEvent event) {
-        System.out.println(event.status);
+
+        //System.out.println(event.status+"\n");
+        List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
+
+        for (FormattedCellInfo c : cellsInfoList ) {
+            String strInfo = getStringCellInfo(c.getHeight(), c.getRoofInfo().getSecond(), c.getPawnInfo().getFirst(), c.getPawnInfo().getSecond());
+
+            drawer.setCellInfo(c.getRow(), c.getColumn()+1, strInfo);
+        }
+
+        drawer.show();
     }
 
 
     @Override
-    public void manageEvent(DisconnectionEvent event) {
+    public void manageEvent(DisconnectionClientEvent event) {
         System.out.println("YOU HAVE BEEN DISCONNECTED!");
         this.clientView = null;
         System.exit(0);
+    }
+
+
+    @Override
+    public void manageEvent(OneClientDisconnectedEvent event) {
+
     }
 
 
@@ -253,10 +278,73 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(AskInitPawnsEvent event) {
 
         List<Point> occupiedCells = event.info;
+        List<Point> freeCells = new ArrayList<>();
 
-        if(!event.isValid)
+        for(int i = 0; i < 5; i++) {
+            for(int j = 0; j < 5; j++) {
+                Point np = new Point(i, j);
+                if(!occupiedCells.contains(np)) {
+                    freeCells.add(np);
+                }
+            }
+        }
+
+        int selectedMale = -1;
+        int selectedFemale = -1;
+
+
+        if(!event.isValid) {
             System.out.println("An error has occurred, please reinsert the positions");
+        }
 
+
+        do {
+
+            drawer.saveTitleChoicePanel("select the cell for the male pawn");
+            drawer.saveCellsChoicesValue(freeCells);
+
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number !");
+                input.next();
+            }
+            selectedMale = input.nextInt();
+
+            if(!(selectedMale >= 0 && selectedMale < freeCells.size()))
+                System.err.println("Choice Unavailable !");
+
+        } while( !(selectedMale >= 0 && selectedMale < freeCells.size()) );
+
+        int maleRowPosition = freeCells.get(selectedMale).x;
+        int maleColumnPosition = freeCells.get(selectedMale).y;
+
+
+        freeCells.remove(selectedMale);
+        do {
+
+            drawer.saveTitleChoicePanel("select the cell for the female pawn");
+            drawer.saveCellsChoicesValue(freeCells);
+
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number !");
+                input.next();
+            }
+            selectedFemale = input.nextInt();
+
+            if(!(selectedFemale >= 0 && selectedFemale < freeCells.size()))
+                System.err.println("Choice Unavailable !");
+
+        } while( !(selectedFemale >= 0 && selectedFemale < freeCells.size()) );
+
+        int femaleRowPosition = freeCells.get(selectedFemale).x;
+        int femaleColumnPosition = freeCells.get(selectedFemale).y;
+
+        clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
+
+        /*
         if(occupiedCells.size() != 0) {
             System.out.println("You can't place your pawns in this positions: ");
             for (Point occupiedCell : occupiedCells) {
@@ -727,6 +815,8 @@ public class CLI implements ServerToClientManager {
 
         }
 
+         */
+
 
     }
 
@@ -738,15 +828,39 @@ public class CLI implements ServerToClientManager {
             System.out.println("An error has occurred, please reinsert the position");
         }
 
-        List<Point> coordinatesAvailablePawns = event.info;
-
+        List<Point> availablePawns = event.info;
+        int selectedPawn = -1;
 
        /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
-       int rowPosition = 0;
+       //int rowPosition = 0;
+       //int columnPosition = 0;
 
-       int columnPosition = 0;
+        do {
+
+            drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
+            drawer.saveCellsChoicesValue(availablePawns);
+
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number !");
+                input.next();
+            }
+            selectedPawn = input.nextInt();
+
+            if( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) ) {
+                System.err.println("Choice Unavailable !");
+            }
+
+
+        } while( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) );
+
+        int rowPosition = availablePawns.get(selectedPawn).x;
+        int columnPosition = availablePawns.get(selectedPawn).y;
+
 
        //the player can choose witch pawn can use
+        /*
        if(coordinatesAvailablePawns.size() == 1) {
 
            System.out.println("You can do your action only with the pawn with coordinates: " +
@@ -782,7 +896,6 @@ public class CLI implements ServerToClientManager {
                }
                rowPosition = input.nextInt();
 
-
                while (rowPosition < 0 || rowPosition > 4) {
 
                    System.out.println("Invalid position");
@@ -795,7 +908,6 @@ public class CLI implements ServerToClientManager {
                        System.out.println("Row Position:");
                    }
                    rowPosition = input.nextInt();
-
                }
 
                System.out.println("Column position: ");
@@ -807,7 +919,6 @@ public class CLI implements ServerToClientManager {
                    System.out.println("Row Position:");
                }
                columnPosition = input.nextInt();
-
 
                while (columnPosition < 0 || columnPosition > 4) {
 
@@ -848,6 +959,8 @@ public class CLI implements ServerToClientManager {
 
        this.columnUsedPawn = columnPosition;
 
+         */
+
        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
 
    }
@@ -856,20 +969,23 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
-        if(!event.isValid) {
-            System.out.println("An error has occurred, please reinsert the positions");
-
-        }
-
-        int choiceNum;
-
         List<String> cardsName = event.cardsName;
         List<String> cardsEffect = event.cardsEffect;
 
+        int choiceNum;
 
+
+        if(!event.isValid) {
+            System.out.println("An error has occurred, please reinsert the positions");
+        }
+
+        drawer.saveTitlePlayerPanel("CHOOSE YOUR CARD");
         for (int i = 0; i < cardsName.size(); i++) {
-                System.out.println(i + ")\tGod Name : " + cardsName.get(i) + "\n\tGod Effect : " + cardsEffect.get(i));
-            }
+            //System.out.println(i + ")\tGod Name : " + cardsName.get(i) + "\n\tGod Effect : " + cardsEffect.get(i));
+            drawer.savePlayerCardChoice(cardsName, cardsEffect);
+        }
+        drawer.show();
+
 
         System.out.print("\nInsert the number to choose your God: ");
 
@@ -933,11 +1049,12 @@ public class CLI implements ServerToClientManager {
                         System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
                     }
                 }
+
                 indexChosenAction = input.nextInt();
 
 
                 if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
-                    System.err.println("Action Unavailable!");
+                    System.err.println("Action Unavailable !");
                 }
 
             } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
@@ -970,7 +1087,7 @@ public class CLI implements ServerToClientManager {
                 break;
 
             default:
-                throw new RuntimeException("Error while selecting the next action!");
+                throw new RuntimeException("Error while selecting the next action !");
 
             }
 
@@ -994,7 +1111,7 @@ public class CLI implements ServerToClientManager {
             }
 
             do {
-                System.out.println("Choose the cell where you want to move:");
+                System.out.println("Choose the cell where you want to move :");
                 for(int c = 0; c < cellsAvailableToMove.size(); c++) {
                     System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
                 }
@@ -1002,16 +1119,16 @@ public class CLI implements ServerToClientManager {
                 while(!input.hasNextInt()) {
 
                     input.next();
-                    System.err.println("Insert an Number!");
+                    System.err.println("Insert an Number !");
 
-                    System.out.println("Choose the cell where you want to move:");
+                    System.out.println("Choose the cell where you want to move :");
                     for(int c = 0; c < cellsAvailableToMove.size(); c++) {
                         System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
                     }
                 }
                 selectedCell = input.nextInt();
                 if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
-                    System.err.println("Unavailable Choice!");
+                    System.err.println("Unavailable Choice !");
                 }
 
 
@@ -1097,7 +1214,7 @@ public class CLI implements ServerToClientManager {
 
             do {
 
-                System.out.println("Choose the building to build on the selected cell:");
+                System.out.println("Choose the building to build on the selected cell :");
                 for(int b = 0; b < buildingsLevel.size(); b++) {
                     System.out.println("["+String.valueOf(b)+"]\t"+String.valueOf(buildingsLevel.get(b))+"\n");
                 }
@@ -1115,7 +1232,7 @@ public class CLI implements ServerToClientManager {
                 selectedLevel = input.nextInt();
 
                 if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
-                    System.err.println("Unavailable Choice!");
+                    System.err.println("Unavailable Choice !");
                 }
 
             } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
@@ -1146,19 +1263,12 @@ public class CLI implements ServerToClientManager {
                 "                                             \n" +
                 "                                             ");
 
-        // <nameCard, effectCard>
-        List<FormattedPlayerInfo> playersInfo = ClientJsonHandler.generatePlayersList(event.info);
+        playersInfo = ClientJsonHandler.generatePlayersList(event.info);
 
-        System.out.println("The players for this game are:\n");
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playersInfo);
 
-        for (FormattedPlayerInfo formattedPlayerInfo : playersInfo) {
-            System.out.println(formattedPlayerInfo.getNickname() +
-                    "\tColor: " + formattedPlayerInfo.getColor() +
-                    "\tCard: " + formattedPlayerInfo.getCard().getFirst() +
-                    "\tCard effect: " + formattedPlayerInfo.getCard().getSecond() +
-                    "\n");
-        }
-
+        drawer.show();
     }
 
 
@@ -1172,5 +1282,73 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(EndGameSTCEvent event) {
 
     }
+
+
+    // ======================================================================================
+
+
+    /**
+     * This method generate the format of the string that I have to pass to the GraphicDrawer
+     * when I want to save and show the information of the board.
+     * Generate a string of length two :
+     * in the first char there is the height of the tower (0 to 4) in the particular cell
+     * in the second char there is an uppercase X if there's a  dome in the cell, there is
+     * a '.' is the cell is free and there is the first letter of the color of the pawn in
+     * uppercase if the pawn is male (B G W) and lowercase if the pawn if female (b g w)
+     * @param height the height of the tower in this cell, range 0 to 4
+     * @param isDome indicate if in the cell there's a dome
+     * @param color indicates the color of the pawn if present
+     * @param sex indicates the sex of the pawn if present
+     * @return return the formatted string
+     */
+    public String getStringCellInfo(Integer height, Boolean isDome, String color, String sex) {
+
+
+        String retString = String.valueOf(height);
+
+        if (isDome) {
+            return retString + "x";
+        }
+        else if(color.equals("") && sex.equals("")) {
+            return retString + ".";
+        }
+        else {
+
+            switch (color) {
+                case "BLUE":
+
+                    if (sex.equals("MALE")) {
+                        return retString + "B";
+                    } else if (sex.equals("FEMALE")) {
+                        return retString + "b";
+                    }
+
+                    break;
+                case "GREY":
+
+                    if (sex.equals("MALE")) {
+                        return retString + "G";
+                    } else if (sex.equals("FEMALE")) {
+                        return retString + "g";
+                    }
+
+                    break;
+                case "WHITE":
+
+                    if (sex.equals("MALE")) {
+                        return retString + "W";
+                    } else if (sex.equals("FEMALE")) {
+                        return retString + "w";
+                    }
+
+                    break;
+            }
+
+        }
+
+        return "error";
+    }
+
+
 
 }

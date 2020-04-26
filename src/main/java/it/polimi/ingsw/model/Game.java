@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -42,11 +44,11 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     private List<Cell> lastCellsList;
 
-
     private List<Action> lastActionsList;
 
-
     private List<Building> lastBuildingsList;
+
+    private String lastUpdateSent;
 
 
     // MARK : Constructors ======================================================================================
@@ -127,7 +129,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.initPawn(gameBoard, gameBoard.getCell(row, column));
 
-
+        updateAllObservers(new NotifyStatusEvent(generateStatusJson()));
     }
 
 
@@ -402,7 +404,16 @@ public class Game extends Observable implements GameConsequenceHandler {
 
                 /* write the pawn info, if it's present in this cell */
                 if(pawn == null) {
-                    cellObj.put("pawn", "null");
+                    JSONObject pawnObj = new JSONObject();
+
+                    pawnObj.put("color", "");
+                    pawnObj.put("sex", "");
+                    pawnObj.put("hasMoved", false);
+                    pawnObj.put("hasBuilt", false);
+                    pawnObj.put("forcedMoved", false);
+                    pawnObj.put("goneUp", false);
+
+                    cellObj.put("pawn", pawnObj);
                 }
                 else {
                     JSONObject pawnObj = new JSONObject();
@@ -424,7 +435,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
         JSONArray playersJson = new JSONArray();
-        for( Player p : players ){
+        for( Player p : players ) {
             JSONObject playerObj = new JSONObject();
 
             playerObj.put("name", p.getName());
@@ -441,6 +452,25 @@ public class Game extends Observable implements GameConsequenceHandler {
         statusString = obj.toString();
 
         return statusString;
+    }
+
+
+    public String generateChangesJson() {
+
+        String changesString = "";
+
+        List<FormattedCellInfo> oldCellsInfo = JsonHandler.generateCellsList(lastUpdateSent);
+        List<FormattedCellInfo> newCellsInfo = JsonHandler.generateCellsList(generateStatusJson());
+
+        List<FormattedCellInfo> changedCellsInfo = new ArrayList<>();
+        for(int i = 0; i < newCellsInfo.size(); i++) {
+            if( !oldCellsInfo.get(i).equals(newCellsInfo.get(i)) ) {
+                changedCellsInfo.add(newCellsInfo.get(i));
+            }
+        }
+
+
+        return changesString;
     }
 
 

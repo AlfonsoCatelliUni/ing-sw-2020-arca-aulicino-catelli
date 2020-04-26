@@ -26,7 +26,7 @@ public class JsonHandler {
     public static String cardPath = "/json_card.json";
 
 
-    public static JsonParser myJsonParser = new JsonParser();
+    public static JsonParser parser = new JsonParser();
 
 
     private static Map<String, Effect> playerDecoratorMap = fillMap();
@@ -41,29 +41,31 @@ public class JsonHandler {
      */
     private static Map<String, Effect> fillMap() {
 
+        Map<String, Effect> newMap = new HashMap<>();
+
         //Basic Gods
-        playerDecoratorMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect( new BasicEffect())));
-        playerDecoratorMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
-        playerDecoratorMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
+        newMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect( new BasicEffect())));
+        newMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
+        newMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
 
-        playerDecoratorMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
-        playerDecoratorMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
-        playerDecoratorMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
+        newMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
+        newMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
+        newMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
 
-        playerDecoratorMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
-        playerDecoratorMap.put("Pan", new DownTwoEffect(new BasicEffect()));
-        playerDecoratorMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
+        newMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
+        newMap.put("Pan", new DownTwoEffect(new BasicEffect()));
+        newMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
 
 
         //Advanced Gods
-        playerDecoratorMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
-        playerDecoratorMap.put("Charon", new CanForceEffect(new BasicEffect()));
-        playerDecoratorMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
-        playerDecoratorMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));
-        playerDecoratorMap.put("Zeus", new CanBuildUnderItselfEffect(new BasicEffect()));
+        newMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
+        newMap.put("Charon", new CanForceEffect(new BasicEffect()));
+        newMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
+        newMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));
+        newMap.put("Zeus", new CanBuildUnderItselfEffect(new BasicEffect()));
 
 
-        return playerDecoratorMap;
+        return newMap;
     }
 
 
@@ -73,7 +75,7 @@ public class JsonHandler {
     public static List<Building> deserializeBuildingList() {
         List<Building> buildings = new ArrayList<>();
 
-        JsonArray buildingsJson = myJsonParser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(buildingPath)))).getAsJsonArray();
+        JsonArray buildingsJson = parser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(buildingPath)))).getAsJsonArray();
 
         for(int i = 0; i < buildingsJson.size(); i++){
             Building build = deserializeBuilding(buildingsJson.get(i).getAsJsonObject());
@@ -99,7 +101,7 @@ public class JsonHandler {
     public static List<Card> deserializeCardList() {
         List<Card> cards = new ArrayList<>();
 
-        JsonArray cardsJson = myJsonParser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(cardPath)))).getAsJsonArray();
+        JsonArray cardsJson = parser.parse(new BufferedReader(new InputStreamReader(JsonDeserializer.class.getResourceAsStream(cardPath)))).getAsJsonArray();
 
         for(int i = 0; i < cardsJson.size(); i++){
             Card card = deserializeCard(cardsJson.get(i).getAsJsonObject());
@@ -129,10 +131,32 @@ public class JsonHandler {
 
 
     public static List<FormattedCellInfo> generateCellsList(String update) {
+        List<FormattedCellInfo> cellsInfo = new ArrayList<>();
 
+        JsonArray cellsJson = parser.parse(update).getAsJsonObject().get("gameBoard").getAsJsonArray();
+        for(int i = 0; i < cellsJson.size(); i++){
+            FormattedCellInfo cell = generateSingleCellInfo(cellsJson.get(i).getAsJsonObject());
+            cellsInfo.add(cell);
+        }
 
+        return cellsInfo;
+    }
 
-        return null;
+    private static FormattedCellInfo generateSingleCellInfo(JsonObject cellJson) {
+
+        Integer row = cellJson.get("row").getAsInt();
+        Integer column = cellJson.get("column").getAsInt();
+        Integer height = cellJson.get("height").getAsInt();
+
+        JsonObject pawn = cellJson.get("pawn").getAsJsonObject();
+        String pawnColor = pawn.get("color").getAsString();
+        String pawnSex = pawn.get("sex").getAsString();
+
+        JsonObject roof = cellJson.get("roof").getAsJsonObject();
+        Integer roofLevel = roof.get("level").getAsInt();
+        Boolean roofIsDome = roof.get("isDome").getAsBoolean();
+
+        return FormattedCellInfo.create(row, column, height, pawnColor, pawnSex, roofLevel, roofIsDome);
     }
 
 

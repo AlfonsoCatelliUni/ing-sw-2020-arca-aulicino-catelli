@@ -58,7 +58,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param colors is the enumeration of possible colors assignable to the players
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, VirtualView virtualView) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, VirtualView virtualView){
 
         super();
 
@@ -73,11 +73,12 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         for (int i = 0; i < playersNickname.size(); i++) {
             players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)),
-                    nicknameCardMap.get(playersNickname.get(i)).getBaseEffect()));
+                     nicknameCardMap.get(playersNickname.get(i)).getBaseEffect()));
         }
 
         currentPlayer = players.get(indexCurrentPlayer);
 
+        lastActionsList = new ArrayList<>();
 
     }
 
@@ -168,6 +169,8 @@ public class Game extends Observable implements GameConsequenceHandler {
     public List<Action> getPossibleActions(String playerName, int row, int column) {
 
         Player player = getPlayerByName(playerName);
+
+        lastActionsList.clear();
 
         lastActionsList = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
 

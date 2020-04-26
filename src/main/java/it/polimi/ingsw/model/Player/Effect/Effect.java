@@ -12,7 +12,7 @@ import it.polimi.ingsw.model.Player.State.StateEffectInterface;
 
 import java.util.List;
 
-public interface Effect {
+public interface Effect extends Cloneable {
 
 
     // ======================================================================================
@@ -95,6 +95,8 @@ public interface Effect {
     //</editor-fold>
 
     // ======================================================================================
+
+    Object clone();
 
 
 

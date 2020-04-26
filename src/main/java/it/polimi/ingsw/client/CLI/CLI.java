@@ -141,7 +141,8 @@ public class CLI implements ServerToClientManager {
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            System.err.println("Invalid Nickname !");
+            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
 
@@ -151,22 +152,28 @@ public class CLI implements ServerToClientManager {
 
 
     //TODO : no eccezione ip sbalgiato
-    //TODO : no eccezione carta sbagliata
     //TODO : riguardare print you can't place pawn here
     @Override
     public void manageEvent(FirstConnectedEvent event) {
 
         this.nickname = event.nickname;
+        int selectedNumberOfPlayer = 0;
 
-        System.out.print("Do you want a 2 or 3 players game? ");
-        int playersNumber = Integer.parseInt(input.nextLine());
+        do {
 
-        while(playersNumber != 2 && playersNumber != 3) {
-            System.out.print("Game is available only in 2 or 3 players, choose one of this options : ");
-            playersNumber = Integer.parseInt(input.nextLine());
-        }
+            System.out.println("Do you want a 2 or 3 players game ? ");
 
-        clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, playersNumber));
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number !");
+                input.next();
+
+                System.out.println("Do you want a 2 or 3 players game ? ");
+            }
+            selectedNumberOfPlayer = input.nextInt();
+
+        } while( !(selectedNumberOfPlayer == 2 || selectedNumberOfPlayer == 3) );
+
+        clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, selectedNumberOfPlayer));
     }
 
 
@@ -175,7 +182,7 @@ public class CLI implements ServerToClientManager {
 
         this.nickname = event.nickname;
 
-        System.out.println("The temporary players are: ");
+        System.out.println("The temporary players are : ");
         for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
@@ -186,12 +193,13 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(UnavailableNicknameEvent event) {
 
-        System.out.println("This nickname is already used, please insert a new nickname:");
+        System.out.println("This nickname is already used, please insert a new nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) :");
 
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.out.print("Invalid nickname! Reinsert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            System.err.println("Invalid Nickname !");
+            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
 
@@ -684,6 +692,7 @@ public class CLI implements ServerToClientManager {
         List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
         String actionID = event.actionID;
         Boolean isEventValid = event.isValid;
+
         int selectedCell = 0;
 
         if(cellsAvailableToMove.size() > 1) {
@@ -698,7 +707,18 @@ public class CLI implements ServerToClientManager {
                     System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
                 }
 
+                while(!input.hasNextInt()) {
+
+                    input.next();
+                    System.err.println("Insert an Number !");
+
+                    System.out.println("Choose the cell where you want to move :");
+                    for(int c = 0; c < cellsAvailableToMove.size(); c++) {
+                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
+                    }
+                }
                 selectedCell = input.nextInt();
+
                 if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
                     System.err.println("Unavailable Choice !");
                 }

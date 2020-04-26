@@ -266,6 +266,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     public void endTurn(String nickname) {
 
+        game.newCurrentPlayer();
         int index = game.getPlayersNickname().indexOf(nickname);
 
         index++;
@@ -324,7 +325,7 @@ public class Controller implements Observer, ClientToServerManager {
                 virtualView.sendMessage(new ClosedWaitingRoomEvent());
 
                 List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
-                List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffect).collect(Collectors.toList());
+                List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());
 
                 String firstPlayer = connectedPlayers.get(0);
 
@@ -461,7 +462,7 @@ public class Controller implements Observer, ClientToServerManager {
 
                 virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer,
                         preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
-                        preGameLobby.getPickedCards().stream().map(Card::getEffect).collect(Collectors.toList()),
+                        preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),
                         true));
 
             } else {
@@ -471,7 +472,7 @@ public class Controller implements Observer, ClientToServerManager {
         else {
             virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname,
                     preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
-                    preGameLobby.getPickedCards().stream().map(Card::getEffect).collect(Collectors.toList()),
+                    preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),
                     false));
         }
 

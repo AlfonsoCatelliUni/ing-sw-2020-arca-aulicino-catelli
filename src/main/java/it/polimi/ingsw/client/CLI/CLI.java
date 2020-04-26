@@ -616,7 +616,7 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(GivePossibleActionsEvent event) {
 
         List<String> possibleActions = event.actions;
-        Boolean isEventValid = event.isValid;
+        boolean isEventValid = event.isValid;
 
         int indexChosenAction = 0;
 
@@ -683,7 +683,7 @@ public class CLI implements ServerToClientManager {
 
         List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
         String actionID = event.actionID;
-        Boolean isEventValid = event.isValid;
+        boolean isEventValid = event.isValid;
         int selectedCell = 0;
 
         if(cellsAvailableToMove.size() > 1) {
@@ -723,7 +723,7 @@ public class CLI implements ServerToClientManager {
 
         List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
         String actionID = event.actionID;
-        Boolean isEventValid = event.isValid;
+        boolean isEventValid = event.isValid;
         int selectedCell = 0;
 
         System.out.println("evento ricevuto Build!");
@@ -762,7 +762,7 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(GivePossibleBuildingsEvent event) {
 
         List<Integer> buildingsLevel = event.buildings;
-        Boolean isEventValid = event.isValid;
+        boolean isEventValid = event.isValid;
         int selectedLevel;
 
         //if there are more than one single options then I

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.Player.Effect;
 
+import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
@@ -48,6 +49,16 @@ public class BuildBeforeEffect extends EffectDecorator {
         }
 
         return super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
+    }
+
+    @Override
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
+
+        if(super.effect.getState().getClass().equals(MoveAndBuildState.class))
+            super.effect.changeState(new BuildState(this));
+
+
+        return super.effect.move(gameBoard, designatedPawn, designatedCell);
     }
 
 

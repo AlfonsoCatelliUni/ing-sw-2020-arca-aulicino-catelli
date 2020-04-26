@@ -158,7 +158,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             // writing the cards info into the Json
             cellObj.put("name", c.getName());
-            cellObj.put("effect", c.getEffect());
+            cellObj.put("effect", c.getEffectDescription());
 
             jsonList.add(cellObj);
         }
@@ -184,7 +184,7 @@ public class Controller implements Observer, ClientToServerManager {
             cellObj.put("nickname", players.get(i));
             cellObj.put("color", colors.get(i).toString());
             cellObj.put("card", cards.get(i).getName());
-            cellObj.put("effect", cards.get(i).getEffect());
+            cellObj.put("effect", cards.get(i).getEffectDescription());
 
             jsonList.add(cellObj);
         }
@@ -203,7 +203,7 @@ public class Controller implements Observer, ClientToServerManager {
 
        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
-       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), preGameLobby.getEffectsClassMap() );
+       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap());
 
        List<Card> cards = new ArrayList<>();
 
@@ -376,9 +376,11 @@ public class Controller implements Observer, ClientToServerManager {
 
             //TODO : fare tearDownGame
             game.tearDownGame();
+            virtualView.sendMessage(new DisconnectionEvent());
+
         }
 
-        virtualView.sendMessage(new DisconnectionEvent());
+
     }
 
 

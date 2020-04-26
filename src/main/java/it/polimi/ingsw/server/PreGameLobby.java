@@ -29,12 +29,6 @@ public class PreGameLobby {
 
 
     /**
-     * this map each card with the corresponding decorator class
-     */
-    private Map<String, Effect> effectsClassMap;
-
-
-    /**
      * the deck of all cards
      */
     private List<Card> allCards;
@@ -70,10 +64,6 @@ public class PreGameLobby {
 
         this.playersNicknames = new ArrayList<>();
 
-        //effect init
-        this.effectsClassMap = new HashMap<>();
-        this.effectsClassMap = fillMap();
-
         //cards init
         this.pickedCards = new ArrayList<>();
         this.playerCardMap = new HashMap<>();
@@ -105,11 +95,6 @@ public class PreGameLobby {
     }
 
 
-    public Map<String, Effect> getEffectsClassMap() {
-        return effectsClassMap;
-    }
-
-
     public Map<String, Card> getPlayerCardMap() {
         return playerCardMap;
     }
@@ -128,38 +113,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    /**
-     * build the map that connects the name of the card to its correct decorator class
-     * @return the map of card-playerType
-     */
-    private Map<String, Effect> fillMap() {
 
-        Map<String, Effect> playerDecoratorMap = new HashMap<>();
-
-        //Basic Gods
-        playerDecoratorMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect ( new BasicEffect())));
-        playerDecoratorMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
-        playerDecoratorMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
-
-        playerDecoratorMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
-        playerDecoratorMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
-        playerDecoratorMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
-
-        playerDecoratorMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
-        playerDecoratorMap.put("Pan", new DownTwoEffect(new BasicEffect()));
-        playerDecoratorMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
-
-
-        //Advanced Gods
-        playerDecoratorMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
-        playerDecoratorMap.put("Charon", new CanForceEffect(new BasicEffect()));
-        playerDecoratorMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
-        playerDecoratorMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));
-        playerDecoratorMap.put("Zeus", new CanBuildUnderItselfEffect(new BasicEffect()));
-
-
-        return playerDecoratorMap;
-    }
 
 
     /**

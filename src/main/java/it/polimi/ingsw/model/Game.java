@@ -56,9 +56,8 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param playersNickname is the list of players that will play this game
      * @param colors is the enumeration of possible colors assignable to the players
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
-     * @param playerDecoratorMap is where is mapped a god's name to his decoration
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, Map<String, Effect> playerDecoratorMap) {
+    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap) {
 
         super();
 
@@ -71,7 +70,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         for (int i = 0; i < playersNickname.size(); i++) {
             players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)),
-                    playerDecoratorMap.get(nicknameCardMap.get(playersNickname.get(i)).getName())));
+                    nicknameCardMap.get(playersNickname.get(i)).getBaseEffect()));
         }
 
         currentPlayer = players.get(indexCurrentPlayer);
@@ -626,7 +625,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     //TODO : fare tearDownGame
     public boolean tearDownGame() {
-
         return true;
     }
 

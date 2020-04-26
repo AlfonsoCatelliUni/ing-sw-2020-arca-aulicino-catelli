@@ -116,6 +116,7 @@ public class Player {
         for (Pawn p : pawns ) {
             p.resetPawnStatus();
         }
+        this.effect = this.card.getBaseEffect();
     }
 
 

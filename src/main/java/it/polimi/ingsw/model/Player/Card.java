@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model.Player;
 
+import it.polimi.ingsw.model.Player.Effect.Effect;
+
 /**
  * the Card of the player, each player chooses one card, it's a description,
  * the player will be decorated according to the card chosen
  */
 public class Card {
-
 
     /**
      * identify the card
@@ -22,16 +23,30 @@ public class Card {
     /**
      * effects of the card
      */
-    private String effect;
+    private String effectDescription;
+
+
+    /**
+     * this is the base effect of the card where the player starts his turn
+     */
+    private Effect baseEffect;
 
 
     // ======================================================================================
 
 
-    public Card(String name, Boolean available3P, String effect) {
+    public Card(String name, Boolean available3P, String effectDescription) {
         this.name = name;
         this.available3P = available3P;
-        this.effect = effect;
+        this.effectDescription = effectDescription;
+    }
+
+
+    public Card(String name, Boolean available3P, String effectDescription, Effect baseEffect) {
+        this.name = name;
+        this.available3P = available3P;
+        this.effectDescription = effectDescription;
+        this.baseEffect = baseEffect;
     }
 
 
@@ -51,9 +66,17 @@ public class Card {
     }
 
 
-    public String getEffect() {
-        return effect;
+    public String getEffectDescription() {
+        return effectDescription;
     }
 
 
+    public Effect getBaseEffect() {
+        return baseEffect;
+    }
+
+
+    public void setBaseEffect(Effect baseEffect) {
+        this.baseEffect = baseEffect;
+    }
 }

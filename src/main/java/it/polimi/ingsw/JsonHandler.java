@@ -7,11 +7,14 @@ import com.google.gson.JsonParser;
 
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.Effect.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JsonHandler {
 
@@ -23,6 +26,7 @@ public class JsonHandler {
 
 
     public static JsonParser myJsonParser = new JsonParser();
+
 
 
     // ======================================================================================
@@ -65,14 +69,58 @@ public class JsonHandler {
     }
 
 
-    private static Card deserializeCard(JsonObject buildingJson) {
+    /**
+     * this map each card with the corresponding decorator class
+     */
+    private static Card deserializeCard(JsonObject cardJson) {
 
-        String name = buildingJson.get("name").getAsString();
-        boolean available3P = buildingJson.get("available3P").getAsBoolean();
-        String effect = buildingJson.get("effect").getAsString();
 
-        return new Card(name, available3P, effect);
+        Map<String, Effect> effectsClassMap;
+        effectsClassMap = fillMap();
+
+        String name = cardJson.get("name").getAsString();
+        boolean available3P = cardJson.get("available3P").getAsBoolean();
+        String effect = cardJson.get("effect").getAsString();
+        Effect baseEffect = effectsClassMap.get(name);
+
+
+        return new Card(name, available3P, effect, baseEffect);
     }
+
+
+    /**
+     * build the map that connects the name of the card to its correct decorator class
+     * @return the map of card-playerType
+     */
+    private static Map<String, Effect> fillMap() {
+
+        Map<String, Effect> playerDecoratorMap = new HashMap<>();
+
+        //Basic Gods
+        playerDecoratorMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect( new BasicEffect())));
+        playerDecoratorMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
+        playerDecoratorMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
+
+        playerDecoratorMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
+        playerDecoratorMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
+        playerDecoratorMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
+
+        playerDecoratorMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
+        playerDecoratorMap.put("Pan", new DownTwoEffect(new BasicEffect()));
+        playerDecoratorMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
+
+
+        //Advanced Gods
+        playerDecoratorMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
+        playerDecoratorMap.put("Charon", new CanForceEffect(new BasicEffect()));
+        playerDecoratorMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
+        playerDecoratorMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));
+        playerDecoratorMap.put("Zeus", new CanBuildUnderItselfEffect(new BasicEffect()));
+
+
+        return playerDecoratorMap;
+    }
+
 
 
 }

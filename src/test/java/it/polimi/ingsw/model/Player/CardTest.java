@@ -26,6 +26,6 @@ class CardTest {
 
     @Test
     void getEffect() {
-        assertEquals("effect", card.getEffect());
+        assertEquals("effect", card.getEffectDescription());
     }
 }

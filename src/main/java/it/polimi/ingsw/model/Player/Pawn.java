@@ -57,6 +57,11 @@ public class Pawn {
      */
     private Boolean forcedMove;
 
+    /**
+     * it's true if it is the pawn chosen for the turn
+     */
+    private Boolean chosen;
+
 
     // ======================================================================================
 
@@ -78,6 +83,7 @@ public class Pawn {
         this.hasBuilt = false;
         this.goneUp = false;
         this.forcedMove = false;
+        this.chosen = false;
 
 
     }
@@ -158,7 +164,14 @@ public class Pawn {
     }
 
 
-    // ======================================================================================
+    /**
+     * return true if the pawn is chosen for the turn
+     * @return true if is the pawn chosen for do the turn
+     */
+    public Boolean isChosen() {
+        return chosen;
+    }
+// ======================================================================================
 
 
     // ONLY USED FOR TESTING
@@ -166,6 +179,10 @@ public class Pawn {
         this.height = height;
     }
 
+
+    public void setChosen(Boolean chosen) {
+        this.chosen = chosen;
+    }
 
     // ======================================================================================
 
@@ -229,6 +246,7 @@ public class Pawn {
 
         this.goneUp = false;
         this.forcedMove = false;
+        this.chosen = false;
 
     }
 

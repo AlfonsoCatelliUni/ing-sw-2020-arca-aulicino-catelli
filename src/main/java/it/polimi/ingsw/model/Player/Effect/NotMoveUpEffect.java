@@ -36,5 +36,8 @@ public class NotMoveUpEffect extends EffectDecorator {
         return availableCellsToMove;
     }
 
-
+    @Override
+    public Effect clone() {
+        return new NotMoveUpEffect(effect.clone());
+    }
 }

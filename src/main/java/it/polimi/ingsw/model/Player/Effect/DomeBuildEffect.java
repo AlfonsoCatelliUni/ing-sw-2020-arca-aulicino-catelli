@@ -40,5 +40,8 @@ public class DomeBuildEffect extends EffectDecorator {
         return possibleBuilding;
     }
 
-
+    @Override
+    public Effect clone() {
+        return new DomeBuildEffect(effect.clone());
+    }
 }

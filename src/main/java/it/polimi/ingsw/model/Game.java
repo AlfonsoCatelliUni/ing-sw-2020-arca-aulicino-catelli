@@ -174,6 +174,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         lastActionsList = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
 
+
         return new ArrayList<>(lastActionsList);
     }
 
@@ -581,10 +582,27 @@ public class Game extends Observable implements GameConsequenceHandler {
         return false;
     }
 
-    // TODO : controllare
+
     public boolean isValidPawn(String nickname, int row, int column ){
-        List <Cell> pawnCoordinates = getPawnsCoordinateByPlayer(nickname);
-        return true;
+
+        if (isValidCoordinate(row, column)) {
+            Player player = getPlayerByName(nickname);
+
+            Pawn pawn = player.getPawnInCoordinates(row, column);
+
+            return pawn.isChosen();
+        }
+        return false;
+    }
+
+
+    public void setChosenPawn(String nickname, int row, int column){
+
+        Player player = getPlayerByName(nickname);
+
+        player.getPawnInCoordinates(row, column).setChosen(true);
+
+
     }
 
 

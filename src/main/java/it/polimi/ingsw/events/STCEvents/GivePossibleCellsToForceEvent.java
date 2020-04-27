@@ -19,7 +19,7 @@ public class GivePossibleCellsToForceEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-    public GivePossibleCellsToForceEvent(String nickname, List<Point> cells) {
+    public GivePossibleCellsToForceEvent(String nickname, List<Point> cells, boolean isValid) {
         this.nickname = nickname;
         this.cells = cells;
     }

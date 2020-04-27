@@ -78,7 +78,8 @@ public class Card {
         this.baseEffect = baseEffect;
     }
 
+
     public Effect getBaseEffect() {
-        return (Effect) baseEffect.clone();
+        return baseEffect.clone();
     }
 }

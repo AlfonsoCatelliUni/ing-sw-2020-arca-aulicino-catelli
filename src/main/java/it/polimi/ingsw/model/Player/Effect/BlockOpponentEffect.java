@@ -46,6 +46,8 @@ public class BlockOpponentEffect extends EffectDecorator {
         return resultAction;
     }
 
-
-
+    @Override
+    public Effect clone() {
+        return new BlockOpponentEffect(effect.clone());
+    }
 }

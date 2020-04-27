@@ -41,5 +41,8 @@ public class CanForceEffect extends EffectDecorator {
         return opponentNeighboringCell;
     }
 
-
+    @Override
+    public Effect clone() {
+        return new CanForceEffect(effect.clone());
+    }
 }

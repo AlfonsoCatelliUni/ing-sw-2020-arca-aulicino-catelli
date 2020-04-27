@@ -18,6 +18,7 @@ public class GraphicDrawerCLI {
     private final String PURPLE = "\u001B[35m";
     private final String CYAN = "\u001B[36m";
     private final String WHITE = "\u001B[37m";
+    private final String BRIGHTBLACK = "\u001b[30;1m";
 
     private final int ROWS = 62;
 
@@ -25,17 +26,20 @@ public class GraphicDrawerCLI {
 
 
 
-    private char[][] screen;
+    private String[][] screen;
 
     private char[][] boardCellsInfo;
+    private String[][] boardString;
 
 
     // ======================================================================================
 
 
     public GraphicDrawerCLI() {
-        this.screen = new char[ROWS][COLUMNS];
+        //this.screen = new char[ROWS][COLUMNS];
+        this.screen = new String[ROWS][COLUMNS];
         this.boardCellsInfo = new char[5][10];
+        this.boardString = new String[5][10];
 
         this.playerPanelTitle = "";
         this.playersInfo = new ArrayList<>();
@@ -114,9 +118,13 @@ public class GraphicDrawerCLI {
         draw();
 
         for(int row = 0; row < ROWS; row++) {
-            System.out.println( String.valueOf(screen[row]) );
+            System.out.println();
+            for (int column = 0; column < COLUMNS; column++) {
+                System.out.print(screen[row][column]);
+            }
         }
 
+        System.out.println();
     }
 
 
@@ -126,50 +134,55 @@ public class GraphicDrawerCLI {
     }
 
 
-    // ======================================================================================
-
-
     private void clear() {
 
         for(int row = 0; row < ROWS; row++) {
             for(int column = 0; column < COLUMNS; column++) {
 
                 if(row == 0 || row == ROWS-1) {
-                    screen[row][column] = '-';
+                    screen[row][column] = "-";
                 }
                 else if(column == 0 || column == COLUMNS-1) {
-                    screen[row][column] = '|';
+                    screen[row][column] = "|";
                 }
                 else {
-                    screen[row][column] = ' ';
+                    screen[row][column] = " ";
                 }
 
             }
         }
 
-        screen[0][0] = '+';
-        screen[0][153] = '+';
-        screen[61][153] = '+';
-        screen[61][0] = '+';
+        screen[0][0] = "+";
+        screen[0][153] = "+";
+        screen[61][153] = "+";
+        screen[61][0] = "+";
 
     }
 
 
-    private void print(int row, int column, String p) {
+    private void print(int row, int column, String p, String color) {
         for (int off = 0; off < p.length(); off++) {
-            screen[row][column + off] = p.charAt(off);
+            screen[row][column + off] =  color + String.valueOf(p.charAt(off)) + RESET ;
         }
     }
 
 
+    private void print(int row, int column, String p) {
+        print(row, column, p, RESET);
+    }
+
+
+    // ======================================================================================
+
+
     private void drawSantoriniLogo() {
 
-        print(25, 10, "  _____             _             _       _ ");
-        print(26, 10, " / ____|           | |           (_)     (_)");
-        print(27, 10, "| (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ ");
-        print(28,  10, " \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |");
-        print(29, 10, " ____) | (_| | | | | || (_) | |  | | | | | |");
-        print(30, 10, "|_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|");
+        print(25, 10, "  _____             _             _       _ ", YELLOW);
+        print(26, 10, " / ____|           | |           (_)     (_)", YELLOW);
+        print(27, 10, "| (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ ", YELLOW);
+        print(28,  10, " \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |", YELLOW);
+        print(29, 10, " ____) | (_| | | | | || (_) | |  | | | | | |", YELLOW);
+        print(30, 10, "|_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|", YELLOW);
 
     }
 
@@ -189,9 +202,9 @@ public class GraphicDrawerCLI {
             coeff = (row + 2) % 4;
 
             if( coeff == 0) {
-                print(row, 8, divider);
+                print(row, 8, divider, CYAN);
             } else {
-                print(row, 8, empty);
+                print(row, 8, empty, CYAN);
             }
 
         }
@@ -206,9 +219,11 @@ public class GraphicDrawerCLI {
             for(int column = 0; column < 10; column++) {
                 if(column % 2 == 0) {
                     boardCellsInfo[row][column] = '0';
+                    boardString[row][column] = "0";
                 }
                 else {
                     boardCellsInfo[row][column] = '.';
+                    boardString[row][column] = ".";
                 }
             }
         }
@@ -235,15 +250,15 @@ public class GraphicDrawerCLI {
 
                 if(row == 0) {
                     if(col == 0) {
-                        print(rowRef, colRef, "X");
+                        print(rowRef, colRef, "X", GREEN);
                     }
                     else {
-                        print(rowRef, colRef, String.valueOf(col-1));
+                        print(rowRef, colRef, String.valueOf(col-1), GREEN);
                     }
 
                 }
                 else if(col == 0) {
-                    print(rowRef, colRef, String.valueOf(row-1));
+                    print(rowRef, colRef, String.valueOf(row-1), GREEN);
                 }
                 else {
                     print(rowRef, colRef-1, getCellInfo(row, col));
@@ -282,6 +297,15 @@ public class GraphicDrawerCLI {
     }
 
 
+    public void setCellInfo(int row, int column, String towerInfo, String cellInfo) {
+
+        int refCol = column * 2;
+
+        boardString[row][refCol-2] = towerInfo;
+        boardString[row][refCol-1] = cellInfo;
+    }
+
+
     /**
      * this method shows the information of the cell at the passed coordinates,
      * specifically shows the height of the tower in this cell (0 to 4) and the
@@ -295,6 +319,7 @@ public class GraphicDrawerCLI {
 
         int refCol = column * 2;
 
+        //return boardString[row-1][refCol-2]+" "+boardString[row-1][refCol-1];
         return boardCellsInfo[row-1][refCol-2]+" "+boardCellsInfo[row-1][refCol-1];
     }
 
@@ -319,9 +344,9 @@ public class GraphicDrawerCLI {
         for(int row = startRow; row <= 20; row++) {
 
             if(row == 4 || row == 8 || row == 20) {
-                print( row, 8, divider);
+                print( row, 8, divider, CYAN);
             } else {
-                print(row, 8, empty);
+                print(row, 8, empty, CYAN);
             }
 
 
@@ -373,7 +398,7 @@ public class GraphicDrawerCLI {
         for(int card = 0; card < numCards; card++) {
             refRow = startRow + (card * rowOffset);
 
-            print(refRow, 11, "["+String.valueOf(card)+"]");
+            print(refRow, 11, "["+String.valueOf(card)+"]", RED);
             print(refRow, 16, cardsNameList.get(card));
 
             if(cardsEffectList.get(card).length() > 87) {
@@ -395,7 +420,7 @@ public class GraphicDrawerCLI {
 
         String uppercaseTitle = title.toUpperCase();
 
-        print(6, 12, uppercaseTitle);
+        print(6, 12, uppercaseTitle, BRIGHTBLACK);
 
     }
 
@@ -434,7 +459,7 @@ public class GraphicDrawerCLI {
     }
 
 
-    //MARK : Player Panel Section ======================================================================================
+    //MARK : Choice Panel Section ======================================================================================
 
     private String choicePanelTitle;
 
@@ -442,7 +467,7 @@ public class GraphicDrawerCLI {
 
     private List<String> actionsChoicePanel;
 
-    private List<String> buildingsChoicePanel;
+    private List<Integer> buildingsChoicePanel;
 
 
     private void drawChoicePanel() {
@@ -454,9 +479,9 @@ public class GraphicDrawerCLI {
         for(int row = startRow; row <= 58; row++) {
 
             if(row == 23 || row == 27 || row == 58) {
-                print(row, 69, divider);
+                print(row, 69, divider, CYAN);
             } else {
-                print(row, 69, empty);
+                print(row, 69, empty, CYAN);
             }
         }
 
@@ -523,7 +548,7 @@ public class GraphicDrawerCLI {
             refRow = startRow + ((i - numCol) * rowOffset);
 
             choiceNumber = "[" + String.valueOf(i) + "]";
-            print(refRow, refColNum, choiceNumber);
+            print(refRow, refColNum, choiceNumber, RED);
 
             choiceValue = String.valueOf(cellsChoicePanel.get(i).x) + " - " + String.valueOf(cellsChoicePanel.get(i).y);
             print(refRow, refColVal, choiceValue);
@@ -540,19 +565,42 @@ public class GraphicDrawerCLI {
         int rowOffset = 3;
         int refRow;
 
-        print(29, 78, "Actions");
+        String choiceNumber;
+
+        print(29, 77, "Actions");
 
         for(int a = 0; a < actionsChoicePanel.size(); a++) {
             refRow = startRow + (a * rowOffset);
 
-            print(refRow, 78, actionsChoicePanel.get(a));
+            choiceNumber = "[" + String.valueOf(a) + "]";
+            print(refRow, 72, choiceNumber, RED);
+
+            print(refRow, 77, actionsChoicePanel.get(a));
         }
 
     }
 
-    //TODO : da completare
+
     private void fillBuildingsChoicePanel() {
 
+        int startRow = 31;
+        int rowOffset = 3;
+        int refRow;
+
+        String choiceNumber;
+        String choiceValue;
+
+        print(29, 77, "Building");
+
+        for(int i = 0; i < buildingsChoicePanel.size(); i++) {
+            refRow = startRow + (i * rowOffset);
+
+            choiceNumber = "[" + String.valueOf(i) + "]";
+            print(refRow, 72, choiceNumber, RED);
+
+            choiceValue = "Level " + String.valueOf(buildingsChoicePanel.get(i));
+            print(refRow, 77, choiceValue);
+        }
     }
 
 
@@ -578,13 +626,13 @@ public class GraphicDrawerCLI {
     }
 
 
-    public void saveBuildingsChoicesValue(List<String> buildingsList) {
+    public void saveBuildingsChoicesValue(List<Integer> buildingsList) {
         clearChoicePanelValues();
         this.buildingsChoicePanel = buildingsList;
     }
 
 
-    private void clearChoicePanelValues() {
+    public void clearChoicePanelValues() {
         this.cellsChoicePanel = new ArrayList<>();
         this.actionsChoicePanel = new ArrayList<>();
         this.buildingsChoicePanel = new ArrayList<>();

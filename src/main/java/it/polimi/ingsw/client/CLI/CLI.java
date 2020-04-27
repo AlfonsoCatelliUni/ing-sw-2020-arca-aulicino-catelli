@@ -220,12 +220,13 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(NotifyStatusEvent event) {
-
-        //System.out.println(event.status+"\n");
         List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
 
         for (FormattedCellInfo c : cellsInfoList ) {
             String strInfo = getStringCellInfo(c.getHeight(), c.getRoofInfo().getSecond(), c.getPawnInfo().getFirst(), c.getPawnInfo().getSecond());
+
+            //List<String> info = getStringCellInfoList(c.getHeight(), c.getRoofInfo().getSecond(), c.getPawnInfo().getFirst(), c.getPawnInfo().getSecond());
+            //drawer.setCellInfo(c.getRow(), c.getColumn()+1, info.get(0), info.get(1));
 
             drawer.setCellInfo(c.getRow(), c.getColumn()+1, strInfo);
         }
@@ -344,480 +345,10 @@ public class CLI implements ServerToClientManager {
 
         clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
 
-        /*
-        if(occupiedCells.size() != 0) {
-            System.out.println("You can't place your pawns in this positions: ");
-            for (Point occupiedCell : occupiedCells) {
-                System.out.println("[" + occupiedCell.getX() + "," + occupiedCell.getY() + "]");
-            }
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
 
-            //male pawn choosing
-            System.out.println("Choose the position of your male pawn");
-
-            System.out.println("Row Position:");
-            int maleRowPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-            maleRowPosition = input.nextInt();
-
-
-            while(maleRowPosition < 0 || maleRowPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Row Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-                maleRowPosition = input.nextInt();
-
-            }
-
-            System.out.println("Column Position:");
-            int maleColumnPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Column Position:");
-            }
-            maleColumnPosition = input.nextInt();
-
-            while( maleColumnPosition < 0 || maleColumnPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Column Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Column Position:");
-                }
-                maleColumnPosition = input.nextInt();
-
-            }
-
-            boolean isOccupied;
-
-            do {
-
-                isOccupied = false;
-
-                for (Point occupiedCell : occupiedCells) {
-                    //occupied position
-                    if (maleRowPosition == occupiedCell.getX() &&
-                            maleColumnPosition == occupiedCell.getY()) {
-                        isOccupied = true;
-                        break;
-                    }
-                }
-
-                if(isOccupied) {
-                    System.out.println("This Position is already occupied");
-                    System.out.println("Choose the position of your male pawn");
-
-                    System.out.println("Row Position:");
-
-                    while(!input.hasNextInt()) {
-                        System.err.println("Insert a Number!");
-                        input.next();
-
-                        System.out.println("Row Position:");
-                    }
-                    maleRowPosition = input.nextInt();
-
-
-                    while( maleRowPosition < 0 || maleRowPosition > 4) {
-
-                        System.out.println("Invalid position");
-                        System.out.println("Row Position:");
-
-                        while(!input.hasNextInt()) {
-                            System.err.println("Insert a Number!");
-                            input.next();
-
-                            System.out.println("Row Position:");
-                        }
-                        maleRowPosition = input.nextInt();
-
-                    }
-
-                    System.out.println("Column Position:");
-
-                    while(!input.hasNextInt()) {
-                        System.err.println("Insert a Number!");
-                        input.next();
-
-                        System.out.println("Row Position:");
-                    }
-                    maleColumnPosition = input.nextInt();
-
-
-                    while( maleColumnPosition < 0 || maleColumnPosition > 4) {
-
-                        System.out.println("Invalid position");
-                        System.out.println("Column Position:");
-
-                        while(!input.hasNextInt()) {
-                            System.err.println("Insert a Number!");
-                            input.next();
-
-                            System.out.println("Row Position:");
-                        }
-                        maleColumnPosition = input.nextInt();
-                    }
-
-                }
-
-            } while(isOccupied);
-
-            //female pawn choosing
-            System.out.println("Choose the position of your female pawn");
-
-            System.out.println("Row Position:");
-            int femaleRowPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-
-            femaleRowPosition = input.nextInt();
-
-            while(femaleRowPosition < 0 || femaleRowPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Row Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-
-                femaleRowPosition = input.nextInt();
-
-            }
-
-            System.out.println("Column Position:");
-            int femaleColumnPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-
-            femaleColumnPosition = input.nextInt();
-
-
-            while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Column Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-
-                femaleColumnPosition = input.nextInt();
-
-            }
-
-            do {
-
-                isOccupied = false;
-
-                for (Point occupiedCell : occupiedCells) {
-
-                    if (femaleRowPosition == occupiedCell.getX() &&
-                            femaleColumnPosition == occupiedCell.getY() ||
-                            femaleRowPosition == maleRowPosition &&
-                            femaleColumnPosition == maleColumnPosition) {
-                        isOccupied = true;
-                        break;
-                    }
-                }
-
-                if(isOccupied) {
-                    System.out.println("This Position is already occupied");
-                    System.out.println("Choose the position of your female pawn");
-
-                    System.out.println("Row Position:");
-
-                    while(!input.hasNextInt()) {
-                        System.err.println("Insert a Number!");
-                        input.next();
-
-                        System.out.println("Row Position:");
-                    }
-
-                    femaleRowPosition = input.nextInt();
-
-
-                    while( femaleRowPosition < 0 || femaleRowPosition > 4) {
-
-                        System.out.println("Invalid position");
-                        System.out.println("Row Position:");
-
-                        while(!input.hasNextInt()) {
-                            System.err.println("Insert a Number!");
-                            input.next();
-
-                            System.out.println("Row Position:");
-                        }
-
-                        femaleRowPosition = input.nextInt();
-
-                    }
-
-                    System.out.println("Column Position:");
-
-                    while(!input.hasNextInt()) {
-                        System.err.println("Insert a Number!");
-                        input.next();
-
-                        System.out.println("Row Position:");
-                    }
-
-                    femaleColumnPosition = input.nextInt();
-
-
-                    while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
-
-                        System.out.println("Invalid position");
-                        System.out.println("Column Position:");
-
-                        while(!input.hasNextInt()) {
-                            System.err.println("Insert a Number!");
-                            input.next();
-
-                            System.out.println("Row Position:");
-                        }
-
-                        femaleColumnPosition = input.nextInt();
-
-                    }
-
-                }
-
-            } while (isOccupied);
-
-            clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
-
-            System.out.println("Please wait until it's your turn");
-
-
-        }
-        else {
-
-            //male pawn choosing
-            System.out.println("Choose the position of your male pawn");
-
-            System.out.println("Row Position:");
-            int maleRowPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-            maleRowPosition = input.nextInt();
-
-            while( maleRowPosition < 0 || maleRowPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Row Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-                maleRowPosition = input.nextInt();
-
-            }
-
-            System.out.println("Column Position:");
-            int maleColumnPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-            maleColumnPosition = input.nextInt();
-
-
-            while( maleColumnPosition < 0 || maleColumnPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Column Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-                maleColumnPosition = input.nextInt();
-
-            }
-
-            //female pawn choosing
-            System.out.println("Choose the position of your female pawn");
-
-            System.out.println("Row Position:");
-            int femaleRowPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-            femaleRowPosition = input.nextInt();
-
-
-            while( femaleRowPosition < 0 || femaleRowPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Row Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-                femaleRowPosition = input.nextInt();
-
-            }
-
-            System.out.println("Column Position:");
-            int femaleColumnPosition;
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-
-                System.out.println("Row Position:");
-            }
-            femaleColumnPosition = input.nextInt();
-
-
-            while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
-
-                System.out.println("Invalid position");
-                System.out.println("Column Position:");
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Row Position:");
-                }
-                femaleColumnPosition = input.nextInt();
-
-            }
-
-            boolean isOccupied;
-
-            do {
-
-                isOccupied = femaleRowPosition == maleRowPosition &&
-                        femaleColumnPosition == maleColumnPosition;
-
-                if(isOccupied) {
-                    System.out.println("This Position is already occupied");
-                    System.out.println("Choose the position of your female pawn");
-
-                    System.out.println("Row Position:");
-
-                    while(!input.hasNextInt()) {
-                        System.err.println("Insert a Number!");
-                        input.next();
-
-                        System.out.println("Row Position:");
-                    }
-                    femaleRowPosition = input.nextInt();
-
-
-                    while( femaleRowPosition < 0 || femaleRowPosition > 4) {
-
-                        System.out.println("Invalid position");
-                        System.out.println("Row Position:");
-
-                        while(!input.hasNextInt()) {
-                            System.err.println("Insert a Number!");
-                            input.next();
-
-                            System.out.println("Row Position:");
-                        }
-                        femaleRowPosition = input.nextInt();
-
-                    }
-
-                    System.out.println("Column Position:");
-
-                    while(!input.hasNextInt()) {
-                        System.err.println("Insert a Number!");
-                        input.next();
-
-                        System.out.println("Row Position:");
-                    }
-                    femaleColumnPosition = input.nextInt();
-
-
-                    while( femaleColumnPosition < 0 || femaleColumnPosition > 4) {
-
-                        System.out.println("Invalid position");
-                        System.out.println("Column Position:");
-
-                        while(!input.hasNextInt()) {
-                            System.err.println("Insert a Number!");
-                            input.next();
-
-                            System.out.println("Row Position:");
-                        }
-                        femaleColumnPosition = input.nextInt();
-
-                    }
-
-                }
-
-            } while(isOccupied);
-
-            clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
-
-            System.out.println("Please wait until it's your turn");
-
-
-        }
-
-         */
-
-
+        drawer.show();
     }
 
 
@@ -831,9 +362,6 @@ public class CLI implements ServerToClientManager {
         List<Point> availablePawns = event.info;
         int selectedPawn = -1;
 
-       /* initialized to 0 because I'm sure the size will be 1 or 2, never 0 because the player would lose */
-       //int rowPosition = 0;
-       //int columnPosition = 0;
 
         do {
 
@@ -844,6 +372,8 @@ public class CLI implements ServerToClientManager {
 
             while(!input.hasNextInt()) {
                 System.err.println("Insert a Number !");
+                drawer.show();
+
                 input.next();
             }
             selectedPawn = input.nextInt();
@@ -855,113 +385,15 @@ public class CLI implements ServerToClientManager {
 
         } while( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) );
 
-        int rowPosition = availablePawns.get(selectedPawn).x;
-        int columnPosition = availablePawns.get(selectedPawn).y;
+        this.rowUsedPawn = availablePawns.get(selectedPawn).x;
+        this.columnUsedPawn = availablePawns.get(selectedPawn).y;
 
+       clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
 
-       //the player can choose witch pawn can use
-        /*
-       if(coordinatesAvailablePawns.size() == 1) {
+       drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+       drawer.clearChoicePanelValues();
 
-           System.out.println("You can do your action only with the pawn with coordinates: " +
-                   "[" + coordinatesAvailablePawns.get(0).x + "," + coordinatesAvailablePawns.get(0).y + "]");
-
-           rowPosition = coordinatesAvailablePawns.get(0).x;
-           columnPosition = coordinatesAvailablePawns.get(0).y;
-
-       }
-       else if(coordinatesAvailablePawns.size() == 2) {
-
-           System.out.println("Choose the coordinates of the pawn you want to move: ");
-
-           for (Point coordinatesAvailablePawn : coordinatesAvailablePawns) {
-
-               System.out.println("[" + coordinatesAvailablePawn.x + "," + coordinatesAvailablePawn.y + "]\n");
-
-           }
-
-           boolean isCorrect;
-
-           do {
-
-               isCorrect = false;
-
-               System.out.println("Row position: ");
-
-               while(!input.hasNextInt()) {
-                   System.err.println("Insert a Number!");
-                   input.next();
-
-                   System.out.println("Row Position:");
-               }
-               rowPosition = input.nextInt();
-
-               while (rowPosition < 0 || rowPosition > 4) {
-
-                   System.out.println("Invalid position");
-                   System.out.println("Row Position:");
-
-                   while(!input.hasNextInt()) {
-                       System.err.println("Insert a Number!");
-                       input.next();
-
-                       System.out.println("Row Position:");
-                   }
-                   rowPosition = input.nextInt();
-               }
-
-               System.out.println("Column position: ");
-
-               while(!input.hasNextInt()) {
-                   System.err.println("Insert a Number!");
-                   input.next();
-
-                   System.out.println("Row Position:");
-               }
-               columnPosition = input.nextInt();
-
-               while (columnPosition < 0 || columnPosition > 4) {
-
-                   System.out.println("Invalid position");
-                   System.out.println("Column Position:");
-
-                   while(!input.hasNextInt()) {
-                       System.err.println("Insert a Number!");
-                       input.next();
-
-                       System.out.println("Row Position:");
-                   }
-                   columnPosition = input.nextInt();
-               }
-
-               for (Point coordinatesAvailablePawn : coordinatesAvailablePawns) {
-
-                   if (rowPosition == coordinatesAvailablePawn.x &&
-                           columnPosition == coordinatesAvailablePawn.y) {
-
-                       isCorrect = true;
-                       break;
-
-                   }
-
-               }
-
-               if(!isCorrect) {
-                   System.out.println("None of your pawns are in this cell, please reinsert the coordinates");
-               }
-
-           } while(!isCorrect);
-
-
-       }
-
-       this.rowUsedPawn = rowPosition;
-
-       this.columnUsedPawn = columnPosition;
-
-         */
-
-       clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowPosition, columnPosition));
+       drawer.show();
 
    }
 
@@ -979,42 +411,37 @@ public class CLI implements ServerToClientManager {
             System.out.println("An error has occurred, please reinsert the positions");
         }
 
-        drawer.saveTitlePlayerPanel("CHOOSE YOUR CARD");
-        for (int i = 0; i < cardsName.size(); i++) {
-            //System.out.println(i + ")\tGod Name : " + cardsName.get(i) + "\n\tGod Effect : " + cardsEffect.get(i));
-            drawer.savePlayerCardChoice(cardsName, cardsEffect);
-        }
-        drawer.show();
+        do {
 
+            drawer.saveTitlePlayerPanel("CHOOSE YOUR CARD");
+            for (int i = 0; i < cardsName.size(); i++) {
+                drawer.savePlayerCardChoice(cardsName, cardsEffect);
+            }
+            drawer.show();
 
-        System.out.print("\nInsert the number to choose your God: ");
-
-        while(!input.hasNextInt()) {
-            System.err.println("Insert a Number!");
-            input.next();
-
-            System.out.println("\nInsert the number to choose your God:");
-        }
-        choiceNum = input.nextInt();
-
-        while (choiceNum >= cardsName.size() || choiceNum < 0) {
-            System.out.println("Invalid choice!");
-            System.out.print("Insert the number to choose your God : ");
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
+                System.err.println("Insert a Number !");
+                drawer.show();
 
-                System.out.println("\nInsert the number to choose your God:");
+                input.next();
             }
             choiceNum = input.nextInt();
 
-        }
+            if( !(choiceNum >= 0 && choiceNum < cardsName.size()) ) {
+                System.err.println("Choice Unavailable !");
+            }
+
+        } while( !(choiceNum >= 0 && choiceNum < cardsName.size()) );
+
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
-        System.out.println("Please wait until it's your turn");
+        //System.out.println("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
 
+        drawer.show();
     }
 
 
@@ -1024,45 +451,35 @@ public class CLI implements ServerToClientManager {
         List<String> possibleActions = event.actions;
         boolean isEventValid = event.isValid;
 
-        int indexChosenAction = 0;
+        int indexChosenAction = -1;
 
-        //if there are more then one single possible actions
-        //then I let the user to choose
-        if(possibleActions.size() > 1) {
-
-            if(!isEventValid) {
-                System.out.println("Apparently there was an error! Reselect.");
-            }
-
-            do {
-                System.out.println("Choose your next action:");
-                for (int index = 0; index < possibleActions.size(); index++) {
-                    System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
-                }
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    input.next();
-
-                    System.out.println("Choose your next action:");
-                    for (int index = 0; index < possibleActions.size(); index++) {
-                        System.out.println("[" + index + "]" + "\t" + possibleActions.get(index) + "\n");
-                    }
-                }
-
-                indexChosenAction = input.nextInt();
-
-
-                if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
-                    System.err.println("Action Unavailable !");
-                }
-
-            } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
-
+        if(!isEventValid) {
+            System.err.println("Apparently there was an error! Reselect.");
         }
 
-        System.out.println("You have just a " + possibleActions.get(indexChosenAction) + "action");
-        //in case there is only one possible action I directly send the possible aciton
+        drawer.saveTitleChoicePanel("choose your next action");
+        drawer.saveActionsChoicesValue(possibleActions);
+
+        do {
+
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                drawer.show();
+
+                input.next();
+            }
+            indexChosenAction = input.nextInt();
+
+            if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
+                System.err.println("Choice Unavailable !");
+            }
+
+        } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
+
+
+        //in case there is only one possible action I directly send the possible action
         //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
         switch (possibleActions.get(indexChosenAction)) {
 
@@ -1074,10 +491,6 @@ public class CLI implements ServerToClientManager {
                 clientView.sendCTSEvent(new ChosenBuildActionEvent(nickname, "Build", rowUsedPawn, columnUsedPawn));
                 break;
 
-            case "End turn":
-                clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
-                break;
-
             case "Destroy":
                 clientView.sendCTSEvent(new ChosenDestroyActionEvent(nickname, "Destroy", rowUsedPawn, columnUsedPawn));
                 break;
@@ -1086,10 +499,21 @@ public class CLI implements ServerToClientManager {
                 clientView.sendCTSEvent(new ChosenForceActionEvent(nickname, "Force", rowUsedPawn, columnUsedPawn));
                 break;
 
+            case "End turn":
+                clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
+
+                drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+                drawer.clearChoicePanelValues();
+
+                drawer.show();
+
+                break;
+
             default:
                 throw new RuntimeException("Error while selecting the next action !");
 
             }
+
 
 
 
@@ -1100,41 +524,35 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
         List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
-        String actionID = event.actionID;
         boolean isEventValid = event.isValid;
+
         int selectedCell = 0;
 
-        if(cellsAvailableToMove.size() > 1) {
 
-            if(!isEventValid) {
-                System.out.println("Apparently there was an error! Reselect.");
+        if(!isEventValid) {
+            System.err.println("Apparently there was an error! Reselect.");
+        }
+
+        drawer.saveTitleChoicePanel("choose the cell where you want to move");
+        drawer.saveCellsChoicesValue(cellsAvailableToMove);
+
+        do {
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert an Number !");
+                drawer.show();
+
+                input.next();
+            }
+            selectedCell = input.nextInt();
+
+            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
+                System.err.println("Unavailable Choice !");
             }
 
-            do {
-                System.out.println("Choose the cell where you want to move :");
-                for(int c = 0; c < cellsAvailableToMove.size(); c++) {
-                    System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
-                }
+        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
 
-                while(!input.hasNextInt()) {
-
-                    input.next();
-                    System.err.println("Insert an Number !");
-
-                    System.out.println("Choose the cell where you want to move :");
-                    for(int c = 0; c < cellsAvailableToMove.size(); c++) {
-                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToMove.get(c).x)+" - "+String.valueOf(cellsAvailableToMove.get(c).y) + "\n");
-                    }
-                }
-                selectedCell = input.nextInt();
-                if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
-                    System.err.println("Unavailable Choice !");
-                }
-
-
-            } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
-
-        }
 
         nextActionRow = cellsAvailableToMove.get(selectedCell).x;
         nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
@@ -1146,48 +564,38 @@ public class CLI implements ServerToClientManager {
     }
 
 
+    //TODO : ottimizzare per ridurre le copie di codice
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
 
         List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
-        String actionID = event.actionID;
         boolean isEventValid = event.isValid;
         int selectedCell = 0;
 
-        //control if there's only one single cell available to build
-        //if there are more cells I let the user choose
-        if(cellsAvailableToBuild.size() > 1) {
 
-            if (!isEventValid) {
-                System.out.println("Apparently there was an error! Reselect.");
+        if(!isEventValid) {
+            System.err.println("Apparently there was an error! Reselect.");
+        }
+
+        drawer.saveTitleChoicePanel("choose the cell where you want to build");
+        drawer.saveCellsChoicesValue(cellsAvailableToBuild);
+
+        do {
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert an Number !");
+                drawer.show();
+
+                input.next();
+            }
+            selectedCell = input.nextInt();
+
+            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
+                System.err.println("Unavailable Choice !");
             }
 
-            do {
-                System.out.println("Choose the cell where you want to build:");
-                for (int c = 0; c < cellsAvailableToBuild.size(); c++) {
-                    System.out.println("[" + String.valueOf(c) + "]\t" + String.valueOf(cellsAvailableToBuild.get(c).x) + " - " + String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
-                }
-
-                while(!input.hasNextInt()) {
-
-                    input.next();
-                    System.err.println("Insert an Number!");
-
-                    System.out.println("Choose the cell where you want to build:");
-                    for(int c = 0; c < cellsAvailableToBuild.size(); c++) {
-                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(cellsAvailableToBuild.get(c).x)+" - "+String.valueOf(cellsAvailableToBuild.get(c).y) + "\n");
-                    }
-                }
-                selectedCell = input.nextInt();
-
-
-                if (!(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size())) {
-                    System.err.println("Unavailable Choice!");
-                }
-
-
-            } while (!(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()));
-        }
+        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
 
         nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
         nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
@@ -1202,32 +610,27 @@ public class CLI implements ServerToClientManager {
 
         List<Integer> buildingsLevel = event.buildings;
         boolean isEventValid = event.isValid;
-        int selectedLevel;
+        int selectedLevel = 0;
+
+        if(!isEventValid) {
+            System.err.println("Apparently there was an error! Reselect.");
+        }
 
         //if there are more than one single options then I
         //have to display them and give the possibility to choose
         if(buildingsLevel.size() > 1) {
 
-            if(!isEventValid) {
-                System.out.println("Apparently there was an error! Reselect.");
-            }
+            drawer.saveTitleChoicePanel("Choose the building to build on the selected cell");
+            drawer.saveBuildingsChoicesValue(buildingsLevel);
 
             do {
-
-                System.out.println("Choose the building to build on the selected cell :");
-                for(int b = 0; b < buildingsLevel.size(); b++) {
-                    System.out.println("["+String.valueOf(b)+"]\t"+String.valueOf(buildingsLevel.get(b))+"\n");
-                }
+                drawer.show();
 
                 while(!input.hasNextInt()) {
+                    System.err.println("Insert an Number!");
+                    drawer.show();
 
                     input.next();
-                    System.err.println("Insert an Number!");
-
-                    System.out.println("Choose the building to build on the selected cell:");
-                    for(int c = 0; c < buildingsLevel.size(); c++) {
-                        System.out.println("["+String.valueOf(c)+"]\t"+String.valueOf(buildingsLevel.get(c)) + "\n");
-                    }
                 }
                 selectedLevel = input.nextInt();
 
@@ -1237,16 +640,9 @@ public class CLI implements ServerToClientManager {
 
             } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
 
-            //MARK : QUA HO USATO GLI ATTRIBUTI CHE TI DICEVO, PERCHE L'EVENTO GivePossibleBuildingsEvent NON HA DENTRO LA CELLA DOVE DEVE COSTRUIRE QUINDI ME LA SALVO QUANDO LA SELEZIONO NEL manageEvent QUA SOPRA
-            clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
-
-        }
-        //in case there is only one option I automatically select
-        //that for the player
-        else {
-            clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(0), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
         }
 
+        clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
     }
 
 
@@ -1274,13 +670,25 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
+        //TODO : da completare
+
+
+        /* qua devo fare che stampo a video il fatto che
+         hai perso la partita perchè non hia piu mosse disponibili,
+         nella classe GraphicDrawer potrei fare che nella ChoicePanel gli stampo
+         una piccola animazione con la scritta hai perso*/
+
+        /*  */
 
     }
 
 
     @Override
     public void manageEvent(EndGameSTCEvent event) {
+        /* devo comunicare al player che la partita è stat conclusa e devo dargli
+        la possibilità di uscire dal gioco oppure di ricominciarne un'altra */
 
+        /* anche qui posso fare un'animazione nella schermata */
     }
 
 
@@ -1349,6 +757,71 @@ public class CLI implements ServerToClientManager {
         return "error";
     }
 
+
+    /*
+    public List<String> getStringCellInfoList(Integer height, Boolean isDome, String color, String sex) {
+
+        String RESET = "\u001B[0m";
+        String BLACK = "\u001B[30m";
+        String RED = "\u001B[31m";
+        String GREEN = "\u001B[32m";
+        String YELLOW = "\u001B[33m";
+        String BLUE = "\u001B[34m";
+        String PURPLE = "\u001B[35m";
+        String CYAN = "\u001B[36m";
+        String WHITE = "\u001B[37m";
+        String BRIGHTBLACK = "\u001b[30;1m";
+
+        List<String> infoCell = new ArrayList<>();
+        String towerInfo = String.valueOf(height);
+        String cellInfo = "";
+
+        if (isDome) {
+            cellInfo = "X";
+        }
+        else if(color.equals("") && sex.equals("")) {
+            cellInfo = ".";
+        }
+        else {
+
+            switch (color) {
+                case "BLUE":
+
+                    if (sex.equals("MALE")) {
+                        cellInfo = BLUE + "B" + RESET;
+                    } else if (sex.equals("FEMALE")) {
+                        cellInfo = BLUE + "b" + RESET;
+                    }
+
+                    break;
+                case "GREY":
+
+                    if (sex.equals("MALE")) {
+                        cellInfo = BRIGHTBLACK + "G" + RESET;
+                    } else if (sex.equals("FEMALE")) {
+                        cellInfo = BRIGHTBLACK + "g" + RESET;
+                    }
+
+                    break;
+                case "WHITE":
+
+                    if (sex.equals("MALE")) {
+                        cellInfo = WHITE + "W" + RESET;
+                    } else if (sex.equals("FEMALE")) {
+                        cellInfo = WHITE + "w" + RESET;
+                    }
+
+                    break;
+            }
+
+        }
+
+        infoCell.add(towerInfo);
+        infoCell.add(cellInfo);
+        return infoCell;
+    }
+
+     */
 
 
 }

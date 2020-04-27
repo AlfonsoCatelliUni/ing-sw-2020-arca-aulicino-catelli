@@ -19,8 +19,10 @@ public class ChosenCellToDestroyEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public ChosenCellToDestroyEvent(String playerNickname, int rowToDestroy, int columnToDestroy) {
+    public ChosenCellToDestroyEvent(String playerNickname, int pawnRow, int pawnColumn, int rowToDestroy, int columnToDestroy) {
         this.playerNickname = playerNickname;
+        this.pawnRow = pawnRow;
+        this.pawnColumn = pawnColumn;
         this.rowToDestroy = rowToDestroy;
         this.columnToDestroy = columnToDestroy;
     }

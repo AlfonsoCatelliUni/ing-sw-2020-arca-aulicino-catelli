@@ -990,7 +990,7 @@ public class CLI implements ServerToClientManager {
 
 
         if(!event.isValid) {
-            System.out.println("An error has occurred, please reinsert the positions");
+            System.out.println("An error has occurred, please reinsert the your choice");
         }
 
         drawer.saveTitlePlayerPanel("CHOOSE YOUR CARD");
@@ -1035,6 +1035,9 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleActionsEvent event) {
 
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
         List<String> possibleActions = event.actions;
         boolean isEventValid = event.isValid;
 
@@ -1075,7 +1078,7 @@ public class CLI implements ServerToClientManager {
 
         }
 
-        System.out.println("You have just a " + possibleActions.get(indexChosenAction) + "action");
+        System.out.println("You have just a " + possibleActions.get(indexChosenAction) + " action");
         //in case there is only one possible action I directly send the possible aciton
         //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
         switch (possibleActions.get(indexChosenAction)) {
@@ -1112,6 +1115,10 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
+
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
 
         List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
         String actionID = event.actionID;
@@ -1162,6 +1169,10 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
+
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
 
         List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
         String actionID = event.actionID;
@@ -1214,6 +1225,10 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleBuildingsEvent event) {
 
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
+
         List<Integer> buildingsLevel = event.buildings;
         boolean isEventValid = event.isValid;
         int selectedLevel;
@@ -1263,8 +1278,13 @@ public class CLI implements ServerToClientManager {
 
     }
 
+
     @Override
     public void manageEvent(GivePossibleCellsToDestroyEvent event) {
+
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
 
         System.out.println("You can destroy a building in the following cells:");
 
@@ -1295,12 +1315,17 @@ public class CLI implements ServerToClientManager {
 
         int selectedColumnToDestroy = event.cells.get(selectedCell).y;
 
-        clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, selectedRowToDestroy, selectedColumnToDestroy));
+        clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowToDestroy, selectedColumnToDestroy));
 
     }
 
+
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
+
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
 
         System.out.println("You can force to move the pawns in these cells:");
 
@@ -1331,8 +1356,7 @@ public class CLI implements ServerToClientManager {
 
         int selectedColumnForcedPawn = event.cells.get(selectedCell).y;
 
-        clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, selectedRowForcedPawn, selectedColumnForcedPawn));
-        // TODO: mettere info di row e column del pawn che fa l'azione
+        clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
 
     }
 

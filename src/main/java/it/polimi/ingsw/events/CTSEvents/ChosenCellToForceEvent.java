@@ -19,8 +19,10 @@ public class ChosenCellToForceEvent extends ClientToServerEvent {
     // ======================================================================================
 
 
-    public ChosenCellToForceEvent(String playerNickname, int rowForcedPawn, int columnForcedPawn) {
+    public ChosenCellToForceEvent(String playerNickname, int pawnRow, int pawnColumn, int rowForcedPawn, int columnForcedPawn) {
         this.playerNickname = playerNickname;
+        this.pawnRow = pawnRow;
+        this.pawnColumn = pawnColumn;
         this.rowForcedPawn = rowForcedPawn;
         this.columnForcedPawn = columnForcedPawn;
     }

@@ -6,7 +6,7 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 public class EndGameSTCEvent extends ServerToClientEvent {
 
 
-    String winner;
+    public String winner;
 
 
     public EndGameSTCEvent(String winner) {

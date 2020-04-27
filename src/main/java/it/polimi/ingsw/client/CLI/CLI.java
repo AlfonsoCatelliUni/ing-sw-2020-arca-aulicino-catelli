@@ -244,6 +244,12 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(OneClientDisconnectedEvent event) {
+        System.out.println(event.disconnected + " is disconnected");
+
+        System.out.println("Players in lobby are now:");
+        for (String p : event.connectedPlayers){
+            System.out.println(p);
+        }
 
     }
 
@@ -275,6 +281,10 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(RoomNotFilled event) {
         System.out.println(event.message);
+        System.out.println();
+        System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
+        this.clientView = null;
+        System.exit(0);
     }
 
 

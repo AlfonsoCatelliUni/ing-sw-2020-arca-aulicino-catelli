@@ -316,7 +316,7 @@ public class Controller implements Observer, ClientToServerManager {
         Boolean isNicknameValid = preGameLobby.isNicknameValid(nickname);
 
 
-        if(isNicknameFree && isNicknameValid && !preGameLobby.getClosed()) {
+        if(isNicknameFree && isNicknameValid && !preGameLobby.isClosed()) {
 
             preGameLobby.addPlayer(nickname);
             virtualView.newNicknameID(nickname, ID);
@@ -347,7 +347,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
         //if the waitingRoom is already closed than we disconnect the player
-        else if(preGameLobby.getClosed()) {
+        else if(preGameLobby.isClosed()) {
             virtualView.sendMessageTo(ID, new UnableToEnterWaitingRoomEvent());
         }
         //if the chosen nickname is already taken we ask to enter it again
@@ -367,33 +367,37 @@ public class Controller implements Observer, ClientToServerManager {
         if (disconnectedPlayer == null)
             throw new RuntimeException("It's strange, but the ID of the player is corrupt!");
 
+        //if the nickname is not available then the player was really connected in the preGameLobby
+        if (preGameLobby.isNicknameAvailable(disconnectedPlayer))
+            throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
+
+        boolean isFirstPlayer = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));
+
+        // players are in waiting Rooms
         if (preGameLobby != null) {
 
-            //if the nickname is not available then the player was really connected in the preGameLobby
-            if (!preGameLobby.isNicknameAvailable(disconnectedPlayer)) {
+            if (!preGameLobby.isClosed()) {
 
-                if (!preGameLobby.getClosed()) {
-                    preGameLobby.deletePlayerInformation(disconnectedPlayer);
+                preGameLobby.deletePlayerInformation(disconnectedPlayer);
 
                     if (preGameLobby.getConnectedPlayers().size() > 0) {
 
                         List<String> connectedPlayers = new ArrayList<>(preGameLobby.getConnectedPlayers());
                         virtualView.sendMessage(new OneClientDisconnectedEvent(disconnectedPlayer, connectedPlayers));
 
-                        if (preGameLobby.getNumberOfPlayers() == -1)
+                        if (isFirstPlayer)
+                            virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new PlainTextEvent("Now you are the first player, so"));
                             virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new FirstConnectedEvent(preGameLobby.getConnectedPlayers().get(0)));
 
-                    } else if (preGameLobby.getConnectedPlayers().size() == 0 && preGameLobby.getNumberOfPlayers() != -1)
+                    } else if (preGameLobby.getConnectedPlayers().size() == 0)
                         preGameLobby.setNumberOfPlayers(-1);
 
                 } else {
                     virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
                     virtualView.sendMessage(new DisconnectionClientEvent());
+                    preGameLobby.clearLobby();
                 }
-
-            } else
-                    throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
         } else if (game != null) {
                     virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
@@ -704,6 +708,7 @@ public class Controller implements Observer, ClientToServerManager {
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));
         }
     }
+
 
 
     @Override

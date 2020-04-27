@@ -75,7 +75,7 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public Boolean getClosed() {
+    public Boolean isClosed() {
         return this.closed;
     }
 
@@ -197,6 +197,16 @@ public class PreGameLobby {
         catch(Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    public synchronized void clearLobby(){
+        this.playersNicknames.clear();
+        this.numberOfPlayers = -1;
+        this.pickedCards.clear();
+        this.playerCardMap.clear();
+        this.closed = false;
+
 
     }
 

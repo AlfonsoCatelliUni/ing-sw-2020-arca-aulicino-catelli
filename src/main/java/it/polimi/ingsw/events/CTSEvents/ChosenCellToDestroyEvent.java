@@ -7,6 +7,10 @@ public class ChosenCellToDestroyEvent extends ClientToServerEvent {
 
     public String playerNickname;
 
+    public int pawnRow;
+
+    public int pawnColumn;
+
     public int rowToDestroy;
 
     public int columnToDestroy;

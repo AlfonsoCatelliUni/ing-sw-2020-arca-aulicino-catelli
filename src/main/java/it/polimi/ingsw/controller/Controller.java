@@ -569,8 +569,8 @@ public class Controller implements Observer, ClientToServerManager {
             List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
-        }
-        else {
+
+        } else {
             List<Action> possibleActions = game.getLastActionsList();
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
@@ -608,16 +608,55 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-
-    //TODO : da completare
     @Override
     public void manageEvent(ChosenDestroyActionEvent event) {
+        String nickname = event.playerNickname;
+
+        String actionID = event.action;
+
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+
+        if (game.isValid(actionID)){
+
+            List<Cell> availableCells = game.wherePawnCanDestroy(nickname);
+            List<Point> cellsInfo = generatePointsByCells(availableCells);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo));
+
+        } else {
+            List<Action> possibleActions = game.getLastActionsList();
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
+        }
 
     }
 
 
     @Override
     public void manageEvent(ChosenForceActionEvent event) {
+
+        String nickname = event.playerNickname;
+
+        String actionID = event.action;
+
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+
+        if (game.isValid(actionID)){
+
+            List<Cell> availableCellsToForce = game.getOpponentsNeighboring(nickname, pawnRow, pawnColumn);
+            List<Point> cellInfo = generatePointsByCells(availableCellsToForce);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellInfo));
+        }
+        else {
+            List<Action> possibleActions = game.getLastActionsList();
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
+        }
 
     }
 
@@ -709,16 +748,61 @@ public class Controller implements Observer, ClientToServerManager {
         }
     }
 
+
     @Override
     public void manageEvent(ChosenCellToDestroyEvent event) {
-        //TODO : fare questo metodo
+        String nickname = event.playerNickname;
+
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+
+        int row = event.rowToDestroy;
+        int column = event.columnToDestroy;
+
+        //controlling if has been selected a valid cell
+        if (game.isValid(row, column)){
+
+            game.destroyBlock(nickname, row, column);
+
+            List<Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );
+            List<String> actionsID = generateActionIDByActions(possibleActions);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );
+
+        } else {
+            List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo )); //TODO: mettere costruttore
+        }
+
     }
+
 
     @Override
     public void manageEvent(ChosenCellToForceEvent event) {
-        //TODO : fare questo metodo
-    }
+       String nickname = event.playerNickname;
 
+       int pawnRow = event.pawnRow;
+       int pawnColumn = event.pawnColumn;
+
+       int row = event.rowForcedPawn;
+       int column = event.columnForcedPawn;
+
+       if (game.isValid(row, column)){
+
+           game.forceOpponent(nickname, pawnRow, pawnColumn, row, column);
+
+           List<Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );
+           List<String> actionsID = generateActionIDByActions(possibleActions);
+
+           virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );
+
+       } else {
+
+           List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
+           virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellsInfo )); // TODO: mettere costruttore isValid
+       }
+
+    }
 
 
     @Override

@@ -1332,6 +1332,7 @@ public class CLI implements ServerToClientManager {
         int selectedColumnForcedPawn = event.cells.get(selectedCell).y;
 
         clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, selectedRowForcedPawn, selectedColumnForcedPawn));
+        // TODO: mettere info di row e column del pawn che fa l'azione
 
     }
 

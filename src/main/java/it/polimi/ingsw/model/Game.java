@@ -583,6 +583,12 @@ public class Game extends Observable implements GameConsequenceHandler {
         return false;
     }
 
+    // TODO : controllare
+    public boolean isValidPawn(String nickname, int row, int column ){
+        List <Cell> pawnCoordinates = getPawnsCoordinateByPlayer(nickname);
+        return true;
+    }
+
 
     public List<Building> getLastBuildingsList() {
         return this.lastBuildingsList;

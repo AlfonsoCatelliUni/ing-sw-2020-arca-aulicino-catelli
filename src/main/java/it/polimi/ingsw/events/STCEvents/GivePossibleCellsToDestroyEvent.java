@@ -13,6 +13,8 @@ public class GivePossibleCellsToDestroyEvent extends ServerToClientEvent {
 
     public List <Point> cells;
 
+    public boolean isValid;
+
 
     public GivePossibleCellsToDestroyEvent(String nickname, List<Point> cells) {
         this.nickname = nickname;

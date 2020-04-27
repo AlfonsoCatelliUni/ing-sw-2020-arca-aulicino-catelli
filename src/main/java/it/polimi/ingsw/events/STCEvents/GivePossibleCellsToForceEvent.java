@@ -13,6 +13,8 @@ public class GivePossibleCellsToForceEvent extends ServerToClientEvent {
 
     public List<Point> cells;
 
+    public boolean isValid;
+
 
     // ======================================================================================
 

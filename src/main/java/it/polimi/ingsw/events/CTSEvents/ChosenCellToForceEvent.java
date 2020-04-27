@@ -7,6 +7,10 @@ public class ChosenCellToForceEvent extends ClientToServerEvent {
 
     public String playerNickname;
 
+    public int pawnRow;
+
+    public int pawnColumn;
+
     public int rowForcedPawn;
 
     public int columnForcedPawn;

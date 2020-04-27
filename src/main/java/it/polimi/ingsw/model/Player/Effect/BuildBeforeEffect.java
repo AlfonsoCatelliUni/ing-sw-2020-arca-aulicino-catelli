@@ -62,4 +62,8 @@ public class BuildBeforeEffect extends EffectDecorator {
     }
 
 
+    @Override
+    public Effect clone() {
+        return new BuildBeforeEffect(effect.clone());
+    }
 }

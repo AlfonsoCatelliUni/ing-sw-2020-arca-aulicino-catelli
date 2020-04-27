@@ -32,5 +32,8 @@ public class CanDestroyEffect extends EffectDecorator {
 
     }
 
-
+    @Override
+    public Effect clone() {
+        return new CanDestroyEffect(effect.clone());
+    }
 }

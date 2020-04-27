@@ -42,5 +42,8 @@ public class BuildUnderItselfEffect extends EffectDecorator {
         return new NoConsequence();
     }
 
-
+    @Override
+    public Effect clone() {
+        return new BuildUnderItselfEffect(effect.clone());
+    }
 }

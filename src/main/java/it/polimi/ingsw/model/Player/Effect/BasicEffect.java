@@ -274,10 +274,10 @@ public class BasicEffect implements Effect {
 
 
     @Override
-    public Object clone() {
+    public Effect clone() {
 
         try {
-            return super.clone();
+            return (Effect) super.clone();
         }
         catch (CloneNotSupportedException e){
             e.printStackTrace();

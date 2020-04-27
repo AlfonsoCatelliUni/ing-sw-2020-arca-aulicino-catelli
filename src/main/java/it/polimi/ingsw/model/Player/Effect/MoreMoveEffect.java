@@ -43,5 +43,8 @@ public class MoreMoveEffect extends EffectDecorator {
         return super.move(gameBoard, designatedPawn, nextPosition);
     }
 
-
+    @Override
+    public Effect clone() {
+        return new MoreMoveEffect(effect.clone());
+    }
 }

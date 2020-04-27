@@ -93,6 +93,21 @@ public class GamingTest {
         player.build(gameBoard.getPawnByCoordinates(1,1), gameBoard.getCell(1,2), 1, gameBoard.getBuildings());
 
 
+        Board gameBoard2 = new Board();
+
+        List<Card> allCards = JsonHandler.deserializeCardList();
+
+        Card tritonCard = allCards.get(12);
+
+        Player player2 = new Player("prova", Color.BLUE, tritonCard, tritonCard.getBaseEffect());
+
+        player2.initPawn(gameBoard2, gameBoard2.getCell(0,0));
+
+        player2.move(gameBoard2, gameBoard2.getPawnByCoordinates(0,0), gameBoard2.getCell(1,0));
+
+        player2.build(gameBoard2.getPawnByCoordinates(1,0), gameBoard2.getCell(2,0),1,gameBoard2.getBuildings());
+
+
 
 
 

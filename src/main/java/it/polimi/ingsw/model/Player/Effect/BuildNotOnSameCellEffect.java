@@ -46,5 +46,9 @@ public class BuildNotOnSameCellEffect extends EffectDecorator {
     }
 
 
+    @Override
+    public Effect clone() {
+        return new BuildNotOnSameCellEffect(effect.clone(), this.cellBefore);
+    }
 }
 

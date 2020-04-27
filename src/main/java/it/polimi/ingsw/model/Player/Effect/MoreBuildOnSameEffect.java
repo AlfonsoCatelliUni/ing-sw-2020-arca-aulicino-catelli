@@ -49,6 +49,10 @@ public class MoreBuildOnSameEffect extends EffectDecorator {
     }
 
 
+    @Override
+    public Effect clone() {
+        return new MoreBuildOnSameEffect(effect.clone());
+    }
 }
 
 

@@ -65,5 +65,8 @@ public class DestroyEffect extends EffectDecorator {
     }
 
 
-
+    @Override
+    public Effect clone() {
+        return new DestroyEffect(effect.clone());
+    }
 }

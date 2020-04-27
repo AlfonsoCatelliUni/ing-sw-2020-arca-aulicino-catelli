@@ -45,5 +45,8 @@ public class BuildOnSameCellEffect extends EffectDecorator{
         return availableCellToBuild;
     }
 
-
+    @Override
+    public Effect clone() {
+        return new BuildOnSameCellEffect(effect.clone(), this.cellBefore);
+    }
 }

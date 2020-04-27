@@ -49,7 +49,7 @@ public class MovePerimeterAgainEffect extends EffectDecorator {
 
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        if(super.effect.getState().getClass().equals(BuildState.class))
+        if(super.effect.getState().getClass().equals(BuildState.class) || super.effect.getState().getClass().equals(MoveAndBuildState.class))
             super.effect.changeState(new FinishState(this));
 
         return super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
@@ -57,5 +57,9 @@ public class MovePerimeterAgainEffect extends EffectDecorator {
     }
 
 
+    @Override
+    public Effect clone() {
+        return new MovePerimeterAgainEffect(effect.clone());
 
+    }
 }

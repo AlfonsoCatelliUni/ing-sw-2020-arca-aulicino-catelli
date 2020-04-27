@@ -134,9 +134,9 @@ public class EffectDecorator implements Effect {
 
 
     @Override
-    public Object clone(){
+    public Effect clone(){
 
-        return this.effect.clone();
+        return effect.clone();
 
     }
 }

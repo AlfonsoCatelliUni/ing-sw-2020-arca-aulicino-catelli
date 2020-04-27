@@ -96,7 +96,7 @@ public interface Effect extends Cloneable {
 
     // ======================================================================================
 
-    Object clone();
+    Effect clone();
 
 
 

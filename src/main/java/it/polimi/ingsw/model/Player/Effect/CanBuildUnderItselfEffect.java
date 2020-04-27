@@ -38,5 +38,8 @@ public class CanBuildUnderItselfEffect extends EffectDecorator {
         return cellsAvailableToBuild;
     }
 
-
+    @Override
+    public Effect clone() {
+        return new CanBuildUnderItselfEffect(effect.clone());
+    }
 }

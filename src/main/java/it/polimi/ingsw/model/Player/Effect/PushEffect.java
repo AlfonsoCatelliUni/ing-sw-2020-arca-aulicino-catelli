@@ -56,4 +56,8 @@ public class PushEffect extends EffectDecorator {
     }
 
 
+    @Override
+    public Effect clone() {
+        return new PushEffect(effect.clone());
+    }
 }

@@ -705,6 +705,16 @@ public class Controller implements Observer, ClientToServerManager {
         }
     }
 
+    @Override
+    public void manageEvent(ChosenCellToDestroyEvent event) {
+        //TODO : fare questo metodo
+    }
+
+    @Override
+    public void manageEvent(ChosenCellToForceEvent event) {
+        //TODO : fare questo metodo
+    }
+
 
     @Override
     public void manageEvent(ChosenBuildingEvent event) {

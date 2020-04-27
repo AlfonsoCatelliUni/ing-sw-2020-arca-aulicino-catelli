@@ -304,6 +304,14 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * This method forces the opponent pawn to his symmetrical cell in relation to the current player's pawn
+     * @param playerName is the name of the player
+     * @param pawnRow is the row of the current player's pawn
+     * @param pawnColumn is the column of the current player's pawn
+     * @param opponentRow is the row of the opponent player's pawn that will be forced
+     * @param opponentColumn is the column od the opponent player'a pawn that will be forced
+     */
     public void forceOpponent(String playerName, int pawnRow, int pawnColumn, int opponentRow, int opponentColumn){
         Cell nextPosition = gameBoard.getSymmetrical(gameBoard.getCell(pawnRow,pawnColumn), gameBoard.getCell(opponentRow, opponentColumn));
 

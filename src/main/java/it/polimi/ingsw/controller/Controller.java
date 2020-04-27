@@ -387,13 +387,16 @@ public class Controller implements Observer, ClientToServerManager {
                     } else if (preGameLobby.getConnectedPlayers().size() == 0 && preGameLobby.getNumberOfPlayers() != -1)
                         preGameLobby.setNumberOfPlayers(-1);
 
+                } else {
+                    virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
+                    virtualView.sendMessage(new DisconnectionClientEvent());
                 }
-                //TODO: vedere quando chiudere la waiting
 
             } else
                     throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
         } else if (game != null) {
+                    virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
                     virtualView.sendMessage(new DisconnectionClientEvent());
                     //TODO : fare tearDownGame
                     game.tearDownGame();

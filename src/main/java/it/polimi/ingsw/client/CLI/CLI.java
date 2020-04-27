@@ -257,6 +257,10 @@ public class CLI implements ServerToClientManager {
         System.exit(0);
     }
 
+    @Override
+    public void manageEvent(PlainTextEvent event) {
+        System.out.println(event.message);
+    }
 
 
     // ======================================================================================
@@ -1246,6 +1250,16 @@ public class CLI implements ServerToClientManager {
         else {
             clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(0), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
         }
+
+    }
+
+    @Override
+    public void manageEvent(GivePossibleCellsToDestroyEvent event) {
+
+    }
+
+    @Override
+    public void manageEvent(GivePossibleCellsToForceEvent event) {
 
     }
 

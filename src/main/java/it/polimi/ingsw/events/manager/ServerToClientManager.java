@@ -24,6 +24,8 @@ public interface ServerToClientManager {
 
     void manageEvent(UnableToEnterWaitingRoomEvent event);
 
+    void manageEvent(PlainTextEvent event);
+
 
     // ======================================================================================
     // MARK : Game Based Events
@@ -51,6 +53,9 @@ public interface ServerToClientManager {
 
     void manageEvent(GivePossibleBuildingsEvent event);
 
+    void manageEvent(GivePossibleCellsToDestroyEvent event);
+
+    void manageEvent(GivePossibleCellsToForceEvent event);
 
     void manageEvent(StartGameEvent event);
 

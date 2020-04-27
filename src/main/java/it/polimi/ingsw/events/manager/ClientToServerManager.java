@@ -47,6 +47,10 @@ public interface ClientToServerManager {
 
     void manageEvent(ChosenCellToBuildEvent event);
 
+    void manageEvent(ChosenCellToDestroyEvent event);
+
+    void manageEvent(ChosenCellToForceEvent event);
+
     void manageEvent(ChosenBuildingEvent event);
 
 

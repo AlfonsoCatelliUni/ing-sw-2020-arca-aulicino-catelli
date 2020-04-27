@@ -3,14 +3,12 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-public class EndGameSTCEvent extends ServerToClientEvent {
+public class PlainTextEvent extends ServerToClientEvent {
 
+    public String message;
 
-    public String winner;
-
-
-    public EndGameSTCEvent(String winner) {
-        this.winner = winner;
+    public PlainTextEvent(String message) {
+        this.message = message;
     }
 
     @Override

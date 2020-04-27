@@ -46,14 +46,4 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
 
     // ======================================================================================
 
-
-//    public String getReceiverNickname() {
-//        return this.receiverNickname;
-//    }
-//
-//
-//    public List<Cell> getCellsAvailableToBuild() {
-//        return this.cellsAvailableToBuild;
-//    }
-
 }

@@ -9,12 +9,13 @@ public class OneClientDisconnectedEvent extends ServerToClientEvent {
 
     public String disconnected;
 
-    public List<String> playersInside;
+    public List<String> connectedPlayers;
 
-    public OneClientDisconnectedEvent(String disconnected, List<String> playersInside) {
+    public OneClientDisconnectedEvent(String disconnected, List<String> connectedPlayers) {
         this.disconnected = disconnected;
-        this.playersInside = playersInside;
+        this.connectedPlayers = connectedPlayers;
     }
+
 
     @Override
     public void accept(ServerToClientManager visitor) {

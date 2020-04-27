@@ -316,7 +316,7 @@ public class Controller implements Observer, ClientToServerManager {
         Boolean isNicknameValid = preGameLobby.isNicknameValid(nickname);
 
 
-        if(isNicknameFree && isNicknameValid && !preGameLobby.getClosed()) {
+        if(isNicknameFree && isNicknameValid && !preGameLobby.isClosed()) {
 
             preGameLobby.addPlayer(nickname);
             virtualView.newNicknameID(nickname, ID);
@@ -347,7 +347,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
         //if the waitingRoom is already closed than we disconnect the player
-        else if(preGameLobby.getClosed()) {
+        else if(preGameLobby.isClosed()) {
             virtualView.sendMessageTo(ID, new UnableToEnterWaitingRoomEvent());
         }
         //if the chosen nickname is already taken we ask to enter it again
@@ -367,33 +367,40 @@ public class Controller implements Observer, ClientToServerManager {
         if (disconnectedPlayer == null)
             throw new RuntimeException("It's strange, but the ID of the player is corrupt!");
 
+        //if the nickname is not available then the player was really connected in the preGameLobby
+        if (preGameLobby.isNicknameAvailable(disconnectedPlayer))
+            throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
+
+        boolean isFirstPlayer = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));
+
+        // players are in waiting Rooms
         if (preGameLobby != null) {
 
-            //if the nickname is not available then the player was really connected in the preGameLobby
-            if (!preGameLobby.isNicknameAvailable(disconnectedPlayer)) {
+            if (!preGameLobby.isClosed()) {
 
-                if (!preGameLobby.getClosed()) {
-                    preGameLobby.deletePlayerInformation(disconnectedPlayer);
+                preGameLobby.deletePlayerInformation(disconnectedPlayer);
 
                     if (preGameLobby.getConnectedPlayers().size() > 0) {
 
                         List<String> connectedPlayers = new ArrayList<>(preGameLobby.getConnectedPlayers());
                         virtualView.sendMessage(new OneClientDisconnectedEvent(disconnectedPlayer, connectedPlayers));
 
-                        if (preGameLobby.getNumberOfPlayers() == -1)
+                        if (isFirstPlayer)
+                            virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new PlainTextEvent("Now you are the first player, so"));
                             virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new FirstConnectedEvent(preGameLobby.getConnectedPlayers().get(0)));
 
-                    } else if (preGameLobby.getConnectedPlayers().size() == 0 && preGameLobby.getNumberOfPlayers() != -1)
+                    } else if (preGameLobby.getConnectedPlayers().size() == 0)
                         preGameLobby.setNumberOfPlayers(-1);
 
+                } else {
+                    virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
+                    virtualView.sendMessage(new DisconnectionClientEvent());
+                    preGameLobby.clearLobby();
                 }
-                //TODO: vedere quando chiudere la waiting
-
-            } else
-                    throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
         } else if (game != null) {
+                    virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
                     virtualView.sendMessage(new DisconnectionClientEvent());
                     //TODO : fare tearDownGame
                     game.tearDownGame();
@@ -562,8 +569,8 @@ public class Controller implements Observer, ClientToServerManager {
             List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
-        }
-        else {
+
+        } else {
             List<Action> possibleActions = game.getLastActionsList();
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
@@ -601,16 +608,55 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-
-    //TODO : da completare
     @Override
     public void manageEvent(ChosenDestroyActionEvent event) {
+        String nickname = event.playerNickname;
+
+        String actionID = event.action;
+
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+
+        if (game.isValid(actionID)){
+
+            List<Cell> availableCells = game.wherePawnCanDestroy(nickname);
+            List<Point> cellsInfo = generatePointsByCells(availableCells);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo));
+
+        } else {
+            List<Action> possibleActions = game.getLastActionsList();
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
+        }
 
     }
 
 
     @Override
     public void manageEvent(ChosenForceActionEvent event) {
+
+        String nickname = event.playerNickname;
+
+        String actionID = event.action;
+
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+
+        if (game.isValid(actionID)){
+
+            List<Cell> availableCellsToForce = game.getOpponentsNeighboring(nickname, pawnRow, pawnColumn);
+            List<Point> cellInfo = generatePointsByCells(availableCellsToForce);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellInfo));
+        }
+        else {
+            List<Action> possibleActions = game.getLastActionsList();
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
+        }
 
     }
 
@@ -700,6 +746,62 @@ public class Controller implements Observer, ClientToServerManager {
             List<Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));
         }
+    }
+
+
+    @Override
+    public void manageEvent(ChosenCellToDestroyEvent event) {
+        String nickname = event.playerNickname;
+
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
+
+        int row = event.rowToDestroy;
+        int column = event.columnToDestroy;
+
+        //controlling if has been selected a valid cell
+        if (game.isValid(row, column)){
+
+            game.destroyBlock(nickname, row, column);
+
+            List<Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );
+            List<String> actionsID = generateActionIDByActions(possibleActions);
+
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );
+
+        } else {
+            List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
+            virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo )); //TODO: mettere costruttore
+        }
+
+    }
+
+
+    @Override
+    public void manageEvent(ChosenCellToForceEvent event) {
+       String nickname = event.playerNickname;
+
+       int pawnRow = event.pawnRow;
+       int pawnColumn = event.pawnColumn;
+
+       int row = event.rowForcedPawn;
+       int column = event.columnForcedPawn;
+
+       if (game.isValid(row, column)){
+
+           game.forceOpponent(nickname, pawnRow, pawnColumn, row, column);
+
+           List<Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );
+           List<String> actionsID = generateActionIDByActions(possibleActions);
+
+           virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );
+
+       } else {
+
+           List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
+           virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellsInfo )); // TODO: mettere costruttore isValid
+       }
+
     }
 
 

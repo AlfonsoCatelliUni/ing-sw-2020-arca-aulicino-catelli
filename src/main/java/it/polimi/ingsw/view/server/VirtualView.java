@@ -97,6 +97,7 @@ public class VirtualView extends Observable implements Observer {
     }
 
 
+    //TODO : maybe sync
     public String removeNicknameIDConnection(Integer ID) {
 
         String nickname = "";

@@ -245,6 +245,12 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(OneClientDisconnectedEvent event) {
+        System.out.println(event.disconnected + " is disconnected");
+
+        System.out.println("Players in lobby are now:");
+        for (String p : event.connectedPlayers){
+            System.out.println(p);
+        }
 
     }
 
@@ -258,6 +264,10 @@ public class CLI implements ServerToClientManager {
         System.exit(0);
     }
 
+    @Override
+    public void manageEvent(PlainTextEvent event) {
+        System.out.println(event.message);
+    }
 
 
     // ======================================================================================
@@ -272,6 +282,10 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(RoomNotFilled event) {
         System.out.println(event.message);
+        System.out.println();
+        System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
+        this.clientView = null;
+        System.exit(0);
     }
 
 
@@ -408,7 +422,7 @@ public class CLI implements ServerToClientManager {
 
 
         if(!event.isValid) {
-            System.out.println("An error has occurred, please reinsert the positions");
+            System.out.println("An error has occurred, please reinsert the your choice");
         }
 
         do {
@@ -513,7 +527,6 @@ public class CLI implements ServerToClientManager {
                 throw new RuntimeException("Error while selecting the next action !");
 
             }
-
 
 
 
@@ -643,6 +656,88 @@ public class CLI implements ServerToClientManager {
         }
 
         clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+    }
+
+
+    @Override
+    public void manageEvent(GivePossibleCellsToDestroyEvent event) {
+
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
+
+        System.out.println("You can destroy a building in the following cells:");
+
+        for (int i = 0; i < event.cells.size(); i++) {
+
+            System.out.println("[" + i + "]\t" + event.cells.get(i).x + " - " + event.cells.get(i).y + "\n");
+
+        }
+
+        int selectedCell;
+
+        do {
+
+            System.out.println("Choose the cell where you want to destroy:");
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+            }
+            selectedCell = input.nextInt();
+
+            if(selectedCell < 0 || selectedCell >= event.cells.size())
+                System.out.println("Unavailable choice");
+
+        } while(selectedCell < 0 || selectedCell >= event.cells.size());
+
+        int selectedRowToDestroy = event.cells.get(selectedCell).x;
+
+        int selectedColumnToDestroy = event.cells.get(selectedCell).y;
+
+        clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowToDestroy, selectedColumnToDestroy));
+
+    }
+
+
+    @Override
+    public void manageEvent(GivePossibleCellsToForceEvent event) {
+
+        if (!event.isValid)
+            System.out.println("An error has occurred, please reinsert your choice");
+
+
+        System.out.println("You can force to move the pawns in these cells:");
+
+        for (int i = 0; i < event.cells.size(); i++) {
+
+            System.out.println("[" + i + "]\t" + event.cells.get(i).x + " - " + event.cells.get(i).y + "\n");
+
+        }
+
+        int selectedCell;
+
+        do {
+
+            System.out.println("Choose the cell of the pawn you want to force to move:");
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+            }
+            selectedCell = input.nextInt();
+
+            if(selectedCell < 0 || selectedCell >= event.cells.size())
+                System.out.println("Unavailable choice");
+
+        } while(selectedCell < 0 || selectedCell >= event.cells.size());
+
+        int selectedRowForcedPawn = event.cells.get(selectedCell).x;
+
+        int selectedColumnForcedPawn = event.cells.get(selectedCell).y;
+
+        clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
+
     }
 
 

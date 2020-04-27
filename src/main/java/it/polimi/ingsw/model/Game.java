@@ -172,8 +172,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        lastActionsList.clear();
-
         lastActionsList = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
 
         return new ArrayList<>(lastActionsList);

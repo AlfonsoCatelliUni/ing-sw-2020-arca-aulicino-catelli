@@ -13,10 +13,18 @@ public class GivePossibleCellsToForceEvent extends ServerToClientEvent {
 
     public List<Point> cells;
 
+
+    // ======================================================================================
+
+
     public GivePossibleCellsToForceEvent(String nickname, List<Point> cells) {
         this.nickname = nickname;
         this.cells = cells;
     }
+
+
+    // ======================================================================================
+
 
     @Override
     public void accept(ServerToClientManager visitor) {

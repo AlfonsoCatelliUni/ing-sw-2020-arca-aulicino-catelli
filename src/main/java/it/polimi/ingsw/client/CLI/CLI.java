@@ -326,7 +326,7 @@ public class CLI implements ServerToClientManager {
             selectedMale = input.nextInt();
 
             if(!(selectedMale >= 0 && selectedMale < freeCells.size()))
-                System.err.println("Choice Unavailable !");
+                System.err.println("Unavailable choice!");
 
         } while( !(selectedMale >= 0 && selectedMale < freeCells.size()) );
 
@@ -1266,10 +1266,72 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCellsToDestroyEvent event) {
 
+        System.out.println("You can destroy a building in the following cells:");
+
+        for (int i = 0; i < event.cells.size(); i++) {
+
+            System.out.println("[" + i + "]\t" + event.cells.get(i).x + " - " + event.cells.get(i).y + "\n");
+
+        }
+
+        int selectedCell;
+
+        do {
+
+            System.out.println("Choose the cell where you want to destroy:");
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+            }
+            selectedCell = input.nextInt();
+
+            if(selectedCell < 0 || selectedCell >= event.cells.size())
+                System.out.println("Unavailable choice");
+
+        } while(selectedCell < 0 || selectedCell >= event.cells.size());
+
+        int selectedRowToDestroy = event.cells.get(selectedCell).x;
+
+        int selectedColumnToDestroy = event.cells.get(selectedCell).y;
+
+        clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, selectedRowToDestroy, selectedColumnToDestroy));
+
     }
 
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
+
+        System.out.println("You can force to move the pawns in these cells:");
+
+        for (int i = 0; i < event.cells.size(); i++) {
+
+            System.out.println("[" + i + "]\t" + event.cells.get(i).x + " - " + event.cells.get(i).y + "\n");
+
+        }
+
+        int selectedCell;
+
+        do {
+
+            System.out.println("Choose the cell of the pawn you want to force to move:");
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                input.next();
+            }
+            selectedCell = input.nextInt();
+
+            if(selectedCell < 0 || selectedCell >= event.cells.size())
+                System.out.println("Unavailable choice");
+
+        } while(selectedCell < 0 || selectedCell >= event.cells.size());
+
+        int selectedRowForcedPawn = event.cells.get(selectedCell).x;
+
+        int selectedColumnForcedPawn = event.cells.get(selectedCell).y;
+
+        clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, selectedRowForcedPawn, selectedColumnForcedPawn));
 
     }
 

@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Player.Effect.Effect;
  */
 public class Card {
 
+
     /**
      * identify the card
      */
@@ -31,8 +32,6 @@ public class Card {
      */
     private Effect baseEffect;
 
-
-    //private Effect eff;
 
 
     // ======================================================================================
@@ -82,4 +81,6 @@ public class Card {
     public Effect getBaseEffect() {
         return baseEffect.clone();
     }
+
+
 }

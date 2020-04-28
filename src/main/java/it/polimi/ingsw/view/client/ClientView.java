@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view.client;
 
-
-
+import it.polimi.ingsw.events.STCEvents.DisconnectionClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -15,6 +14,9 @@ public class ClientView implements Runnable {
     private final ObjectInputStream inputStream;
     private final ObjectOutputStream outputStream;
 
+    private final Socket socket;
+
+    private Boolean isActive;
 
     private final ServerToClientManager userManager;
 
@@ -24,7 +26,9 @@ public class ClientView implements Runnable {
 
 
     public ClientView(Socket socket, ServerToClientManager userManager) {
+        this.isActive = true;
 
+        this.socket = socket;
         this.userManager = userManager;
 
         ObjectInputStream tempIn = null;
@@ -53,17 +57,22 @@ public class ClientView implements Runnable {
 
         try {
 
-            while(true) {
+            while(getActive()) {
                 ServerToClientEvent event = (ServerToClientEvent)inputStream.readObject();
 
                 userManager.receiveEvent(event);
             }
 
         }
-        catch (Exception e) {
+        catch (ClassNotFoundException e) {
+            System.err.println("The class ServerToClientEvent has not been found!");
+        }
+        catch (IOException e) {
             System.err.println("There's an error while receiving a ServerToClientEvent, please fix me!");
-            e.printStackTrace();
-
+            //e.printStackTrace();
+        }
+        finally {
+            close();
         }
 
     }
@@ -80,6 +89,30 @@ public class ClientView implements Runnable {
             e.printStackTrace();
         }
 
+    }
+
+
+    private void close() {
+        closeConnection();
+        userManager.receiveEvent(new DisconnectionClientEvent());
+    }
+
+
+    public synchronized void closeConnection() {
+
+        try {
+            socket.close();
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        this.isActive = false;
+    }
+
+
+    public synchronized Boolean getActive() {
+        return this.isActive;
     }
 
 

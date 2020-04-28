@@ -372,39 +372,45 @@ public class Controller implements Observer, ClientToServerManager {
             throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
 
-        boolean isFirstPlayer = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));
+        boolean disconnectedPlayerWasFirst = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));
 
-        // players are in waiting Rooms
-        if (preGameLobby != null) {
 
-            if (!preGameLobby.isClosed()) {
+        if(preGameLobby != null && !preGameLobby.isClosed()) {
 
-                preGameLobby.deletePlayerInformation(disconnectedPlayer);
+            //if the preGameLobby isn't closed we have to delete all info of the disconnected player
+            preGameLobby.deletePlayerInformation(disconnectedPlayer);
 
-                    if (preGameLobby.getConnectedPlayers().size() > 0) {
+            if (preGameLobby.getConnectedPlayers().size() > 0) {
 
-                        List<String> connectedPlayers = new ArrayList<>(preGameLobby.getConnectedPlayers());
-                        virtualView.sendMessage(new OneClientDisconnectedEvent(disconnectedPlayer, connectedPlayers));
+                List<String> connectedPlayers = new ArrayList<>(preGameLobby.getConnectedPlayers());
+                virtualView.sendMessage(new OneClientDisconnectedEvent(disconnectedPlayer, connectedPlayers));
 
-                        if (isFirstPlayer)
-                            virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new PlainTextEvent("Now you are the first player, so"));
-                            virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new FirstConnectedEvent(preGameLobby.getConnectedPlayers().get(0)));
-
-                    } else if (preGameLobby.getConnectedPlayers().size() == 0)
-                        preGameLobby.setNumberOfPlayers(-1);
-
-                } else {
-                    virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
-                    virtualView.sendMessage(new DisconnectionClientEvent());
-                    preGameLobby.clearLobby();
+                //if the disconnected player was the creator of the lobby
+                //we have to ask to reselect the number of the players for the match
+                if (disconnectedPlayerWasFirst) {
+                    virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new PlainTextEvent("Now you are the first player, so"));
+                    virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new FirstConnectedEvent(preGameLobby.getConnectedPlayers().get(0)));
                 }
 
-        } else if (game != null) {
-                    virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
-                    virtualView.sendMessage(new DisconnectionClientEvent());
-                    //TODO : fare tearDownGame
-                    game.tearDownGame();
-                }
+            }
+            //if there are no players connected to the lobby we reset to default value the number of players of the match
+            else {
+                preGameLobby.setNumberOfPlayers(-1);
+            }
+
+        }
+        //if the game is started or the preGameLobby has been closed we have to disconnect all the players
+        else {
+            virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
+            virtualView.sendMessage(new DisconnectionClientEvent());
+
+            //if the game is not started but the preGameLobby is closed we have to delete all the info of the players
+            if(preGameLobby != null) {
+                preGameLobby.clearLobby();
+            }
+
+        }
+
 
     }
 

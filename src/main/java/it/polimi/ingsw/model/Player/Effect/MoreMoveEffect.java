@@ -1,12 +1,16 @@
 package it.polimi.ingsw.model.Player.Effect;
 
+import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.BuildState;
+import it.polimi.ingsw.model.Player.State.FinishState;
 import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
 import it.polimi.ingsw.model.Player.State.MoveState;
+
+import java.util.List;
 
 public class MoreMoveEffect extends EffectDecorator {
 
@@ -43,8 +47,21 @@ public class MoreMoveEffect extends EffectDecorator {
         return super.move(gameBoard, designatedPawn, nextPosition);
     }
 
+
+    @Override
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+
+        if(super.effect.getState().getClass().equals(MoveAndBuildState.class)) {
+            changeState(new FinishState(this));
+        }
+
+        return super.build(designatedPawn, designatedCell, chosenLevel, buildings);
+    }
+
+
     @Override
     public Effect clone() {
         return new MoreMoveEffect(effect.clone());
     }
+
 }

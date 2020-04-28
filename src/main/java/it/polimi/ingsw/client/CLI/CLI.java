@@ -765,16 +765,10 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
-        //TODO : da completare
+        drawer.saveTitleChoicePanel("----------------------- you have loosed the game! -----------------------");
+        drawer.clearChoicePanelValues();
 
-
-        /* qua devo fare che stampo a video il fatto che
-         hai perso la partita perchè non hia piu mosse disponibili,
-         nella classe GraphicDrawer potrei fare che nella ChoicePanel gli stampo
-         una piccola animazione con la scritta hai perso*/
-
-        /*  */
-
+        drawer.show();
     }
 
 

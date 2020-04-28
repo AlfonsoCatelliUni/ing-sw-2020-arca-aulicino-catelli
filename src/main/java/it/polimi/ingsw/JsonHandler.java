@@ -49,8 +49,8 @@ public class JsonHandler {
         newMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
 
         newMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
-        newMap.put("Demeter", new MoreBuildOnSameEffect(new BasicEffect()));
-        newMap.put("Hephaestus", new MoreBuildNotOnSameEffect(new BasicEffect()));
+        newMap.put("Demeter", new MoreBuildNotOnSameEffect(new BasicEffect()));
+        newMap.put("Hephaestus", new MoreBuildOnSameEffect(new BasicEffect()));
 
         newMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
         newMap.put("Pan", new DownTwoEffect(new BasicEffect()));

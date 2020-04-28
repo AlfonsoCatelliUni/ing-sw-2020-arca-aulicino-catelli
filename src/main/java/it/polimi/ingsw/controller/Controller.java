@@ -244,12 +244,13 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    public void firstTurnGame(){
+    public void firstTurnGame() {
+
         String firstPlayer = game.getPlayersNickname().get(0);
 
         List<Cell> availablePawnsCell = game.getAvailablePawns(firstPlayer);
 
-        if (availablePawnsCell.size() == 0){
+        if (availablePawnsCell.size() == 0) {
             virtualView.sendMessageTo(firstPlayer, new LosingByNoActionEvent(firstPlayer, "So Sad"));
         }
         else {
@@ -263,28 +264,37 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    /**
+     * this method takes in the player that has ended his turn, reset his status and
+     * take the successor, calculate his available pawns then send theis coordinates
+     * to their player.
+     * if there are no pawns available notify the owner that he has loosed the game
+     * because he can't do any action
+     * @param nickname the nickname of the player that has ended his turn
+     */
     public void endTurn(String nickname) {
 
-        game.newCurrentPlayer();
+        //game.newCurrentPlayer();
+        game.resetPlayerStatus(nickname);
         int index = game.getPlayersNickname().indexOf(nickname);
 
         index++;
-        if(index >= game.getPlayersNickname().size()) {
+        if( index >= game.getPlayersNickname().size() ) {
             index = 0;
         }
 
         String nextPlayer = game.getPlayersNickname().get(index);
 
-        List<Cell> availablePawnsCell = game.getAvailablePawns(nextPlayer);
-        List<Point> points = new ArrayList<>();
+        List<Point> points = generatePointsByCells(game.getAvailablePawns(nextPlayer));
 
-        for(Cell c : availablePawnsCell)
-            points.add(new Point(c.getRowPosition(), c.getColumnPosition()));
+        if (points.size() == 0) {
+            virtualView.sendMessageTo(nextPlayer, new LosingByNoActionEvent(nextPlayer, "So Sad"));
+            return;
+        }
 
         virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, points));
-
-
     }
+
 
     public void closeGameLobby(){
 
@@ -415,8 +425,6 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-
-    //TODO : da completare, problema di concorrenza connessioni
     @Override
     public void manageEvent(ChosenPlayerNumberEvent event) {
 
@@ -477,13 +485,15 @@ public class Controller implements Observer, ClientToServerManager {
             int index = game.getPlayersNickname().indexOf(event.playerNickname);
             index++;
 
-            if(index < game.getPlayersNickname().size()) {
+            if( index < game.getPlayersNickname().size() ) {
                 List <Cell> occupiedCell = game.getAllPawnsCoordinates();
                 List<Point> info = generatePointsByCells(occupiedCell);
                 virtualView.sendMessageTo(game.getPlayersNickname().get(index), new AskInitPawnsEvent(game.getPlayersNickname().get(index), true, info ));
             }
             else {
-                firstTurnGame();
+                //firstTurnGame();
+                index--;
+                endTurn(game.getPlayersNickname().get(index));
             }
         }
         else {

@@ -74,8 +74,13 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
         for (int i = 0; i < playersNickname.size(); i++) {
-            players.add(new Player(playersNickname.get(i), colors.get(i), nicknameCardMap.get(playersNickname.get(i)),
-                     nicknameCardMap.get(playersNickname.get(i)).getBaseEffect()));
+            //creating a new player based on his chosen nickname, card and color
+            players.add(new Player(playersNickname.get(i),
+                    colors.get(i),
+                    nicknameCardMap.get(playersNickname.get(i)),
+                    nicknameCardMap.get(playersNickname.get(i)).getBaseEffect())
+            );
+
         }
 
         currentPlayer = players.get(indexCurrentPlayer);

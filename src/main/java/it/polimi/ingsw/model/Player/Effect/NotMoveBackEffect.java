@@ -49,4 +49,6 @@ public class NotMoveBackEffect extends EffectDecorator {
     public Effect clone() {
         return new NotMoveBackEffect(effect.clone(), this.startCell);
     }
+
+
 }

@@ -50,4 +50,9 @@ public class BlockOpponentEffect extends EffectDecorator {
     public Effect clone() {
         return new BlockOpponentEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new BlockOpponentEffect(e);
+    }
 }

@@ -60,4 +60,9 @@ public class PushEffect extends EffectDecorator {
     public Effect clone() {
         return new PushEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new PushEffect(e);
+    }
 }

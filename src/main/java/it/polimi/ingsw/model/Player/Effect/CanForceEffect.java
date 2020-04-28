@@ -45,4 +45,9 @@ public class CanForceEffect extends EffectDecorator {
     public Effect clone() {
         return new CanForceEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new CanForceEffect(e);
+    }
 }

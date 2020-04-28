@@ -48,6 +48,11 @@ public class MoreBuildInsideEffect extends EffectDecorator {
     public Effect clone() {
         return new MoreBuildInsideEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new MoreBuildInsideEffect(e);
+    }
 }
 
 

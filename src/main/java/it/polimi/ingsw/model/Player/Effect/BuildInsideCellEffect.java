@@ -47,4 +47,8 @@ public class BuildInsideCellEffect extends EffectDecorator {
         return new BuildInsideCellEffect(effect.clone());
     }
 
+    @Override
+    public Effect addEffect(Effect e) {
+        return new BuildInsideCellEffect(e);
+    }
 }

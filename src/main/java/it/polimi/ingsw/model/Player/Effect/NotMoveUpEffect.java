@@ -40,4 +40,9 @@ public class NotMoveUpEffect extends EffectDecorator {
     public Effect clone() {
         return new NotMoveUpEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new NotMoveUpEffect(e);
+    }
 }

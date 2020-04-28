@@ -33,6 +33,13 @@ public class VirtualView extends Observable implements Observer {
 
     }
 
+    public VirtualView() {
+
+        connectionMap = new HashMap<>();
+        nicknameMap = new HashMap<>();
+
+    }
+
 
     // ======================================================================================
 
@@ -63,10 +70,18 @@ public class VirtualView extends Observable implements Observer {
 
 
     public void sendMessage(ServerToClientEvent event) {
+
         Set<Integer> keys = connectionMap.keySet();
 
-        for (Integer k : keys ) {
-            connectionMap.get(k).sendEvent(event);
+        try {
+
+            for (Integer k : keys ) {
+                connectionMap.get(k).sendEvent(event);
+            }
+        }
+        catch(NullPointerException e) {
+            //USED ONLY FOR TESTING
+//            System.out.println(event.toString() + "\n");
         }
     }
 
@@ -77,8 +92,17 @@ public class VirtualView extends Observable implements Observer {
 
 
     public void sendMessageTo(String nickname, ServerToClientEvent event) {
-        sendMessageTo(nicknameMap.get(nickname), event);
+        try {
+            sendMessageTo(nicknameMap.get(nickname), event);
+        }
+        catch (NullPointerException e) {
+            //USED ONLY FOR TESTING
+//            System.out.println(event.toString() + "\n");
+        }
     }
+
+
+
 
 
     // ======================================================================================

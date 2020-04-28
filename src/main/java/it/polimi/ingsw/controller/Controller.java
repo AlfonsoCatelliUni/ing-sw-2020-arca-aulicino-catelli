@@ -53,6 +53,15 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
+    //ONLY FOR TESTING
+    public Controller(VirtualView virtualView) {
+
+        this.virtualView = virtualView;
+
+        this.preGameLobby = new PreGameLobby();
+
+    }
+
 
     public VirtualView getVirtualView() {
         return this.virtualView;
@@ -885,6 +894,13 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    /**
+     * USED ONLY FOR TESTING
+     * @return the preGameLobby
+     */
+    public PreGameLobby getPreGameLobby() {
+        return this.preGameLobby;
+    }
 
 
 }

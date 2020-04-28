@@ -36,4 +36,10 @@ public class ConnectionEstablishedEvent extends ServerToClientEvent {
 //    }
 
 
+    @Override
+    public String toString() {
+        return "ConnectionEstablishedEvent{" + "\n" +
+                "ID=" + ID + "\n" +
+                '}';
+    }
 }

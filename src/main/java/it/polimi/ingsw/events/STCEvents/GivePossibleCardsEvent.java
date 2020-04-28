@@ -38,4 +38,13 @@ public class GivePossibleCardsEvent extends ServerToClientEvent {
     }
 
 
+    @Override
+    public String toString() {
+        return "GivePossibleCardsEvent{" +  ",\n" +
+                "receiverNickname='" + receiverNickname + '\'' +  ",\n" +
+                "cardsName=" + cardsName +  ",\n" +
+                "cardsEffect=" + cardsEffect +  ",\n" +
+                "isValid=" + isValid +  ",\n" +
+                '}';
+    }
 }

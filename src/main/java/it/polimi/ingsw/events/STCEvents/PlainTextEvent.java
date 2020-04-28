@@ -15,4 +15,11 @@ public class PlainTextEvent extends ServerToClientEvent {
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "PlainTextEvent{" + "\n" +
+                "message='" + message + '\'' + "\n" +
+                '}';
+    }
 }

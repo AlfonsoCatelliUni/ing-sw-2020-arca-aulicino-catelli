@@ -27,4 +27,13 @@ public class GivePossibleBuildingsEvent extends ServerToClientEvent {
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "GivePossibleBuildingsEvent{" + "\n" +
+                "receiverNickname='" + receiverNickname + '\'' + ",\n" +
+                "buildings=" + buildings + ",\n" +
+                "isValid=" + isValid + "\n" +
+                '}';
+    }
 }

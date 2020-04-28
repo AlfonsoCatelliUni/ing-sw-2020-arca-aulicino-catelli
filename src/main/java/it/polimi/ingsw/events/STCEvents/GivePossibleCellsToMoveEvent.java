@@ -47,4 +47,13 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
+    @Override
+    public String toString() {
+        return "GivePossibleCellsToMoveEvent{" + "\n" +
+                "receiverNickname='" + receiverNickname + '\'' + ",\n" +
+                "cellsAvailableToMove=" + cellsAvailableToMove + ",\n" +
+                "actionID='" + actionID + '\'' + ",\n" +
+                "isValid=" + isValid + "\n" +
+                '}';
+    }
 }

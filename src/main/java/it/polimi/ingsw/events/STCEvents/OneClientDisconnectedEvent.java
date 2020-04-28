@@ -21,4 +21,12 @@ public class OneClientDisconnectedEvent extends ServerToClientEvent {
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "OneClientDisconnectedEvent{" + "\n" +
+                "disconnected='" + disconnected + '\'' + ",\n" +
+                "connectedPlayers=" + connectedPlayers + "\n" +
+                '}';
+    }
 }

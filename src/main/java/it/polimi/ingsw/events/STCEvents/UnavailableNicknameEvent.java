@@ -20,4 +20,10 @@ public class UnavailableNicknameEvent extends ServerToClientEvent {
     }
 
 
+    @Override
+    public String toString() {
+        return "UnavailableNicknameEvent{" + "\n" +
+                "ID=" + ID +  "\n" +
+                '}';
+    }
 }

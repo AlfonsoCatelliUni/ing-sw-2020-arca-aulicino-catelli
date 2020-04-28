@@ -32,4 +32,13 @@ public class GivePossibleCellsToForceEvent extends ServerToClientEvent {
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "GivePossibleCellsToForceEvent{" + "\n" +
+                "nickname='" + nickname + '\'' + ",\n" +
+                "cells=" + cells + ",\n" +
+                "isValid=" + isValid + "\n" +
+                '}';
+    }
 }

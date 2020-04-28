@@ -50,4 +50,12 @@ public class GivePossibleActionsEvent extends ServerToClientEvent {
 //    }
 
 
+    @Override
+    public String toString() {
+        return "GivePossibleActionsEvent{" + "\n" +
+                "receiverNickname='" + receiverNickname + '\'' + ",\n" +
+                "actions=" + actions + ",\n" +
+                "isValid=" + isValid + "\n" +
+                '}';
+    }
 }

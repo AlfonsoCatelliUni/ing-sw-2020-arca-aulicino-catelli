@@ -26,4 +26,10 @@ public class RoomNotFilled extends ServerToClientEvent {
     }
 
 
+    @Override
+    public String toString() {
+        return "RoomNotFilled{" + "\n" +
+                "message='" + message + '\'' + "\n" +
+                '}';
+    }
 }

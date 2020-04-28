@@ -31,5 +31,10 @@ public class NotifyStatusEvent extends ServerToClientEvent {
 //    }
 
 
-
+    @Override
+    public String toString() {
+        return "NotifyStatusEvent{" + "\n" +
+                "status='" + status + '\'' + "\n" +
+                '}';
+    }
 }

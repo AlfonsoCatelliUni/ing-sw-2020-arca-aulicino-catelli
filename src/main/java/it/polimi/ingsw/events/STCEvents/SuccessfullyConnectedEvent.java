@@ -34,4 +34,11 @@ public class SuccessfullyConnectedEvent extends ServerToClientEvent {
 //    }
 
 
+    @Override
+    public String toString() {
+        return "SuccessfullyConnectedEvent{" + "\n" +
+                "connectedPlayers=" + connectedPlayers + ",\n" +
+                "nickname='" + nickname + '\'' + "\n" +
+                '}';
+    }
 }

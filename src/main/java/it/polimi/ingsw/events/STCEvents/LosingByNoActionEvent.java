@@ -28,5 +28,12 @@ public class LosingByNoActionEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
-
+    @Override
+    public String toString() {
+        return "LosingByNoActionEvent{" + "\n" +
+                "nickname='" + nickname + '\'' + ",\n" +
+                "sadMessage='" + sadMessage + '\'' + "\n" +
+                '}';
+    }
 }
+

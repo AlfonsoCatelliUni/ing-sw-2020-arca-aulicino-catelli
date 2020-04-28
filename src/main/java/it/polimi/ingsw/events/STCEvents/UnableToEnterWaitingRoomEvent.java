@@ -12,4 +12,8 @@ public class UnableToEnterWaitingRoomEvent extends ServerToClientEvent {
     }
 
 
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

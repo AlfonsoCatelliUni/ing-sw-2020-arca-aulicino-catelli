@@ -40,4 +40,14 @@ public class AskInitPawnsEvent extends ServerToClientEvent {
     }
 
     // ======================================================================================
+
+
+    @Override
+    public String toString() {
+        return "AskInitPawnsEvent{" + "\n" +
+                "nickname='" + nickname + '\'' + ",\n" +
+                "isValid=" + isValid + ",\n" +
+                "info=" + info + "\n" +
+                '}';
+    }
 }

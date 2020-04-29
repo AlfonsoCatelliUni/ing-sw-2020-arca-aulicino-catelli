@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.client.Couple;
+import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ public class GraphicDrawerCLI {
     private final String CYAN = "\u001B[36m";
     private final String WHITE = "\u001B[37m";
     private final String BRIGHTBLACK = "\u001b[30;1m";
+    private final String BRIGHTGREEN = "\u001b[32;1m";
 
     private final int ROWS = 62;
 
@@ -28,18 +30,12 @@ public class GraphicDrawerCLI {
 
     private String[][] screen;
 
-    private char[][] boardCellsInfo;
-    private String[][] boardString;
-
-
     // ======================================================================================
 
 
     public GraphicDrawerCLI() {
-        //this.screen = new char[ROWS][COLUMNS];
         this.screen = new String[ROWS][COLUMNS];
-        this.boardCellsInfo = new char[5][10];
-        this.boardString = new String[5][10];
+        this.formattedBoardInfo = new FormattedCellInfo[5][5];
 
         this.playerPanelTitle = "";
         this.playersInfo = new ArrayList<>();
@@ -190,6 +186,9 @@ public class GraphicDrawerCLI {
     //MARK : Board Panel Section ======================================================================================
 
 
+    private FormattedCellInfo[][] formattedBoardInfo;
+
+
     private void drawBoardPanel() {
 
         int startRow = 34;
@@ -202,9 +201,9 @@ public class GraphicDrawerCLI {
             coeff = (row + 2) % 4;
 
             if( coeff == 0) {
-                print(row, 8, divider, CYAN);
+                print(row, 8, divider, YELLOW);
             } else {
-                print(row, 8, empty, CYAN);
+                print(row, 8, empty, YELLOW);
             }
 
         }
@@ -216,15 +215,8 @@ public class GraphicDrawerCLI {
     private void resetBoardCellsInfo() {
 
         for(int row = 0; row < 5; row++) {
-            for(int column = 0; column < 10; column++) {
-                if(column % 2 == 0) {
-                    boardCellsInfo[row][column] = '0';
-                    boardString[row][column] = "0";
-                }
-                else {
-                    boardCellsInfo[row][column] = '.';
-                    boardString[row][column] = ".";
-                }
+            for (int column = 0; column < 5; column++) {
+                formattedBoardInfo[row][column] = new FormattedCellInfo(row, column, 0, 0, false);
             }
         }
 
@@ -250,18 +242,21 @@ public class GraphicDrawerCLI {
 
                 if(row == 0) {
                     if(col == 0) {
-                        print(rowRef, colRef, "X", GREEN);
+                        print(rowRef, colRef, "X", RED);
                     }
                     else {
-                        print(rowRef, colRef, String.valueOf(col-1), GREEN);
+                        print(rowRef, colRef, String.valueOf(col-1), RED);
                     }
 
                 }
                 else if(col == 0) {
-                    print(rowRef, colRef, String.valueOf(row-1), GREEN);
+                    print(rowRef, colRef, String.valueOf(row-1), RED);
                 }
                 else {
-                    print(rowRef, colRef-1, getCellInfo(row, col));
+                    int selectedRow = row-1;
+                    int selectedCol = col-1;
+
+                    fillCellInfo(rowRef, colRef-1, selectedRow, selectedCol, formattedBoardInfo[selectedRow][selectedCol]);
                 }
 
             }
@@ -270,57 +265,63 @@ public class GraphicDrawerCLI {
     }
 
 
-    /**
-     * this method set the information of the cell at the passed coordinates,
-     * it takes a well-formatted string info.
-     * the first char of this string contains the height of the tower (0 to 4).
-     * the second char of this string contains the first letter of the color
-     * of the pawn, the letter is uppercase for the male pawn (B G W) and
-     * lowercase for the female pawn (b g w), if there's a dome in the cell
-     * this char will be an uppercase X, if the cell is empty there will be a '.'
-     * @param row the row coordinates of the cell in range 1 to 5
-     * @param column the column coordinates of the cell in range 1 to 5
-     * @param info a formatted string which contains the information
-     */
-    public void setCellInfo(int row, int column, String info) {
+    public void saveBoardChanges(List<FormattedCellInfo> cellInfoList) {
+        for (FormattedCellInfo c : cellInfoList ) {
+            this.formattedBoardInfo[c.getRow()][c.getColumn()] = c;
+        }
 
-        int refCol = column * 2;
+    }
 
-        if(info.length() != 2) {
-            throw new RuntimeException("Wrong Formatting CellInfo !");
+
+    public void fillCellInfo(int printRow, int printCol, int row, int column, FormattedCellInfo cellInfo) {
+
+        //TODO : FIXEARE DOVE SCRIVI LE COSE
+        Boolean isDome = cellInfo.getRoofInfo().getSecond();
+        String color = cellInfo.getPawnInfo().getFirst();
+        String sex = cellInfo.getPawnInfo().getSecond();
+
+        String retString = String.valueOf(cellInfo.getHeight());
+
+        if (isDome) {
+            retString += "x";
+            print(row, column, retString, CYAN);
+        }
+        else if(color.equals("") && sex.equals("")) {
+            retString += ".";
+            print(printRow, printCol, retString, BRIGHTGREEN);
         }
         else {
-            boardCellsInfo[row][refCol-2] = info.charAt(0);
-            boardCellsInfo[row][refCol-1] = info.charAt(1);
+            switch (color) {
+                case "BLUE":
+                    if (sex.equals("MALE")) {
+                        retString += "B";
+                    } else if (sex.equals("FEMALE")) {
+                        retString += "b";
+                    }
+                    print(printRow, printCol, retString, BLUE);
+                    break;
+
+                case "GREY":
+                    if (sex.equals("MALE")) {
+                        retString += "G";
+                    } else if (sex.equals("FEMALE")) {
+                        retString += "g";
+                    }
+                    print(printRow, printCol, retString);
+                    break;
+
+                case "WHITE":
+                    if (sex.equals("MALE")) {
+                        retString += "W";
+                    } else if (sex.equals("FEMALE")) {
+                        retString += "w";
+                    }
+                    print(printRow, printCol, retString, BRIGHTBLACK);
+                    break;
+            }
         }
 
-    }
 
-
-    public void setCellInfo(int row, int column, String towerInfo, String cellInfo) {
-
-        int refCol = column * 2;
-
-        boardString[row][refCol-2] = towerInfo;
-        boardString[row][refCol-1] = cellInfo;
-    }
-
-
-    /**
-     * this method shows the information of the cell at the passed coordinates,
-     * specifically shows the height of the tower in this cell (0 to 4) and the
-     * first letter of the color of pawn, uppercase letter to indicates male
-     * (B G W) and lowercase letter to indicates female (b g w)
-     * @param row the row coordinates of the cell in range 1 to 5
-     * @param column the column coordinates of the cell in range 1 to 5
-     * @return a formatted string which contains the information
-     */
-    public String getCellInfo(int row, int column) {
-
-        int refCol = column * 2;
-
-        //return boardString[row-1][refCol-2]+" "+boardString[row-1][refCol-1];
-        return boardCellsInfo[row-1][refCol-2]+" "+boardCellsInfo[row-1][refCol-1];
     }
 
 
@@ -328,9 +329,12 @@ public class GraphicDrawerCLI {
 
     private String playerPanelTitle;
 
+
     private List<FormattedPlayerInfo> playersInfo;
 
+
     private List<String> cardsNameChoices;
+
 
     private List<String> cardsEffectChoices;
 
@@ -637,33 +641,6 @@ public class GraphicDrawerCLI {
         this.actionsChoicePanel = new ArrayList<>();
         this.buildingsChoicePanel = new ArrayList<>();
     }
-
-
-
-
-    /*
-    private void setChoicesNumber() {
-
-        int startRow = 31;
-        int rowOffset = 3;
-
-        int refRow;
-        String value = "";
-
-        for(int row = 0; row < 9; row++ ) {
-            refRow = startRow + (row * rowOffset);
-            value = "[" + String.valueOf(row+1) + "]";
-
-            print(refRow, 73, value);
-        }
-
-    }
-     */
-
-
-
-
-
 
 
 

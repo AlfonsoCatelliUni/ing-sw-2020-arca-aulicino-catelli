@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -261,6 +262,12 @@ public class Controller implements Observer, ClientToServerManager {
 
         if (availablePawnsCell.size() == 0) {
             virtualView.sendMessageTo(firstPlayer, new LosingByNoActionEvent(firstPlayer, "So Sad"));
+            game.removePlayer(firstPlayer);
+
+            List<Point> points = generatePointsByCells(game.getAvailablePawns(game.getCurrentPlayer().getName()));
+
+            //TODO : se è size = 0????
+            virtualView.sendMessageTo(game.getCurrentPlayer().getName(), new AskWhichPawnsUseEvent(game.getCurrentPlayer().getName(),true, points));
         }
         else {
             List<Point> points = new ArrayList<>();
@@ -298,6 +305,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         if (points.size() == 0) {
             virtualView.sendMessageTo(nextPlayer, new LosingByNoActionEvent(nextPlayer, "So Sad"));
+            game.removePlayer(nickname);
             return;
         }
 
@@ -418,8 +426,15 @@ public class Controller implements Observer, ClientToServerManager {
             }
 
         }
+        //the player lost the game and decided to quit
+        else if(!game.getPlayersNickname().contains(event.playerNickname)){
+
+            virtualView.removeNicknameIDConnection(event.ID);
+
+        }
         //if the game is started or the preGameLobby has been closed we have to disconnect all the players
         else {
+
             virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + " is disconnected, so the game ended"));
             virtualView.sendMessage(new DisconnectionClientEvent());
 
@@ -725,6 +740,7 @@ public class Controller implements Observer, ClientToServerManager {
             }
             else {
                 virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "OMG! YOU ARE SO BAD AT THIS GAME! LOSER!"));
+                game.removePlayer(nickname);
             }
         }
         else {
@@ -850,6 +866,7 @@ public class Controller implements Observer, ClientToServerManager {
             }
             else {
                 virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "So sad bro"));
+                game.removePlayer(nickname);
             }
         }
         else {
@@ -870,7 +887,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));
 
-        virtualView.sendMessage(new DisconnectionClientEvent());
+        //virtualView.sendMessage(new DisconnectionClientEvent());
 
 
 
@@ -916,6 +933,15 @@ public class Controller implements Observer, ClientToServerManager {
      */
     public PreGameLobby getPreGameLobby() {
         return this.preGameLobby;
+    }
+
+
+    /**
+     * USED ONLY FOR TESTING
+     * @return the game
+     */
+    public Game getGame() {
+        return this.game;
     }
 
 

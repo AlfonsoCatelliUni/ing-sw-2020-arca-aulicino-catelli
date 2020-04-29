@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import it.polimi.ingsw.controller.Controller;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.model.Actions.Action;
 import it.polimi.ingsw.model.Actions.BuildAction;
 import it.polimi.ingsw.model.Actions.FinishAction;
 import it.polimi.ingsw.model.Actions.MoveAction;
+import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -57,6 +60,7 @@ public class MatchSimulationTest  {
 
     String player3;
 
+
     @BeforeEach
     void setUp() {
 
@@ -82,7 +86,7 @@ public class MatchSimulationTest  {
 
     }
 
-    void preGameSettingsSetUp() {
+    void MVCPreGameStartSetUp() {
 
 
         virtualView.update(new NewConnectionEvent(player1));
@@ -93,32 +97,7 @@ public class MatchSimulationTest  {
 
         virtualView.update(new NewConnectionEvent(player3));
 
-
-        card1 = controller.getPreGameLobby().getPickedCards().get(0).getName();
-        card2 = controller.getPreGameLobby().getPickedCards().get(1).getName();
-        card3 = controller.getPreGameLobby().getPickedCards().get(2).getName();
-
-        effect1 = controller.getPreGameLobby().getPickedCards().get(0).getEffectDescription();
-        effect2 = controller.getPreGameLobby().getPickedCards().get(1).getEffectDescription();
-        effect3 = controller.getPreGameLobby().getPickedCards().get(2).getEffectDescription();
-
-
-        virtualView.update(new ChosenCardEvent(player1,card1));
-
-
-        virtualView.update(new ChosenCardEvent(player2,card2));
-
-
-        virtualView.update(new ChosenCardEvent(player3, card3));
-
-
-        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,1,1));
-
-
-        virtualView.update(new ChosenInitialPawnCellEvent(player2, 2,2,3,3));
-
-
-        virtualView.update(new ChosenInitialPawnCellEvent(player3, 4,4,2,3));
+        controller.getPreGameLobby().getPickedCards().clear();
 
         /*
 
@@ -127,9 +106,9 @@ public class MatchSimulationTest  {
               ╠═══╬════╬════╬════╬════╬════╣
               ║ 0 ║ A0 ║ 0  ║ 0  ║ 0  ║ 0  ║
               ║ 1 ║ 0  ║ a0 ║ 0  ║ 0  ║ 0  ║
-              ║ 2 ║ 0  ║ 0  ║ M0 ║ g0 ║ 0  ║
-              ║ 3 ║ 0  ║ 0  ║ 0  ║ m0 ║ 0  ║
-              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ G0 ║
+              ║ 2 ║ 0  ║ 0  ║ S0 ║ m0 ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ s0 ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
               ╚═══╩════╩════╩════╩════╩════╝
 
 
@@ -139,7 +118,7 @@ public class MatchSimulationTest  {
     }
 
     @Test
-    void preGameSettings() {
+    void MVCPreGameStart() {
 
         String player1 = "Alfantasy";
 
@@ -220,282 +199,502 @@ public class MatchSimulationTest  {
     }
 
     @Test
-    void ApolloAthenaArtemis() {
+    void MVCGameStart() {
 
-        preGameSettingsSetUp();
+        MVCPreGameStartSetUp();
 
-        //alfonso's turn
+        Card Apollo = JsonHandler.deserializeCardList().get(0);
 
-       virtualView.update(new ChosenPawnToUseEvent(player1,0,0));
+        Card Artemis = JsonHandler.deserializeCardList().get(1);
 
+        Card Athena = JsonHandler.deserializeCardList().get(2);
 
-//      retActions = gameTest.getPossibleActions("alfonso", 0,0);
-//      correctActions.add(new MoveAction());
+        controller.getPreGameLobby().getPickedCards().add(Apollo);
+        controller.getPreGameLobby().getPickedCards().add(Artemis);
+        controller.getPreGameLobby().getPickedCards().add(Athena);
 
-//      Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
 
-//      gameTest.movePawn("alfonso", 0,0, 0,1);
+        virtualView.update(new ChosenCardEvent(player1,Apollo.getName()));
 
-//      /*
+        virtualView.update(new ChosenCardEvent(player2,Artemis.getName()));
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
-//              ║ 1 ║ 0  ║ a  ║ 0  ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ M  ║ g  ║ 0  ║
-//              ║ 3 ║ 0  ║ 0  ║ 0  ║ m  ║ 0  ║
-//              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ G  ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+        virtualView.update(new ChosenCardEvent(player3, Athena.getName()));
 
 
-//      */
+        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,1,1));
 
-//      retActions = gameTest.getPossibleActions("alfonso", 0,1);
-//      correctActions.clear();
-//      correctActions.add(new BuildAction());
 
-//      Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
+        virtualView.update(new ChosenInitialPawnCellEvent(player2, 2,2,3,3));
 
-//      gameTest.pawnBuild("alfonso", 0,1, 1,0, 0);
 
+        virtualView.update(new ChosenInitialPawnCellEvent(player3, 4,4,2,3));
 
-//      /*
+        List<Building> buildings = controller.getGame().getGameBoard().getBuildings();
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a  ║ 0  ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ M  ║ g  ║ 0  ║
-//              ║ 3 ║ 0  ║ 0  ║ 0  ║ m  ║ 0  ║
-//              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ G  ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+        //player1's turn
 
+        virtualView.update(new ChosenPawnToUseEvent(player1,0,0));
 
-//      */
+        retActions = controller.getGame().getPossibleActions(player1, 0,0);
+        correctActions.add(new MoveAction());
 
-//      retActions = gameTest.getPossibleActions("alfonso", 0,1);
-//      correctActions.clear();
-//      correctActions.add(new FinishAction());
+        Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
 
-//      Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
+        virtualView.update(new ChosenMoveActionEvent(player1, "Move", 0,0));
 
-//      gameTest.resetPlayerStatus("alfonso");
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,1));
 
-//      //massi's turn
+        retCells = controller.getGame().wherePawnCanMove(player1, 0,0);
 
-//      retActions = gameTest.getPossibleActions("massi", 2,2);
-//      correctActions.clear();
-//      correctActions.add(new MoveAction());
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
 
-//      Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
 
+        assertEquals(correctCells.size(), retCells.size());
 
-//      gameTest.movePawn("massi", 2,2, 2,1);
+        assertEquals(correctCells, retCells);
 
-//      /*
+        virtualView.update(new ChosenCellToMoveEvent(player1, 0,0,0,1));
+        /*
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a  ║ 0  ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ M  ║ 0  ║ g  ║ 0  ║
-//              ║ 3 ║ 0  ║ 0  ║ 0  ║ m  ║ 0  ║
-//              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ G  ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 1 ║ 0  ║ a0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 2 ║ 0  ║ 0  ║ S0 ║ m0 ║ 0  ║
+                   ║ 3 ║ 0  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
 
 
-//      */
+           */
 
-//      retActions = gameTest.getPossibleActions("massi", 2,1);
-//      correctActions.clear();
-//      correctActions.add(new MoveAction());
-//      correctActions.add(new BuildAction());
+        retActions = controller.getGame().getPossibleActions(player1, 0,1);
+        correctActions.clear();
+        correctActions.add(new BuildAction());
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+        Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        virtualView.update(new ChosenBuildActionEvent(player1, "Build", 0,1));
 
-//      }
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,2));
 
-//      gameTest.movePawn("massi", 2,1,3,1);
 
-//      /*
+        retCells = controller.getGame().wherePawnCanBuild(player1, 0,1);
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a  ║ 0  ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ 0  ║ g  ║ 0  ║
-//              ║ 3 ║ 0  ║ M  ║ 0  ║ m  ║ 0  ║
-//              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ G  ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
 
 
-//      */
+        assertEquals(correctCells.size(), retCells.size());
 
+        assertEquals(correctCells, retCells);
 
-//      retActions = gameTest.getPossibleActions("massi", 3,1);
-//      correctActions.clear();
-//      correctActions.add(new BuildAction());
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+        virtualView.update(new ChosenCellToBuildEvent(player1,0,1,1,0));
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        virtualView.update(new ChosenBuildingEvent(player1, 1,0,1,1,0));
 
-//      }
+        /*
 
-//      gameTest.pawnBuild("massi", 3,1,4,0,1);
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 2 ║ 0  ║ 0  ║ S0 ║ m0 ║ 0  ║
+                   ║ 3 ║ 0  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
 
-//      /*
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a  ║ 0  ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ 0  ║ g  ║ 0  ║
-//              ║ 3 ║ 0  ║ M  ║ 0  ║ m  ║ 0  ║
-//              ║ 4 ║ 1  ║ 0  ║ 0  ║ 0  ║ G  ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+           */
 
+        retActions = controller.getGame().getPossibleActions(player1, 0,1);
+        correctActions.clear();
+        correctActions.add(new FinishAction());
+        Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
 
-//      */
+        virtualView.update(new ChosenFinishActionEvent(player1,"End turn"));
 
-//      retActions = gameTest.getPossibleActions("massi", 3,1);
-//      correctActions.clear();
-//      correctActions.add(new FinishAction());
+        System.out.println(player1 + " status reset");
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+        //player2's turn
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        virtualView.update(new ChosenPawnToUseEvent(player2, 2,2));
 
-//      }
+        retActions = controller.getGame().getPossibleActions(player2, 2,2);
+        correctActions.clear();
+        correctActions.add(new MoveAction());
+        Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
 
-//      gameTest.resetPlayerStatus("massi");
+        virtualView.update(new ChosenMoveActionEvent(player2, "Move", 2,2));
 
-//      //giamma's turn
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,1));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,1));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,3));
 
-//      retActions = gameTest.getPossibleActions("giamma", 2,3);
-//      correctActions.clear();
-//      correctActions.add(new MoveAction());
+        retCells = controller.getGame().wherePawnCanMove(player2, 2,2);
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
 
-//      }
+        assertEquals(correctCells.size(), retCells.size());
 
-//      gameTest.movePawn("giamma", 2,3,1,2);
+        assertEquals(correctCells, retCells);
 
-//      /*
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a  ║ g  ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
-//              ║ 3 ║ 0  ║ M  ║ 0  ║ m  ║ 0  ║
-//              ║ 4 ║ 1  ║ 0  ║ 0  ║ 0  ║ G  ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+        virtualView.update(new ChosenCellToMoveEvent(player2, 2,2,2,1));
 
+        /*
 
-//      */
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 2 ║ 0  ║ S0 ║ 0  ║ m0 ║ 0  ║
+                   ║ 3 ║ 0  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
 
-//      retActions = gameTest.getPossibleActions("giamma", 1,2);
-//      correctActions.clear();
-//      correctActions.add(new BuildAction());
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+           */
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
 
-//      }
+        retActions = controller.getGame().getPossibleActions(player2, 2,1);
+        correctActions.clear();
+        correctActions.add(new MoveAction());
+        correctActions.add(new BuildAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
 
-//      gameTest.pawnBuild("giamma", 1,2, 0,2,1);
+        virtualView.update(new ChosenMoveActionEvent(player2, "Move",2,1));
 
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,1));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,2));
 
-//      /*
+        retCells = controller.getGame().wherePawnCanMove(player2, 2,1);
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ A0 ║ 1  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a0 ║ g0 ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
-//              ║ 3 ║ 0  ║ M0 ║ 0  ║ m0 ║ 0  ║
-//              ║ 4 ║ 1  ║ 0  ║ 0  ║ 0  ║ G0 ║
-//              ╚═══╩════╩════╩════╩════╩════╝
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
 
 
-//      */
+        assertEquals(correctCells.size(), retCells.size());
 
+        assertEquals(correctCells, retCells);
 
-//      retActions = gameTest.getPossibleActions("giamma", 1,2);
-//      correctActions.clear();
-//      correctActions.add(new FinishAction());
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+        virtualView.update(new ChosenCellToMoveEvent(player2, 2,1,2,0));
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+         /*
 
-//      }
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 2 ║ S0 ║ 0  ║ 0  ║ m0 ║ 0  ║
+                   ║ 3 ║ 0  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
 
-//      gameTest.resetPlayerStatus("giamma");
 
+           */
 
-//      //alfonso's turn
+        retActions = controller.getGame().getPossibleActions(player2, 2,0);
+        correctActions.clear();
+        correctActions.add(new BuildAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
 
-//      retActions = gameTest.getPossibleActions("alfonso", 0,1);
-//      correctActions.clear();
-//      correctActions.add(new MoveAction());
+        virtualView.update(new ChosenBuildActionEvent(player2,"Build", 2,0));
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,1));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,1));
 
-//      }
 
-//      gameTest.movePawn("alfonso", 0,1, 1,2);
+        retCells = controller.getGame().wherePawnCanBuild(player2, 2,0);
 
-//      /*
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
 
-//              ╔═══╦════╦════╦════╦════╦════╗
-//              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-//              ╠═══╬════╬════╬════╬════╬════╣
-//              ║ 0 ║ 0  ║ g0 ║ 1  ║ 0  ║ 0  ║
-//              ║ 1 ║ 1  ║ a0 ║ A0 ║ 0  ║ 0  ║
-//              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
-//              ║ 3 ║ 0  ║ M0 ║ 0  ║ m0 ║ 0  ║
-//              ║ 4 ║ 1  ║ 0  ║ 0  ║ 0  ║ G0 ║
-//              ╚═══╩════╩════╩════╩════╩════╝
 
-//      */
+        assertEquals(correctCells.size(), retCells.size());
 
+        assertEquals(correctCells, retCells);
 
-//      retActions = gameTest.getPossibleActions("alfonso", 1,2);
-//      correctActions.clear();
-//      correctActions.add(new BuildAction());
+        virtualView.update(new ChosenCellToBuildEvent(player2, 2,0,3,0));
 
-//      Assert.assertEquals(correctActions.size(), retActions.size());
+        virtualView.update(new ChosenBuildingEvent(player2, 1,2,0,3,0));
 
-//      for (int i = 0; i < correctActions.size(); i++) {
-//          Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+          /*
 
-//      }
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 2 ║ S0 ║ 0  ║ 0  ║ m0 ║ 0  ║
+                   ║ 3 ║ 1  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
 
 
+           */
+
+
+        retActions = controller.getGame().getPossibleActions(player2, 2,0);
+        correctActions.clear();
+        correctActions.add(new FinishAction());
+
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+
+        virtualView.update(new ChosenFinishActionEvent(player2, "End turn"));
+
+        System.out.println(player2 + " status reset");
+
+
+        //player3's turn
+
+        //building a level 1 block to active Athena's effect
+        controller.getGame().getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(0));
+
+        virtualView.update(new ChosenPawnToUseEvent(player3, 2,3));
+
+        retActions = controller.getGame().getPossibleActions(player3, 2,3);
+        correctActions.clear();correctActions.add(new MoveAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+
+        virtualView.update(new ChosenMoveActionEvent(player3, "Move", 2,3));
+
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,4));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,4));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,4));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,3));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,2));
+
+
+        retCells = controller.getGame().wherePawnCanMove(player3, 2,3);
+
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+
+        assertEquals(correctCells.size(), retCells.size());
+
+        assertEquals(correctCells, retCells);
+
+        virtualView.update(new ChosenCellToMoveEvent(player3, 2,3,1,2));
+        //ATHENA'S EFFECT ACTIVATED
+
+        /*
+
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 0  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ a0 ║ m1 ║ 0  ║ 0  ║
+                   ║ 2 ║ S0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+                   ║ 3 ║ 1  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
+
+
+           */
+
+        retActions = controller.getGame().getPossibleActions(player3, 1,2);
+        correctActions.clear();
+        correctActions.add(new BuildAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+
+        virtualView.update(new ChosenBuildActionEvent(player3,"Build",1,2));
+
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,3));
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,3));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,3));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,1));
+
+
+        retCells = controller.getGame().wherePawnCanBuild(player3, 1,2);
+
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+
+        assertEquals(correctCells.size(), retCells.size());
+
+        assertEquals(correctCells, retCells);
+
+        virtualView.update(new ChosenCellToBuildEvent(player3, 1,2,0,2));
+
+        virtualView.update(new ChosenBuildingEvent(player3, 1,1,2,0,2));
+
+        /*
+
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 1  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ a0 ║ m1 ║ 0  ║ 0  ║
+                   ║ 2 ║ S0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+                   ║ 3 ║ 1  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
+
+
+           */
+
+        retActions = controller.getGame().getPossibleActions(player3, 1,2);
+        correctActions.clear();
+        correctActions.add(new FinishAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+
+        virtualView.update(new ChosenFinishActionEvent(player3, "End turn"));
+
+        System.out.println(player3 + " status reset");
+
+
+        //player1's turn
+
+        virtualView.update(new ChosenPawnToUseEvent(player1, 1,1));
+
+        retActions = controller.getGame().getPossibleActions(player1, 1,1);
+        correctActions.clear();
+        correctActions.add(new MoveAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+        virtualView.update(new ChosenMoveActionEvent(player1, "Move", 1,1));
+
+        //athena's effect is active, so player1 cannot move up
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,2));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,1));
+
+        retCells = controller.getGame().wherePawnCanMove(player1, 1,1);
+
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+
+        assertEquals(correctCells.size(), retCells.size());
+
+        assertEquals(correctCells, retCells);
+
+        virtualView.update(new ChosenCellToMoveEvent(player1, 1,1,2,0));
+
+        /*
+
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 1  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ S0 ║ m1 ║ 0  ║ 0  ║
+                   ║ 2 ║ a0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+                   ║ 3 ║ 1  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
+
+           */
+
+        retActions = controller.getGame().getPossibleActions(player1, 1,2);
+        correctActions.clear();
+        correctActions.add(new BuildAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+
+        virtualView.update(new ChosenBuildActionEvent(player1,"Build", 2,0));
+
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(1,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,0));
+        correctCells.add(controller.getGame().getGameBoard().getCell(3,1));
+        correctCells.add(controller.getGame().getGameBoard().getCell(2,1));
+
+
+        retCells = controller.getGame().wherePawnCanBuild(player1, 2,0);
+
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+
+        assertEquals(correctCells.size(), retCells.size());
+
+        assertEquals(correctCells, retCells);
+
+        virtualView.update(new ChosenCellToBuildEvent(player1, 2,0,3,0));
+
+        virtualView.update(new ChosenBuildingEvent(player1, 2,2,0,3,0));
+
+        /*
+
+                   ╔═══╦════╦════╦════╦════╦════╗
+                   ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+                   ╠═══╬════╬════╬════╬════╬════╣
+                   ║ 0 ║ 0  ║ A0 ║ 1  ║ 0  ║ 0  ║
+                   ║ 1 ║ 1  ║ S0 ║ m1 ║ 0  ║ 0  ║
+                   ║ 2 ║ a0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+                   ║ 3 ║ 2  ║ 0  ║ 0  ║ s0 ║ 0  ║
+                   ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+                   ╚═══╩════╩════╩════╩════╩════╝
+
+           */
+
+        retActions = controller.getGame().getPossibleActions(player1, 2,0);
+        correctActions.clear();
+        correctActions.add(new FinishAction());
+        Assert.assertEquals(correctActions.get(0).getActionID(), retActions.get(0).getActionID());
+
+        virtualView.update(new ChosenFinishActionEvent(player1,"End turn"));
+
+        System.out.println(player1 + " status reset");
 
     }
 

@@ -360,6 +360,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         //remove the losing player from the players list
         players.removeIf(p -> p.equals(player));
+        playersNickname.removeIf(p -> p.equals(playerName));
 
         //pick the next player
         nextCurrentPlayer();

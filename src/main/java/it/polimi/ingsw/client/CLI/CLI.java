@@ -760,7 +760,8 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
-        drawer.saveTitleChoicePanel("----------------------- you have loosed the game! -----------------------");
+
+        drawer.saveTitleChoicePanel("----------------------- you have lost the game! -----------------------");
 
         List<String> actionsAfterLosing = event.actionsAfterLosing;
         drawer.saveActionsChoicesValue(actionsAfterLosing);
@@ -809,6 +810,20 @@ public class CLI implements ServerToClientManager {
         la possibilità di uscire dal gioco oppure di ricominciarne un'altra */
 
         /* anche qui posso fare un'animazione nella schermata */
+    }
+
+    @Override
+    public void manageEvent(OpponentPlayerDefeatEvent event) {
+
+        this.playersInfo = ClientJsonHandler.generatePlayersList(event.playersInGame);
+
+        //TODO : printare il player che ha perso
+        //drawer.saveTitleChoicePanel();
+
+        drawer.saveInfoPlayerPanel(playersInfo);
+
+        drawer.show();
+
     }
 
 

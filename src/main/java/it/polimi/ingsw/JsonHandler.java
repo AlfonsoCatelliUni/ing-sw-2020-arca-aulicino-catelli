@@ -160,6 +160,7 @@ public class JsonHandler {
         return cellsInfo;
     }
 
+
     private static FormattedCellInfo generateSingleCellInfo(JsonObject cellJson) {
 
         Integer row = cellJson.get("row").getAsInt();

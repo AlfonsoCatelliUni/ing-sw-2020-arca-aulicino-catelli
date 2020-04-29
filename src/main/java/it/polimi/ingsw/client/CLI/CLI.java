@@ -215,16 +215,9 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(NotifyStatusEvent event) {
+
         List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
-
-        for (FormattedCellInfo c : cellsInfoList ) {
-            String strInfo = getStringCellInfo(c.getHeight(), c.getRoofInfo().getSecond(), c.getPawnInfo().getFirst(), c.getPawnInfo().getSecond());
-
-            //List<String> info = getStringCellInfoList(c.getHeight(), c.getRoofInfo().getSecond(), c.getPawnInfo().getFirst(), c.getPawnInfo().getSecond());
-            //drawer.setCellInfo(c.getRow(), c.getColumn()+1, info.get(0), info.get(1));
-
-            drawer.setCellInfo(c.getRow(), c.getColumn()+1, strInfo);
-        }
+        drawer.saveBoardChanges(cellsInfoList);
 
         drawer.show();
     }
@@ -447,9 +440,13 @@ public class CLI implements ServerToClientManager {
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
-        //System.out.println("-- WAIT UNTIL YOUR NEXT TURN --");
+        cardsName.remove(choiceNum);
+        cardsEffect.remove(choiceNum);
+
         drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        drawer.clearChoicePanelValues();
+        if(cardsName.size() > 0) {
+            drawer.savePlayerCardChoice(cardsName, cardsEffect);
+        }
 
         drawer.show();
     }
@@ -739,16 +736,6 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(StartGameEvent event) {
 
-        System.out.println("The game starts right now!");
-        System.out.println("   _____             _             _       _ \n" +
-                "  / ____|           | |           (_)     (_)\n" +
-                " | (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ \n" +
-                "  \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |\n" +
-                "  ____) | (_| | | | | || (_) | |  | | | | | |\n" +
-                " |_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|\n" +
-                "                                             \n" +
-                "                                             ");
-
         playersInfo = ClientJsonHandler.generatePlayersList(event.info);
 
         drawer.saveTitlePlayerPanel("players information");
@@ -829,135 +816,6 @@ public class CLI implements ServerToClientManager {
 
     // ======================================================================================
 
-
-
-    /**
-     * This method generate the format of the string that I have to pass to the GraphicDrawer
-     * when I want to save and show the information of the board.
-     * Generate a string of length two :
-     * in the first char there is the height of the tower (0 to 4) in the particular cell
-     * in the second char there is an uppercase X if there's a  dome in the cell, there is
-     * a '.' is the cell is free and there is the first letter of the color of the pawn in
-     * uppercase if the pawn is male (B G W) and lowercase if the pawn if female (b g w)
-     * @param height the height of the tower in this cell, range 0 to 4
-     * @param isDome indicate if in the cell there's a dome
-     * @param color indicates the color of the pawn if present
-     * @param sex indicates the sex of the pawn if present
-     * @return return the formatted string
-     */
-    public String getStringCellInfo(Integer height, Boolean isDome, String color, String sex) {
-
-
-        String retString = String.valueOf(height);
-
-        if (isDome) {
-            return retString + "x";
-        }
-        else if(color.equals("") && sex.equals("")) {
-            return retString + ".";
-        }
-        else {
-
-            switch (color) {
-                case "BLUE":
-
-                    if (sex.equals("MALE")) {
-                        return retString + "B";
-                    } else if (sex.equals("FEMALE")) {
-                        return retString + "b";
-                    }
-
-                    break;
-                case "GREY":
-
-                    if (sex.equals("MALE")) {
-                        return retString + "G";
-                    } else if (sex.equals("FEMALE")) {
-                        return retString + "g";
-                    }
-
-                    break;
-                case "WHITE":
-
-                    if (sex.equals("MALE")) {
-                        return retString + "W";
-                    } else if (sex.equals("FEMALE")) {
-                        return retString + "w";
-                    }
-
-                    break;
-            }
-
-        }
-
-        return "error";
-    }
-
-
-    /*
-    public List<String> getStringCellInfoList(Integer height, Boolean isDome, String color, String sex) {
-
-        String RESET = "\u001B[0m";
-        String BLACK = "\u001B[30m";
-        String RED = "\u001B[31m";
-        String GREEN = "\u001B[32m";
-        String YELLOW = "\u001B[33m";
-        String BLUE = "\u001B[34m";
-        String PURPLE = "\u001B[35m";
-        String CYAN = "\u001B[36m";
-        String WHITE = "\u001B[37m";
-        String BRIGHTBLACK = "\u001b[30;1m";
-
-        List<String> infoCell = new ArrayList<>();
-        String towerInfo = String.valueOf(height);
-        String cellInfo = "";
-
-        if (isDome) {
-            cellInfo = "X";
-        }
-        else if(color.equals("") && sex.equals("")) {
-            cellInfo = ".";
-        }
-        else {
-
-            switch (color) {
-                case "BLUE":
-
-                    if (sex.equals("MALE")) {
-                        cellInfo = BLUE + "B" + RESET;
-                    } else if (sex.equals("FEMALE")) {
-                        cellInfo = BLUE + "b" + RESET;
-                    }
-
-                    break;
-                case "GREY":
-
-                    if (sex.equals("MALE")) {
-                        cellInfo = BRIGHTBLACK + "G" + RESET;
-                    } else if (sex.equals("FEMALE")) {
-                        cellInfo = BRIGHTBLACK + "g" + RESET;
-                    }
-
-                    break;
-                case "WHITE":
-
-                    if (sex.equals("MALE")) {
-                        cellInfo = WHITE + "W" + RESET;
-                    } else if (sex.equals("FEMALE")) {
-                        cellInfo = WHITE + "w" + RESET;
-                    }
-
-                    break;
-            }
-
-        }
-
-        infoCell.add(towerInfo);
-        infoCell.add(cellInfo);
-        return infoCell;
-    }
-
-     */
 
 
 }

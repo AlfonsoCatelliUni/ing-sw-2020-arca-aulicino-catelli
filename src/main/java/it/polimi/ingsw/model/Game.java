@@ -134,7 +134,11 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.initPawn(gameBoard, gameBoard.getCell(row, column));
 
-        updateAllObservers(new NotifyStatusEvent(generateStatusJson()));
+        //send the update of the intialization of the pawns only if all two of the pawns are setted
+        if(player.getPawns().size()==2) {
+            updateAllObservers(new NotifyStatusEvent(generateStatusJson()));
+        }
+
     }
 
 
@@ -280,8 +284,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Consequence moveResult = player.move(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));
 
-
-        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
+        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
 
         receiveConsequence(moveResult);
     }
@@ -304,7 +307,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.build(designatedPawn, designatedCell, level, gameBoard.getBuildings());
 
-        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
+        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }
 
 
@@ -323,7 +326,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.force(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
 
-        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
+        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }
 
 
@@ -339,7 +342,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         player.destroy(gameBoard.getCell(row, column), gameBoard.getBuildings());
 
-        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
+        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }
 
 
@@ -371,7 +374,7 @@ public class Game extends Observable implements GameConsequenceHandler {
             receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
         }
 
-        updateAllObservers( new NotifyStatusEvent(generateStatusJson()) );
+        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }
 
 
@@ -463,6 +466,7 @@ public class Game extends Observable implements GameConsequenceHandler {
         obj.put("gameBoard", jsonGameBoard);
 
         statusString = obj.toString();
+        lastUpdateSent = statusString;
 
         return statusString;
     }
@@ -473,15 +477,50 @@ public class Game extends Observable implements GameConsequenceHandler {
         String changesString = "";
 
         List<FormattedCellInfo> oldCellsInfo = JsonHandler.generateCellsList(lastUpdateSent);
-        List<FormattedCellInfo> newCellsInfo = JsonHandler.generateCellsList(generateStatusJson());
+
+        String newStatusJson = generateStatusJson();
+        List<FormattedCellInfo> newCellsInfo = JsonHandler.generateCellsList(newStatusJson);
 
         List<FormattedCellInfo> changedCellsInfo = new ArrayList<>();
+
         for(int i = 0; i < newCellsInfo.size(); i++) {
             if( !oldCellsInfo.get(i).equals(newCellsInfo.get(i)) ) {
                 changedCellsInfo.add(newCellsInfo.get(i));
             }
         }
 
+        JSONObject obj = new JSONObject();
+
+        JSONArray jsonGameBoard = new JSONArray();
+
+        for(FormattedCellInfo cell : changedCellsInfo) {
+
+            JSONObject cellObj = new JSONObject();
+            cellObj.put("height", cell.getHeight());
+            cellObj.put("column", cell.getColumn());
+            cellObj.put("row", cell.getRow());
+
+
+            JSONObject roofObj = new JSONObject();
+            roofObj.put("level", cell.getRoofInfo().getFirst());
+            roofObj.put("isDome", cell.getRoofInfo().getSecond());
+
+            cellObj.put("roof", roofObj);
+
+
+            JSONObject pawnObj = new JSONObject();
+            pawnObj.put("color", cell.getPawnInfo().getFirst());
+            pawnObj.put("sex", cell.getPawnInfo().getSecond());
+
+            cellObj.put("pawn", pawnObj);
+
+            jsonGameBoard.add(cellObj);
+        }
+
+        obj.put("gameBoard", jsonGameBoard);
+
+        changesString = obj.toString();
+        lastUpdateSent = newStatusJson;
 
         return changesString;
     }

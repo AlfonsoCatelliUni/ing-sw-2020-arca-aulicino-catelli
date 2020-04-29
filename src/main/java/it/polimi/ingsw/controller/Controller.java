@@ -328,6 +328,22 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
+    public void endGame(String winner){
+
+        Player winnerPlayer = game.getPlayerByName(winner);
+
+        virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));
+
+
+
+        game = null;
+
+        // a new preGameLobby to handler new connections
+        this.preGameLobby = new PreGameLobby();
+
+
+    }
+
 
     // MARK : Network Event Manager Section ======================================================================================
 
@@ -375,6 +391,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         //if the waitingRoom is already closed than we disconnect the player
         else if(preGameLobby.isClosed()) {
+
             virtualView.sendMessageTo(ID, new UnableToEnterWaitingRoomEvent());
         }
         //if the chosen nickname is already taken we ask to enter it again
@@ -484,6 +501,49 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
 
+
+    }
+
+
+    // TODO : vedere se far rigiocare o meno e in che modo:
+    @Override
+    public void manageEvent(PlayAgainEvent event) {
+
+        String nickname = event.nickname;
+
+        if (!preGameLobby.isClosed()) {
+
+            preGameLobby.addPlayer(nickname);
+
+            List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
+
+            if (connectedPlayers.size() == 1) {
+
+                virtualView.sendMessageTo(nickname, new PlainTextEvent("you are in the lobby again!"));
+                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+                virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
+                countdownStart();
+            }
+            //if the waitingRoom is filled than we broadcast a message that communicates this event
+            else if (connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {
+
+                virtualView.sendMessageTo(nickname, new PlainTextEvent("you are in the lobby again!"));
+                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+
+                closeGameLobby();
+
+            }
+            //if is an intermediate connection than nothing happens
+            else {
+                virtualView.sendMessageTo(nickname, new PlainTextEvent("you are in the lobby again!"));
+                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+            }
+        }
+        //if the waitingRoom is already closed than we disconnect the player
+        else {
+            virtualView.sendMessageTo(nickname, new PlainTextEvent("you were too late!"));
+            virtualView.sendMessageTo(nickname, new UnableToEnterWaitingRoomEvent());
+        }
 
     }
 

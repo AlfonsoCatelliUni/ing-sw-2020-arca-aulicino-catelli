@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.TheLogger;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.STCEvents.ConnectionEstablishedEvent;
 import it.polimi.ingsw.view.server.VirtualView;
@@ -48,6 +49,7 @@ public class Server {
             this.serverSocket = new ServerSocket(SOCKET_PORT);
         }
         catch (IOException e) {
+            TheLogger.LOGGER.log(Level.SEVERE, "Error while opening server socket");
             e.printStackTrace();
         }
 
@@ -97,6 +99,7 @@ public class Server {
             }
         }
         catch(IOException e) {
+            TheLogger.LOGGER.log(Level.SEVERE, "Error while accepting new connections"  );
             e.printStackTrace();
         }
 

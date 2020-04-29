@@ -12,6 +12,8 @@ import it.polimi.ingsw.view.client.ClientView;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.*;
 import java.util.List;
@@ -52,6 +54,7 @@ public class CLI implements ServerToClientManager {
     // ======================================================================================
 
 
+    //TODO : ottimizzare per ridurre le copie di codice
     private CLI() {
         this.ipAddress = "127.0.0.1";
         this.port = 6969;
@@ -85,8 +88,11 @@ public class CLI implements ServerToClientManager {
 
         System.out.print("Insert the server IP : ");
         ipAddress = input.nextLine();
+        if(ipAddress.equals("")) {
+            ipAddress = "127.0.0.1";
+        }
 
-        while(isValidIP()) {
+        while(!isValidIP(this.ipAddress)) {
             System.out.print("Invalid IP, reinsert a new one : ");
             ipAddress = input.nextLine();
         }
@@ -116,21 +122,12 @@ public class CLI implements ServerToClientManager {
      * this method control the validity of the ip address
      * @return true if the ip address is valid, false in case the ip is invalid
      */
-    public boolean isValidIP() {
-        String[] groups = ipAddress.split("\\.");
+    public boolean isValidIP(String ip) {
+        // code taken from : https://stackoverflow.com/Questions/5667371/validate-ipv4-address-in-java
+        String IP_PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
 
-        if (groups.length != 4)
-            return false;
+        return ip.matches(IP_PATTERN);
 
-        try {
-            return Arrays.stream(groups)
-                    .filter(s -> s.length() > 1 && s.startsWith("0"))
-                    .map(Integer::parseInt)
-                    .filter(i -> (i >= 0 && i <= 255))
-                    .count() == 4;
-        } catch(NumberFormatException e) {
-            return false;
-        }
     }
 
 
@@ -160,8 +157,6 @@ public class CLI implements ServerToClientManager {
     }
 
 
-    //TODO : no eccezione ip sbalgiato
-    //TODO : riguardare print you can't place pawn here
     @Override
     public void manageEvent(FirstConnectedEvent event) {
 
@@ -263,6 +258,7 @@ public class CLI implements ServerToClientManager {
         this.clientView = null;
         System.exit(0);
     }
+
 
     @Override
     public void manageEvent(PlainTextEvent event) {
@@ -577,7 +573,6 @@ public class CLI implements ServerToClientManager {
     }
 
 
-    //TODO : ottimizzare per ridurre le copie di codice
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
 
@@ -766,7 +761,43 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
         drawer.saveTitleChoicePanel("----------------------- you have loosed the game! -----------------------");
-        drawer.clearChoicePanelValues();
+
+        List<String> actionsAfterLosing = event.actionsAfterLosing;
+        drawer.saveActionsChoicesValue(actionsAfterLosing);
+
+        int indexChosenAction = -1;
+
+
+        do {
+
+            drawer.show();
+
+            while(!input.hasNextInt()) {
+                System.err.println("Insert a Number!");
+                drawer.show();
+
+                input.next();
+            }
+            indexChosenAction = input.nextInt();
+
+            if( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) ) {
+                System.err.println("Choice Unavailable !");
+            }
+
+        } while( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) );
+
+
+        switch (actionsAfterLosing.get(indexChosenAction)) {
+
+            case "Spectate Match":
+                break;
+
+            case "Leave":
+                manageEvent(new DisconnectionClientEvent());
+                break;
+
+        }
+
 
         drawer.show();
     }
@@ -782,6 +813,7 @@ public class CLI implements ServerToClientManager {
 
 
     // ======================================================================================
+
 
 
     /**

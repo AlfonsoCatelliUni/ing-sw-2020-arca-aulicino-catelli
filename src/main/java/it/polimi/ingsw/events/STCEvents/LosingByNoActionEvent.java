@@ -3,12 +3,17 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LosingByNoActionEvent extends ServerToClientEvent {
 
 
     public String nickname;
 
     public String sadMessage;
+
+    public List<String> actionsAfterLosing;
 
 
     // ======================================================================================
@@ -17,6 +22,10 @@ public class LosingByNoActionEvent extends ServerToClientEvent {
     public LosingByNoActionEvent(String nickname, String sadMessage) {
         this.nickname = nickname;
         this.sadMessage = sadMessage;
+
+        this.actionsAfterLosing = new ArrayList<>();
+        this.actionsAfterLosing.add("Spectate Match");
+        this.actionsAfterLosing.add("Leave");
     }
 
 

@@ -283,6 +283,13 @@ public class BasicEffect implements Effect {
             e.printStackTrace();
         }
         return null;
-
     }
+
+
+    @Override
+    public Effect addEffect(Effect e) {
+        throw new RuntimeException("Invalid Command!");
+    }
+
+
 }

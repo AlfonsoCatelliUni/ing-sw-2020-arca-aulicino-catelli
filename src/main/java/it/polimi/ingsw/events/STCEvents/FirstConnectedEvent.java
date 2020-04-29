@@ -21,5 +21,10 @@ public class FirstConnectedEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
-
+    @Override
+    public String toString() {
+        return "FirstConnectedEvent{" + "\n" +
+                "nickname='" + nickname + '\'' + "\n" +
+                '}';
+    }
 }

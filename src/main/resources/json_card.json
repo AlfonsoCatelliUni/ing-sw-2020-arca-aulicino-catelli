@@ -2,71 +2,113 @@
   {
     "name": "Apollo",
     "available3P": true,
-    "effect": "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)."
+    "effect": "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions).",
+    "listEffects": [
+      "SwitchEffect", "CanSwitchOpponentEffect"
+    ]
   },
   {
     "name": "Artemis",
     "available3P": true,
-    "effect": "Your Move: Your Worker may move one additional time, but not back to its initial space."
+    "effect": "Your Move: Your Worker may move one additional time, but not back to its initial space.",
+    "listEffects": [
+      "MoreMoveEffect"
+    ]
   },
   {
     "name": "Athena",
     "available3P": true,
-    "effect": "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn."
+    "effect": "Opponent’s Turn: If one of your Workers moved up on your last turn, opponent Workers cannot move up this turn.",
+    "listEffects": [
+      "BlockOpponentEffect"
+    ]
   },
   {
     "name": "Atlas",
     "available3P": true,
-    "effect": "Your Build: Your Worker may build a dome at any level."
+    "effect": "Your Build: Your Worker may build a dome at any level.",
+    "listEffects": [
+      "DomeBuildEffect"
+    ]
   },
   {
     "name": "Demeter",
     "available3P": true,
-    "effect": "Your Build: Your Worker may build one additional time, but not on the same space."
+    "effect": "Your Build: Your Worker may build one additional time, but not on the same space.",
+    "listEffects": [
+      "MoreBuildNotOnSameEffect"
+    ]
   },
   {
     "name": "Hephaestus",
     "available3P": true,
-    "effect": "Your Build: Your Worker may build one additional block (not dome) on top of your first block."
+    "effect": "Your Build: Your Worker may build one additional block (not dome) on top of your first block.",
+    "listEffects": [
+      "MoreBuildOnSameEffect"
+    ]
   },
   {
     "name": "Minotaur",
     "available3P": true,
-    "effect": "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level."
+    "effect": "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.",
+    "listEffects": [
+      "PushEffect", "CanPushEffect"
+    ]
   },
   {
     "name": "Pan",
     "available3P": true,
-    "effect": "Win Condition: You also win if your Worker moves down two or more levels."
+    "effect": "Win Condition: You also win if your Worker moves down two or more levels.",
+    "listEffects": [
+      "DownTwoEffect"
+    ]
   },
   {
-  "name": "Prometheus",
-  "available3P": true,
-  "effect": "Your Turn: If your Worker does not move up, it may build both before and after moving."
+    "name": "Prometheus",
+    "available3P": true,
+    "effect": "Your Turn: If your Worker does not move up, it may build both before and after moving.",
+    "listEffects": [
+      "BuildBeforeEffect"
+    ]
   },
   {
     "name": "Ares",
     "available3P": true,
-    "effect": "End of Your Turn: You may remove an unoccupied block (not dome) neighboring your unmoved Worker. You also remove any Tokens on the block."
+    "effect": "End of Your Turn: You may remove an unoccupied block (not dome) neighboring your unmoved Worker. You also remove any Tokens on the block.",
+    "listEffects": [
+      "DestroyEffect", "CanDestroyEffect"
+    ]
   },
   {
     "name": "Charon",
     "available3P": true,
-    "effect": "Your Move: Before your Worker moves, you may force a neighboring opponent Worker to the space directly on the other side of your Worker, if that space is unoccupied"
+    "effect": "Your Move: Before your Worker moves, you may force a neighboring opponent Worker to the space directly on the other side of your Worker, if that space is unoccupied",
+    "listEffects": [
+      "CanForceEffect"
+    ]
   },
   {
     "name": "Hestia",
     "available3P": true,
-    "effect": "Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space."
+    "effect": "Your Build: Your Worker may build one additional time, but this cannot be on a perimeter space.",
+    "listEffects": [
+      "MoreBuildInsideEffect"
+    ]
   },
   {
     "name": "Triton",
     "available3P": true,
-    "effect": "Your Move: Each time your Worker moves into a perimeter space, it may immediately move again."
+    "effect": "Your Move: Each time your Worker moves into a perimeter space, it may immediately move again.",
+    "listEffects": [
+      "MovePerimeterAgainEffect"
+    ]
   },
   {
     "name": "Zeus",
     "available3P": true,
-    "effect": "Your Build: Your Worker may build a block under itself."
+    "effect": "Your Build: Your Worker may build a block under itself.",
+    "listEffects": [
+      "CanBuildUnderItselfEffect"
+    ]
   }
 ]

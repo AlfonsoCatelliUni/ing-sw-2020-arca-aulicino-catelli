@@ -56,4 +56,10 @@ public class SwitchEffect extends  EffectDecorator {
     public Effect clone() {
         return new SwitchEffect(effect.clone());
     }
+
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new SwitchEffect(e);
+    }
 }

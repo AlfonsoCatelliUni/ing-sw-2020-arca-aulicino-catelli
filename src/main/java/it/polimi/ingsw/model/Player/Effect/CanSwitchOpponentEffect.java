@@ -46,4 +46,10 @@ public class CanSwitchOpponentEffect extends EffectDecorator {
     public Effect clone() {
         return new CanSwitchOpponentEffect(effect.clone());
     }
+
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new CanSwitchOpponentEffect(e);
+    }
 }

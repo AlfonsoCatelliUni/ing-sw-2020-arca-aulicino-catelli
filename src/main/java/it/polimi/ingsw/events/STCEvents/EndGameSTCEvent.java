@@ -17,4 +17,11 @@ public class EndGameSTCEvent extends ServerToClientEvent {
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "EndGameSTCEvent{" + "\n" +
+                "winner='" + winner + '\'' + "\n" +
+                '}';
+    }
 }

@@ -46,4 +46,14 @@ public class GivePossibleCellsToBuildEvent extends ServerToClientEvent {
 
     // ======================================================================================
 
+
+    @Override
+    public String toString() {
+        return "GivePossibleCellsToBuildEvent{" + "\n" +
+                "receiverNickname='" + receiverNickname + '\'' + ",\n" +
+                "cellsAvailableToBuild=" + cellsAvailableToBuild + ",\n" +
+                "actionID='" + actionID + '\'' + ",\n" +
+                "isValid=" + isValid + "\n" +
+                '}';
+    }
 }

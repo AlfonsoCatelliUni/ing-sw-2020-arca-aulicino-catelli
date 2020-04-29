@@ -38,7 +38,15 @@ public class DownTwoEffect extends EffectDecorator {
     }
 
 
+    @Override
+    public Effect clone() {
+        return new DownTwoEffect(effect.clone());
+    }
 
 
+    @Override
+    public Effect addEffect(Effect e) {
+        return new DownTwoEffect(e);
+    }
 }
 

@@ -69,4 +69,9 @@ public class DestroyEffect extends EffectDecorator {
     public Effect clone() {
         return new DestroyEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new DestroyEffect(e);
+    }
 }

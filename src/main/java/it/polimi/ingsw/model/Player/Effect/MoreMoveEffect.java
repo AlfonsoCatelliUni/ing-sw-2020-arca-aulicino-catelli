@@ -64,4 +64,8 @@ public class MoreMoveEffect extends EffectDecorator {
         return new MoreMoveEffect(effect.clone());
     }
 
+    @Override
+    public Effect addEffect(Effect e) {
+        return new MoreMoveEffect(e);
+    }
 }

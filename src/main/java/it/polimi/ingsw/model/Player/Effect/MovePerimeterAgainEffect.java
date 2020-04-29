@@ -62,4 +62,9 @@ public class MovePerimeterAgainEffect extends EffectDecorator {
         return new MovePerimeterAgainEffect(effect.clone());
 
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new MovePerimeterAgainEffect(e);
+    }
 }

@@ -20,4 +20,11 @@ public class StartGameEvent extends ServerToClientEvent {
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+    @Override
+    public String toString() {
+        return "StartGameEvent{" +  "\n" +
+                "info='" + info + '\'' + "\n" +
+                '}';
+    }
 }

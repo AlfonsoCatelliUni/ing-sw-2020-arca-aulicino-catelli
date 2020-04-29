@@ -56,4 +56,10 @@ public class CanPushOpponentEffect extends EffectDecorator {
     public Effect clone() {
         return new CanPushOpponentEffect(effect.clone());
     }
+
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new CanPushOpponentEffect(e);
+    }
 }

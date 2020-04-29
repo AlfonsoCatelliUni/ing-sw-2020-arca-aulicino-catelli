@@ -98,6 +98,8 @@ public interface Effect extends Cloneable {
 
     Effect clone();
 
+    Effect addEffect(Effect e);
+
 
 
 }

@@ -29,7 +29,7 @@ public class JsonHandler {
     public static JsonParser parser = new JsonParser();
 
 
-    private static Map<String, Effect> playerDecoratorMap = fillMap();
+    private static final Map<String, Effect> playerDecoratorMap = fillMap();
 
 
     // ======================================================================================
@@ -41,31 +41,43 @@ public class JsonHandler {
      */
     private static Map<String, Effect> fillMap() {
 
-        Map<String, Effect> newMap = new HashMap<>();
+        Map<String, Effect> effectsMap = new HashMap<>();
 
         //Basic Gods
-        newMap.put("Apollo", new CanSwitchOpponentEffect( new SwitchEffect( new BasicEffect())));
-        newMap.put("Artemis", new MoreMoveEffect(new BasicEffect()));
-        newMap.put("Athena", new BlockOpponentEffect(new BasicEffect()));
+        effectsMap.put("CanSwitchOpponentEffect", new CanSwitchOpponentEffect(new BasicEffect()));
+        effectsMap.put("SwitchEffect", new SwitchEffect(new BasicEffect()));
 
-        newMap.put("Atlas", new DomeBuildEffect(new BasicEffect()));
-        newMap.put("Demeter", new MoreBuildNotOnSameEffect(new BasicEffect()));
-        newMap.put("Hephaestus", new MoreBuildOnSameEffect(new BasicEffect()));
+        effectsMap.put("MoreMoveEffect", new MoreMoveEffect(new BasicEffect()));
 
-        newMap.put("Minotaur", new CanPushOpponentEffect(new PushEffect(new BasicEffect())));
-        newMap.put("Pan", new DownTwoEffect(new BasicEffect()));
-        newMap.put("Prometheus", new BuildBeforeEffect(new BasicEffect()));
+        effectsMap.put("BlockOpponentEffect", new BlockOpponentEffect(new BasicEffect()));
+
+        effectsMap.put("DomeBuildEffect", new DomeBuildEffect(new BasicEffect()));
+
+        effectsMap.put("MoreBuildOnSameEffect", new MoreBuildOnSameEffect(new BasicEffect()));
+
+        effectsMap.put("MoreBuildNotOnSameEffect", new MoreBuildNotOnSameEffect(new BasicEffect()));
+
+        effectsMap.put("CanPushEffect", new CanPushOpponentEffect(new BasicEffect()));
+        effectsMap.put("PushEffect", new PushEffect(new BasicEffect()));
+
+        effectsMap.put("DownTwoEffect", new DownTwoEffect(new BasicEffect()));
+
+        effectsMap.put("BuildBeforeEffect", new BuildBeforeEffect(new BasicEffect()));
 
 
         //Advanced Gods
-        newMap.put("Ares",new CanDestroyEffect(new DestroyEffect(new BasicEffect())) );
-        newMap.put("Charon", new CanForceEffect(new BasicEffect()));
-        newMap.put("Hestia", new MoreBuildInsideEffect(new BasicEffect()));
-        newMap.put("Triton", new MovePerimeterAgainEffect(new BasicEffect()));
-        newMap.put("Zeus", new CanBuildUnderItselfEffect(new BasicEffect()));
+        effectsMap.put("CanDestroyEffect",new CanDestroyEffect(new BasicEffect()));
+        effectsMap.put("DestroyEffect", new DestroyEffect(new BasicEffect()));
 
+        effectsMap.put("CanForceEffect", new CanForceEffect(new BasicEffect()));
 
-        return newMap;
+        effectsMap.put("MoreBuildInsideEffect", new MoreBuildInsideEffect(new BasicEffect()));
+
+        effectsMap.put("MovePerimeterAgainEffect", new MovePerimeterAgainEffect(new BasicEffect()));
+
+        effectsMap.put("CanBuildUnderItselfEffect", new CanBuildUnderItselfEffect(new BasicEffect()));
+
+        return effectsMap;
     }
 
 
@@ -119,11 +131,17 @@ public class JsonHandler {
 
         String name = cardJson.get("name").getAsString();
         boolean available3P = cardJson.get("available3P").getAsBoolean();
-        String effect = cardJson.get("effect").getAsString();
-        Effect baseEffect = playerDecoratorMap.get(name);
+        String effectDescription = cardJson.get("effect").getAsString();
+        JsonArray listEffects = cardJson.get("listEffects").getAsJsonArray();
 
+        Effect baseEffect = new BasicEffect();
 
-        return new Card(name, available3P, effect, baseEffect);
+        for (int i = 0; i < listEffects.size(); i++){
+            String effect = listEffects.get(i).getAsString();
+            baseEffect = playerDecoratorMap.get(effect).addEffect(baseEffect);
+        }
+
+        return new Card(name, available3P, effectDescription, baseEffect);
     }
 
 

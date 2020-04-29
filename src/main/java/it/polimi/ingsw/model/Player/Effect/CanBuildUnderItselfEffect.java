@@ -42,4 +42,9 @@ public class CanBuildUnderItselfEffect extends EffectDecorator {
     public Effect clone() {
         return new CanBuildUnderItselfEffect(effect.clone());
     }
+
+    @Override
+    public Effect addEffect(Effect e) {
+        return new CanBuildUnderItselfEffect(e);
+    }
 }

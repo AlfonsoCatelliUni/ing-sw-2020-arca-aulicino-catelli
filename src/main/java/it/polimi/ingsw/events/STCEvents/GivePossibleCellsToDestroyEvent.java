@@ -27,4 +27,13 @@ public class GivePossibleCellsToDestroyEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
 
     }
+
+    @Override
+    public String toString() {
+        return "GivePossibleCellsToDestroyEvent{" + "\n" +
+                "nickname='" + nickname + '\'' + ",\n" +
+                "cells=" + cells + ",\n" +
+                "isValid=" + isValid + "\n" +
+                '}';
+    }
 }

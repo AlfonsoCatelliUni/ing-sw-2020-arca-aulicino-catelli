@@ -280,7 +280,7 @@ public class GraphicDrawerCLI {
         String color = cellInfo.getPawnInfo().getFirst();
         String sex = cellInfo.getPawnInfo().getSecond();
 
-        String retString = String.valueOf(cellInfo.getHeight());
+        String retString = String.valueOf(cellInfo.getHeight()) + " ";
 
         if (isDome) {
             retString += "x";

@@ -218,11 +218,7 @@ public class CLI implements ServerToClientManager {
 
         List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
         drawer.saveBoardChanges(cellsInfoList);
-        //        for (FormattedCellInfo c : cellsInfoList ) {
-//            String strInfo = getStringCellInfo(c.getHeight(), c.getRoofInfo().getSecond(), c.getPawnInfo().getFirst(), c.getPawnInfo().getSecond());
-//
-//            drawer.setCellInfo(c.getRow(), c.getColumn()+1, strInfo);
-//        }
+
         drawer.show();
     }
 
@@ -444,9 +440,13 @@ public class CLI implements ServerToClientManager {
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
-        //System.out.println("-- WAIT UNTIL YOUR NEXT TURN --");
+        cardsName.remove(choiceNum);
+        cardsEffect.remove(choiceNum);
+
         drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        drawer.clearChoicePanelValues();
+        if(cardsName.size() > 0) {
+            drawer.savePlayerCardChoice(cardsName, cardsEffect);
+        }
 
         drawer.show();
     }
@@ -735,16 +735,6 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(StartGameEvent event) {
-
-        System.out.println("The game starts right now!");
-        System.out.println("   _____             _             _       _ \n" +
-                "  / ____|           | |           (_)     (_)\n" +
-                " | (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ \n" +
-                "  \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |\n" +
-                "  ____) | (_| | | | | || (_) | |  | | | | | |\n" +
-                " |_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|\n" +
-                "                                             \n" +
-                "                                             ");
 
         playersInfo = ClientJsonHandler.generatePlayersList(event.info);
 

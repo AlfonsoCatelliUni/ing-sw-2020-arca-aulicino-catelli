@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.TheLogger;
 import it.polimi.ingsw.events.CTSEvents.ClientDisconnectionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -7,6 +8,7 @@ import it.polimi.ingsw.view.server.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
 
 public class Connection implements Runnable {
 
@@ -37,6 +39,7 @@ public class Connection implements Runnable {
             output = new ObjectOutputStream(socket.getOutputStream());
         }
         catch (Exception e){
+            TheLogger.LOGGER.log(Level.SEVERE, "Error while creating a new Connection object");
             e.printStackTrace();
         }
 
@@ -53,6 +56,7 @@ public class Connection implements Runnable {
 
             while(getActive()) {
                 ClientToServerEvent event = (ClientToServerEvent)input.readObject();
+
                 receiver.update(event);
             }
 

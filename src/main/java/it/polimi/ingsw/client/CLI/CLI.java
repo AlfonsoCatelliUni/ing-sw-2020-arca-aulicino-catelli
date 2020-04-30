@@ -806,12 +806,17 @@ public class CLI implements ServerToClientManager {
         actions.add("If you want to play again you have to reconnect to the server!");
         actions.add("paypal email for donations : alfonsocatelli@gmail.com");
 
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                manageEvent(new DisconnectionClientEvent());
-            }
-        }, 10000); // 10 seconds timer
+        drawer.saveActionsChoicesValue(actions);
+        drawer.show();
+
+        manageEvent(new DisconnectionClientEvent());
+
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                manageEvent(new DisconnectionClientEvent());
+//            }
+//        }, 10000); // 10 seconds timer
 
 
     }

@@ -117,4 +117,9 @@ public class ClientView implements Runnable {
     }
 
 
+    public synchronized void setActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+
 }

@@ -305,7 +305,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         if (points.size() == 0) {
             virtualView.sendMessageTo(nextPlayer, new LosingByNoActionEvent(nextPlayer, "So Sad"));
-            game.removePlayer(nickname);
+            game.removePlayer(nextPlayer);
             return;
         }
 

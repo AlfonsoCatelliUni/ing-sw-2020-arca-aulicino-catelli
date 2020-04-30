@@ -26,8 +26,6 @@ public class GraphicDrawerCLI {
 
     private final int COLUMNS = 154;
 
-
-
     private String[][] screen;
 
     // ======================================================================================
@@ -275,7 +273,6 @@ public class GraphicDrawerCLI {
 
     public void fillCellInfo(int printRow, int printCol, int row, int column, FormattedCellInfo cellInfo) {
 
-        //TODO : FIXEARE DOVE SCRIVI LE COSE
         Boolean isDome = cellInfo.getRoofInfo().getSecond();
         String color = cellInfo.getPawnInfo().getFirst();
         String sex = cellInfo.getPawnInfo().getSecond();
@@ -284,7 +281,7 @@ public class GraphicDrawerCLI {
 
         if (isDome) {
             retString += "x";
-            print(row, column, retString, CYAN);
+            print(printRow, printCol, retString, CYAN);
         }
         else if(color.equals("") && sex.equals("")) {
             retString += ".";
@@ -326,6 +323,7 @@ public class GraphicDrawerCLI {
 
 
     //MARK : Player Panel Section ======================================================================================
+
 
     private String playerPanelTitle;
 
@@ -465,11 +463,15 @@ public class GraphicDrawerCLI {
 
     //MARK : Choice Panel Section ======================================================================================
 
+
     private String choicePanelTitle;
+
 
     private List<Point> cellsChoicePanel;
 
+
     private List<String> actionsChoicePanel;
+
 
     private List<Integer> buildingsChoicePanel;
 

@@ -40,13 +40,18 @@ public class BuildOnSameCellEffect extends EffectDecorator{
 
         List<Cell> availableCellToBuild = new ArrayList<>();
 
-        availableCellToBuild.add(cellBefore);
+        if(cellBefore.getHeight() < 3) {
+            availableCellToBuild.add(cellBefore);
+        }
 
         return availableCellToBuild;
     }
+
 
     @Override
     public Effect clone() {
         return new BuildOnSameCellEffect(effect.clone(), this.cellBefore);
     }
+
+
 }

@@ -757,7 +757,6 @@ public class CLI implements ServerToClientManager {
 
 
         do {
-
             drawer.show();
 
             while(!input.hasNextInt()) {
@@ -793,11 +792,35 @@ public class CLI implements ServerToClientManager {
 
     @Override
     public void manageEvent(EndGameSTCEvent event) {
-        /* devo comunicare al player che la partita è stat conclusa e devo dargli
-        la possibilità di uscire dal gioco oppure di ricominciarne un'altra */
 
-        /* anche qui posso fare un'animazione nella schermata */
+        String winner = event.winner;
+        List<String> actions = new ArrayList<>();
+
+        if( this.nickname.equals(winner) ) {
+            drawer.saveTitleChoicePanel("----------------------- you are the winneeeer! -----------------------");
+        }
+        else {
+            drawer.saveTitleChoicePanel("----- " + winner + " is the winner of the match! ------");
+        }
+
+        actions.add("If you want to play again you have to reconnect to the server!");
+        actions.add("paypal email for donations : alfonsocatelli@gmail.com");
+
+        drawer.saveActionsChoicesValue(actions);
+        drawer.show();
+
+        manageEvent(new DisconnectionClientEvent());
+
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                manageEvent(new DisconnectionClientEvent());
+//            }
+//        }, 10000); // 10 seconds timer
+
+
     }
+
 
     @Override
     public void manageEvent(OpponentPlayerDefeatEvent event) {

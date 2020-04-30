@@ -305,7 +305,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         if (points.size() == 0) {
             virtualView.sendMessageTo(nextPlayer, new LosingByNoActionEvent(nextPlayer, "So Sad"));
-            game.removePlayer(nickname);
+            game.removePlayer(nextPlayer);
             return;
         }
 
@@ -920,7 +920,7 @@ public class Controller implements Observer, ClientToServerManager {
             game.pawnBuild(nickname, pawnRow, pawnColumn, buildRow, buildColumn, level);
 
             List <Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);
-            if (possibleActions.size()>0) {
+            if (possibleActions.size() > 0) {
                 List<String> actionsInfo = generateActionIDByActions(possibleActions);
                 virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
             }

@@ -66,10 +66,11 @@ public class ClientView implements Runnable {
         }
         catch (ClassNotFoundException e) {
             System.err.println("The class ServerToClientEvent has not been found!");
+            e.printStackTrace();
         }
         catch (IOException e) {
             System.err.println("There's an error while receiving a ServerToClientEvent, please fix me!");
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         finally {
             close();
@@ -113,6 +114,11 @@ public class ClientView implements Runnable {
 
     public synchronized Boolean getActive() {
         return this.isActive;
+    }
+
+
+    public synchronized void setActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
 

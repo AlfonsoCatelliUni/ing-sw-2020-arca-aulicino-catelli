@@ -48,21 +48,6 @@ public class DestroyEffect extends EffectDecorator {
     }
 
 
-    /**
-     * this overrides the super method until the player has to finish the turn
-     * With the finish action, the player could also have a destroy action to be used
-     */
-    @Override
-    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
-
-        Consequence consequence = super.build(designatedPawn, designatedCell, chosenLevel, buildings);
-
-        if (super.effect.getState().getClass().equals(FinishState.class)) {
-            changeState(new DestroyAndFinishState(this));
-        }
-
-        return consequence;
-    }
 
 
     @Override

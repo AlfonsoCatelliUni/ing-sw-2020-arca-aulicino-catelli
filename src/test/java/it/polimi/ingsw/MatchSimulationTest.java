@@ -698,4 +698,91 @@ public class MatchSimulationTest  {
 
     }
 
+
+    @Test
+    void MVCEndGame() {
+
+        MVCPreGameStartSetUp();
+
+        Card Ares = JsonHandler.deserializeCardList().get(9);
+
+        Card Charon = JsonHandler.deserializeCardList().get(10);
+
+        Card Zeus = JsonHandler.deserializeCardList().get(13);
+
+        controller.getPreGameLobby().getPickedCards().add(Ares);
+        controller.getPreGameLobby().getPickedCards().add(Charon);
+        controller.getPreGameLobby().getPickedCards().add(Zeus);
+
+
+        controller.getPreGameLobby().getPickedCards().add(Ares);
+        controller.getPreGameLobby().getPickedCards().add(Charon);
+        controller.getPreGameLobby().getPickedCards().add(Zeus);
+
+
+        virtualView.update(new ChosenCardEvent(player1,Ares.getName()));
+
+        virtualView.update(new ChosenCardEvent(player2,Charon.getName()));
+
+        virtualView.update(new ChosenCardEvent(player3, Zeus.getName()));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,1,1));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player2, 2,2,3,3));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player3, 4,4,2,3));
+
+        List<Building> buildings = controller.getGame().getGameBoard().getBuildings();
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ 0  ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ S0 ║ m0 ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ s0 ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ M0 ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+
+      */
+
+        //player1's turn
+
+        virtualView.update(new ChosenPawnToUseEvent(player1,0,0));
+
+        virtualView.update(new ChosenMoveActionEvent(player1, "Move", 0,0));
+
+        virtualView.update(new ChosenCellToMoveEvent(player1, 0,0,0,1));
+
+        virtualView.update(new ChosenBuildActionEvent(player1, "Build", 0,1));
+
+        virtualView.update(new ChosenCellToBuildEvent(player1, 0,1,1,0));
+
+        virtualView.update(new ChosenBuildingEvent(player1,1,0,1,1,0));
+
+        retActions = controller.getGame().getPossibleActions(player1, 0,1);
+
+        virtualView.update(new ChosenFinishActionEvent(player1, "End turn"));
+
+        System.out.println(player1 + " reset his state");
+
+
+        //player2's turn
+
+        virtualView.update(new ChosenPawnToUseEvent(player2, 3,3));
+
+        virtualView.update(new ChosenForceActionEvent(player2, "Force", 3,3));
+
+        virtualView.update(new ChosenCellToForceEvent(player2,3,3,2,3));
+
+
+
+    }
+
 }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.ForceAndMoveState;
+import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,18 @@ public class CanForceEffect extends EffectDecorator {
                     opponentNeighboringCell.add(c);
         }
         return opponentNeighboringCell;
+    }
+
+    @Override
+    public void force(Pawn designatedPawn, Cell nextPosition) {
+
+        super.force(designatedPawn, nextPosition);
+
+        if(this.effect.getState().getClass().equals(ForceAndMoveState.class)) {
+
+            this.effect.changeState(new MoveState(this));
+
+        }
     }
 
     @Override

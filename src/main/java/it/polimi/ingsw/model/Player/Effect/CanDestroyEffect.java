@@ -1,8 +1,12 @@
 package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Board.Board;
+import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.DestroyAndFinishState;
+import it.polimi.ingsw.model.Player.State.FinishState;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,6 +35,23 @@ public class CanDestroyEffect extends EffectDecorator {
         return wherePawnCanBuild(gameBoard, designatedPawn).stream().filter(cell -> cell.getHeight() > 0).collect(Collectors.toList());
 
     }
+
+    /**
+     * this overrides the super method until the player has to finish the turn
+     * With the finish action, the player could also have a destroy action to be used
+     */
+    @Override
+    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
+
+        Consequence consequence = super.build(designatedPawn, designatedCell, chosenLevel, buildings);
+
+        if (super.effect.getState().getClass().equals(FinishState.class)) {
+            changeState(new DestroyAndFinishState(this));
+        }
+
+        return consequence;
+    }
+
 
     @Override
     public Effect clone() {

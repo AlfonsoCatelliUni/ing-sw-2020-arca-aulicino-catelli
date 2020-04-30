@@ -55,13 +55,11 @@ public class DestroyEffect extends EffectDecorator {
     @Override
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        Consequence consequence = super.build(designatedPawn, designatedCell, chosenLevel, buildings);
-
         if (super.effect.getState().getClass().equals(FinishState.class)) {
             changeState(new DestroyAndFinishState(this));
         }
 
-        return consequence;
+        return super.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
 
 

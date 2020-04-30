@@ -9,14 +9,14 @@
 
 | Functionality | State |
 |:-----------------------|:------------------------------------:|
-| Basic Rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Complete Rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
-| Socket | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| GUI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| CLI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Multiple Games | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Complete Rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Socket | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| Advanced Gods | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Basic Rules | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| GUI | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+| Advanced Gods | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 
 

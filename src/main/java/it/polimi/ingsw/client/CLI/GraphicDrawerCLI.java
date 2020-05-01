@@ -99,6 +99,7 @@ public class GraphicDrawerCLI {
 
 
     public void draw() {
+        clearScreen();
         clear();
         drawPlayersPanel();
         drawChoicePanel();

@@ -42,9 +42,10 @@ public class PushEffect extends EffectDecorator {
 
             resultAction = super.move(gameBoard, designatedPawn, nextPosition);
 
-            super.force(gameBoard, oppPawn, oppCell);
-
             placePawn(gameBoard, oppPawn, oppCell);
+            oppPawn.forcePawn(oppCell);
+
+
 
         }
         else {

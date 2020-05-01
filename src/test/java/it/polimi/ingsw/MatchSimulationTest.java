@@ -641,7 +641,7 @@ public class MatchSimulationTest  {
 
            */
 
-        retActions = controller.getGame().getPossibleActions(player1, 1,2);
+        retActions = controller.getGame().getPossibleActions(player1, 2,0);
         correctActions.clear();
         correctActions.add(new BuildAction());
         Assert.assertEquals(correctActions.size(), retActions.size());

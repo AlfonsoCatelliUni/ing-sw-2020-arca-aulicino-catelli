@@ -186,8 +186,6 @@ class GameTest {
         String provaJson;
         game.initializePawn("Alfonso", 0,0);
 
-        game.pawnBuild("Alfonso", 0,0,1,0,1);
-
         provaJson = game.generateStatusJson();
         System.out.println(provaJson);
 
@@ -206,6 +204,8 @@ class GameTest {
 
         provaJson = game.generateStatusJson();
         System.out.println(provaJson);
+
+        assertNotEquals("",provaJson);
 
     }
 

@@ -39,9 +39,9 @@ public class SwitchEffect extends  EffectDecorator {
 
             resultAction = super.move(gameBoard, designatedPawn, nextPosition);
 
-            super.force(gameBoard, opponentPawn, myPawnCell);
-
             placePawn(gameBoard, opponentPawn, myPawnCell);
+            opponentPawn.forcePawn(myPawnCell);
+
 
         }
         else {

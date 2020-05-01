@@ -254,32 +254,6 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    public void firstTurnGame() {
-
-        String firstPlayer = game.getPlayersNickname().get(0);
-
-        List<Cell> availablePawnsCell = game.getAvailablePawns(firstPlayer);
-
-        if (availablePawnsCell.size() == 0) {
-            virtualView.sendMessageTo(firstPlayer, new LosingByNoActionEvent(firstPlayer, "So Sad"));
-            game.removePlayer(firstPlayer);
-
-            List<Point> points = generatePointsByCells(game.getAvailablePawns(game.getCurrentPlayer().getName()));
-
-            //TODO : se è size = 0????
-            virtualView.sendMessageTo(game.getCurrentPlayer().getName(), new AskWhichPawnsUseEvent(game.getCurrentPlayer().getName(),true, points));
-        }
-        else {
-            List<Point> points = new ArrayList<>();
-            for (Cell c : availablePawnsCell){
-                points.add(new Point(c.getRowPosition(),c.getColumnPosition()));
-            }
-
-            virtualView.sendMessageTo(firstPlayer, new AskWhichPawnsUseEvent(firstPlayer, true, points));
-        }
-    }
-
-
     /**
      * this method takes in the player that has ended his turn, reset his status and
      * take the successor, calculate his available pawns then send theis coordinates
@@ -287,29 +261,54 @@ public class Controller implements Observer, ClientToServerManager {
      * if there are no pawns available notify the owner that he has loosed the game
      * because he can't do any action
      * @param nickname the nickname of the player that has ended his turn
+     * @param isLosingEnding this must be set true if the player "nickname" has lost the game,
+     *                       in this case before picking the next player, the method remove
+     *                       the losing player from the game info
+     *                       this must be set false if is a normal end of turn
      */
-    public void endTurn(String nickname) {
+    public void endTurn(String nickname, Boolean isLosingEnding) {
 
-        //game.newCurrentPlayer();
+        //reset status of the ending player
         game.resetPlayerStatus(nickname);
-        int index = game.getPlayersNickname().indexOf(nickname);
 
-        index++;
-        if( index >= game.getPlayersNickname().size() ) {
-            index = 0;
+        //takes the index, nickname and pawn of the next player that has to play his turn
+        int endingPlayerIndex = game.getPlayersNickname().indexOf(nickname) + 1;
+        int currentPlayerIndex = (endingPlayerIndex >= game.getPlayersNickname().size()) ? 0 : endingPlayerIndex;
+        String currentPlayerNickname = game.getPlayersNickname().get(currentPlayerIndex);
+        List<Point> currentPlayerAvailablePawns = generatePointsByCells(game.getAvailablePawns(currentPlayerNickname));
+
+        //if the player has ended his turn because he has lost then we send to him a losing message and remove his info from the game
+        if(isLosingEnding) {
+            virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "So Sad!"));
+            game.removePlayer(nickname);
         }
 
-        String nextPlayer = game.getPlayersNickname().get(index);
+        while(currentPlayerAvailablePawns.size() == 0 && game.getPlayersNickname().size() > 1) {
 
-        List<Point> points = generatePointsByCells(game.getAvailablePawns(nextPlayer));
+            //send the message that the current player has lost the game because he can't do any action
+            virtualView.sendMessageTo(currentPlayerNickname, new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
 
-        if (points.size() == 0) {
-            virtualView.sendMessageTo(nextPlayer, new LosingByNoActionEvent(nextPlayer, "So Sad"));
-            game.removePlayer(nextPlayer);
+            //save the nickname of the loser player
+            String loserPlayer = currentPlayerNickname;
+            endingPlayerIndex = game.getPlayersNickname().indexOf(currentPlayerNickname) + 1;
+
+            //loads the index, nickname and pawn of the next player
+            currentPlayerIndex = (endingPlayerIndex >= game.getPlayersNickname().size()) ? 0 : endingPlayerIndex;
+            currentPlayerNickname = game.getPlayersNickname().get(currentPlayerIndex);
+            currentPlayerAvailablePawns = generatePointsByCells(game.getAvailablePawns(currentPlayerNickname));
+
+            //remove the loser player
+            game.removePlayer(loserPlayer);
+        }
+
+        //if there's only one player we have to notify him with a victory event and return because doesn't need his next actions
+        if( game.getPlayersNickname().size() == 1 ) {
+            manageEvent( new VictoryEvent(game.getPlayersNickname().get(0)) );
             return;
         }
 
-        virtualView.sendMessageTo(nextPlayer, new AskWhichPawnsUseEvent(nextPlayer, true, points));
+        virtualView.sendMessageTo(currentPlayerNickname, new AskWhichPawnsUseEvent(currentPlayerNickname, true, currentPlayerAvailablePawns));
+
     }
 
 
@@ -328,7 +327,8 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
-    public void endGame(String winner){
+
+    public void endGame(String winner) {
 
         Player winnerPlayer = game.getPlayerByName(winner);
 
@@ -341,6 +341,33 @@ public class Controller implements Observer, ClientToServerManager {
         // a new preGameLobby to handler new connections
         this.preGameLobby = new PreGameLobby();
 
+
+    }
+
+
+    /**
+     * this method takes in the nickname of the player we want to know the new possible actions,
+     * if this player has some new actions then we send them to him, in case the player doesn't have
+     * any type of action then he lose the game
+     * @param nickname the nickname of the player that wants his next actions
+     * @param pawnRow the row of the pawn of the player that wants to know the new actions
+     * @param pawnColumn the row of the column of the player that wants to know the new actions
+     */
+    public void newPossibleActions(String nickname, int pawnRow, int pawnColumn) {
+
+        //take the possible actions of the player with "nickname" for the pawn in (pawnRow, pawnColumn)
+        List <Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);
+
+        //if there is at least one possible action then we have to send to the player
+        if (possibleActions.size() > 0) {
+            //trasnform the actions into string and then send
+            List<String> actionsInfo = generateActionIDByActions(possibleActions);
+            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
+        }
+        //if the player have no possible action then he lose the game and pass the turn to the next player
+        else {
+            endTurn(nickname, true);
+        }
 
     }
 
@@ -577,7 +604,7 @@ public class Controller implements Observer, ClientToServerManager {
             else {
                 //firstTurnGame();
                 index--;
-                endTurn(game.getPlayersNickname().get(index));
+                endTurn(game.getPlayersNickname().get(index), false);
             }
         }
         else {
@@ -767,7 +794,7 @@ public class Controller implements Observer, ClientToServerManager {
         String chosenAction = event.action;
 
         if( game.isValid(chosenAction) ) {
-            endTurn(event.playerNickname);
+            endTurn(event.playerNickname, false);
         }
         else {
             List<String> actionsInfo = generateActionIDByActions((game.getLastActionsList()));
@@ -782,29 +809,29 @@ public class Controller implements Observer, ClientToServerManager {
 
         String nickname = event.playerNickname;
 
-        int row = event.pawnRow;
-        int column = event.pawnColumn;
+        int pawnRow = event.pawnRow;
+        int pawnColumn = event.pawnColumn;
 
         int nextRow = event.nextRow;
         int nextColumn = event.nextColumn;
 
-        if( game.isValid(nextRow, nextColumn) && game.isValidPawn(nickname, row, column)) {
+        if( game.isValid(nextRow, nextColumn) && game.isValidPawn(nickname, pawnRow, pawnColumn)) {
 
             //THAT'S IMPORTANT!
-            game.movePawn(nickname, row, column, nextRow, nextColumn);
+            game.movePawn(nickname, pawnRow, pawnColumn, nextRow, nextColumn);
 
-            List<Action> availableActions = game.getPossibleActions(nickname, nextRow, nextColumn);
-            if(availableActions.size() > 0) {
-                List<String> actionsInfo = generateActionIDByActions(availableActions);
-                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
-            }
-            else {
-                virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "OMG! YOU ARE SO BAD AT THIS GAME! LOSER!"));
-                game.removePlayer(nickname);
-            }
+            newPossibleActions(nickname, pawnRow, pawnColumn);
+//            List<Action> availableActions = game.getPossibleActions(nickname, nextRow, nextColumn);
+//            if(availableActions.size() > 0) {
+//                List<String> actionsInfo = generateActionIDByActions(availableActions);
+//                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
+//            }
+//            else {
+//                endTurn(nickname, true);
+//            }
         }
         else {
-            List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
+            List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, pawnRow, pawnColumn);
             List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
@@ -864,10 +891,15 @@ public class Controller implements Observer, ClientToServerManager {
 
             game.destroyBlock(nickname, row, column);
 
-            List<Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );
-            List<String> actionsID = generateActionIDByActions(possibleActions);
-
-            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );
+            newPossibleActions(nickname, pawnRow, pawnColumn);
+//            List<Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );
+//            if(possibleActions.size() > 0) {
+//                List<String> actionsInfo = generateActionIDByActions(possibleActions);
+//                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
+//            }
+//            else {
+//                endTurn(nickname, true);
+//            }
 
         } else {
             List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
@@ -919,15 +951,15 @@ public class Controller implements Observer, ClientToServerManager {
             // IMPORTANT
             game.pawnBuild(nickname, pawnRow, pawnColumn, buildRow, buildColumn, level);
 
-            List <Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);
-            if (possibleActions.size() > 0) {
-                List<String> actionsInfo = generateActionIDByActions(possibleActions);
-                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
-            }
-            else {
-                virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "So sad bro"));
-                game.removePlayer(nickname);
-            }
+            newPossibleActions(nickname, pawnRow, pawnColumn);
+//            List <Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);
+//            if (possibleActions.size() > 0) {
+//                List<String> actionsInfo = generateActionIDByActions(possibleActions);
+//                virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
+//            }
+//            else {
+//                endTurn(nickname, true);
+//            }
         }
         else {
             List<Building> availableBuildings = game.getPossibleBuildingOnCell(nickname, buildRow, buildColumn);
@@ -961,6 +993,7 @@ public class Controller implements Observer, ClientToServerManager {
         return new Point(c.getRowPosition(), c.getColumnPosition());
     }
 
+
     public List<Point> generatePointsByCells(List<Cell> cells){
 
         List <Point> points = new ArrayList<>();
@@ -972,12 +1005,14 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
+
     public List<String> generateActionIDByActions(List<Action> actions){
         List<String> actionsID = new ArrayList<>();
         for (Action a : actions)
             actionsID.add(a.getActionID());
         return actionsID;
     }
+
 
     public List<Integer> generateLevelByBuilding(List<Building> buildings){
         List<Integer> levels = new ArrayList<>();

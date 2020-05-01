@@ -5,7 +5,6 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Consequence.NoConsequence;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class BuildUnderItselfEffect extends EffectDecorator {
 
         //if i build under myself I have to force myself up one level
         if(designatedCell.equals(designatedPawn.getPosition())) {
-            force(designatedPawn, designatedCell);
+            designatedPawn.forcePawn(designatedCell);
         }
         return new NoConsequence();
     }

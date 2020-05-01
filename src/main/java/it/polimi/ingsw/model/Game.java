@@ -4,10 +4,8 @@ import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
 import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
-import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.model.Consequence.*;
 import it.polimi.ingsw.model.Player.Effect.BasicEffect;
-import it.polimi.ingsw.model.Player.Effect.Effect;
 import it.polimi.ingsw.model.Player.Effect.NotMoveUpEffect;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.model.Actions.*;
@@ -19,7 +17,6 @@ import it.polimi.ingsw.view.server.VirtualView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -324,7 +321,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         Player player = getPlayerByName(playerName);
 
-        player.force(gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
+        player.force(gameBoard, gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);
 
         updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }

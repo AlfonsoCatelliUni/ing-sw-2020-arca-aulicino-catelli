@@ -73,7 +73,7 @@ public interface Effect extends Cloneable {
     Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings);
 
 
-    void force(Pawn designatedPawn, Cell nextPosition);
+    void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
 
 
     void destroy(Cell designatedCell, List<Building> buildings);

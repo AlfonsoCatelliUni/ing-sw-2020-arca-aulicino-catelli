@@ -42,10 +42,17 @@ public class CanForceEffect extends EffectDecorator {
         return opponentNeighboringCell;
     }
 
+    /**
+     * this method force the designatedPawn to the nextPosition base on the symmetrical force,
+     * then changes the state of the player to a MoveState
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn to be forced
+     * @param nextPosition is the next position of the opponent's pawn
+     */
     @Override
-    public void force(Pawn designatedPawn, Cell nextPosition) {
+    public void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        super.force(designatedPawn, nextPosition);
+        super.force(gameBoard, designatedPawn, nextPosition);
 
         if(this.effect.getState().getClass().equals(ForceAndMoveState.class)) {
 

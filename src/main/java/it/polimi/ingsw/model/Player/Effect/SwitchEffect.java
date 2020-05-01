@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.State.MoveState;
 
 public class SwitchEffect extends  EffectDecorator {
 
@@ -40,7 +39,7 @@ public class SwitchEffect extends  EffectDecorator {
 
             resultAction = super.move(gameBoard, designatedPawn, nextPosition);
 
-            super.force(opponentPawn, myPawnCell);
+            super.force(gameBoard, opponentPawn, myPawnCell);
 
             placePawn(gameBoard, opponentPawn, myPawnCell);
 

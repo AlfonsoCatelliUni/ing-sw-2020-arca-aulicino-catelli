@@ -108,7 +108,7 @@
     "available3P": true,
     "effect": "Your Build: Your Worker may build a block under itself.",
     "listEffects": [
-      "CanBuildUnderItselfEffect"
+      "BuildUnderItselfEffect", "CanBuildUnderItselfEffect"
     ]
   }
 ]

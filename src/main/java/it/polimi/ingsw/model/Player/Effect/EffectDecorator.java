@@ -107,8 +107,8 @@ public class EffectDecorator implements Effect {
 
 
     @Override
-    public void force(Pawn designatedPawn, Cell nextPosition) {
-        this.effect.force(designatedPawn, nextPosition);
+    public void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+        this.effect.force(gameBoard, designatedPawn, nextPosition);
     }
 
 

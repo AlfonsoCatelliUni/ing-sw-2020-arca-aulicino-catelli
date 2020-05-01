@@ -219,12 +219,18 @@ public class BasicEffect implements Effect {
 
     /**
      * this method forces the pawn and return void because there is no consequence (victory or block) if you force a pawn
+     * @param gameBoard is the board where the game is played
      * @param designatedPawn the pawn forced
      * @param nextPosition the cell where the pawn is forced to
      */
     @Override
-    public void force(Pawn designatedPawn, Cell nextPosition) {
+    public void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+
+        removePawn(gameBoard, designatedPawn);
+
+        placePawn(gameBoard, designatedPawn, nextPosition);
         designatedPawn.forcePawn(nextPosition);
+
     }
 
 

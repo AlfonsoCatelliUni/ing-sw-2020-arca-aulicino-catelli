@@ -2,7 +2,9 @@ package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
+import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Player.Pawn;
+import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.ForceAndMoveState;
 import it.polimi.ingsw.model.Player.State.MoveState;
 
@@ -42,16 +44,36 @@ public class CanForceEffect extends EffectDecorator {
         return opponentNeighboringCell;
     }
 
+    /**
+     * this method force the designatedPawn to the nextPosition base on the symmetrical force,
+     * then changes the state of the player to a MoveState
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn to be forced
+     * @param nextPosition is the next position of the opponent's pawn
+     */
     @Override
-    public void force(Pawn designatedPawn, Cell nextPosition) {
+    public void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 
-        super.force(designatedPawn, nextPosition);
+        super.force(gameBoard, designatedPawn, nextPosition);
 
         if(this.effect.getState().getClass().equals(ForceAndMoveState.class)) {
 
             this.effect.changeState(new MoveState(this));
 
         }
+    }
+
+    @Override
+    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+
+        Consequence consequence = super.move(gameBoard, designatedPawn, nextPosition);
+
+        if (this.effect.getState().getClass().equals(ForceAndMoveState.class)) {
+
+            this.effect.changeState(new BuildState(this));
+        }
+
+        return consequence;
     }
 
     @Override

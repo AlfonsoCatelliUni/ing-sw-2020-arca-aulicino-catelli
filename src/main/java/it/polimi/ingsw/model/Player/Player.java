@@ -227,11 +227,12 @@ public class Player {
 
     /**
      * this method only calls the force of its effect
+     * @param gameBoard is the board where the game is played
      * @param designatedPawn the pawn that I'm forcing
      * @param designatedCell its next cell
      */
-    public void force(Pawn designatedPawn, Cell designatedCell) {
-        this.effect.force(designatedPawn, designatedCell);
+    public void force(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
+        this.effect.force(gameBoard, designatedPawn, designatedCell);
     }
 
 

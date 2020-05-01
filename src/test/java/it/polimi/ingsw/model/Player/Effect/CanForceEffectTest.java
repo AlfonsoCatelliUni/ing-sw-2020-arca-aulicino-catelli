@@ -80,7 +80,5 @@ class CanForceEffectTest {
         assertEquals(0, possibleCells.size());
 
 
-
-
     }
 }

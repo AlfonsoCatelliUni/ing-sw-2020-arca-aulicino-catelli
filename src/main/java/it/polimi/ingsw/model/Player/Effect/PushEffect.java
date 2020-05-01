@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.Consequence.Consequence;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Pawn;
-import it.polimi.ingsw.model.Player.State.MoveState;
 
 public class PushEffect extends EffectDecorator {
 
@@ -43,7 +42,7 @@ public class PushEffect extends EffectDecorator {
 
             resultAction = super.move(gameBoard, designatedPawn, nextPosition);
 
-            super.force(oppPawn, oppCell);
+            super.force(gameBoard, oppPawn, oppCell);
 
             placePawn(gameBoard, oppPawn, oppCell);
 

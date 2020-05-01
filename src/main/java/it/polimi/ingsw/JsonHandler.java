@@ -77,6 +77,8 @@ public class JsonHandler {
 
         effectsMap.put("CanBuildUnderItselfEffect", new CanBuildUnderItselfEffect(new BasicEffect()));
 
+        effectsMap.put("BuildUnderItselfEffect", new BuildUnderItselfEffect(new BasicEffect()));
+
         return effectsMap;
     }
 

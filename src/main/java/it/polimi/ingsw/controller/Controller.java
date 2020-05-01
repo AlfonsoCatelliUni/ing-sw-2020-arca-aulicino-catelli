@@ -268,6 +268,9 @@ public class Controller implements Observer, ClientToServerManager {
      */
     public void endTurn(String nickname, Boolean isLosingEnding) {
 
+        Player playerWhoEndedTurn = game.getCurrentPlayer();
+        game.newCurrentPlayer();
+
         //reset status of the ending player
         game.resetPlayerStatus(nickname);
 
@@ -338,13 +341,10 @@ public class Controller implements Observer, ClientToServerManager {
 
         virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));
 
-
-
         game = null;
 
         // a new preGameLobby to handler new connections
         this.preGameLobby = new PreGameLobby();
-
 
     }
 
@@ -370,7 +370,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         //if there is at least one possible action then we have to send to the player
         if (possibleActions.size() > 0) {
-            //trasnform the actions into string and then send
+            //transform the actions into string and then send
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
             virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
         }
@@ -481,7 +481,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
         //the player lost the game and decided to quit
-        else if(!game.getPlayersNickname().contains(event.playerNickname)){
+        else if(game != null && !game.getPlayersNickname().contains(event.playerNickname)){
 
             virtualView.removeNicknameIDConnection(event.ID);
 
@@ -541,48 +541,6 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
-
-    // TODO : vedere se far rigiocare o meno e in che modo:
-    @Override
-    public void manageEvent(PlayAgainEvent event) {
-
-        String nickname = event.nickname;
-
-        if (!preGameLobby.isClosed()) {
-
-            preGameLobby.addPlayer(nickname);
-
-            List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
-
-            if (connectedPlayers.size() == 1) {
-
-                virtualView.sendMessageTo(nickname, new PlainTextEvent("you are in the lobby again!"));
-                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
-                virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
-                countdownStart();
-            }
-            //if the waitingRoom is filled than we broadcast a message that communicates this event
-            else if (connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {
-
-                virtualView.sendMessageTo(nickname, new PlainTextEvent("you are in the lobby again!"));
-                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
-
-                closeGameLobby();
-
-            }
-            //if is an intermediate connection than nothing happens
-            else {
-                virtualView.sendMessageTo(nickname, new PlainTextEvent("you are in the lobby again!"));
-                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
-            }
-        }
-        //if the waitingRoom is already closed than we disconnect the player
-        else {
-            virtualView.sendMessageTo(nickname, new PlainTextEvent("you were too late!"));
-            virtualView.sendMessageTo(nickname, new UnableToEnterWaitingRoomEvent());
-        }
-
-    }
 
 
     // MARK : Game Based Event Manager Section ======================================================================================
@@ -983,15 +941,7 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(VictoryEvent event) {
 
-        Player winnerPlayer = game.getPlayerByName(event.winnerNickname);
-
-       // TODO : controllare
-
-        virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));
-
-        //virtualView.sendMessage(new DisconnectionClientEvent());
-
-
+       endGame(event.winnerNickname);
 
     }
 

@@ -43,9 +43,13 @@ class NotMoveBackEffectTest {
     @Test
     void wherePawnCanMove() {
 
+
+
         player.move(gameBoard, gameBoard.getPawnByCoordinates(0,0), gameBoard.getCell(1,1));
 
         availableCellsToMove = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(1,1));
+
+        player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(1,1));
 
         correctListAvailableCellsMove.add(gameBoard.getCell(2,0));
         correctListAvailableCellsMove.add(gameBoard.getCell(0,1));

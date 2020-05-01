@@ -45,6 +45,7 @@ class DestroyEffectTest {
 
 
         alfoEffect = new BasicEffect();
+        alfoEffect = new CanDestroyEffect(alfoEffect);
         alfoEffect = new DestroyEffect(alfoEffect);
         alfoCard = new Card("destroy_card", true, "destroy_effect");
 
@@ -71,6 +72,8 @@ class DestroyEffectTest {
         alfoPlayer.move(gameBoard, alfoPlayer.getPawnInCoordinates(2,3), gameBoard.getCell(3,3));
 
         alfoPlayer.build(gameBoard.getPawnByCoordinates(3,3), gameBoard.getCell(3,4), 1, buildings);
+
+        alfoPlayer.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(3,3));
 
         //A pawn wants to destroy the third level of a tower
         gameBoard.getCell(2,2).buildOnThisCell(buildings.get(0));

@@ -366,13 +366,13 @@ public class Game extends Observable implements GameConsequenceHandler {
         playersNickname.removeIf(p -> p.equals(playerName));
 
         //pick the next player
-        nextCurrentPlayer();
-        currentPlayer = players.get(indexCurrentPlayer);
+//        nextCurrentPlayer();
+//        currentPlayer = players.get(indexCurrentPlayer);
 
         //if there's only one player, this player is the winner
-        if( players.size() == 1 ) {
-            receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
-        }
+//        if( players.size() == 1 ) {
+//            receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
+//        }
 
         updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }

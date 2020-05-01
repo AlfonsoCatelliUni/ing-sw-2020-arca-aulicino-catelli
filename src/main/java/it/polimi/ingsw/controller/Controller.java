@@ -292,13 +292,17 @@ public class Controller implements Observer, ClientToServerManager {
             String loserPlayer = currentPlayerNickname;
             endingPlayerIndex = game.getPlayersNickname().indexOf(currentPlayerNickname) + 1;
 
+
             //loads the index, nickname and pawn of the next player
             currentPlayerIndex = (endingPlayerIndex >= game.getPlayersNickname().size()) ? 0 : endingPlayerIndex;
             currentPlayerNickname = game.getPlayersNickname().get(currentPlayerIndex);
-            currentPlayerAvailablePawns = generatePointsByCells(game.getAvailablePawns(currentPlayerNickname));
 
             //remove the loser player
             game.removePlayer(loserPlayer);
+
+            currentPlayerAvailablePawns = generatePointsByCells(game.getAvailablePawns(currentPlayerNickname));
+
+
         }
 
         //if there's only one player we have to notify him with a victory event and return because doesn't need his next actions
@@ -820,7 +824,7 @@ public class Controller implements Observer, ClientToServerManager {
             //THAT'S IMPORTANT!
             game.movePawn(nickname, pawnRow, pawnColumn, nextRow, nextColumn);
 
-            newPossibleActions(nickname, pawnRow, pawnColumn);
+            newPossibleActions(nickname, nextRow, nextColumn);
 //            List<Action> availableActions = game.getPossibleActions(nickname, nextRow, nextColumn);
 //            if(availableActions.size() > 0) {
 //                List<String> actionsInfo = generateActionIDByActions(availableActions);

@@ -1285,7 +1285,6 @@ public class MatchSimulationTest  {
         System.out.println(player1 + " should have won the game");
 
 
-
     }
 
 }

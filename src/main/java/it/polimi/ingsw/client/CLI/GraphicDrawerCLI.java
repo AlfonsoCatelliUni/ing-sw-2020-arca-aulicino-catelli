@@ -77,22 +77,22 @@ public class GraphicDrawerCLI {
      */
 
 
-    public static void main(String[] args) {
-        GraphicDrawerCLI cli = new GraphicDrawerCLI();
-
-        cli.show();
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        cli.clearScreen();
-
-        //cli.fillTest();
-        cli.show();
-    }
+//    public static void main(String[] args) {
+//        GraphicDrawerCLI cli = new GraphicDrawerCLI();
+//
+//        cli.show();
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        cli.clearScreen();
+//
+//        //cli.fillTest();
+//        cli.show();
+//    }
 
 
     // ======================================================================================

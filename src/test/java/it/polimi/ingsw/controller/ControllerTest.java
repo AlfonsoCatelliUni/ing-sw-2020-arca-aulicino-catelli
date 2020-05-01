@@ -68,25 +68,6 @@ class ControllerTest {
     }
 
 
-    @Test
-    void manageEvent(NewConnectionEvent uselessEvent) {
-
-        /* first player connecting */
-
-        ClientToServerEvent event = new NewConnectionEvent(1, "Alfonso");
-
-        controller.receiveEvent(event);
-
-
-
-    }
-
-
-    @Test
-    void manageEvent(ChosenCellToMoveEvent uselessEvent) {
-    }
-
-
     // MARK : Test for Json Generator ======================================================================================
 
 

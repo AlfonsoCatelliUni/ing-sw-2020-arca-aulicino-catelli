@@ -359,8 +359,14 @@ public class Controller implements Observer, ClientToServerManager {
      */
     public void newPossibleActions(String nickname, int pawnRow, int pawnColumn) {
 
+        List<Action> possibleActions = new ArrayList<>();
+
         //take the possible actions of the player with "nickname" for the pawn in (pawnRow, pawnColumn)
-        List <Action> possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);
+        try {
+            possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);
+        } catch (NullPointerException e) {
+            return;
+        }
 
         //if there is at least one possible action then we have to send to the player
         if (possibleActions.size() > 0) {

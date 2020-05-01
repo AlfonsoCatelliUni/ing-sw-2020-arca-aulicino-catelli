@@ -323,7 +323,6 @@ public class CLI implements ServerToClientManager {
         int maleRowPosition = freeCells.get(selectedMale).x;
         int maleColumnPosition = freeCells.get(selectedMale).y;
 
-
         freeCells.remove(selectedMale);
         do {
 
@@ -748,6 +747,8 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
 
+        List<String> actions = new ArrayList<>();
+
         drawer.saveTitleChoicePanel("----------------------- you have lost the game! -----------------------");
 
         List<String> actionsAfterLosing = event.actionsAfterLosing;
@@ -785,6 +786,11 @@ public class CLI implements ServerToClientManager {
 
         }
 
+
+        actions.add("If you want to play again you have to reconnect to the server!");
+        actions.add("paypal email for donations : alfonsocatelli@gmail.com");
+
+        drawer.saveActionsChoicesValue(actions);
 
         drawer.show();
     }

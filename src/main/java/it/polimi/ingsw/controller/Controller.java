@@ -364,7 +364,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         //if there is at least one possible action then we have to send to the player
         if (possibleActions.size() > 0) {
-            //trasnform the actions into string and then send
+            //transform the actions into string and then send
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
             virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
         }
@@ -977,14 +977,7 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(VictoryEvent event) {
 
-        Player winnerPlayer = game.getPlayerByName(event.winnerNickname);
-
-       // TODO : controllare
-
-        virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));
-
-        //virtualView.sendMessage(new DisconnectionClientEvent());
-
+        endGame(event.winnerNickname);
 
 
     }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Consequence.BlockConsequence;
 import it.polimi.ingsw.model.Board.Board;
@@ -30,32 +31,23 @@ class GameTest {
 
     @BeforeEach
     void setUp() {
-        // TODO: fixare il construttore di test
 
-        game = new Game("Alfonso", "Massi");
-        Board gameBoard = new Board();
-        buildings = gameBoard.getBuildings();
+        Card alfoCard = JsonHandler.deserializeCardList().get(0);
+        alfoPlayer = new Player("Alfonso", Color.BLUE, alfoCard, alfoCard.getBaseEffect());
 
 
-        Effect alfoEffect = new BasicEffect();
-        alfoEffect = new CanPushOpponentEffect(new SwitchEffect(alfoEffect));
-        Card alfoCard = new Card("switch_card", true, "switch_effect");
-
-        alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
+        Card massiCard = JsonHandler.deserializeCardList().get(1);
+        massiPlayer = new Player("massi", Color.GREY, massiCard, massiCard.getBaseEffect());
 
 
-        Effect massiEffect = new BasicEffect();
-        massiEffect = new CanPushOpponentEffect(new PushEffect(massiEffect));
-        Card massiCard = new Card("massi_card", true, "massi_effect");
+        Card giammaCard = JsonHandler.deserializeCardList().get(2);
+        giammaPlayer = new Player("giammi", Color.WHITE, giammaCard, giammaCard.getBaseEffect());
 
-        massiPlayer = new Player("massi", Color.GREY, massiCard, massiEffect);
+        game = new Game(alfoPlayer, massiPlayer);
+
+        buildings = game.getGameBoard().getBuildings();
 
 
-        Effect giammaEffect = new BasicEffect();
-        giammaEffect = new BlockOpponentEffect(giammaEffect);
-        Card giammaCard = new Card("giammi_card", true, "giammi_effect");
-
-        giammaPlayer = new Player("giammi", Color.WHITE, giammaCard, giammaEffect);
 
     }
 
@@ -118,6 +110,7 @@ class GameTest {
         gameTest2.initializePawn(alfoPlayer.getName(), 0,1);
 
         gameTest2.initializePawn(massiPlayer.getName(), 0,4);
+        gameTest2.initializePawn(massiPlayer.getName(), 2,2);
 
         for(Effect e = alfoPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
             assertNotEquals(NotMoveUpEffect.class, e.getClass());
@@ -329,9 +322,9 @@ class GameTest {
 
         game.getPossibleActions("Alfonso", 0,0 );
 
-        assertTrue(game.isValid("move"));
+        assertTrue(game.isValid("Move"));
 
-        assertFalse(game.isValid("finish"));
+        assertFalse(game.isValid("End turn"));
 
 
 

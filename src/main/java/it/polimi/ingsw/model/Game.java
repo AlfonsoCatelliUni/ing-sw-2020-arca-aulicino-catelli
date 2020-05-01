@@ -775,6 +775,10 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.players = new ArrayList<>();
         this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
+        this.playersNickname = new ArrayList<>();
+
+        playersNickname.add(player.getName());
+        playersNickname.add(opponent.getName());
 
         players.add(player);
         players.add(opponent);

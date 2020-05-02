@@ -14,7 +14,6 @@ import it.polimi.ingsw.view.client.ClientView;
 import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -86,16 +85,14 @@ public class CLI implements ServerToClientManager {
 
     public void run() {
 
-
-
-        System.out.print("Insert the server IP : ");
+        System.out.print("Insert the server IP: ");
         ipAddress = input.nextLine();
         if(ipAddress.equals("")) {
             ipAddress = "127.0.0.1";
         }
 
         while(!isValidIP(this.ipAddress)) {
-            System.out.print("Invalid IP, reinsert a new one : ");
+            System.out.print("Invalid IP, reinsert a new one: ");
             ipAddress = input.nextLine();
         }
 
@@ -145,12 +142,12 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(ConnectionEstablishedEvent event) {
 
-        System.out.println("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+        System.out.println("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ): ");
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
             System.err.println("Invalid Nickname !");
-            System.out.println("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            System.out.println("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ): ");
             nickname = input.nextLine();
         }
 
@@ -167,17 +164,20 @@ public class CLI implements ServerToClientManager {
 
         do {
 
-            System.out.println("Do you want a 2 or 3 players game ? ");
+            System.out.println("Do you want a 2 or 3 players game? ");
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number !");
+                System.err.println("Insert a Number!");
                 input.next();
 
-                System.out.println("Do you want a 2 or 3 players game ? ");
+                System.out.println("Do you want a 2 or 3 players game? ");
             }
             selectedNumberOfPlayer = input.nextInt();
 
         } while( !(selectedNumberOfPlayer == 2 || selectedNumberOfPlayer == 3) );
+
+        System.out.println("Please wait until the lobby is full...");
+
 
         clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, selectedNumberOfPlayer));
     }
@@ -188,7 +188,7 @@ public class CLI implements ServerToClientManager {
 
         this.nickname = event.nickname;
 
-        System.out.println("The temporary players are : ");
+        System.out.println("The temporary players are: ");
         for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
@@ -199,13 +199,13 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(UnavailableNicknameEvent event) {
 
-        System.out.println("This nickname is already used, please insert a new nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) :");
+        System.out.println("This nickname is already used, please insert a new nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ):");
 
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.err.println("Invalid Nickname !");
-            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            System.err.println("Invalid Nickname!");
+            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ): ");
             nickname = input.nextLine();
         }
 
@@ -237,7 +237,7 @@ public class CLI implements ServerToClientManager {
     public void manageEvent(OneClientDisconnectedEvent event) {
         System.out.println(event.disconnected + " is disconnected");
 
-        System.out.println("Players in lobby are now:");
+        System.out.println("Players in lobby are now: ");
         for (String p : event.connectedPlayers){
             System.out.println(p);
         }
@@ -312,13 +312,13 @@ public class CLI implements ServerToClientManager {
             drawer.show();
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number !");
+                System.err.println("Insert a Number!");
                 input.next();
             }
             selectedMale = input.nextInt();
 
             if(!(selectedMale >= 0 && selectedMale < freeCells.size()))
-                System.err.println("Choice Unavailable !");
+                System.err.println("Choice Unavailable!");
 
         } while( !(selectedMale >= 0 && selectedMale < freeCells.size()) );
 
@@ -334,13 +334,13 @@ public class CLI implements ServerToClientManager {
             drawer.show();
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number !");
+                System.err.println("Insert a Number!");
                 input.next();
             }
             selectedFemale = input.nextInt();
 
             if(!(selectedFemale >= 0 && selectedFemale < freeCells.size()))
-                System.err.println("Choice Unavailable !");
+                System.err.println("Choice Unavailable!");
 
         } while( !(selectedFemale >= 0 && selectedFemale < freeCells.size()) );
 
@@ -375,7 +375,7 @@ public class CLI implements ServerToClientManager {
             drawer.show();
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number !");
+                System.err.println("Insert a Number!");
                 drawer.show();
 
                 input.next();
@@ -383,7 +383,7 @@ public class CLI implements ServerToClientManager {
             selectedPawn = input.nextInt();
 
             if( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) ) {
-                System.err.println("Choice Unavailable !");
+                System.err.println("Choice Unavailable!");
             }
 
 
@@ -425,7 +425,7 @@ public class CLI implements ServerToClientManager {
 
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert a Number !");
+                System.err.println("Insert a Number!");
                 drawer.show();
 
                 input.next();
@@ -433,7 +433,7 @@ public class CLI implements ServerToClientManager {
             choiceNum = input.nextInt();
 
             if( !(choiceNum >= 0 && choiceNum < cardsName.size()) ) {
-                System.err.println("Choice Unavailable !");
+                System.err.println("Choice Unavailable!");
             }
 
         } while( !(choiceNum >= 0 && choiceNum < cardsName.size()) );
@@ -462,7 +462,7 @@ public class CLI implements ServerToClientManager {
         int indexChosenAction = -1;
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect.");
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
         drawer.saveTitleChoicePanel("choose your next action");
@@ -481,7 +481,7 @@ public class CLI implements ServerToClientManager {
             indexChosenAction = input.nextInt();
 
             if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
-                System.err.println("Choice Unavailable !");
+                System.err.println("Choice Unavailable!");
             }
 
         } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
@@ -518,7 +518,7 @@ public class CLI implements ServerToClientManager {
                 break;
 
             default:
-                throw new RuntimeException("Error while selecting the next action !");
+                throw new RuntimeException("Error while selecting the next action!");
 
             }
 
@@ -537,7 +537,7 @@ public class CLI implements ServerToClientManager {
 
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect.");
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
         drawer.saveTitleChoicePanel("choose the cell where you want to move");
@@ -547,7 +547,7 @@ public class CLI implements ServerToClientManager {
             drawer.show();
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert an Number !");
+                System.err.println("Insert an Number!");
                 drawer.show();
 
                 input.next();
@@ -555,7 +555,7 @@ public class CLI implements ServerToClientManager {
             selectedCell = input.nextInt();
 
             if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
-                System.err.println("Unavailable Choice !");
+                System.err.println("Unavailable Choice!");
             }
 
         } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
@@ -580,7 +580,7 @@ public class CLI implements ServerToClientManager {
 
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect.");
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
         drawer.saveTitleChoicePanel("choose the cell where you want to build");
@@ -590,7 +590,7 @@ public class CLI implements ServerToClientManager {
             drawer.show();
 
             while(!input.hasNextInt()) {
-                System.err.println("Insert an Number !");
+                System.err.println("Insert an Number!");
                 drawer.show();
 
                 input.next();
@@ -598,7 +598,7 @@ public class CLI implements ServerToClientManager {
             selectedCell = input.nextInt();
 
             if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
-                System.err.println("Unavailable Choice !");
+                System.err.println("Unavailable Choice!");
             }
 
         } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
@@ -619,7 +619,7 @@ public class CLI implements ServerToClientManager {
         int selectedLevel = 0;
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect.");
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
         //if there are more than one single options then I
@@ -641,7 +641,7 @@ public class CLI implements ServerToClientManager {
                 selectedLevel = input.nextInt();
 
                 if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
-                    System.err.println("Unavailable Choice !");
+                    System.err.println("Unavailable Choice!");
                 }
 
             } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );

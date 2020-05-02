@@ -210,7 +210,6 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     public void startGame (){
-    // TODO: vedere come gestire i vari costruttori
 
        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 

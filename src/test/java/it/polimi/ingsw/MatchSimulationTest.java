@@ -86,7 +86,7 @@ public class MatchSimulationTest  {
 
     }
 
-    @Test
+
     void MVCPreGameStartSetUp() {
 
 
@@ -117,6 +117,7 @@ public class MatchSimulationTest  {
 
 
     }
+
 
     @Test
     void MVCPreGameStart() {
@@ -198,6 +199,7 @@ public class MatchSimulationTest  {
       */
 
     }
+
 
     @Test
     void MVCGameStart() {
@@ -1290,6 +1292,7 @@ public class MatchSimulationTest  {
 
     }
 
+
     @Test
     void backToBackLoss() {
 
@@ -1412,5 +1415,32 @@ public class MatchSimulationTest  {
         virtualView.update(new ChosenBuildingEvent(player1, 4,0,1,0,2));
 
     }
+
+
+    @Test
+    void fakeLoss() {
+
+        MVCPreGameStartSetUp();
+
+        Card Artemis = JsonHandler.deserializeCardList().get(1);
+
+        Card Atlas = JsonHandler.deserializeCardList().get(3);
+
+        Card Zeus = JsonHandler.deserializeCardList().get(13);
+
+        controller.getPreGameLobby().getPickedCards().add(Artemis);
+        controller.getPreGameLobby().getPickedCards().add(Atlas);
+        controller.getPreGameLobby().getPickedCards().add(Zeus);
+
+        virtualView.update(new ChosenCardEvent(player1, Artemis.getName()));
+        virtualView.update(new ChosenCardEvent(player2, Atlas.getName()));
+        virtualView.update(new ChosenCardEvent(player3, Zeus.getName()));
+
+
+
+
+
+    }
+
 
 }

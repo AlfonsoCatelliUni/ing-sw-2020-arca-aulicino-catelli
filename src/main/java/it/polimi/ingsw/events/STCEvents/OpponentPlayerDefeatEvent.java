@@ -7,16 +7,25 @@ public class OpponentPlayerDefeatEvent  extends ServerToClientEvent {
 
     public String playersInGame;
 
-    public String looser;
+    public String loser;
 
-    public OpponentPlayerDefeatEvent(String playersInGame, String looser) {
+
+    // ======================================================================================
+
+
+    public OpponentPlayerDefeatEvent(String playersInGame, String loser) {
         this.playersInGame = playersInGame;
-        this.looser = looser;
+        this.loser = loser;
     }
+
+
+    // ======================================================================================
 
 
     @Override
     public void accept(ServerToClientManager visitor) {
         visitor.manageEvent(this);
     }
+
+
 }

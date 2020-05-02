@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.client.ClientJsonHandler;
+import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.events.CTSEvents.*;
@@ -12,9 +13,8 @@ import it.polimi.ingsw.view.client.ClientView;
 
 import java.awt.*;
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.Socket;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -86,6 +86,8 @@ public class CLI implements ServerToClientManager {
 
     public void run() {
 
+
+
         System.out.print("Insert the server IP : ");
         ipAddress = input.nextLine();
         if(ipAddress.equals("")) {
@@ -143,12 +145,12 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(ConnectionEstablishedEvent event) {
 
-        System.out.print("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+        System.out.println("Insert your nickname (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
             System.err.println("Invalid Nickname !");
-            System.out.print("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
+            System.out.println("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ) : ");
             nickname = input.nextLine();
         }
 
@@ -747,50 +749,61 @@ public class CLI implements ServerToClientManager {
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
 
+        String loser = event.nickname;
         List<String> actions = new ArrayList<>();
 
-        drawer.saveTitleChoicePanel("----------------------- you have lost the game! -----------------------");
+        if( this.nickname.equals(loser) ) {
 
-        List<String> actionsAfterLosing = event.actionsAfterLosing;
-        drawer.saveActionsChoicesValue(actionsAfterLosing);
+            drawer.saveTitleChoicePanel("----------------------- you have lost the game! -----------------------");
 
-        int indexChosenAction = -1;
+            List<String> actionsAfterLosing = event.actionsAfterLosing;
+            drawer.saveActionsChoicesValue(actionsAfterLosing);
+
+            int indexChosenAction = -1;
 
 
-        do {
-            drawer.show();
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
+            do {
                 drawer.show();
 
-                input.next();
+                while(!input.hasNextInt()) {
+                    System.err.println("Insert a Number!");
+                    drawer.show();
+
+                    input.next();
+                }
+                indexChosenAction = input.nextInt();
+
+                if( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) ) {
+                    System.err.println("Choice Unavailable !");
+                }
+
+            } while( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) );
+
+
+            switch (actionsAfterLosing.get(indexChosenAction)) {
+
+                case "Spectate Match":
+                    break;
+
+                case "Leave":
+                    manageEvent(new DisconnectionClientEvent());
+                    break;
+
             }
-            indexChosenAction = input.nextInt();
 
-            if( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) ) {
-                System.err.println("Choice Unavailable !");
-            }
+            actions.add("If you want to play again you have to reconnect to the server!");
+            actions.add("paypal email for donations : alfonsocatelli@gmail.com");
 
-        } while( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) );
-
-
-        switch (actionsAfterLosing.get(indexChosenAction)) {
-
-            case "Spectate Match":
-                break;
-
-            case "Leave":
-                manageEvent(new DisconnectionClientEvent());
-                break;
+            drawer.saveActionsChoicesValue(actions);
 
         }
+        // this client hasn't lost the game
+        else {
+            playersInfo.removeIf(p -> p.getNickname().equals(loser));
+            playersInfo.add(new FormattedPlayerInfo(loser, "LOSER", Couple.create("loser", "---------------------------------------------------------------------------------------")));
 
-
-        actions.add("If you want to play again you have to reconnect to the server!");
-        actions.add("paypal email for donations : alfonsocatelli@gmail.com");
-
-        drawer.saveActionsChoicesValue(actions);
+            drawer.saveInfoPlayerPanel(playersInfo);
+        }
 
         drawer.show();
     }
@@ -816,14 +829,6 @@ public class CLI implements ServerToClientManager {
         drawer.show();
 
         manageEvent(new DisconnectionClientEvent());
-
-//        new Timer().schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                manageEvent(new DisconnectionClientEvent());
-//            }
-//        }, 10000); // 10 seconds timer
-
 
     }
 

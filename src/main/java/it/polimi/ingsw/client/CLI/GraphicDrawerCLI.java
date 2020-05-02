@@ -22,6 +22,8 @@ public class GraphicDrawerCLI {
     private final String BRIGHTBLACK = "\u001b[30;1m";
     private final String BRIGHTGREEN = "\u001b[32;1m";
 
+    private final String RED_C = "\u001B[38:5:196m";
+
     private final int ROWS = 62;
 
     private final int COLUMNS = 154;
@@ -32,6 +34,7 @@ public class GraphicDrawerCLI {
 
 
     public GraphicDrawerCLI() {
+
         this.screen = new String[ROWS][COLUMNS];
         this.formattedBoardInfo = new FormattedCellInfo[5][5];
 
@@ -50,56 +53,11 @@ public class GraphicDrawerCLI {
     }
 
 
-    /*
-    public void fillTest() {
-        clear();
-        drawPlayersPanel();
-        drawChoicePanel();
-        drawSantoriniLogo();
-        drawBoardPanel();
-
-        List<FormattedPlayerInfo> players = new ArrayList<>();
-        players.add(new FormattedPlayerInfo("Alfonsoooooooooooooooooooooo30", "WHITE", Couple.create("Apollo", "Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions).")));
-        players.add(new FormattedPlayerInfo("Massi", "BLUE", Couple.create("Minotaur", "Your Move: Your Worker may move into an opponent Worker’s space, if their Worker can be forced one space straight backwards to an unoccupied space at any level.")));
-
-        setTitlePlayerPanel("players information");
-        setInfoPlayerPanel(players);
-
-        List<Couple<Integer, Integer>> cellsList = new ArrayList<>();
-        cellsList.add(Couple.create(0,0));
-        cellsList.add(Couple.create(0,1));
-        cellsList.add(Couple.create(1,1));
-        cellsList.add(Couple.create(1,0));
-        setTitleChoicePanel("do your choice");
-        setCellChoicesValue(cellsList);
-    }
-
-     */
-
-
-//    public static void main(String[] args) {
-//        GraphicDrawerCLI cli = new GraphicDrawerCLI();
-//
-//        cli.show();
-//
-//        try {
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        cli.clearScreen();
-//
-//        //cli.fillTest();
-//        cli.show();
-//    }
-
-
     // ======================================================================================
 
 
     public void draw() {
-        clearScreen();
+
         clear();
         drawPlayersPanel();
         drawChoicePanel();
@@ -109,6 +67,7 @@ public class GraphicDrawerCLI {
 
 
     public void show() {
+        clearScreen();
 
         draw();
 
@@ -124,7 +83,7 @@ public class GraphicDrawerCLI {
 
 
     public void clearScreen(){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033\143");
         System.out.flush();
     }
 
@@ -423,7 +382,7 @@ public class GraphicDrawerCLI {
 
         String uppercaseTitle = title.toUpperCase();
 
-        print(6, 12, uppercaseTitle, BRIGHTBLACK);
+        print(6, 12, uppercaseTitle, WHITE);
 
     }
 

@@ -57,7 +57,6 @@ public class GraphicDrawerCLI {
 
 
     public void draw() {
-
         clear();
         drawPlayersPanel();
         drawChoicePanel();
@@ -68,7 +67,6 @@ public class GraphicDrawerCLI {
 
     public void show() {
         clearScreen();
-
         draw();
 
         for(int row = 0; row < ROWS; row++) {
@@ -82,7 +80,7 @@ public class GraphicDrawerCLI {
     }
 
 
-    public void clearScreen(){
+    public void clearScreen() {
         System.out.print("\033\143");
         System.out.flush();
     }

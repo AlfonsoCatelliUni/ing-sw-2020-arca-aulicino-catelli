@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client.CLI;
 
 import it.polimi.ingsw.JsonHandler;
-import it.polimi.ingsw.client.ClientJsonHandler;
-import it.polimi.ingsw.client.Couple;
-import it.polimi.ingsw.client.FormattedCellInfo;
-import it.polimi.ingsw.client.FormattedPlayerInfo;
+import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -18,7 +15,7 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class CLI implements ServerToClientManager {
+public class CLI extends Client implements ServerToClientManager {
 
 
     private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
@@ -83,6 +80,7 @@ public class CLI implements ServerToClientManager {
     }
 
 
+    @Override
     public void run() {
 
         System.out.print("Insert the server IP: ");
@@ -792,7 +790,7 @@ public class CLI implements ServerToClientManager {
             }
 
             actions.add("If you want to play again you have to reconnect to the server!");
-            actions.add("paypal email for donations : alfonsocatelli@gmail.com");
+            actions.add("PayPal email for donations: alfonsocatelli@gmail.com");
 
             drawer.saveActionsChoicesValue(actions);
 
@@ -829,21 +827,6 @@ public class CLI implements ServerToClientManager {
         drawer.show();
 
         manageEvent(new DisconnectionClientEvent());
-
-    }
-
-
-    @Override
-    public void manageEvent(OpponentPlayerDefeatEvent event) {
-
-        this.playersInfo = ClientJsonHandler.generatePlayersList(event.playersInGame);
-
-        //TODO : printare il player che ha perso
-        //drawer.saveTitleChoicePanel();
-
-        drawer.saveInfoPlayerPanel(playersInfo);
-
-        drawer.show();
 
     }
 

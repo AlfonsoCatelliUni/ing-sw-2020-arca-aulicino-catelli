@@ -65,7 +65,5 @@ public interface ServerToClientManager {
 
     void manageEvent(EndGameSTCEvent event);
 
-    void manageEvent(OpponentPlayerDefeatEvent event);
-
 
 }

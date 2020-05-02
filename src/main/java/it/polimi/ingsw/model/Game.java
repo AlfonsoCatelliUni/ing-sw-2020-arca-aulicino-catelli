@@ -806,4 +806,5 @@ public class Game extends Observable implements GameConsequenceHandler {
         lastBuildingsList = null;
         lastCellsList = null;
     }
+
 }

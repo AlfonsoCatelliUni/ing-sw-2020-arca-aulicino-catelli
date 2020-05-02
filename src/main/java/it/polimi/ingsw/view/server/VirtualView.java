@@ -81,7 +81,7 @@ public class VirtualView extends Observable implements Observer {
         }
         catch(NullPointerException e) {
             //USED ONLY FOR TESTING
-//            System.out.println(event.toString() + "\n");
+            System.out.println(event.toString() + "\n");
         }
     }
 
@@ -97,7 +97,7 @@ public class VirtualView extends Observable implements Observer {
         }
         catch (NullPointerException e) {
             //USED ONLY FOR TESTING
-//            System.out.println(event.toString() + "\n");
+            System.out.println(event.toString() + "\n");
         }
     }
 

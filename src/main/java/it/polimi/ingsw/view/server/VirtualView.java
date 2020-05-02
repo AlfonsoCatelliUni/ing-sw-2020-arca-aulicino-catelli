@@ -73,16 +73,13 @@ public class VirtualView extends Observable implements Observer {
 
         Set<Integer> keys = connectionMap.keySet();
 
-        try {
+        for (Integer k : keys ) {
+            connectionMap.get(k).sendEvent(event);
+        }
 
-            for (Integer k : keys ) {
-                connectionMap.get(k).sendEvent(event);
-            }
-        }
-        catch(NullPointerException e) {
-            //USED ONLY FOR TESTING
-//            System.out.println(event.toString() + "\n");
-        }
+        //USED ONLY FOR TESTING
+        System.out.println(event.toString() + "\n");
+
     }
 
 
@@ -97,7 +94,7 @@ public class VirtualView extends Observable implements Observer {
         }
         catch (NullPointerException e) {
             //USED ONLY FOR TESTING
-//            System.out.println(event.toString() + "\n");
+            System.out.println(event.toString() + "\n");
         }
     }
 

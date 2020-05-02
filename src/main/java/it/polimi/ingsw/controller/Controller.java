@@ -477,12 +477,6 @@ public class Controller implements Observer, ClientToServerManager {
             }
 
         }
-        //the player lost the game and decided to quit
-        else if(game != null && !game.getPlayersNickname().contains(event.playerNickname)){
-
-            virtualView.removeNicknameIDConnection(event.ID);
-
-        }
         //if the game is started or the preGameLobby has been closed we have to disconnect all the players
         else {
 

@@ -225,7 +225,7 @@ public class CLI extends Client implements ServerToClientManager {
 
     @Override
     public void manageEvent(DisconnectionClientEvent event) {
-        System.out.println("YOU HAVE BEEN DISCONNECTED!");
+        System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
         this.clientView = null;
         System.exit(0);
     }
@@ -272,9 +272,7 @@ public class CLI extends Client implements ServerToClientManager {
     public void manageEvent(RoomNotFilled event) {
         System.out.println(event.message);
         System.out.println();
-        System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
-        this.clientView = null;
-        System.exit(0);
+        manageEvent(new DisconnectionClientEvent());
     }
 
 
@@ -283,6 +281,12 @@ public class CLI extends Client implements ServerToClientManager {
 
         List<Point> occupiedCells = event.info;
         List<Point> freeCells = new ArrayList<>();
+        int selectedMale = -1;
+        int selectedFemale = -1;
+
+        if(!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect...");
+        }
 
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
@@ -293,55 +297,46 @@ public class CLI extends Client implements ServerToClientManager {
             }
         }
 
-        int selectedMale = -1;
-        int selectedFemale = -1;
 
+        drawer.saveTitleChoicePanel("select the cell for the male pawn");
+        drawer.saveCellsChoicesValue(freeCells);
 
-        if(!event.isValid) {
-            System.out.println("An error has occurred, please reinsert the positions");
-        }
-
-
-        do {
-
-            drawer.saveTitleChoicePanel("select the cell for the male pawn");
-            drawer.saveCellsChoicesValue(freeCells);
-
-            drawer.show();
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-            }
-            selectedMale = input.nextInt();
-
-            if(!(selectedMale >= 0 && selectedMale < freeCells.size()))
-                System.err.println("Choice Unavailable!");
-
-        } while( !(selectedMale >= 0 && selectedMale < freeCells.size()) );
-
+        selectedMale = userChoice( freeCells.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert a Number!");
+//                input.next();
+//            }
+//            selectedMale = input.nextInt();
+//
+//            if(!(selectedMale >= 0 && selectedMale < freeCells.size()))
+//                System.err.println("Choice Unavailable!");
+//
+//        } while( !(selectedMale >= 0 && selectedMale < freeCells.size()) );
         int maleRowPosition = freeCells.get(selectedMale).x;
         int maleColumnPosition = freeCells.get(selectedMale).y;
-
         freeCells.remove(selectedMale);
-        do {
 
-            drawer.saveTitleChoicePanel("select the cell for the female pawn");
-            drawer.saveCellsChoicesValue(freeCells);
 
-            drawer.show();
+        drawer.saveTitleChoicePanel("select the cell for the female pawn");
+        drawer.saveCellsChoicesValue(freeCells);
 
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-            }
-            selectedFemale = input.nextInt();
-
-            if(!(selectedFemale >= 0 && selectedFemale < freeCells.size()))
-                System.err.println("Choice Unavailable!");
-
-        } while( !(selectedFemale >= 0 && selectedFemale < freeCells.size()) );
-
+        selectedFemale = userChoice( freeCells.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert a Number!");
+//                input.next();
+//            }
+//            selectedFemale = input.nextInt();
+//
+//            if(!(selectedFemale >= 0 && selectedFemale < freeCells.size()))
+//                System.err.println("Choice Unavailable!");
+//
+//        } while( !(selectedFemale >= 0 && selectedFemale < freeCells.size()) );
         int femaleRowPosition = freeCells.get(selectedFemale).x;
         int femaleColumnPosition = freeCells.get(selectedFemale).y;
 
@@ -357,41 +352,39 @@ public class CLI extends Client implements ServerToClientManager {
     @Override
     public void manageEvent(AskWhichPawnsUseEvent event) {
 
-        if (!event.isValid) {
-            System.out.println("An error has occurred, please reinsert the position");
-        }
-
         List<Point> availablePawns = event.info;
         int selectedPawn = -1;
 
+        if (!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect...");
+        }
 
-        do {
+        drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
+        drawer.saveCellsChoicesValue(availablePawns);
 
-            drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
-            drawer.saveCellsChoicesValue(availablePawns);
-
-            drawer.show();
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                drawer.show();
-
-                input.next();
-            }
-            selectedPawn = input.nextInt();
-
-            if( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) ) {
-                System.err.println("Choice Unavailable!");
-            }
-
-
-        } while( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) );
-
+        selectedPawn = userChoice( availablePawns.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert a Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            selectedPawn = input.nextInt();
+//
+//            if( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) ) {
+//                System.err.println("Choice Unavailable!");
+//            }
+//
+//        } while( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) );
         this.rowUsedPawn = availablePawns.get(selectedPawn).x;
         this.columnUsedPawn = availablePawns.get(selectedPawn).y;
 
        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
 
+       //TODO : forse questo titolo non è necessario
        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
        drawer.clearChoicePanelValues();
 
@@ -405,40 +398,41 @@ public class CLI extends Client implements ServerToClientManager {
 
         List<String> cardsName = event.cardsName;
         List<String> cardsEffect = event.cardsEffect;
-
-        int choiceNum;
-
+        int choiceNum = -1;
 
         if(!event.isValid) {
-            System.out.println("An error has occurred, please reinsert the your choice");
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
-        do {
+        drawer.saveTitlePlayerPanel("choose your card");
+        for (int i = 0; i < cardsName.size(); i++) {
+            drawer.savePlayerCardChoice(cardsName, cardsEffect);
+        }
 
-            drawer.saveTitlePlayerPanel("CHOOSE YOUR CARD");
-            for (int i = 0; i < cardsName.size(); i++) {
-                drawer.savePlayerCardChoice(cardsName, cardsEffect);
-            }
-            drawer.show();
-
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                drawer.show();
-
-                input.next();
-            }
-            choiceNum = input.nextInt();
-
-            if( !(choiceNum >= 0 && choiceNum < cardsName.size()) ) {
-                System.err.println("Choice Unavailable!");
-            }
-
-        } while( !(choiceNum >= 0 && choiceNum < cardsName.size()) );
-
+        choiceNum = userChoice( cardsName.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert a Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            choiceNum = input.nextInt();
+//
+//            if( !(choiceNum >= 0 && choiceNum < cardsName.size()) ) {
+//                System.err.println("Choice Unavailable!");
+//            }
+//
+//        } while( !(choiceNum >= 0 && choiceNum < cardsName.size()) );
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
+        //TODO : migliorare la gestione del Player Panel una volta che si è scelta la propria card
+
+        /* non mi piace che si continui a mostrare il [0] come se ci fosse ancora da fare una scelta
+        * quando invece si sta solamente aspettando che gli altri giocatori scelgano la loro carta */
         cardsName.remove(choiceNum);
         cardsEffect.remove(choiceNum);
 
@@ -456,7 +450,6 @@ public class CLI extends Client implements ServerToClientManager {
 
         List<String> possibleActions = event.actions;
         boolean isEventValid = event.isValid;
-
         int indexChosenAction = -1;
 
         if(!isEventValid) {
@@ -466,28 +459,29 @@ public class CLI extends Client implements ServerToClientManager {
         drawer.saveTitleChoicePanel("choose your next action");
         drawer.saveActionsChoicesValue(possibleActions);
 
-        do {
-
-            drawer.show();
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                drawer.show();
-
-                input.next();
-            }
-            indexChosenAction = input.nextInt();
-
-            if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
-                System.err.println("Choice Unavailable!");
-            }
-
-        } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
+        indexChosenAction = userChoice( possibleActions.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert a Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            indexChosenAction = input.nextInt();
+//
+//            if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
+//                System.err.println("Choice Unavailable!");
+//            }
+//
+//        } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
 
 
         //in case there is only one possible action I directly send the possible action
         //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
-        switch (possibleActions.get(indexChosenAction)) {
+
+        switch ( possibleActions.get(indexChosenAction) ) {
 
             case "Move":
                 clientView.sendCTSEvent(new ChosenMoveActionEvent(nickname, "Move", rowUsedPawn, columnUsedPawn));
@@ -512,15 +506,12 @@ public class CLI extends Client implements ServerToClientManager {
                 drawer.clearChoicePanelValues();
 
                 drawer.show();
-
                 break;
 
             default:
                 throw new RuntimeException("Error while selecting the next action!");
 
-            }
-
-
+        }
 
     }
 
@@ -530,9 +521,7 @@ public class CLI extends Client implements ServerToClientManager {
 
         List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
         boolean isEventValid = event.isValid;
-
-        int selectedCell = 0;
-
+        int selectedCell = -1;
 
         if(!isEventValid) {
             System.err.println("Apparently there was an error! Reselect...");
@@ -541,29 +530,32 @@ public class CLI extends Client implements ServerToClientManager {
         drawer.saveTitleChoicePanel("choose the cell where you want to move");
         drawer.saveCellsChoicesValue(cellsAvailableToMove);
 
-        do {
-            drawer.show();
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert an Number!");
-                drawer.show();
-
-                input.next();
-            }
-            selectedCell = input.nextInt();
-
-            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
-                System.err.println("Unavailable Choice!");
-            }
-
-        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
-
-
+        selectedCell = userChoice( cellsAvailableToMove.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert an Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            selectedCell = input.nextInt();
+//
+//            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
+//                System.err.println("Unavailable Choice!");
+//            }
+//
+//        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
         nextActionRow = cellsAvailableToMove.get(selectedCell).x;
         nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
 
         clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
 
+        /*TODO : io lo salvo anche se non so ancora se il server riceverà in modo corretto l'evento
+        *  è possibile quindi che mi torni un GivePossibleCellsToMoveEvent con isValid=false e queste
+        * coordinate sarebbero sbagliate non consentendo di eseguire correttamente la mossa*/
+        //save the new position of the pawn
         rowUsedPawn = cellsAvailableToMove.get(selectedCell).x;
         columnUsedPawn = cellsAvailableToMove.get(selectedCell).y;
     }
@@ -576,7 +568,6 @@ public class CLI extends Client implements ServerToClientManager {
         boolean isEventValid = event.isValid;
         int selectedCell = 0;
 
-
         if(!isEventValid) {
             System.err.println("Apparently there was an error! Reselect...");
         }
@@ -584,23 +575,23 @@ public class CLI extends Client implements ServerToClientManager {
         drawer.saveTitleChoicePanel("choose the cell where you want to build");
         drawer.saveCellsChoicesValue(cellsAvailableToBuild);
 
-        do {
-            drawer.show();
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert an Number!");
-                drawer.show();
-
-                input.next();
-            }
-            selectedCell = input.nextInt();
-
-            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
-                System.err.println("Unavailable Choice!");
-            }
-
-        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
-
+        selectedCell = userChoice( cellsAvailableToBuild.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert an Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            selectedCell = input.nextInt();
+//
+//            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
+//                System.err.println("Unavailable Choice!");
+//            }
+//
+//        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
         nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
         nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
 
@@ -627,23 +618,23 @@ public class CLI extends Client implements ServerToClientManager {
             drawer.saveTitleChoicePanel("Choose the building to build on the selected cell");
             drawer.saveBuildingsChoicesValue(buildingsLevel);
 
-            do {
-                drawer.show();
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert an Number!");
-                    drawer.show();
-
-                    input.next();
-                }
-                selectedLevel = input.nextInt();
-
-                if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
-                    System.err.println("Unavailable Choice!");
-                }
-
-            } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
-
+            selectedLevel = userChoice( buildingsLevel.size() );
+//            do {
+//                drawer.show();
+//
+//                while(!input.hasNextInt()) {
+//                    System.err.println("Insert an Number!");
+//                    drawer.show();
+//
+//                    input.next();
+//                }
+//                selectedLevel = input.nextInt();
+//
+//                if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
+//                    System.err.println("Unavailable Choice!");
+//                }
+//
+//            } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
         }
 
         clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
@@ -653,37 +644,34 @@ public class CLI extends Client implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCellsToDestroyEvent event) {
 
-        if (!event.isValid)
-            System.out.println("An error has occurred, please reinsert your choice");
+        List<Point> availableCellsToDestroy = event.cells;
+        int selectedCell = -1;
 
-
-        System.out.println("You can destroy a building in the following cells:");
-
-        for (int i = 0; i < event.cells.size(); i++) {
-
-            System.out.println("[" + i + "]\t" + event.cells.get(i).x + " - " + event.cells.get(i).y + "\n");
-
+        if (!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
-        int selectedCell;
+        drawer.saveTitleChoicePanel("choose the cell where you want to destroy the roof");
+        drawer.saveCellsChoicesValue(availableCellsToDestroy);
 
-        do {
-
-            System.out.println("Choose the cell where you want to destroy:");
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-            }
-            selectedCell = input.nextInt();
-
-            if(selectedCell < 0 || selectedCell >= event.cells.size())
-                System.out.println("Unavailable choice");
-
-        } while(selectedCell < 0 || selectedCell >= event.cells.size());
-
+        selectedCell = userChoice( availableCellsToDestroy.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert an Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            selectedCell = input.nextInt();
+//
+//            if( !(selectedCell >= 0 && selectedCell < availableCellsToDestroy.size()) ) {
+//                System.out.println("Unavailable choice");
+//            }
+//
+//        } while( !(selectedCell >= 0 && selectedCell < availableCellsToDestroy.size()) );
         int selectedRowToDestroy = event.cells.get(selectedCell).x;
-
         int selectedColumnToDestroy = event.cells.get(selectedCell).y;
 
         clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowToDestroy, selectedColumnToDestroy));
@@ -694,38 +682,35 @@ public class CLI extends Client implements ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
 
-        if (!event.isValid)
-            System.out.println("An error has occurred, please reinsert your choice");
+        List<Point> availableCellsToForce = event.cells;
+        int selectedCell = -1;
 
-
-        System.out.println("You can force to move the pawns in these cells:");
-
-        for (int i = 0; i < event.cells.size(); i++) {
-
-            System.out.println("[" + i + "]\t" + event.cells.get(i).x + " - " + event.cells.get(i).y + "\n");
-
+        if (!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect...");
         }
 
-        int selectedCell;
+        drawer.saveTitleChoicePanel("choose the cell where you want to force an opponent pawn");
+        drawer.saveCellsChoicesValue(availableCellsToForce);
 
-        do {
-
-            System.out.println("Choose the cell of the pawn you want to force to move:");
-
-            while(!input.hasNextInt()) {
-                System.err.println("Insert a Number!");
-                input.next();
-            }
-            selectedCell = input.nextInt();
-
-            if(selectedCell < 0 || selectedCell >= event.cells.size())
-                System.out.println("Unavailable choice");
-
-        } while(selectedCell < 0 || selectedCell >= event.cells.size());
-
-        int selectedRowForcedPawn = event.cells.get(selectedCell).x;
-
-        int selectedColumnForcedPawn = event.cells.get(selectedCell).y;
+        selectedCell = userChoice( availableCellsToForce.size() );
+//        do {
+//            drawer.show();
+//
+//            while(!input.hasNextInt()) {
+//                System.err.println("Insert an Number!");
+//                drawer.show();
+//
+//                input.next();
+//            }
+//            selectedCell = input.nextInt();
+//
+//            if( !(selectedCell >= 0 && selectedCell < availableCellsToForce.size()) ) {
+//                System.out.println("Unavailable choice");
+//            }
+//
+//        } while( !(selectedCell >= 0 && selectedCell < availableCellsToForce.size()) );
+        int selectedRowForcedPawn = availableCellsToForce.get(selectedCell).x;
+        int selectedColumnForcedPawn = availableCellsToForce.get(selectedCell).y;
 
         clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
 
@@ -828,6 +813,45 @@ public class CLI extends Client implements ServerToClientManager {
 
         manageEvent(new DisconnectionClientEvent());
 
+    }
+
+
+    /**
+     * this method is used to reduce the duplication of code in this class,
+     * because when the user have to select his choice this class control that the number
+     * is in the range that goes from 0 to the number of elements in the list of choices
+     * so this method only need the size of the list.
+     * @param choicesListSize the upper limit of the range, that correspond to the size of the choices list
+     * @return the selected index
+     */
+    private int userChoice( int choicesListSize ) {
+
+        int selected = -1;
+
+        do {
+            /* in the manageEvent we set the title and the choices
+            * then in here we show them every time the user enter an
+            * invalid choice */
+            drawer.show();
+
+            // control if the user insert an number
+            while(!input.hasNextInt()) {
+                System.err.println("Insert an Number!");
+                drawer.show();
+
+                input.next();
+            }
+            selected = input.nextInt();
+
+            // control if the choice is availabel
+            if( !(selected >= 0 && selected < choicesListSize) ) {
+                System.err.println("Unavailable Choice!");
+            }
+
+        } while( !(selected >= 0 && selected < choicesListSize) );
+
+        // if the user insert an available choice then we return to the manageEvent
+        return selected;
     }
 
 

@@ -6,10 +6,6 @@ import it.polimi.ingsw.events.ServerToClientEvent;
 
 public interface Observer {
 
-    //TODO : dec
-    //void update(Object event);
-
-
     void update(ClientToServerEvent event);
 
     void update(ServerToClientEvent event);

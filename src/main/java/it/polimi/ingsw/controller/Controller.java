@@ -210,7 +210,6 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     public void startGame (){
-    // TODO: vedere come gestire i vari costruttori
 
        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
@@ -279,14 +278,16 @@ public class Controller implements Observer, ClientToServerManager {
 
         //if the player has ended his turn because he has lost then we send to him a losing message and remove his info from the game
         if(isLosingEnding) {
-            virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "So Sad!"));
+            //virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "So Sad!"));
+            virtualView.sendMessage(new LosingByNoActionEvent(nickname, "So Sad!"));
             game.removePlayer(nickname);
         }
 
         while(currentPlayerAvailablePawns.size() == 0 && game.getPlayersNickname().size() > 1) {
 
             //send the message that the current player has lost the game because he can't do any action
-            virtualView.sendMessageTo(currentPlayerNickname, new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
+            //virtualView.sendMessageTo(currentPlayerNickname, new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
+            virtualView.sendMessage(new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
 
             //save the nickname of the loser player
             String loserPlayer = currentPlayerNickname;
@@ -478,10 +479,8 @@ public class Controller implements Observer, ClientToServerManager {
 
         }
         //the player lost the game and decided to quit
-        else if(game != null && !game.getPlayersNickname().contains(event.playerNickname)){
-
+        else if(game != null && !game.getPlayersNickname().contains(event.playerNickname)) {
             virtualView.removeNicknameIDConnection(event.ID);
-
         }
         //if the game is started or the preGameLobby has been closed we have to disconnect all the players
         else {

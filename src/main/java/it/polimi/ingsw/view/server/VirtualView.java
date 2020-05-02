@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
 
 public class VirtualView extends Observable implements Observer {
 
@@ -73,16 +74,13 @@ public class VirtualView extends Observable implements Observer {
 
         Set<Integer> keys = connectionMap.keySet();
 
-        try {
+        for (Integer k : keys ) {
+            connectionMap.get(k).sendEvent(event);
+        }
 
-            for (Integer k : keys ) {
-                connectionMap.get(k).sendEvent(event);
-            }
-        }
-        catch(NullPointerException e) {
-            //USED ONLY FOR TESTING
-            System.out.println(event.toString() + "\n");
-        }
+        //USED ONLY FOR TESTING
+        System.out.println(event.toString() + "\n");
+
     }
 
 
@@ -110,12 +108,13 @@ public class VirtualView extends Observable implements Observer {
 
     //TODO : maybe sync
     public boolean newNicknameID(String nickname, Integer ID) {
+
         try {
-            nicknameMap.put(nickname, ID);
-        }
-        catch (Exception e) {
-            return false;
-        }
+                nicknameMap.put(nickname, ID);
+            }
+            catch (Exception e) {
+                return false;
+            }
 
         return true;
     }

@@ -1,5 +1,9 @@
 package it.polimi.ingsw;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import it.polimi.ingsw.client.CLI.CLI;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -13,6 +17,7 @@ import it.polimi.ingsw.model.Player.Effect.*;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.FinishState;
 import it.polimi.ingsw.server.Connection;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -1288,6 +1293,157 @@ public class MatchSimulationTest  {
 
 
     }
+
+
+    @Test
+    void backToBackLoss() {
+
+        MVCPreGameStartSetUp();
+
+        Card Prometheus = JsonHandler.deserializeCardList().get(8);
+
+        Card Charon = JsonHandler.deserializeCardList().get(10);
+
+        Card Ares = JsonHandler.deserializeCardList().get(9);
+
+        controller.getPreGameLobby().getPickedCards().add(Prometheus);
+        controller.getPreGameLobby().getPickedCards().add(Charon);
+        controller.getPreGameLobby().getPickedCards().add(Ares);
+
+
+        controller.getPreGameLobby().getPickedCards().add(Prometheus);
+        controller.getPreGameLobby().getPickedCards().add(Charon);
+        controller.getPreGameLobby().getPickedCards().add(Ares);
+
+
+        virtualView.update(new ChosenCardEvent(player1,Prometheus.getName()));
+
+        virtualView.update(new ChosenCardEvent(player2,Charon.getName()));
+
+        virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player2, 4,4,4,3));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player3, 2,2,2,3));
+
+        List<Building> buildings = controller.getGame().getGameBoard().getBuildings();
+
+        //to test the end of the game, let's build some blocks to go straight to the end
+
+        controller.getGame().getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(1,0).buildOnThisCell(buildings.get(3));
+        controller.getGame().getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(1,1).buildOnThisCell(buildings.get(3));
+        controller.getGame().getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(1,2).buildOnThisCell(buildings.get(3));
+        controller.getGame().getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(0,2).buildOnThisCell(buildings.get(2));
+
+        //not built a level 4 in [0,2] so the game can start right
+
+        controller.getGame().getGameBoard().getCell(4,2).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(4,2).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(4,2).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(4,2).buildOnThisCell(buildings.get(3));
+        controller.getGame().getGameBoard().getCell(3,2).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(3,2).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(3,2).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(3,2).buildOnThisCell(buildings.get(3));
+        controller.getGame().getGameBoard().getCell(3,3).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(3,3).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(3,3).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(3,3).buildOnThisCell(buildings.get(3));
+        controller.getGame().getGameBoard().getCell(3,4).buildOnThisCell(buildings.get(0));
+        controller.getGame().getGameBoard().getCell(3,4).buildOnThisCell(buildings.get(1));
+        controller.getGame().getGameBoard().getCell(3,4).buildOnThisCell(buildings.get(2));
+        controller.getGame().getGameBoard().getCell(3,4).buildOnThisCell(buildings.get(3));
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A0 ║ a0 ║ 3  ║ 0  ║ 0  ║
+              ║ 1 ║ 4x ║ 4x ║ 4x ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ M0 ║ m0 ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 4x ║ 4x ║ 4x ║
+              ║ 4 ║ 0  ║ 0  ║ 4x ║ s0 ║ S0 ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+
+        */
+
+
+        virtualView.update(new ChosenPawnToUseEvent(player1,0,1));
+
+        retActions = controller.getGame().getPossibleActions(player1, 0,1);
+        correctActions.clear();
+        correctActions.add(new BuildAction());
+        Assert.assertEquals(correctActions.size(), retActions.size());
+        for (int i = 0; i < correctActions.size(); i++) {
+            Assert.assertEquals(correctActions.get(i).getActionID(), retActions.get(i).getActionID());
+        }
+
+        virtualView.update(new ChosenBuildActionEvent(player1, "Build", 0,1));
+
+        correctCells.clear();
+        correctCells.add(controller.getGame().getGameBoard().getCell(0,2));
+
+
+        retCells = controller.getGame().wherePawnCanBuild(player1,0,1);
+
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        retCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+
+        assertEquals(correctCells.size(), retCells.size());
+
+        assertEquals(correctCells, retCells);
+
+        virtualView.update(new ChosenCellToBuildEvent(player1, 0,1,0,2));
+
+        virtualView.update(new ChosenBuildingEvent(player1, 4,0,1,0,2));
+
+    }
+
+
+    @Test
+    void fakeLoss() {
+
+        MVCPreGameStartSetUp();
+
+        Card Artemis = JsonHandler.deserializeCardList().get(1);
+
+        Card Atlas = JsonHandler.deserializeCardList().get(3);
+
+        Card Zeus = JsonHandler.deserializeCardList().get(13);
+
+        controller.getPreGameLobby().getPickedCards().add(Artemis);
+        controller.getPreGameLobby().getPickedCards().add(Atlas);
+        controller.getPreGameLobby().getPickedCards().add(Zeus);
+
+        virtualView.update(new ChosenCardEvent(player1, Artemis.getName()));
+        virtualView.update(new ChosenCardEvent(player2, Atlas.getName()));
+        virtualView.update(new ChosenCardEvent(player3, Zeus.getName()));
+
+
+
+
+
+    }
+
 
 
     @Test

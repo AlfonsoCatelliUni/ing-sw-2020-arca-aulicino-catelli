@@ -396,7 +396,7 @@ class GameTest {
 
         gameTest.movePawn("Alfantasy", 1,0, 2,0);
 
-        assertTrue(gameTest.getGameBoard().getCell(2,0).getBuilderHere());
+        assertTrue(gameTest.getGameBoard().getCell(2,0).isPawnHere());
 
 
     }
@@ -424,7 +424,7 @@ class GameTest {
 
         Game gameTest = new Game(players);
 
-        gameTest.getPlayerByName("Alfantasy").setEffect(new CanForceEffect(new BasicEffect()));
+        gameTest.getPlayerByName("Alfantasy").setEffect(new CanDestroyEffect(new DestroyEffect(new BasicEffect())));
 
 
         gameTest.initializePawn("Alfantasy", 1,0);
@@ -432,6 +432,12 @@ class GameTest {
 
         gameTest.initializePawn("Scoiattolo", 0,0);
         gameTest.initializePawn("Scoiattolo", 0,1);
+
+        gameTest.getGameBoard().getCell(2,2).buildOnThisCell(gameTest.getGameBoard().getBuildings().get(0));
+
+        gameTest.destroyBlock("Alfantasy", 2,2);
+
+        assertEquals(0, gameTest.getGameBoard().getCell(2,2).getHeight());
 
         
 
@@ -665,7 +671,7 @@ class GameTest {
 
         gameTest.forceOpponent("Alfantasy", 1,0,0,0);
 
-        assertTrue(gameTest.getGameBoard().getCell(2,0).getBuilderHere() && gameTest.getGameBoard().getPawnByCoordinates(2,0).getColor() == Color.GREY);
+        assertTrue(gameTest.getGameBoard().getCell(2,0).isPawnHere() && gameTest.getGameBoard().getPawnByCoordinates(2,0).getColor() == Color.GREY);
 
     }
 

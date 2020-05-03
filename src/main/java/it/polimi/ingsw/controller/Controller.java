@@ -572,7 +572,7 @@ public class Controller implements Observer, ClientToServerManager {
                 endTurn(false);
             }
         }
-        else {
+        else{
             List <Cell> occupiedCell = game.getAllPawnsCoordinates();
             List<Point> info = generatePointsByCells(occupiedCell);
             virtualView.sendMessageTo(event.playerNickname, new AskInitPawnsEvent(event.playerNickname, false, info));
@@ -634,13 +634,12 @@ public class Controller implements Observer, ClientToServerManager {
 
             virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));
 
-        } else {
+        } else if (!isValid){
             List<Cell> availablePawnsCell = game.getAvailablePawns(nickname);
 
             List<Point> points = generatePointsByCells(availablePawnsCell);
 
             virtualView.sendMessageTo(nickname, new AskWhichPawnsUseEvent(nickname, false, points));
-
         }
     }
 
@@ -654,14 +653,14 @@ public class Controller implements Observer, ClientToServerManager {
         int column = event.pawnColumn;
 
 
-        if( game.isValid(chosenAction) && game.isValidPawn(nickname, row, column) ) {
+        if( game.isValid(chosenAction) && game.isValidPawn(nickname, row, column) && game.isValidPlayer(nickname) ) {
 
             List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, row, column);
             List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));
 
-        } else {
+        } else if ( !(game.isValid(chosenAction) && game.isValidPawn(nickname, row, column)) ){
             List<Action> possibleActions = game.getLastActionsList();
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
@@ -680,7 +679,7 @@ public class Controller implements Observer, ClientToServerManager {
         int column = event.pawnColumn;
 
         //here there's the control to verify that the chosen action is valid
-        if( game.isValid(chosenAction) && game.isValidPawn(nickname, row, column) ) {
+        if ( game.isValid(chosenAction) && game.isValidPawn(nickname, row, column) && game.isValidPlayer(nickname) ) {
             //if it's ok the game automatically return the cells available to this action
 
             List<Cell> availableCellsToBuild = game.wherePawnCanBuild(nickname, row, column);
@@ -688,7 +687,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo, true));
         }
-        else {
+        else if ( !(game.isValid(chosenAction) && game.isValidPawn(nickname, row, column)) ) {
             //if it's not ok than the game automatically return the last possible actions list
             //because the game state isn't changed
             List<Action> possibleActions = game.getLastActionsList();
@@ -708,14 +707,14 @@ public class Controller implements Observer, ClientToServerManager {
         int pawnRow = event.pawnRow;
         int pawnColumn = event.pawnColumn;
 
-        if (game.isValid(actionID) && game.isValidPawn(nickname, pawnRow, pawnColumn)){
+        if (game.isValid(actionID) && game.isValidPawn(nickname, pawnRow, pawnColumn) && game.isValidPlayer(nickname)){
 
             List<Cell> availableCells = game.wherePawnCanDestroy(nickname);
             List<Point> cellsInfo = generatePointsByCells(availableCells);
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo, true));
 
-        } else {
+        } else if ( !(game.isValid(actionID) && game.isValidPawn(nickname, pawnRow, pawnColumn)) ){
             List<Action> possibleActions = game.getLastActionsList();
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
@@ -742,7 +741,7 @@ public class Controller implements Observer, ClientToServerManager {
 
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellInfo, true));
         }
-        else {
+        else if ( !(game.isValid(actionID) && game.isValidPawn(nickname, pawnRow, pawnColumn)) ) {
             List<Action> possibleActions = game.getLastActionsList();
             List<String> actionsInfo = generateActionIDByActions(possibleActions);
 
@@ -761,7 +760,7 @@ public class Controller implements Observer, ClientToServerManager {
         if( game.isValid(chosenAction) && game.isValidPlayer(nickname) ) {
             endTurn(false);
         }
-        else {
+        else if ( !(game.isValid(chosenAction)) ){
             List<String> actionsInfo = generateActionIDByActions((game.getLastActionsList()));
             virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));
         }
@@ -780,7 +779,7 @@ public class Controller implements Observer, ClientToServerManager {
         int nextRow = event.nextRow;
         int nextColumn = event.nextColumn;
 
-        if( game.isValid(nextRow, nextColumn) && game.isValidPawn(nickname, pawnRow, pawnColumn)) {
+        if( game.isValid(nextRow, nextColumn) && game.isValidPawn(nickname, pawnRow, pawnColumn) && game.isValidPlayer(nickname)) {
 
             //THAT'S IMPORTANT!
             game.movePawn(nickname, pawnRow, pawnColumn, nextRow, nextColumn);
@@ -795,7 +794,7 @@ public class Controller implements Observer, ClientToServerManager {
 //                endTurn(nickname, true);
 //            }
         }
-        else {
+        else if ( !(game.isValid(nextRow, nextColumn) && game.isValidPawn(nickname, pawnRow, pawnColumn)) ){
             List<Cell> availableCellsToMove = game.wherePawnCanMove(nickname, pawnRow, pawnColumn);
             List<Point> cellInfo = generatePointsByCells(availableCellsToMove);
 
@@ -816,7 +815,7 @@ public class Controller implements Observer, ClientToServerManager {
         int nextColumn = event.nextColumn;
 
         //controlling if has been selected a valid cell
-        if(game.isValidPawn(nickname, row, column) && game.isValid(nextRow, nextColumn)) {
+        if(game.isValidPawn(nickname, row, column) && game.isValid(nextRow, nextColumn) && game.isValidPlayer(nickname)) {
             //THAT'S IMPORTANT!
 
             //taking the available buildings on the selected cell
@@ -834,7 +833,7 @@ public class Controller implements Observer, ClientToServerManager {
             }
         }
         //if the selected cell to build is invalid i ask again the cell
-        else {
+        else if ( !(game.isValidPawn(nickname, row, column) && game.isValid(nextRow, nextColumn)) ){
             List<Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));
         }
@@ -852,7 +851,7 @@ public class Controller implements Observer, ClientToServerManager {
         int column = event.columnToDestroy;
 
         //controlling if has been selected a valid cell
-        if (game.isValid(row, column) && game.isValidPawn(nickname, pawnRow, pawnColumn)){
+        if (game.isValid(row, column) && game.isValidPawn(nickname, pawnRow, pawnColumn) && game.isValidPlayer(nickname)){
 
             game.destroyBlock(nickname, row, column);
 
@@ -866,7 +865,7 @@ public class Controller implements Observer, ClientToServerManager {
 //                endTurn(nickname, true);
 //            }
 
-        } else {
+        } else if ( !(game.isValid(row, column) && game.isValidPawn(nickname, pawnRow, pawnColumn)) ) {
             List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
             virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo, false ));
         }
@@ -884,7 +883,7 @@ public class Controller implements Observer, ClientToServerManager {
        int row = event.rowForcedPawn;
        int column = event.columnForcedPawn;
 
-       if (game.isValid(row, column) && game.isValidPawn(nickname, pawnRow, pawnColumn)){
+       if (game.isValid(row, column) && game.isValidPawn(nickname, pawnRow, pawnColumn) && game.isValidPlayer(nickname) ){
 
            game.forceOpponent(nickname, pawnRow, pawnColumn, row, column);
 
@@ -893,7 +892,7 @@ public class Controller implements Observer, ClientToServerManager {
 
            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );
 
-       } else {
+       } else if ( !game.isValid(row, column) && game.isValidPawn(nickname, pawnRow, pawnColumn) ){
 
            List <Point> cellsInfo = generatePointsByCells(game.getLastCellsList());
            virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellsInfo, false));
@@ -912,8 +911,8 @@ public class Controller implements Observer, ClientToServerManager {
         int buildRow = event.buildRow;
         int buildColumn = event.buildColumn;
 
-        if (game.isValid(buildRow, buildColumn) && game.isValid(level) && game.isValidPawn(nickname, pawnRow, pawnColumn)) {
-            // IMPORTANT
+        if (game.isValid(buildRow, buildColumn) && game.isValid(level) && game.isValidPawn(nickname, pawnRow, pawnColumn) && game.isValidPlayer(nickname)) {
+
             game.pawnBuild(nickname, pawnRow, pawnColumn, buildRow, buildColumn, level);
 
             newPossibleActions(nickname, pawnRow, pawnColumn);
@@ -926,7 +925,7 @@ public class Controller implements Observer, ClientToServerManager {
 //                endTurn(nickname, true);
 //            }
         }
-        else {
+        else if ( !(game.isValid(buildRow, buildColumn) && game.isValid(level) && game.isValidPawn(nickname, pawnRow, pawnColumn)) ) {
             List<Building> availableBuildings = game.getPossibleBuildingOnCell(nickname, buildRow, buildColumn);
             List<Integer> buildingInfo = generateLevelByBuilding(availableBuildings);
 

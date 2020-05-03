@@ -47,13 +47,24 @@ public class MovePerimeterAgainEffect extends EffectDecorator {
 
     }
 
+
+    /**
+     * this method changes the state of the player after he does a basic build action
+     * @param designatedPawn is the pawn used for the move action
+     * @param designatedCell is the position where the designatedPawn will be moved
+     * @param chosenLevel is the level of the building that will be built
+     * @param buildings is the list of possible buildings that can be built
+     * @return a consequence of the build action
+     */
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
 
-        if(super.effect.getState().getClass().equals(BuildState.class) || super.effect.getState().getClass().equals(MoveAndBuildState.class))
+        Consequence consequence = super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
+
+
+        if(super.effect.getState().getClass().equals(MoveAndBuildState.class))
             super.effect.changeState(new FinishState(this));
 
-        return super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
-
+        return consequence;
     }
 
 

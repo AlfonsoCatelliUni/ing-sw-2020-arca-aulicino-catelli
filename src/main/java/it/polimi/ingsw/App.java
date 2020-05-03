@@ -25,7 +25,7 @@ public class App  {
         if (designatedCell.getRoof().getIsDome()) {
             return retString + "x";
         }
-        else if(!designatedCell.getBuilderHere()) {
+        else if(!designatedCell.isPawnHere()) {
             return retString + ".";
         }
         else {

@@ -82,19 +82,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    public Game() {
-
-        super();
-
-        this.gameBoard = new Board();
-
-        this.players = new ArrayList<>();
-
-        this.indexCurrentPlayer = 0;
-
-    }
-
-
     // MARK : Main Functional Methods ======================================================================================
 
 
@@ -121,12 +108,18 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * this method initializes the player's pawn in the cell [row,column] in the board
+     * @param nickname is the name of the current player
+     * @param row is the row where the pawn will be initialized
+     * @param column is the column where the pawn will be initialized
+     */
     public void initializePawn(String nickname, int row, int column){
         Player player = getPlayerByName(nickname);
 
         player.initPawn(gameBoard, gameBoard.getCell(row, column));
 
-        //send the update of the intialization of the pawns only if all two of the pawns are setted
+        //send the update of the initialization of the pawns only if all two of the pawns are setted
         if(player.getPawns().size()==2) {
             updateAllObservers(new NotifyStatusEvent(generateStatusJson()));
         }
@@ -461,6 +454,9 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @return a json-formatted String of what changed in the board due to a player's action
+     */
     public String generateChangesJson() {
 
         String changesString = "";
@@ -574,16 +570,32 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : Support Methods ======================================================================================
 
 
+    /**
+     * checks if the coordinates are valid
+     * @param row is the row coordinate of the board
+     * @param column is the column coordinate of the board
+     * @return true if the coordinates are valid
+     */
     public boolean isValidCoordinate(int row, int column) {
         return row >= 0 && row <= 4 && column >= 0 && column <= 4;
     }
 
 
+    /**
+     * checks if there's no pawn
+     * @param row is the row coordinate of the spot
+     * @param column is the column coordinate of the spot
+     * @return if there's no pawn in this spot
+     */
     public boolean isValidSpot(int row, int column){
-        return !gameBoard.getCell(row, column).getBuilderHere();
+        return !gameBoard.getCell(row, column).isPawnHere();
     }
 
 
+    /**
+     * @param buildingLevel is the level of a building
+     * @return if the building level is valid
+     */
     public boolean isValid(int buildingLevel) {
         for ( Building b : lastBuildingsList ) {
             if(b.getLevel() == buildingLevel) {
@@ -595,6 +607,11 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @param row is the row of the cell to be checked
+     * @param column is the column of the cell to be checked
+     * @return if the [row,column] cell is valid
+     */
     public boolean isValid(int row, int column) {
         for( Cell c : lastCellsList ) {
             if(c.getRowPosition() == row && c.getColumnPosition() == column && isValidCoordinate(row, column)) {
@@ -606,6 +623,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @param actionID is the ID of an action
+     * @return is the action is valid
+     */
     public boolean isValid(String actionID) {
         for(Action a : lastActionsList) {
             if(a.getActionID().equals(actionID)) {
@@ -617,6 +638,12 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @param nickname is the nickname of the player
+     * @param row is the row coordinate of the pawn
+     * @param column is the column coordinate of the pawn
+     * @return if the pawn of the player is valid
+     */
     public boolean isValidPawn(String nickname, int row, int column ){
 
         if (isValidCoordinate(row, column)) {
@@ -630,9 +657,14 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * @param nickname is the nickname of the player
+     * @return if the player is the current player
+     */
     public boolean isValidPlayer(String nickname){
         return nickname.equals(playersNickname.get(indexCurrentPlayer));
     }
+
 
 
     public void setChosenPawn(String nickname, int row, int column){
@@ -659,17 +691,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         return this.lastActionsList;
     }
 
-
-    public List<String> getAllNames() {
-
-        List<String> names = new ArrayList<>();
-
-        for (Player p : players ) {
-            names.add(p.getName());
-        }
-
-        return names;
-    }
 
 
     public List<String> getPlayersNickname() {
@@ -718,8 +739,9 @@ public class Game extends Observable implements GameConsequenceHandler {
         player.resetPlayerStatus();
     }
 
+
     public String getCurrentPlayer() {
-        return this.players.get(indexCurrentPlayer).getName();
+        return this.playersNickname.get(indexCurrentPlayer);
     }
 
 
@@ -741,6 +763,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     }
+
 
     /* USED ONLY FOR TESTING */
     public Game(Player player, Player opponent) {
@@ -768,16 +791,17 @@ public class Game extends Observable implements GameConsequenceHandler {
         return this.gameBoard;
     }
 
-    /* USED ONLY FOR TESTING */
-    public int getIndexCurrentPlayer() {
-        return this.indexCurrentPlayer;
-    }
 
     /* USED ONLY FOR TESTING */
-    public Game(List<Player> players){
+    public Game(List<String> playersName){
         gameBoard = new Board();
-        this.players = players;
+        this.playersNickname = playersName;
+        this.players = new ArrayList<>();
         indexCurrentPlayer = 0;
+
+        players.add(new Player(playersName.get(0), Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+        players.add(new Player(playersName.get(1), Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+        players.add(new Player(playersName.get(2), Color.WHITE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
 
         lastActionsList = null;
         lastBuildingsList = null;

@@ -51,14 +51,23 @@ public class BuildBeforeEffect extends EffectDecorator {
         return super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);
     }
 
+    /**
+     * this method changes the state of the player after he does a basic move action
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn used for the move action
+     * @param designatedCell is the position where the designatedPawn will be moved
+     * @return a consequence of the move action
+     */
     @Override
     public Consequence move(Board gameBoard, Pawn designatedPawn, Cell designatedCell) {
+
+        Consequence moveConsequence = super.effect.move(gameBoard, designatedPawn, designatedCell);
 
         if(super.effect.getState().getClass().equals(MoveAndBuildState.class))
             super.effect.changeState(new BuildState(this));
 
 
-        return super.effect.move(gameBoard, designatedPawn, designatedCell);
+        return moveConsequence;
     }
 
 

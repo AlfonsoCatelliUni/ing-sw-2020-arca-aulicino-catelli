@@ -80,4 +80,13 @@ class BuildBeforeEffectTest {
         assertEquals(FinishState.class, player3.getEffect().getState().getClass());
 
     }
+
+    @Test
+    void move() {
+
+        player1.move(gameBoard, gameBoard.getCell(0,0).getPawnInThisCell(), gameBoard.getCell(0,1));
+
+        assertEquals(BuildState.class,player1.getEffect().getState().getClass());
+
+    }
 }

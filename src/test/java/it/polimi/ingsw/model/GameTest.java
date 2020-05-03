@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -56,6 +57,46 @@ class GameTest {
 
 
     @Test
+    void nextCurrentPlayer() {
+
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        assertEquals("Alfantasy", gameTest.getCurrentPlayer());
+
+        gameTest.nextCurrentPlayer();
+
+        assertEquals("Scoiattolo", gameTest.getCurrentPlayer());
+
+        gameTest.nextCurrentPlayer();
+
+        assertEquals("Mashu7", gameTest.getCurrentPlayer());
+
+        gameTest.nextCurrentPlayer();
+
+        assertEquals("Alfantasy", gameTest.getCurrentPlayer());
+
+        gameTest.nextCurrentPlayer();
+
+        assertEquals("Scoiattolo", gameTest.getCurrentPlayer());
+
+        gameTest.nextCurrentPlayer();
+
+        assertEquals("Mashu7", gameTest.getCurrentPlayer());
+
+        gameTest.nextCurrentPlayer();
+
+        assertEquals("Alfantasy", gameTest.getCurrentPlayer());
+
+    }
+
+
+    @Test
     void removePlayer() {
 
         /* This method removes the pawns from the board too
@@ -93,7 +134,6 @@ class GameTest {
         for(Effect e = alfoPlayer.getEffect(); !e.getClass().equals(BasicEffect.class); e = e.getEffect()) {
             assertNotEquals(NotMoveUpEffect.class, e.getClass());
         }
-
 
         Player player = gameTest2.getPlayers().get(1);
         player.setEffect(new BlockOpponentEffect(gameTest2.getPlayers().get(1).getEffect()));
@@ -337,6 +377,28 @@ class GameTest {
      */
     @Test
     void movePawn() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setEffect(new BasicEffect());
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.initializePawn("Scoiattolo", 0,0);
+        gameTest.initializePawn("Scoiattolo", 0,1);
+
+        gameTest.movePawn("Alfantasy", 1,0, 2,0);
+
+        assertTrue(gameTest.getGameBoard().getCell(2,0).isPawnHere());
+
+
     }
 
 
@@ -347,26 +409,270 @@ class GameTest {
     void pawnBuild() {
     }
 
+
     /**
      * this method only calls the destroyBlock in player
      */
     @Test
     void destroyBlock() {
+
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setEffect(new CanDestroyEffect(new DestroyEffect(new BasicEffect())));
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.initializePawn("Scoiattolo", 0,0);
+        gameTest.initializePawn("Scoiattolo", 0,1);
+
+        gameTest.getGameBoard().getCell(2,2).buildOnThisCell(gameTest.getGameBoard().getBuildings().get(0));
+
+        gameTest.destroyBlock("Alfantasy", 2,2);
+
+        assertEquals(0, gameTest.getGameBoard().getCell(2,2).getHeight());
+
+        
+
     }
 
 
-    /**
-     * this method only calls the wherePawnCanDestroy in player
-     */
+
     @Test
     void wherePawnCanDestroy() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setEffect(new CanDestroyEffect(new DestroyEffect(new BasicEffect())));
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.initializePawn("Scoiattolo", 0,0);
+        gameTest.initializePawn("Scoiattolo", 0,1);
+
+        gameTest.movePawn("Alfantasy", 1,0, 2,0);
+
+        gameTest.getGameBoard().getCell(2,2).buildOnThisCell(gameTest.getGameBoard().getBuildings().get(0));
+
+        List<Cell> correctCells = new ArrayList<>();
+        correctCells.add(gameTest.getGameBoard().getCell(2,2));
+
+        List<Cell> returnedCells = gameTest.wherePawnCanDestroy("Alfantasy");
+
+        assertEquals(correctCells, returnedCells);
+
+
+
     }
 
 
-    /**
-     * this method only calls the player.resetPlayerStatus method
-     */
     @Test
     void resetPlayerStatus() {
+
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setCard(JsonHandler.deserializeCardList().get(0));
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+
+        gameTest.movePawn("Alfantasy", 1,0,0,0);
+
+        assertTrue(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).getHasMoved());
+
+        gameTest.resetPlayerStatus("Alfantasy");
+
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).getHasMoved());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).getHasBuilt());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).getGoneUp());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).getForcedMove());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).isChosen());
+
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,1).getHasMoved());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,1).getHasBuilt());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,1).getGoneUp());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,1).getForcedMove());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,1).isChosen());
+
     }
+
+
+    @Test
+    void isValidPawn() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setCard(JsonHandler.deserializeCardList().get(0));
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.setChosenPawn("Alfantasy",1,1);
+
+        assertFalse(gameTest.isValidPawn("Alfantasy", 1,0));
+        assertTrue(gameTest.isValidPawn("Alfantasy", 1,1));
+    }
+
+
+    @Test
+    void setChosenPawn() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setCard(JsonHandler.deserializeCardList().get(0));
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.setChosenPawn("Alfantasy",1,1);
+
+        assertTrue(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,1).isChosen());
+        assertFalse(gameTest.getPlayerByName("Alfantasy").getPawnInCoordinates(1,0).isChosen());
+
+
+    }
+
+    @Test
+    void getPawnsCoordinateByPlayer() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        List<Cell> correctCells = new ArrayList<>();
+        correctCells.add(gameTest.getGameBoard().getCell(1,0));
+        correctCells.add(gameTest.getGameBoard().getCell(1,1));
+
+        assertEquals(correctCells, gameTest.getPawnsCoordinateByPlayer("Alfantasy"));
+
+
+
+    }
+
+
+    @Test
+    void getAllPawnsCoordinates() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.initializePawn("Scoiattolo", 0,0);
+        gameTest.initializePawn("Scoiattolo", 0,1);
+
+        List<Cell> correctCells = new ArrayList<>();
+        correctCells.add(gameTest.getGameBoard().getCell(1,0));
+        correctCells.add(gameTest.getGameBoard().getCell(1,1));
+        correctCells.add(gameTest.getGameBoard().getCell(0,0));
+        correctCells.add(gameTest.getGameBoard().getCell(0,1));
+
+        List<Cell> returnedCells = gameTest.getAllPawnsCoordinates();
+
+        correctCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+        returnedCells.sort(Comparator.comparingInt(Cell::getRowPosition).thenComparingInt(Cell::getColumnPosition));
+
+        assertEquals(correctCells, returnedCells);
+
+
+    }
+
+
+    @Test
+    void getOpponentsNeighboring() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.initializePawn("Scoiattolo", 0,0);
+        gameTest.initializePawn("Scoiattolo", 0,1);
+
+        List<Cell> correctCells = new ArrayList<>();
+        correctCells.add(gameTest.getGameBoard().getCell(1,0));
+        correctCells.add(gameTest.getGameBoard().getCell(1,1));
+
+        List<Cell> returnedCells = gameTest.getOpponentsNeighboring("Scoiattolo", 0,0);
+
+        assertEquals(correctCells, returnedCells);
+
+    }
+
+
+    @Test
+    void forceOpponent() {
+        List<String> players = new ArrayList<>();
+
+        players.add("Alfantasy");
+        players.add("Scoiattolo");
+        players.add("Mashu7");
+
+        Game gameTest = new Game(players);
+
+        gameTest.getPlayerByName("Alfantasy").setEffect(new CanForceEffect(new BasicEffect()));
+
+
+        gameTest.initializePawn("Alfantasy", 1,0);
+        gameTest.initializePawn("Alfantasy", 1,1);
+
+        gameTest.initializePawn("Scoiattolo", 0,0);
+        gameTest.initializePawn("Scoiattolo", 0,1);
+
+        gameTest.forceOpponent("Alfantasy", 1,0,0,0);
+
+        assertTrue(gameTest.getGameBoard().getCell(2,0).isPawnHere() && gameTest.getGameBoard().getPawnByCoordinates(2,0).getColor() == Color.GREY);
+
+    }
+
 }

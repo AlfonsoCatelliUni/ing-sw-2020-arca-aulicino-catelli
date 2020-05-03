@@ -30,7 +30,7 @@ public class PushEffect extends EffectDecorator {
         Consequence resultAction;
 
 
-        if( nextPosition.getBuilderHere() ) {
+        if( nextPosition.isPawnHere() ) {
 
             int diffRow = nextPosition.getRowPosition() - designatedPawn.getPosition().getRowPosition();
             int diffColumn = nextPosition.getColumnPosition() - designatedPawn.getPosition().getColumnPosition();

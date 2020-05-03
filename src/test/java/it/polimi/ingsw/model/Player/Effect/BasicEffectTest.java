@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.FinishState;
-import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -303,11 +302,11 @@ class BasicEffectTest {
         massiPlayer.removePawn(gameBoard, gameBoard.getPawnByCoordinates(4,4));
         massiPlayer.placePawn(gameBoard, gameBoard.getPawnByCoordinates(4,4), gameBoard.getCell(3,4));
 
-        assertEquals(false, gameBoard.getCell(4,4).getBuilderHere());
+        assertEquals(false, gameBoard.getCell(4,4).isPawnHere());
         assertEquals(true, gameBoard.getCell(4,4).getIsFree());
         assertNull(gameBoard.getCell(4, 4).getPawnInThisCell());
 
-        assertEquals(true, gameBoard.getCell(3,4).getBuilderHere());
+        assertEquals(true, gameBoard.getCell(3,4).isPawnHere());
         assertEquals(false, gameBoard.getCell(3,4).getIsFree());
 
     }
@@ -319,7 +318,7 @@ class BasicEffectTest {
         //remove a normal pawn
         alfoPlayer.removePawn(gameBoard, alfoPlayer.getPawnInCoordinates(0,0));
 
-        assertEquals(false, gameBoard.getCell(0,0).getBuilderHere());
+        assertEquals(false, gameBoard.getCell(0,0).isPawnHere());
         assertEquals(true, gameBoard.getCell(0,0).getIsFree());
         assertNull(gameBoard.getCell(0, 0).getPawnInThisCell());
 

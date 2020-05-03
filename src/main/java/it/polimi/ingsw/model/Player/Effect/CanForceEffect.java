@@ -63,6 +63,13 @@ public class CanForceEffect extends EffectDecorator {
         }
     }
 
+    /**
+     * this method changes the state of the player after he does a basic move action
+     * @param gameBoard is the board where the game is played
+     * @param designatedPawn is the pawn used for the move action
+     * @param nextPosition is the position where the designatedPawn will be moved
+     * @return a consequence of the move action
+     */
     @Override
     public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
 

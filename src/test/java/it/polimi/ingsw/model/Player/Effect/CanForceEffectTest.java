@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
+import it.polimi.ingsw.model.Player.State.MoveState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -80,5 +81,17 @@ class CanForceEffectTest {
         assertEquals(0, possibleCells.size());
 
 
+    }
+
+    @Test
+    void force() {
+
+        player.force(gameBoard, gameBoard.getCell(0,1).getPawnInThisCell(), gameBoard.getSymmetrical(gameBoard.getCell(1,1), gameBoard.getCell(0,1)));
+
+        assertEquals(true, gameBoard.getCell(2,1).isPawnHere());
+
+        assertEquals(false, gameBoard.getCell(0,1).isPawnHere());
+
+        assertEquals(MoveState.class, player.getEffect().getState().getClass());
     }
 }

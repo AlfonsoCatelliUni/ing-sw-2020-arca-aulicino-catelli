@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Consequence.VictoryConsequence;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Player;
 import it.polimi.ingsw.model.Player.State.BuildState;
+import it.polimi.ingsw.model.Player.State.FinishState;
 import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
 import it.polimi.ingsw.model.Player.State.MoveState;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,6 +89,19 @@ class MoreMoveEffectTest {
         assertEquals(VictoryConsequence.class, retMoveEncoded.getClass());
         assertEquals(MoveAndBuildState.class,player.getEffect().getState().getClass());
 
+
+    }
+
+    @Test
+    void build() {
+
+        player.initPawn(gameBoard, gameBoard.getCell(0,0));
+
+        player.move(gameBoard, gameBoard.getCell(0,0).getPawnInThisCell(), gameBoard.getCell(0,1));
+
+        player.build(gameBoard.getCell(0,1).getPawnInThisCell(), gameBoard.getCell(1,1), 1, buildings);
+
+        assertEquals(FinishState.class, player.getEffect().getState().getClass());
 
     }
 }

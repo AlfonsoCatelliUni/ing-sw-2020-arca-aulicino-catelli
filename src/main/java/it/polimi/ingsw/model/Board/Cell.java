@@ -2,8 +2,6 @@ package it.polimi.ingsw.model.Board;
 
 import it.polimi.ingsw.model.Player.Pawn;
 
-import java.util.List;
-
 /**
  * the cell that gameBoard has made with
  */
@@ -38,7 +36,7 @@ public class Cell {
     /**
      * true if there is a Builder is this cell
      */
-    private Boolean isBuilderHere;
+    private Boolean isPawnHere;
 
 
     /**
@@ -66,7 +64,7 @@ public class Cell {
         this.rowPosition = rowPosition;
         this.height = 0;
 
-        this.isBuilderHere = false;
+        this.isPawnHere = false;
         this.pawnInThisCell = null;
 
         this.roof = new Building(0, 25);
@@ -116,8 +114,8 @@ public class Cell {
      * there is a pawn in this cell ?
      * @return true is there is a pawn
      */
-    public Boolean getBuilderHere() {
-        return isBuilderHere;
+    public Boolean isPawnHere() {
+        return isPawnHere;
     }
 
 
@@ -144,7 +142,7 @@ public class Cell {
      * @return true if there aren't collocated here a dome or a pawn
      */
     public Boolean getIsFree(){
-        return !getRoof().getIsDome() && !getBuilderHere();
+        return !getRoof().getIsDome() && !isPawnHere();
     }
 
 
@@ -165,7 +163,7 @@ public class Cell {
      */
     public void freeCell() {
         this.pawnInThisCell = null;
-        this.isBuilderHere = false;
+        this.isPawnHere = false;
     }
 
 
@@ -203,8 +201,8 @@ public class Cell {
      */
     public void placePawnHere(Pawn pawn) {
 
-        if (!this.isBuilderHere && this.pawnInThisCell == null){
-            this.isBuilderHere = true;
+        if (!this.isPawnHere && this.pawnInThisCell == null){
+            this.isPawnHere = true;
             this.pawnInThisCell = pawn;
         }
 

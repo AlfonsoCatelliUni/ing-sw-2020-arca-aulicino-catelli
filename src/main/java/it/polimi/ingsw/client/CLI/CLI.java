@@ -17,24 +17,21 @@ import java.util.regex.Pattern;
 
 public class CLI extends Client implements ServerToClientManager {
 
+    private String ipAddress;
+
+    private final int port;
 
     private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
-
-    private String ipAddress;
-    private final int port;
 
 
     private final Scanner input;
 
     private final GraphicDrawerCLI drawer;
 
-
     private ClientView clientView;
 
 
-
     private List<FormattedPlayerInfo> playersInfo;
-
 
 
     private String nickname;
@@ -47,7 +44,8 @@ public class CLI extends Client implements ServerToClientManager {
 
     private int nextActionColumn;
 
-    // ======================================================================================
+
+    // MARK : Constructor and Run ======================================================================================
 
 
     //TODO : ottimizzare per ridurre le copie di codice
@@ -69,9 +67,6 @@ public class CLI extends Client implements ServerToClientManager {
         this.nextActionColumn = -1;
 
     }
-
-
-    // ======================================================================================
 
 
     public static void main(String[] args) {
@@ -115,20 +110,7 @@ public class CLI extends Client implements ServerToClientManager {
     }
 
 
-    /**
-     * this method control the validity of the ip address
-     * @return true if the ip address is valid, false in case the ip is invalid
-     */
-    public boolean isValidIP(String ip) {
-        // code taken from : https://stackoverflow.com/Questions/5667371/validate-ipv4-address-in-java
-        String IP_PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
-
-        return ip.matches(IP_PATTERN);
-
-    }
-
-
-    // ======================================================================================
+    // MARK : Network Event Managers ======================================================================================
 
 
     @Override
@@ -214,16 +196,6 @@ public class CLI extends Client implements ServerToClientManager {
 
 
     @Override
-    public void manageEvent(NotifyStatusEvent event) {
-
-        List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
-        drawer.saveBoardChanges(cellsInfoList);
-
-        drawer.show();
-    }
-
-
-    @Override
     public void manageEvent(DisconnectionClientEvent event) {
         System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
         this.clientView = null;
@@ -259,7 +231,17 @@ public class CLI extends Client implements ServerToClientManager {
     }
 
 
-    // ======================================================================================
+    // MARK : Game Event Managers ======================================================================================
+
+
+    @Override
+    public void manageEvent(NotifyStatusEvent event) {
+
+        List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
+        drawer.saveBoardChanges(cellsInfoList);
+
+        drawer.show();
+    }
 
 
     @Override
@@ -278,6 +260,7 @@ public class CLI extends Client implements ServerToClientManager {
 
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
+
 
         List<Point> occupiedCells = event.info;
         List<Point> freeCells = new ArrayList<>();
@@ -302,41 +285,27 @@ public class CLI extends Client implements ServerToClientManager {
         drawer.saveCellsChoicesValue(freeCells);
 
         selectedMale = userChoice( freeCells.size() );
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert a Number!");
-//                input.next();
-//            }
-//            selectedMale = input.nextInt();
-//
-//            if(!(selectedMale >= 0 && selectedMale < freeCells.size()))
-//                System.err.println("Choice Unavailable!");
-//
-//        } while( !(selectedMale >= 0 && selectedMale < freeCells.size()) );
+
         int maleRowPosition = freeCells.get(selectedMale).x;
         int maleColumnPosition = freeCells.get(selectedMale).y;
         freeCells.remove(selectedMale);
+
+        String color = "";
+        for (FormattedPlayerInfo info : playersInfo ) {
+            if(info.getNickname().equals(nickname)) {
+                color = info.getColor();
+            }
+        }
+        List<FormattedCellInfo> cellInfoList = new ArrayList<>();
+        cellInfoList.add(new FormattedCellInfo(maleRowPosition, maleColumnPosition, 0, color.toUpperCase(), "MALE", 0, false));
+        drawer.saveBoardChanges(cellInfoList);
 
 
         drawer.saveTitleChoicePanel("select the cell for the female pawn");
         drawer.saveCellsChoicesValue(freeCells);
 
         selectedFemale = userChoice( freeCells.size() );
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert a Number!");
-//                input.next();
-//            }
-//            selectedFemale = input.nextInt();
-//
-//            if(!(selectedFemale >= 0 && selectedFemale < freeCells.size()))
-//                System.err.println("Choice Unavailable!");
-//
-//        } while( !(selectedFemale >= 0 && selectedFemale < freeCells.size()) );
+
         int femaleRowPosition = freeCells.get(selectedFemale).x;
         int femaleColumnPosition = freeCells.get(selectedFemale).y;
 
@@ -363,22 +332,7 @@ public class CLI extends Client implements ServerToClientManager {
         drawer.saveCellsChoicesValue(availablePawns);
 
         selectedPawn = userChoice( availablePawns.size() );
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert a Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            selectedPawn = input.nextInt();
-//
-//            if( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) ) {
-//                System.err.println("Choice Unavailable!");
-//            }
-//
-//        } while( !(selectedPawn >= 0 && selectedPawn < availablePawns.size()) );
+
         this.rowUsedPawn = availablePawns.get(selectedPawn).x;
         this.columnUsedPawn = availablePawns.get(selectedPawn).y;
 
@@ -410,36 +364,15 @@ public class CLI extends Client implements ServerToClientManager {
         }
 
         choiceNum = userChoice( cardsName.size() );
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert a Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            choiceNum = input.nextInt();
-//
-//            if( !(choiceNum >= 0 && choiceNum < cardsName.size()) ) {
-//                System.err.println("Choice Unavailable!");
-//            }
-//
-//        } while( !(choiceNum >= 0 && choiceNum < cardsName.size()) );
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
-        //TODO : migliorare la gestione del Player Panel una volta che si è scelta la propria card
+        //show only your information in Players Panel into the CLI graphic
+        this.playersInfo = new ArrayList<>();
+        this.playersInfo.add( new FormattedPlayerInfo(nickname, "", Couple.create(cardsName.get(choiceNum), cardsEffect.get(choiceNum))) );
 
-        /* non mi piace che si continui a mostrare il [0] come se ci fosse ancora da fare una scelta
-        * quando invece si sta solamente aspettando che gli altri giocatori scelgano la loro carta */
-        cardsName.remove(choiceNum);
-        cardsEffect.remove(choiceNum);
-
-        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        if(cardsName.size() > 0) {
-            drawer.savePlayerCardChoice(cardsName, cardsEffect);
-        }
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playersInfo);
 
         drawer.show();
     }
@@ -816,6 +749,9 @@ public class CLI extends Client implements ServerToClientManager {
     }
 
 
+    // MARK : Support Methods ======================================================================================
+
+
     /**
      * this method is used to reduce the duplication of code in this class,
      * because when the user have to select his choice this class control that the number
@@ -830,8 +766,8 @@ public class CLI extends Client implements ServerToClientManager {
 
         do {
             /* in the manageEvent we set the title and the choices
-            * then in here we show them every time the user enter an
-            * invalid choice */
+             * then in here we show them every time the user enter an
+             * invalid choice */
             drawer.show();
 
             // control if the user insert an number
@@ -855,8 +791,17 @@ public class CLI extends Client implements ServerToClientManager {
     }
 
 
-    // ======================================================================================
+    /**
+     * this method control the validity of the ip address
+     * @return true if the ip address is valid, false in case the ip is invalid
+     */
+    private boolean isValidIP(String ip) {
+        // code taken from : https://stackoverflow.com/Questions/5667371/validate-ipv4-address-in-java
+        String IP_PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
 
+        return ip.matches(IP_PATTERN);
+
+    }
 
 
 }

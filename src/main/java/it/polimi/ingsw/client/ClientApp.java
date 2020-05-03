@@ -10,6 +10,7 @@ import it.polimi.ingsw.client.GUI.GUI;
  */
 public class ClientApp {
 
+
     /* HOW TO RUN A MAIN WITH A PARAMETER
     * if you want to run this main in IntelliJ with a parameter
     * you have to drop the window between the Build icon (hammer)

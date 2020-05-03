@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.CLI;
 
-import it.polimi.ingsw.client.Couple;
 import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 
@@ -8,27 +7,33 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <h3>Graphic Drawer CLI</h3>
+ * <p>this class is used to compose and draw the graphic
+ * of the textual part of the game</p>
+ */
 public class GraphicDrawerCLI {
 
     private final String RESET = "\u001B[0m";
-    private final String BLACK = "\u001B[30m";
-    private final String RED = "\u001B[31m";
-    private final String GREEN = "\u001B[32m";
-    private final String YELLOW = "\u001B[33m";
-    private final String BLUE = "\u001B[34m";
-    private final String PURPLE = "\u001B[35m";
-    private final String CYAN = "\u001B[36m";
-    private final String WHITE = "\u001B[37m";
-    private final String BRIGHTBLACK = "\u001b[30;1m";
-    private final String BRIGHTGREEN = "\u001b[32;1m";
 
-    private final String RED_C = "\u001B[38:5:196m";
+    private final String RED_C = "\u001b[38;5;196m";
+    private final String GREEN_C = "\u001b[38;5;46m";
+    private final String CYAN_C = "\u001b[38;5;39m";
+    private final String BLUE_GREEN_C = "\u001b[38;5;30m";
+    private final String COPPER_C = "\u001b[38;5;94m";
+    private final String ORANGE_C = "\u001b[38;5;202m";
+
+    private final String BLUE_C = "\u001b[38;5;27m";
+    private final String GREY_C = "\u001b[38;5;241m";
+    private final String WHITE_C = "\u001b[38;5;231m";
+
 
     private final int ROWS = 62;
 
     private final int COLUMNS = 154;
 
     private String[][] screen;
+
 
     // ======================================================================================
 
@@ -56,7 +61,11 @@ public class GraphicDrawerCLI {
     // ======================================================================================
 
 
+    /**
+     * this method modify the screen array calling the specific methods for each section
+     */
     public void draw() {
+        clearScreen();
         clear();
         drawPlayersPanel();
         drawChoicePanel();
@@ -65,8 +74,10 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method draw the new graphic and print it on screren
+     */
     public void show() {
-        clearScreen();
         draw();
 
         for(int row = 0; row < ROWS; row++) {
@@ -80,22 +91,28 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * clear the console
+     */
     public void clearScreen() {
         System.out.print("\033\143");
         System.out.flush();
     }
 
 
+    /**
+     * this method draw an empty screen
+     */
     private void clear() {
 
         for(int row = 0; row < ROWS; row++) {
             for(int column = 0; column < COLUMNS; column++) {
 
                 if(row == 0 || row == ROWS-1) {
-                    screen[row][column] = "-";
+                    screen[row][column] = COPPER_C + "-" + RESET;
                 }
                 else if(column == 0 || column == COLUMNS-1) {
-                    screen[row][column] = "|";
+                    screen[row][column] = COPPER_C + "|" + RESET;
                 }
                 else {
                     screen[row][column] = " ";
@@ -104,14 +121,22 @@ public class GraphicDrawerCLI {
             }
         }
 
-        screen[0][0] = "+";
-        screen[0][153] = "+";
-        screen[61][153] = "+";
-        screen[61][0] = "+";
+        screen[0][0] = COPPER_C + "+" + RESET;
+        screen[0][153] = COPPER_C + "+" + RESET;
+        screen[61][153] = COPPER_C + "+" + RESET;
+        screen[61][0] = COPPER_C + "+" + RESET;
 
     }
 
 
+    /**
+     * this method write every single char of the passed string
+     * into the screen table with the passed color
+     * @param row the row where the string will be wrote
+     * @param column the starting column where the string will be wrote
+     * @param p the string
+     * @param color the color that i want the string
+     */
     private void print(int row, int column, String p, String color) {
         for (int off = 0; off < p.length(); off++) {
             screen[row][column + off] =  color + String.valueOf(p.charAt(off)) + RESET ;
@@ -119,6 +144,12 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method only calls the print passing the standard color RESET
+     * @param row the row where the string will be wrote
+     * @param column the starting column where the string will be wrote
+     * @param p the string
+     */
     private void print(int row, int column, String p) {
         print(row, column, p, RESET);
     }
@@ -127,14 +158,17 @@ public class GraphicDrawerCLI {
     // ======================================================================================
 
 
+    /**
+     * this method draw the Santorini logo in a specific position of the board
+     */
     private void drawSantoriniLogo() {
 
-        print(25, 10, "  _____             _             _       _ ", YELLOW);
-        print(26, 10, " / ____|           | |           (_)     (_)", YELLOW);
-        print(27, 10, "| (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ ", YELLOW);
-        print(28,  10, " \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |", YELLOW);
-        print(29, 10, " ____) | (_| | | | | || (_) | |  | | | | | |", YELLOW);
-        print(30, 10, "|_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|", YELLOW);
+        print(25, 10, "  _____             _             _       _ ", WHITE_C);
+        print(26, 10, " / ____|           | |           (_)     (_)", WHITE_C);
+        print(27, 10, "| (___   __ _ _ __ | |_ ___  _ __ _ _ __  _ ", WHITE_C);
+        print(28,  10, " \\___ \\ / _` | '_ \\| __/ _ \\| '__| | '_ \\| |", WHITE_C);
+        print(29, 10, " ____) | (_| | | | | || (_) | |  | | | | | |", WHITE_C);
+        print(30, 10, "|_____/ \\__,_|_| |_|\\__\\___/|_|  |_|_| |_|_|", WHITE_C);
 
     }
 
@@ -145,6 +179,10 @@ public class GraphicDrawerCLI {
     private FormattedCellInfo[][] formattedBoardInfo;
 
 
+    /**
+     * this method draws the structure of the board graphic
+     * the fills it with the cells info
+     */
     private void drawBoardPanel() {
 
         int startRow = 34;
@@ -157,9 +195,9 @@ public class GraphicDrawerCLI {
             coeff = (row + 2) % 4;
 
             if( coeff == 0) {
-                print(row, 8, divider, YELLOW);
+                print(row, 8, divider, COPPER_C);
             } else {
-                print(row, 8, empty, YELLOW);
+                print(row, 8, empty, COPPER_C);
             }
 
         }
@@ -168,6 +206,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method deletes all the cells info saved
+     */
     private void resetBoardCellsInfo() {
 
         for(int row = 0; row < 5; row++) {
@@ -179,6 +220,10 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method fills all the board with the info for the cell
+     * or puts in the coordinates
+     */
     private void fillBoardPanel() {
 
         int startRow = 36;
@@ -198,15 +243,15 @@ public class GraphicDrawerCLI {
 
                 if(row == 0) {
                     if(col == 0) {
-                        print(rowRef, colRef, "X", RED);
+                        print(rowRef, colRef, "X", RED_C);
                     }
                     else {
-                        print(rowRef, colRef, String.valueOf(col-1), RED);
+                        print(rowRef, colRef, String.valueOf(col-1), RED_C);
                     }
 
                 }
                 else if(col == 0) {
-                    print(rowRef, colRef, String.valueOf(row-1), RED);
+                    print(rowRef, colRef, String.valueOf(row-1), RED_C);
                 }
                 else {
                     int selectedRow = row-1;
@@ -221,6 +266,10 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method is used to save new info for a specific cell
+     * @param cellInfoList is a list of formatted object that contains all the useful info of the cell
+     */
     public void saveBoardChanges(List<FormattedCellInfo> cellInfoList) {
         for (FormattedCellInfo c : cellInfoList ) {
             this.formattedBoardInfo[c.getRow()][c.getColumn()] = c;
@@ -229,7 +278,15 @@ public class GraphicDrawerCLI {
     }
 
 
-    public void fillCellInfo(int printRow, int printCol, int row, int column, FormattedCellInfo cellInfo) {
+    /**
+     * this method draw the graphic of the single cell
+     * @param printRow the row where I want to print
+     * @param printCol the column where I want to print
+     * @param row the row of the cell that I want to print
+     * @param column the column of the cell that I want to print
+     * @param cellInfo the formatted info of the cell that I want to print
+     */
+    private void fillCellInfo(int printRow, int printCol, int row, int column, FormattedCellInfo cellInfo) {
 
         Boolean isDome = cellInfo.getRoofInfo().getSecond();
         String color = cellInfo.getPawnInfo().getFirst();
@@ -238,12 +295,12 @@ public class GraphicDrawerCLI {
         String retString = String.valueOf(cellInfo.getHeight()) + " ";
 
         if (isDome) {
-            retString += "x";
-            print(printRow, printCol, retString, CYAN);
+            retString += "X";
+            print(printRow, printCol, retString, CYAN_C);
         }
         else if(color.equals("") && sex.equals("")) {
             retString += ".";
-            print(printRow, printCol, retString, BRIGHTGREEN);
+            print(printRow, printCol, retString, GREEN_C);
         }
         else {
             switch (color) {
@@ -253,7 +310,7 @@ public class GraphicDrawerCLI {
                     } else if (sex.equals("FEMALE")) {
                         retString += "b";
                     }
-                    print(printRow, printCol, retString, BLUE);
+                    print(printRow, printCol, retString, BLUE_C);
                     break;
 
                 case "GREY":
@@ -262,7 +319,7 @@ public class GraphicDrawerCLI {
                     } else if (sex.equals("FEMALE")) {
                         retString += "g";
                     }
-                    print(printRow, printCol, retString);
+                    print(printRow, printCol, retString, GREY_C);
                     break;
 
                 case "WHITE":
@@ -271,7 +328,7 @@ public class GraphicDrawerCLI {
                     } else if (sex.equals("FEMALE")) {
                         retString += "w";
                     }
-                    print(printRow, printCol, retString, BRIGHTBLACK);
+                    print(printRow, printCol, retString, WHITE_C);
                     break;
             }
         }
@@ -304,9 +361,9 @@ public class GraphicDrawerCLI {
         for(int row = startRow; row <= 20; row++) {
 
             if(row == 4 || row == 8 || row == 20) {
-                print( row, 8, divider, CYAN);
+                print( row, 8, divider, BLUE_GREEN_C);
             } else {
-                print(row, 8, empty, CYAN);
+                print(row, 8, empty, BLUE_GREEN_C);
             }
 
 
@@ -358,7 +415,7 @@ public class GraphicDrawerCLI {
         for(int card = 0; card < numCards; card++) {
             refRow = startRow + (card * rowOffset);
 
-            print(refRow, 11, "["+String.valueOf(card)+"]", RED);
+            print(refRow, 11, "["+String.valueOf(card)+"]", RED_C);
             print(refRow, 16, cardsNameList.get(card));
 
             if(cardsEffectList.get(card).length() > 87) {
@@ -380,7 +437,7 @@ public class GraphicDrawerCLI {
 
         String uppercaseTitle = title.toUpperCase();
 
-        print(6, 12, uppercaseTitle, WHITE);
+        print(6, 12, uppercaseTitle, WHITE_C);
 
     }
 
@@ -443,9 +500,9 @@ public class GraphicDrawerCLI {
         for(int row = startRow; row <= 58; row++) {
 
             if(row == 23 || row == 27 || row == 58) {
-                print(row, 69, divider, CYAN);
+                print(row, 69, divider, BLUE_GREEN_C);
             } else {
-                print(row, 69, empty, CYAN);
+                print(row, 69, empty, BLUE_GREEN_C);
             }
         }
 
@@ -512,7 +569,7 @@ public class GraphicDrawerCLI {
             refRow = startRow + ((i - numCol) * rowOffset);
 
             choiceNumber = "[" + String.valueOf(i) + "]";
-            print(refRow, refColNum, choiceNumber, RED);
+            print(refRow, refColNum, choiceNumber, RED_C);
 
             choiceValue = String.valueOf(cellsChoicePanel.get(i).x) + " - " + String.valueOf(cellsChoicePanel.get(i).y);
             print(refRow, refColVal, choiceValue);
@@ -537,7 +594,7 @@ public class GraphicDrawerCLI {
             refRow = startRow + (a * rowOffset);
 
             choiceNumber = "[" + String.valueOf(a) + "]";
-            print(refRow, 72, choiceNumber, RED);
+            print(refRow, 72, choiceNumber, RED_C);
 
             print(refRow, 77, actionsChoicePanel.get(a));
         }
@@ -560,7 +617,7 @@ public class GraphicDrawerCLI {
             refRow = startRow + (i * rowOffset);
 
             choiceNumber = "[" + String.valueOf(i) + "]";
-            print(refRow, 72, choiceNumber, RED);
+            print(refRow, 72, choiceNumber, RED_C);
 
             choiceValue = "Level " + String.valueOf(buildingsChoicePanel.get(i));
             print(refRow, 77, choiceValue);

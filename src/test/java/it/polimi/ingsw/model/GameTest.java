@@ -56,28 +56,6 @@ class GameTest {
 
 
     @Test
-    void newCurrentPlayer() {
-
-        Player currentPlayer = game.getPlayers().get(0);
-
-        assertEquals(currentPlayer, game.getCurrentPlayer());
-
-        Player newCurrentPlayer = game.getPlayers().get(1);
-
-        game.newCurrentPlayer();
-
-        assertEquals(newCurrentPlayer, game.getCurrentPlayer());
-
-        /* after the turn of both the players, the rotation restarts */
-
-        game.newCurrentPlayer();
-
-        assertEquals(currentPlayer, game.getCurrentPlayer());
-
-    }
-
-
-    @Test
     void removePlayer() {
 
         /* This method removes the pawns from the board too
@@ -116,7 +94,6 @@ class GameTest {
             assertNotEquals(NotMoveUpEffect.class, e.getClass());
         }
 
-        gameTest2.newCurrentPlayer();
 
         Player player = gameTest2.getPlayers().get(1);
         player.setEffect(new BlockOpponentEffect(gameTest2.getPlayers().get(1).getEffect()));
@@ -144,24 +121,6 @@ class GameTest {
         assertEquals(NotMoveUpEffect.class, gameTest.getPlayerByName(alfoPlayer.getName()).getEffect().getClass());
         assertNotEquals(NotMoveUpEffect.class, gameTest.getPlayerByName(massiPlayer.getName()).getEffect().getClass());
 
-
-    }
-
-
-    @Test
-    void nextCurrentPlayer() {
-
-        assertEquals(0, game.getIndexCurrentPlayer());
-
-        game.newCurrentPlayer();
-
-        assertEquals(1, game.getIndexCurrentPlayer());
-
-        /* after the turn of both the players, the rotation restarts */
-
-        game.newCurrentPlayer();
-
-        assertEquals(0, game.getIndexCurrentPlayer());
 
     }
 

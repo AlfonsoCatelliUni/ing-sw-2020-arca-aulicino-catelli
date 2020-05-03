@@ -3,16 +3,12 @@ package it.polimi.ingsw;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.CTSEvents.*;
-
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
-
 import it.polimi.ingsw.model.Player.Card;
-
 import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +17,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
 
 import static org.junit.Assert.*;
 
@@ -1545,8 +1540,8 @@ public class MatchSimulationTest  {
 
         virtualView.update(new ChosenCellToMoveEvent(player2, 1,0,0,0));
 
-        assertEquals(true, controller.getGame().getGameBoard().getCell(0,0).getBuilderHere());
-        assertEquals(false, controller.getGame().getGameBoard().getCell(1,0).getBuilderHere());
+        assertEquals(true, controller.getGame().getGameBoard().getCell(0,0).isPawnHere());
+        assertEquals(false, controller.getGame().getGameBoard().getCell(1,0).isPawnHere());
 
 
     /*
@@ -1611,7 +1606,7 @@ public class MatchSimulationTest  {
 
         virtualView.update(new ChosenCellToMoveEvent(player3, 1,2,2,1));
 
-        assertTrue(controller.getGame().getGameBoard().getCell(2,1).getBuilderHere());
+        assertTrue(controller.getGame().getGameBoard().getCell(2,1).isPawnHere());
 
         assertEquals("Build", controller.getGame().getLastActionsList().get(0).getActionID());
 

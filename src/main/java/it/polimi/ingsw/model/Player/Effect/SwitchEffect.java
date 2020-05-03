@@ -30,7 +30,7 @@ public class SwitchEffect extends  EffectDecorator {
 
         Consequence resultAction;
 
-        if( nextPosition.getBuilderHere() ) {
+        if( nextPosition.isPawnHere() ) {
 
             Pawn opponentPawn = nextPosition.getPawnInThisCell();
             Cell myPawnCell = designatedPawn.getPosition();

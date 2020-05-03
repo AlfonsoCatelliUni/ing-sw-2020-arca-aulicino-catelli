@@ -106,7 +106,7 @@ class CellTest {
 
         designatedCell.freeCell();
 
-        assertEquals(false, designatedCell.getBuilderHere());
+        assertEquals(false, designatedCell.isPawnHere());
         assertNull(designatedCell.getPawnInThisCell());
 
 
@@ -174,7 +174,7 @@ class CellTest {
         designatedCell.placePawnHere(designatedPawn);
 
         assertEquals(designatedPawn, designatedCell.getPawnInThisCell());
-        assertEquals(true, designatedCell.getBuilderHere());
+        assertEquals(true, designatedCell.isPawnHere());
 
         Pawn newDesignatedPawn = new Pawn(Color.GREY, Sex.FEMALE, designatedCell);
         designatedCell.placePawnHere(newDesignatedPawn);

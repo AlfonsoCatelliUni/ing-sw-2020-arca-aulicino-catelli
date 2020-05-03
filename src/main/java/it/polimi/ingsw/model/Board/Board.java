@@ -4,7 +4,6 @@ import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Pawn;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -118,7 +117,7 @@ public class Board {
 
         for(int row = 0; row < ROW; row++) {
             for (int column = 0; column < COLUMN; column++) {
-                if(matrixBoard[row][column].getBuilderHere()) {
+                if(matrixBoard[row][column].isPawnHere()) {
                     allPawns.add(matrixBoard[row][column].getPawnInThisCell());
                 }
             }
@@ -226,7 +225,7 @@ public class Board {
         List<Cell> retCellList = new ArrayList<>();
 
         for (Cell c : neighboringCells) {
-            if (c.getBuilderHere()) {
+            if (c.isPawnHere()) {
                 if (c.getPawnInThisCell().getColor() != designatedPawn.getColor())
                     retCellList.add(c);
             }

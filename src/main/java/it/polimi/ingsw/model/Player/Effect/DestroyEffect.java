@@ -35,8 +35,13 @@ public class DestroyEffect extends EffectDecorator {
 
         //find the correct building that stay under the actual roof
         for(Building b : buildings) {
-            if(b.getLevel() + 1 == designatedCell.getHeight()) {
-                designatedCell.destroyRoof(b); //destroy and place the choosen building
+
+            if(designatedCell.getHeight() == 1) {
+                designatedCell.destroyRoof(new Building(0,25));
+                break;
+
+            } else if(b.getLevel() + 1 == designatedCell.getHeight()) {
+                designatedCell.destroyRoof(b); //destroy and place the chosen building
                 break;
             }
         }

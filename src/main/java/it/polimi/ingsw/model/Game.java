@@ -82,19 +82,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-    public Game() {
-
-        super();
-
-        this.gameBoard = new Board();
-
-        this.players = new ArrayList<>();
-
-        this.indexCurrentPlayer = 0;
-
-    }
-
-
     // MARK : Main Functional Methods ======================================================================================
 
 
@@ -635,6 +622,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+
     public void setChosenPawn(String nickname, int row, int column){
 
         Player player = getPlayerByName(nickname);
@@ -659,17 +647,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         return this.lastActionsList;
     }
 
-
-    public List<String> getAllNames() {
-
-        List<String> names = new ArrayList<>();
-
-        for (Player p : players ) {
-            names.add(p.getName());
-        }
-
-        return names;
-    }
 
 
     public List<String> getPlayersNickname() {
@@ -718,8 +695,9 @@ public class Game extends Observable implements GameConsequenceHandler {
         player.resetPlayerStatus();
     }
 
+
     public String getCurrentPlayer() {
-        return this.players.get(indexCurrentPlayer).getName();
+        return this.playersNickname.get(indexCurrentPlayer);
     }
 
 
@@ -741,6 +719,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     }
+
 
     /* USED ONLY FOR TESTING */
     public Game(Player player, Player opponent) {
@@ -768,16 +747,17 @@ public class Game extends Observable implements GameConsequenceHandler {
         return this.gameBoard;
     }
 
-    /* USED ONLY FOR TESTING */
-    public int getIndexCurrentPlayer() {
-        return this.indexCurrentPlayer;
-    }
 
     /* USED ONLY FOR TESTING */
-    public Game(List<Player> players){
+    public Game(List<String> playersName){
         gameBoard = new Board();
-        this.players = players;
+        this.playersNickname = playersName;
+        this.players = new ArrayList<>();
         indexCurrentPlayer = 0;
+
+        players.add(new Player(playersName.get(0), Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+        players.add(new Player(playersName.get(1), Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
+        players.add(new Player(playersName.get(2), Color.WHITE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
 
         lastActionsList = null;
         lastBuildingsList = null;

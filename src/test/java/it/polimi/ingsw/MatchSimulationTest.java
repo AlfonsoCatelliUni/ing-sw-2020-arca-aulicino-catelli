@@ -3,31 +3,25 @@ package it.polimi.ingsw;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import it.polimi.ingsw.client.CLI.CLI;
+
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.ServerToClientEvent;
+
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Game;
+
 import it.polimi.ingsw.model.Player.Card;
-import it.polimi.ingsw.model.Player.Effect.*;
-import it.polimi.ingsw.model.Player.Player;
-import it.polimi.ingsw.model.Player.State.FinishState;
-import it.polimi.ingsw.server.Connection;
-import it.polimi.ingsw.server.Server;
+
 import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
+
 
 import static org.junit.Assert.*;
 

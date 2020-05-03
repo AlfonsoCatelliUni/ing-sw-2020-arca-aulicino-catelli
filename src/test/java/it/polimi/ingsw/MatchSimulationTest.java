@@ -29,6 +29,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.Assert.*;
+
 
 public class MatchSimulationTest  {
 
@@ -1442,5 +1444,309 @@ public class MatchSimulationTest  {
 
     }
 
+
+
+    @Test
+    void LoosingAtFirstTurn(){
+
+        player1 = "Alfantasy";
+
+        player2 = "Mashu7";
+
+        player3 = "Giammi10";
+
+
+        virtualView.update(new NewConnectionEvent(player1));
+
+        virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
+
+        virtualView.update(new NewConnectionEvent(player2));
+
+        virtualView.update(new NewConnectionEvent(player3));
+
+        controller.getPreGameLobby().getPickedCards().clear();
+
+
+        Card Atlas = JsonHandler.deserializeCardList().get(3);
+
+        Card Demeter = JsonHandler.deserializeCardList().get(4);
+
+        Card Hephaestus = JsonHandler.deserializeCardList().get(5);
+
+        controller.getPreGameLobby().getPickedCards().add(Atlas);
+        controller.getPreGameLobby().getPickedCards().add(Demeter);
+        controller.getPreGameLobby().getPickedCards().add(Hephaestus);
+
+
+        virtualView.update(new ChosenCardEvent(player1, Atlas.getName()));
+
+
+        virtualView.update(new ChosenCardEvent(player2, Demeter.getName()));
+
+
+        virtualView.update(new ChosenCardEvent(player3, Hephaestus.getName()));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player2, 1,0,1,1));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player3, 0,2,1,2));
+
+
+        List<Building> buildings = controller.getGame().getGameBoard().getBuildings();
+
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A0 ║ a0 ║ G0 ║ 0  ║ 0  ║
+              ║ 1 ║ M0 ║ m0 ║ g0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+
+      */
+
+        //It's player1's turn but he can not move, he lost
+
+        System.out.println("Should print a LosingByNoActionEvent with attributes: Alfantasy, So Sad");
+
+        assertEquals("Mashu7", controller.getGame().getPlayersNickname().get(0));
+        assertEquals("Giammi10", controller.getGame().getPlayersNickname().get(1));
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 0  ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 1 ║ M0 ║ m0 ║ g0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+
+      */
+
+
+        //now it's player2's turn, Mashu7
+
+        virtualView.update(new ChosenPawnToUseEvent(player2,1,0 ));
+
+
+        //now i try to send a illegal action
+        virtualView.update(new ChosenBuildActionEvent(player2, "Build", 1,0 ));
+
+
+        //now it's legal move
+        virtualView.update(new ChosenMoveActionEvent(player2, "Move", 1,0));
+
+        virtualView.update(new ChosenCellToMoveEvent(player2, 1,0,0,0));
+
+        assertEquals(true, controller.getGame().getGameBoard().getCell(0,0).getBuilderHere());
+        assertEquals(false, controller.getGame().getGameBoard().getCell(1,0).getBuilderHere());
+
+
+    /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ M0 ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 1 ║ 0  ║ m0 ║ g0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+    */
+
+
+        //now i try to send a illegal action
+        virtualView.update(new ChosenFinishActionEvent(player2, "Finish"));
+
+        assertEquals("Build", controller.getGame().getLastActionsList().get(0).getActionID());
+
+        virtualView.update(new ChosenBuildActionEvent(player2, "Build", 0,0));
+
+        virtualView.update(new ChosenCellToBuildEvent(player2, 0,0, 1,0));
+
+        virtualView.update(new ChosenBuildingEvent(player2, 1, 0,0,1, 0));
+
+        assertEquals(1, controller.getGame().getGameBoard().getCell(1,0).getHeight());
+
+        assertEquals("Build", controller.getGame().getLastActionsList().get(1).getActionID());
+        assertEquals("End turn", controller.getGame().getLastActionsList().get(0).getActionID());
+
+        virtualView.update(new ChosenFinishActionEvent(player2, "End turn"));
+
+
+
+    /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ M0 ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 1 ║ 1  ║ m0 ║ g0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+    */
+
+        //now it's the turn of player3
+
+        //illegal pawn used
+        virtualView.update(new ChosenPawnToUseEvent(player3, 0,1));
+
+        virtualView.update(new ChosenPawnToUseEvent(player3, 1,2));
+
+        assertEquals("Move", controller.getGame().getLastActionsList().get(0).getActionID());
+
+        virtualView.update(new ChosenMoveActionEvent(player3, "Move", 1,2));
+
+        virtualView.update(new ChosenCellToMoveEvent(player3, 1,2,2,1));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(2,1).getBuilderHere());
+
+        assertEquals("Build", controller.getGame().getLastActionsList().get(0).getActionID());
+
+        virtualView.update(new ChosenBuildActionEvent(player3, "Build",2,1));
+
+        virtualView.update(new ChosenCellToBuildEvent(player3, 2,1,1,2));
+
+        //illegal building
+        virtualView.update(new ChosenBuildingEvent(player3,2,2,1,1,2));
+
+        assertNotEquals(2, controller.getGame().getGameBoard().getCell(1, 2).getHeight());
+
+        virtualView.update(new ChosenBuildingEvent(player3,1,2,1,1,2));
+
+        assertEquals(1, controller.getGame().getGameBoard().getCell(1, 2).getHeight());
+
+        assertEquals("End turn", controller.getGame().getLastActionsList().get(0).getActionID());
+        assertEquals("Build", controller.getGame().getLastActionsList().get(1).getActionID());
+
+        virtualView.update(new ChosenBuildActionEvent(player3, "Build", 2,1));
+
+        //illegal second build
+        virtualView.update(new ChosenCellToBuildEvent(player3, 2,1,3,1));
+
+        assertFalse(controller.getGame().getLastCellsList().contains(controller.getGame().getGameBoard().getCell(3,1)));
+
+        virtualView.update(new ChosenCellToBuildEvent(player3, 2,1, 1,2));
+
+        virtualView.update(new ChosenBuildingEvent(player3, 2, 2,1, 1,2));
+
+        assertEquals(2, controller.getGame().getGameBoard().getCell(1, 2).getHeight());
+
+        assertEquals("End turn", controller.getGame().getLastActionsList().get(0).getActionID());
+
+        virtualView.update(new ChosenFinishActionEvent(player3, "End turn"));
+
+
+    /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ M0 ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 1 ║ 1  ║ m0 ║ 2  ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ g0 ║ 0  ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+    */
+
+        //it's player2's turn
+
+        virtualView.update(new ChosenPawnToUseEvent(player2, 1,1));
+
+        assertTrue(controller.getGame().getGameBoard().getPawnByCoordinates(1,1).isChosen());
+
+        //illegal pawn chosen
+        virtualView.update(new ChosenMoveActionEvent(player2, "Move", 0,0));
+
+        assertFalse(controller.getGame().getGameBoard().getPawnByCoordinates(0,0).isChosen());
+
+        virtualView.update(new ChosenMoveActionEvent(player2, "Move", 1,1));
+        virtualView.update(new ChosenCellToMoveEvent(player2, 1,1,0,1));
+
+        virtualView.update(new ChosenBuildActionEvent(player2, "Build", 0,1));
+
+        virtualView.update(new ChosenCellToBuildEvent(player2, 0,1,1,0));
+        virtualView.update(new ChosenBuildingEvent(player2, 2,0,1,1,0));
+
+        virtualView.update(new ChosenFinishActionEvent(player2, "End turn"));
+
+
+
+    /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ M0 ║ m0 ║ G0 ║ 0  ║ 0  ║
+              ║ 1 ║ 2  ║ 0  ║ 2  ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ g0 ║ 0  ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+    */
+
+        //it's player3's turn
+
+        virtualView.update(new ChosenPawnToUseEvent(player3, 2,1));
+
+        virtualView.update(new ChosenMoveActionEvent(player3, "Move", 2,1));
+
+        virtualView.update(new ChosenCellToMoveEvent(player3, 2,1,1,1));
+
+        virtualView.update(new ChosenBuildActionEvent(player3, "Build", 1,1));
+
+        virtualView.update(new ChosenCellToBuildEvent(player3, 1,1,1,0));
+
+        virtualView.update(new ChosenBuildingEvent(player3, 3, 1,1,1,0));
+
+        virtualView.update(new ChosenFinishActionEvent(player3, "End turn"));
+
+        //now player2 lost because he can do no action with his pawns
+
+        assertNull(controller.getGame());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
 
 }

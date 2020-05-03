@@ -33,9 +33,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     private List<String> playersNickname;
 
 
-    private Player currentPlayer;
-
-
     private int indexCurrentPlayer;
 
 
@@ -63,7 +60,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
-        this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
         this.playersNickname = playersNickname;
 
@@ -80,7 +76,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         }
 
-        currentPlayer = players.get(indexCurrentPlayer);
 
         lastActionsList = new ArrayList<>();
 
@@ -94,7 +89,7 @@ public class Game extends Observable implements GameConsequenceHandler {
         this.gameBoard = new Board();
 
         this.players = new ArrayList<>();
-        this.currentPlayer = null;
+
         this.indexCurrentPlayer = 0;
 
     }
@@ -349,6 +344,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     public void removePlayer(String playerName) {
 
+
         Player player = getPlayerByName(playerName);
 
         List<Pawn> pawns = player.getPawns();
@@ -362,14 +358,10 @@ public class Game extends Observable implements GameConsequenceHandler {
         players.removeIf(p -> p.equals(player));
         playersNickname.removeIf(p -> p.equals(playerName));
 
-        //pick the next player
-//        nextCurrentPlayer();
-//        currentPlayer = players.get(indexCurrentPlayer);
-
-        //if there's only one player, this player is the winner
-//        if( players.size() == 1 ) {
-//            receiveConsequence(new VictoryConsequence( players.get(0).getName() ));
-//        }
+        //if i removed the last player, now the current is the first player
+        if (indexCurrentPlayer >= players.size()){
+            indexCurrentPlayer = 0;
+        }
 
         updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );
     }
@@ -638,6 +630,11 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    public boolean isValidPlayer(String nickname){
+        return nickname.equals(playersNickname.get(indexCurrentPlayer));
+    }
+
+
     public void setChosenPawn(String nickname, int row, int column){
 
         Player player = getPlayerByName(nickname);
@@ -693,36 +690,20 @@ public class Game extends Observable implements GameConsequenceHandler {
         return getPlayers().stream().filter(p -> p.getName().equals(nickname)).findAny().orElse(null);
     }
 
-
-    /**
-     * sets the current player of this turn
-     * @return the new current player for this turn
-     */
-    public String newCurrentPlayer() {
-
-        currentPlayer.resetPlayerStatus();
-
-        nextCurrentPlayer();
-
-        currentPlayer = players.get(indexCurrentPlayer);
-
-        return players.get(indexCurrentPlayer).getName();
-
-    }
-
     
     /**
      * sets the index of the next current player in the arraylist of players
      */
     public void nextCurrentPlayer() {
 
-        if( indexCurrentPlayer == players.size() - 1 ) {
-
+        //if it's last player, next player is the first player
+        if(indexCurrentPlayer == players.size() - 1) {
             indexCurrentPlayer = 0;
-            return;
         }
-
-        indexCurrentPlayer++;
+        //pick the next player
+        else {
+            indexCurrentPlayer++;
+        }
 
     }
 
@@ -737,6 +718,10 @@ public class Game extends Observable implements GameConsequenceHandler {
         player.resetPlayerStatus();
     }
 
+    public String getCurrentPlayer() {
+        return this.players.get(indexCurrentPlayer).getName();
+    }
+
 
     // MARK : Testing Methods ======================================================================================
 
@@ -748,14 +733,12 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
-        this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
 
 
         players.add(new Player(playerName, Color.BLUE, new Card("God_Player", true, "effect_god"), new BasicEffect()));
         players.add(new Player(opponentName, Color.GREY, new Card("God_Player", true, "effect_god"), new BasicEffect()));
 
-        this.currentPlayer = players.get(0);
 
     }
 
@@ -766,7 +749,6 @@ public class Game extends Observable implements GameConsequenceHandler {
 
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
-        this.currentPlayer = null;
         this.indexCurrentPlayer = 0;
         this.playersNickname = new ArrayList<>();
 
@@ -776,14 +758,10 @@ public class Game extends Observable implements GameConsequenceHandler {
         players.add(player);
         players.add(opponent);
 
-        this.currentPlayer = players.get(0);
+
 
     }
 
-    /* USED ONLY FOR TESTING */
-    public Player getCurrentPlayer() {
-        return this.currentPlayer;
-    }
 
     /* USED ONLY FOR TESTING */
     public Board getGameBoard() {
@@ -800,7 +778,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         gameBoard = new Board();
         this.players = players;
         indexCurrentPlayer = 0;
-        currentPlayer = players.get(0);
 
         lastActionsList = null;
         lastBuildingsList = null;

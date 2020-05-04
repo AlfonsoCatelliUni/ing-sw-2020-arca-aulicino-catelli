@@ -9,6 +9,8 @@ import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Card;
+import it.polimi.ingsw.model.Player.State.BuildAndFinishState;
+import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -1434,9 +1436,8 @@ public class MatchSimulationTest  {
     }
 
 
-
     @Test
-    void LoosingAtFirstTurn(){
+    void loosingAtFirstTurn(){
 
         player1 = "Alfantasy";
 
@@ -1484,8 +1485,6 @@ public class MatchSimulationTest  {
 
         virtualView.update(new ChosenInitialPawnCellEvent(player3, 0,2,1,2));
 
-
-        List<Building> buildings = controller.getGame().getGameBoard().getBuildings();
 
 
         /*
@@ -1718,20 +1717,456 @@ public class MatchSimulationTest  {
 
 
 
+    }
+
+
+    @Test
+    void panVictoryTest(){
+
+        player1 = "Alfantasy";
+
+        player2 = "Mashu7";
+
+        player3 = "Giammi10";
+
+
+        virtualView.update(new NewConnectionEvent(player1));
+
+        virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
+
+        virtualView.update(new NewConnectionEvent(player2));
+
+        virtualView.update(new NewConnectionEvent(player3));
+
+        controller.getPreGameLobby().getPickedCards().clear();
+
+
+        Card Pan = JsonHandler.deserializeCardList().get(7);
+
+        Card Ares = JsonHandler.deserializeCardList().get(9);
+
+        Card Hestia = JsonHandler.deserializeCardList().get(11);
+
+        controller.getPreGameLobby().getPickedCards().add(Pan);
+        controller.getPreGameLobby().getPickedCards().add(Ares);
+        controller.getPreGameLobby().getPickedCards().add(Hestia);
+
+
+        virtualView.update(new ChosenCardEvent(player1, Pan.getName()));
+
+
+        virtualView.update(new ChosenCardEvent(player2, Ares.getName()));
+
+
+        virtualView.update(new ChosenCardEvent(player3, Hestia.getName()));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player2, 1,2,2,2));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player3, 3,0,3,1));
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A0 ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ 0  ║ 0  ║ M0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ G0 ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+
+      */
+
+       // it's player1's first turn
+
+       assertEquals("Alfantasy", controller.getGame().getCurrentPlayer());
+
+       controller.update(new ChosenPawnToUseEvent(player1, 0,0));
+
+       controller.update(new ChosenMoveActionEvent(player1, "Move",0, 0));
+
+       controller.update(new ChosenCellToMoveEvent(player1, 0,0,1,0));
+
+       controller.update(new ChosenBuildActionEvent(player1, "Build", 1,0));
+
+       controller.update(new ChosenCellToBuildEvent(player1, 1,0,0,0));
+
+       controller.update(new ChosenBuildingEvent(player1,1,1,0, 0,0));
+
+       controller.update(new ChosenFinishActionEvent(player1, "End turn"));
+
+       assertTrue(controller.getGame().getGameBoard().getCell(1,0).isPawnHere());
+       assertEquals(controller.getGame().getGameBoard().getCell(1,0), controller.getGame().getPlayerByName("Alfantasy").getPawnInCoordinates(1,0).getPosition());
+       assertEquals(1, controller.getGame().getGameBoard().getCell(0,0).getHeight());
 
 
 
+      /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ A0 ║ 0  ║ M0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ G0 ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+       // player 2's turn
+
+       assertEquals("Mashu7", controller.getGame().getCurrentPlayer());
+
+       controller.update(new ChosenPawnToUseEvent(player2,1,2));
+
+       controller.update(new ChosenMoveActionEvent(player2, "Move", 1,2));
+
+       controller.update(new ChosenCellToMoveEvent(player2, 1,2,1,1));
+
+        controller.update(new ChosenBuildActionEvent(player2, "Build", 1,1));
+
+        controller.update(new ChosenCellToBuildEvent(player2, 1,1,2,1));
+
+        controller.update(new ChosenBuildingEvent(player2,1,1,1, 2,1));
+
+        controller.update(new ChosenFinishActionEvent(player2, "End turn"));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(1,1).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(1,1), controller.getGame().getPlayerByName(player2).getPawnInCoordinates(1,1).getPosition());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(2,1).getHeight());
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ A0 ║ M0 ║ 0  ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 1  ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ G0 ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // player 3's turn
+
+        assertEquals("Giammi10", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player3,3,1));
+
+        controller.update(new ChosenMoveActionEvent(player3, "Move", 3,1));
+
+        controller.update(new ChosenCellToMoveEvent(player3, 3,1,2,1));
+
+        controller.update(new ChosenBuildActionEvent(player3, "Build", 2,1));
+
+        controller.update(new ChosenCellToBuildEvent(player3, 2,1,2,0));
+
+        controller.update(new ChosenBuildingEvent(player3,1,2,1, 2,0));
+
+        controller.update(new ChosenBuildActionEvent(player3, "Build", 2,1));
+
+        //illegal build
+        controller.update(new ChosenCellToBuildEvent(player3, 2,1,2,0));
+
+        //legal build
+        controller.update(new ChosenCellToBuildEvent(player3, 2,1,1,2));
+
+        controller.update(new ChosenBuildingEvent(player3,1,2,1, 1,2));
+
+        controller.update(new ChosenFinishActionEvent(player3, "End turn"));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(2,1).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(2,1), controller.getGame().getPlayerByName(player3).getPawnInCoordinates(2,1).getPosition());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(2,0).getHeight());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(1,2).getHeight());
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 1  ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ A0 ║ M0 ║ 1  ║ 0  ║ 0  ║
+              ║ 2 ║ 1  ║ G1 ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // it's player1's turn
+
+        assertEquals("Alfantasy", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player1, 1,0));
+
+        controller.update(new ChosenMoveActionEvent(player1, "Move",1, 0));
+
+        controller.update(new ChosenCellToMoveEvent(player1, 1,0,0,0));
+
+        controller.update(new ChosenBuildActionEvent(player1, "Build", 0,0));
+
+        controller.update(new ChosenCellToBuildEvent(player1, 0,0,1,0));
+
+        controller.update(new ChosenBuildingEvent(player1,1,0,0, 1,0));
+
+        controller.update(new ChosenFinishActionEvent(player1, "End turn"));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(0,0).isPawnHere());
+        assertFalse(controller.getGame().getGameBoard().getCell(1,0).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(0,0), controller.getGame().getPlayerByName("Alfantasy").getPawnInCoordinates(0,0).getPosition());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(1,0).getHeight());
+
+       /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A1 ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ 1  ║ M0 ║ 1  ║ 0  ║ 0  ║
+              ║ 2 ║ 1  ║ G1 ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // player 2's turn
+
+        assertEquals("Mashu7", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player2,1,1));
+
+        controller.update(new ChosenMoveActionEvent(player2, "Move", 1,1));
+
+        controller.update(new ChosenCellToMoveEvent(player2, 1,1,2,0));
+
+        controller.update(new ChosenBuildActionEvent(player2, "Build", 2,0));
+
+        controller.update(new ChosenCellToBuildEvent(player2, 2,0,1,0));
+
+        controller.update(new ChosenBuildingEvent(player2,2,2,0, 1,0));
+
+        controller.update(new ChosenDestroyActionEvent(player2, "Destroy", 2,0 ));
+
+        //illegal destroy cell
+        controller.update(new ChosenCellToDestroyEvent(player2, 2,0,1,0));
+
+        controller.update(new ChosenCellToDestroyEvent(player2, 2,0, 1,2));
+
+        controller.update(new ChosenFinishActionEvent(player2, "End turn"));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(2,0).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(2,0), controller.getGame().getPlayerByName(player2).getPawnInCoordinates(2,0).getPosition());
+        assertEquals(2, controller.getGame().getGameBoard().getCell(1,0).getHeight());
+        assertEquals(0, controller.getGame().getGameBoard().getCell(1,2).getHeight());
+
+       /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A1 ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ 2  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 2 ║ M1 ║ G1 ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // player 3's turn
+
+        assertEquals("Giammi10", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player3,2,1));
+
+        controller.update(new ChosenMoveActionEvent(player3, "Move", 2,1));
+
+        controller.update(new ChosenCellToMoveEvent(player3, 2,1,1,2));
+
+        controller.update(new ChosenBuildActionEvent(player3, "Build", 1,2));
+
+        controller.update(new ChosenCellToBuildEvent(player3, 1,2,0,2));
+
+        controller.update(new ChosenBuildingEvent(player3,1,1,2, 0,2));
+
+        assertEquals(BuildAndFinishState.class, controller.getGame().getPlayerByName("Giammi10").getEffect().getState().getClass());
+
+        controller.update(new ChosenFinishActionEvent(player3, "End turn"));
 
 
+        assertTrue(controller.getGame().getGameBoard().getCell(1,2).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(1,2), controller.getGame().getPlayerByName(player3).getPawnInCoordinates(1,2).getPosition());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(0,2).getHeight());
+
+       /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A1 ║ a0 ║ 1  ║ 0  ║ 0  ║
+              ║ 1 ║ 2  ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 2 ║ M1 ║ 1  ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // it's player1's turn
+
+        assertEquals("Alfantasy", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player1, 0,0));
+
+        controller.update(new ChosenMoveActionEvent(player1, "Move",0, 0));
+
+        controller.update(new ChosenCellToMoveEvent(player1, 0,0,1,0));
+
+        controller.update(new ChosenBuildActionEvent(player1, "Build", 1,0));
+
+        controller.update(new ChosenCellToBuildEvent(player1, 1,0,0,0));
+
+        controller.update(new ChosenBuildingEvent(player1,2,1,0, 0,0));
+
+        controller.update(new ChosenFinishActionEvent(player1, "End turn"));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(1,0).isPawnHere());
+        assertFalse(controller.getGame().getGameBoard().getCell(0,0).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(1,0), controller.getGame().getPlayerByName("Alfantasy").getPawnInCoordinates(1,0).getPosition());
+        assertEquals(2, controller.getGame().getGameBoard().getCell(0,0).getHeight());
+
+      /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 2  ║ a0 ║ 1  ║ 0  ║ 0  ║
+              ║ 1 ║ A2 ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 2 ║ M1 ║ 1  ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ g0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // player 2's turn
+
+        assertEquals("Mashu7", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player2,2,2));
+
+        controller.update(new ChosenMoveActionEvent(player2, "Move", 2,2));
+
+        controller.update(new ChosenCellToMoveEvent(player2, 2,2,2,3));
+
+        controller.update(new ChosenBuildActionEvent(player2, "Build", 2,3));
+
+        controller.update(new ChosenCellToBuildEvent(player2, 2,3,2,4));
+
+        controller.update(new ChosenBuildingEvent(player2,1,2,3, 2,4));
 
 
+        controller.update(new ChosenFinishActionEvent(player2, "End turn"));
+
+        assertTrue(controller.getGame().getGameBoard().getCell(2,3).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(2,3), controller.getGame().getPlayerByName(player2).getPawnInCoordinates(2,3).getPosition());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(2,4).getHeight());
+
+        /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 2  ║ a0 ║ 1  ║ 0  ║ 0  ║
+              ║ 1 ║ A2 ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 2 ║ M1 ║ 1  ║ 0  ║ m0 ║ 1  ║
+              ║ 3 ║ g0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
+
+        // player 3's turn
+
+        assertEquals("Giammi10", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player3,3,0));
+
+        controller.update(new ChosenMoveActionEvent(player3, "Move", 3,0));
+
+        controller.update(new ChosenCellToMoveEvent(player3, 3,0,4,0));
+
+        assertEquals(BuildState.class, controller.getGame().getPlayerByName("Giammi10").getEffect().getState().getClass());
+
+        controller.update(new ChosenBuildActionEvent(player3, "Build", 4,0));
+
+        controller.update(new ChosenCellToBuildEvent(player3, 4,0,4,1));
+
+        controller.update(new ChosenBuildingEvent(player3,1,4,0, 4,1));
+
+        assertEquals(BuildAndFinishState.class, controller.getGame().getPlayerByName("Giammi10").getEffect().getState().getClass());
+
+        controller.update(new ChosenFinishActionEvent(player3, "End turn"));
 
 
+        assertTrue(controller.getGame().getGameBoard().getCell(4,0).isPawnHere());
+        assertEquals(controller.getGame().getGameBoard().getCell(4,0), controller.getGame().getPlayerByName(player3).getPawnInCoordinates(4,0).getPosition());
+        assertEquals(1, controller.getGame().getGameBoard().getCell(4,1).getHeight());
 
+       /*
 
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 2  ║ a0 ║ 1  ║ 0  ║ 0  ║
+              ║ 1 ║ A2 ║ 0  ║ G0 ║ 0  ║ 0  ║
+              ║ 2 ║ M1 ║ 1  ║ 0  ║ m0 ║ 1  ║
+              ║ 3 ║  0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ g0 ║ 1  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
 
+      */
 
+        // it's player1's turn, victory using Pan effect
 
+        assertEquals("Alfantasy", controller.getGame().getCurrentPlayer());
+
+        controller.update(new ChosenPawnToUseEvent(player1, 1,0));
+
+        controller.update(new ChosenMoveActionEvent(player1, "Move",1, 0));
+
+        controller.update(new ChosenCellToMoveEvent(player1, 1,0,1,1));
+
+        //Pan won the game, so controller ends game and send Victory Event to Clients and field game becomes Null
+
+        assertNull(controller.getGame());
+
+      /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ 2  ║ a0 ║ 1  ║ 0  ║ 0  ║
+              ║ 1 ║ 2  ║ A0 ║ G0 ║ 0  ║ 0  ║
+              ║ 2 ║ M1 ║ 1  ║ 0  ║ m0 ║ 1  ║
+              ║ 3 ║  0 ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ g0 ║ 1  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+      */
 
 
 

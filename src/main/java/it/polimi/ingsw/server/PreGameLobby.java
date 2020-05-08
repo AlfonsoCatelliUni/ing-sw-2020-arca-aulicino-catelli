@@ -1,9 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.JsonHandler;
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.model.Player.*;
-import it.polimi.ingsw.model.Player.Effect.*;
 
 import java.util.*;
 import java.util.List;
@@ -12,6 +10,7 @@ import java.util.regex.Pattern;
 public class PreGameLobby {
 
     private final String regex = "^[aA-zZ]\\w{5,29}$";
+
 
     private int numberOfPlayers;
 
@@ -53,6 +52,11 @@ public class PreGameLobby {
     private final static int MINPLAYERS = 2;
 
 
+    private final Object lockClose;
+
+    private final Object lockNicknames;
+
+
     // ======================================================================================
 
 
@@ -69,6 +73,9 @@ public class PreGameLobby {
         this.playerCardMap = new HashMap<>();
 
         this.allCards = JsonHandler.deserializeCardList();
+
+        this.lockClose = new Object();
+        this.lockNicknames = new Object();
     }
 
 
@@ -76,14 +83,19 @@ public class PreGameLobby {
 
 
     public Boolean isClosed() {
-        return this.closed;
+
+        synchronized (lockClose) {
+            return this.closed;
+        }
     }
 
 
-    public synchronized void setNumberOfPlayers(int numberOfPlayers) {
-        this.numberOfPlayers = numberOfPlayers;
-        if (playersNicknames.size() == numberOfPlayers)
-            closeWaitingRoom();
+    public void setNumberOfPlayers(int numberOfPlayers) {
+
+            this.numberOfPlayers = numberOfPlayers;
+            if (playersNicknames.size() == numberOfPlayers)
+                closeLobby();
+
     }
 
 
@@ -93,7 +105,10 @@ public class PreGameLobby {
 
 
     public List<String> getConnectedPlayers() {
-        return this.playersNicknames;
+
+        synchronized (lockNicknames) {
+            return this.playersNicknames;
+        }
     }
 
 
@@ -121,30 +136,29 @@ public class PreGameLobby {
     /**
      * synchronized because there could be conflicts with the timer
      */
-    public synchronized void closeWaitingRoom() {
+    public void closeLobby() {
 
-        if(!closed) {
-            this.closed = true;
-            pickCards(allCards);
+        synchronized (lockClose) {
+            if (!closed) {
+                this.closed = true;
+                pickCards(allCards);
 
+            }
         }
-
     }
 
 
-    public synchronized void addPlayer(String nickname) {
+    public void addPlayer(String nickname) {
 
-        //fare controllo prima di chiamare addPlayer
-        if(!isNicknameAvailable(nickname)) {
-            throw new RuntimeException("This Lobby already contains this player");
+            //fare controllo prima di chiamare addPlayer
+            if (!isNicknameAvailable(nickname)) {
+                throw new RuntimeException("This Lobby already contains this player");
+            }
+
+        synchronized (lockNicknames) {
+
+            playersNicknames.add(nickname);
         }
-
-        playersNicknames.add(nickname);
-
-
-        if (playersNicknames.size() == numberOfPlayers)
-            closeWaitingRoom();
-
     }
 
 
@@ -188,11 +202,14 @@ public class PreGameLobby {
     }
 
 
-    public synchronized void deletePlayerInformation(String nickname) {
+    public  void deletePlayerInformation(String nickname) {
+
 
         try {
-            playersNicknames.removeIf(n -> n.equals(nickname));
-            playerCardMap.remove(nickname);
+            synchronized (lockNicknames) {
+                playersNicknames.removeIf(n -> n.equals(nickname));
+                playerCardMap.remove(nickname);
+            }
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -200,7 +217,7 @@ public class PreGameLobby {
 
     }
 
-    public synchronized void clearLobby(){
+    public void clearLobby(){
         this.playersNicknames.clear();
         this.numberOfPlayers = -1;
         this.pickedCards.clear();
@@ -214,12 +231,14 @@ public class PreGameLobby {
     // ======================================================================================
 
 
-    public synchronized Boolean isNicknameAvailable(String nickname) {
-        return !playersNicknames.contains(nickname);
+    public Boolean isNicknameAvailable(String nickname) {
+        synchronized (lockNicknames) {
+            return !playersNicknames.contains(nickname);
+        }
     }
 
 
-    public synchronized Boolean isNicknameValid(String nickname) {
+    public Boolean isNicknameValid(String nickname) {
         return Pattern.matches(regex, nickname);
     }
 

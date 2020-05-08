@@ -37,6 +37,9 @@ public class Controller implements Observer, ClientToServerManager {
     private Game game;
 
 
+    private TimerTask timerTask;
+
+
     // MARK : Constructor Section ======================================================================================
 
 
@@ -235,19 +238,17 @@ public class Controller implements Observer, ClientToServerManager {
 
     public void countdownStart() {
 
-        new Timer().schedule(new TimerTask() {
+        new Timer().schedule(timerTask = new TimerTask() {
             @Override
             public void run() {
-                if(preGameLobby != null) {
-                    int numberOfConnected = preGameLobby.getConnectedPlayers().size();
-                    int lobbySize = preGameLobby.getNumberOfPlayers();
 
-                    if (numberOfConnected < lobbySize) {
+                if(preGameLobby != null && !preGameLobby.isClosed()) {
+
                         virtualView.sendMessage(new RoomNotFilled("Room Not Filled In Time!"));
-                    }
+
                 }
             }
-        }, 120000); // 2 minutes timer
+        }, 2 * 60 * 1000); // 2 minutes timer
 
     }
 
@@ -319,7 +320,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     public void closeGameLobby(){
 
-        preGameLobby.closeWaitingRoom();
+        preGameLobby.closeLobby();
 
         virtualView.sendMessage(new ClosedWaitingRoomEvent());
 
@@ -408,6 +409,7 @@ public class Controller implements Observer, ClientToServerManager {
                 virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
                 virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
                 countdownStart();
+
             }
             //if the waitingRoom is filled than we broadcast a message that communicates this event
             //and we ask the first entered player to choose his card
@@ -447,14 +449,14 @@ public class Controller implements Observer, ClientToServerManager {
             throw new RuntimeException("It's strange, but the ID of the player is corrupt!");
 
         //if the nickname is not available then the player was really connected in the preGameLobby
-        if (preGameLobby.isNicknameAvailable(disconnectedPlayer))
+        if (preGameLobby != null && preGameLobby.isNicknameAvailable(disconnectedPlayer))
             throw new RuntimeException("It's strange, but the Nickname of the player is corrupt!");
 
 
-        boolean disconnectedPlayerWasFirst = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));
-
 
         if(preGameLobby != null && !preGameLobby.isClosed()) {
+
+            boolean disconnectedPlayerWasFirst = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));
 
             //if the preGameLobby isn't closed we have to delete all info of the disconnected player
             preGameLobby.deletePlayerInformation(disconnectedPlayer);
@@ -467,6 +469,7 @@ public class Controller implements Observer, ClientToServerManager {
                 //if the disconnected player was the creator of the lobby
                 //we have to ask to reselect the number of the players for the match
                 if (disconnectedPlayerWasFirst) {
+                    preGameLobby.setNumberOfPlayers(-1);
                     virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new PlainTextEvent("Now you are the first player, so"));
                     virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new FirstConnectedEvent(preGameLobby.getConnectedPlayers().get(0)));
                 }
@@ -475,11 +478,12 @@ public class Controller implements Observer, ClientToServerManager {
             //if there are no players connected to the lobby we reset to default value the number of players of the match
             else {
                 preGameLobby.setNumberOfPlayers(-1);
+                timerTask.cancel(); // stop the timer
             }
 
         }
         //the player lost the game and decided to quit
-        else if(game != null && !game.getPlayersNickname().contains(event.playerNickname)) {
+        else if(game != null && !game.getPlayersNickname().contains(disconnectedPlayer)) {
             virtualView.removeNicknameIDConnection(event.ID);
         }
         //if the game is started or the preGameLobby has been closed we have to disconnect all the players
@@ -491,6 +495,10 @@ public class Controller implements Observer, ClientToServerManager {
             //if the game is not started but the preGameLobby is closed we have to delete all the info of the players
             if(preGameLobby != null) {
                 preGameLobby.clearLobby();
+            }
+            else {
+                game = null;
+                preGameLobby = new PreGameLobby();
             }
 
         }

@@ -666,7 +666,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
-
     public void setChosenPawn(String nickname, int row, int column){
 
         Player player = getPlayerByName(nickname);
@@ -690,7 +689,6 @@ public class Game extends Observable implements GameConsequenceHandler {
     public List<Action> getLastActionsList() {
         return this.lastActionsList;
     }
-
 
 
     public List<String> getPlayersNickname() {

@@ -126,7 +126,7 @@ public class CLI extends Client implements ServerToClientManager {
         String nickname = input.nextLine();
 
         while( !(Pattern.matches(nicknamePattern, nickname)) ) {
-            System.err.println("Invalid Nickname !");
+            System.err.println("Invalid Nickname!");
             System.out.println("Insert a new one (min. 6 chars, max. 30 chars, only letters, numbers and _ ): ");
             nickname = input.nextLine();
         }

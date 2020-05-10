@@ -21,6 +21,7 @@ public class VirtualView extends Observable implements Observer {
 
     private static Map<String, Integer> nicknameMap;
 
+    private static Object lock;
 
     // ======================================================================================
 
@@ -32,6 +33,8 @@ public class VirtualView extends Observable implements Observer {
 
         this.addObserver(controller);
 
+        lock = new Object();
+
     }
 
     public VirtualView() {
@@ -39,6 +42,7 @@ public class VirtualView extends Observable implements Observer {
         connectionMap = new HashMap<>();
         nicknameMap = new HashMap<>();
 
+        lock = new Object();
     }
 
 
@@ -46,12 +50,18 @@ public class VirtualView extends Observable implements Observer {
 
 
     public static Boolean isValidID(Integer id) {
-        return !connectionMap.containsKey(id);
+
+        synchronized (lock) {
+            return !connectionMap.containsKey(id);
+        }
     }
 
 
     public static void newConnection(Integer id, Connection connection) {
-        connectionMap.put(id, connection);
+
+        synchronized (lock) {
+            connectionMap.put(id, connection);
+        }
     }
 
 
@@ -72,26 +82,33 @@ public class VirtualView extends Observable implements Observer {
 
     public void sendMessage(ServerToClientEvent event) {
 
-        Set<Integer> keys = connectionMap.keySet();
+        synchronized (lock) {
+            Set<Integer> keys = connectionMap.keySet();
 
-        for (Integer k : keys ) {
-            connectionMap.get(k).sendEvent(event);
+            for (Integer k : keys) {
+                connectionMap.get(k).sendEvent(event);
+            }
+
         }
-
-        //USED ONLY FOR TESTING
-        System.out.println(event.toString() + "\n");
+            //USED ONLY FOR TESTING
+            System.out.println(event.toString() + "\n");
 
     }
 
 
     public void sendMessageTo(Integer ID, ServerToClientEvent event) {
-        connectionMap.get(ID).sendEvent(event);
+
+        synchronized (lock) {
+            connectionMap.get(ID).sendEvent(event);
+        }
     }
 
 
     public void sendMessageTo(String nickname, ServerToClientEvent event) {
         try {
-            sendMessageTo(nicknameMap.get(nickname), event);
+            synchronized (lock) {
+                sendMessageTo(nicknameMap.get(nickname), event);
+            }
         }
         catch (NullPointerException e) {
             //USED ONLY FOR TESTING
@@ -110,28 +127,32 @@ public class VirtualView extends Observable implements Observer {
     public boolean newNicknameID(String nickname, Integer ID) {
 
         try {
+            synchronized (lock) {
                 nicknameMap.put(nickname, ID);
             }
-            catch (Exception e) {
-                return false;
-            }
+        }
+        catch (Exception e) {
+            return false;
+        }
 
         return true;
     }
 
 
-    //TODO : maybe sync
+
     public String removeNicknameIDConnection(Integer ID) {
 
         String nickname = "";
 
         try{
-            for(String key : nicknameMap.keySet()) {
-                if(nicknameMap.get(key).equals(ID)){
-                    nickname = key;
-                    nicknameMap.remove(key);
-                    connectionMap.remove(ID);
-                    break;
+            synchronized (lock) {
+                for (String key : nicknameMap.keySet()) {
+                    if (nicknameMap.get(key).equals(ID)) {
+                        nickname = key;
+                        nicknameMap.remove(key);
+                        connectionMap.remove(ID);
+                        break;
+                    }
                 }
             }
         }

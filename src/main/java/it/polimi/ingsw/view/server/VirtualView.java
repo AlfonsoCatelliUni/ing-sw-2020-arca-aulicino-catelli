@@ -117,9 +117,6 @@ public class VirtualView extends Observable implements Observer {
     }
 
 
-
-
-
     // ======================================================================================
 
 

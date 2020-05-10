@@ -385,7 +385,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
-    public synchronized void manageEvent(NewConnectionEvent event) {
+    public void manageEvent(NewConnectionEvent event) {
 
         Integer ID = event.ID;
 

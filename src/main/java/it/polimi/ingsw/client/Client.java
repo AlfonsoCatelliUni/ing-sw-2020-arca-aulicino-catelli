@@ -1,11 +1,7 @@
 package it.polimi.ingsw.client;
 
-public abstract class Client {
+public interface Client {
 
-
-    public void run() {
-
-    }
-
+    void run();
 
 }

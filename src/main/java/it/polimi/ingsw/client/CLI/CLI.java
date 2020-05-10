@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class CLI extends Client implements ServerToClientManager {
+public class CLI implements Client, ServerToClientManager {
 
     private String ipAddress;
 
@@ -48,7 +48,6 @@ public class CLI extends Client implements ServerToClientManager {
     // MARK : Constructor and Run ======================================================================================
 
 
-    //TODO : ottimizzare per ridurre le copie di codice
     public CLI() {
         this.ipAddress = "127.0.0.1";
         this.port = 6969;
@@ -94,7 +93,7 @@ public class CLI extends Client implements ServerToClientManager {
             //Connects with the server through socket
             serverSocket = new Socket(ipAddress, port);
         }
-        catch (IOException e){
+        catch (IOException e) {
             System.err.println(e.getMessage());
         }
 

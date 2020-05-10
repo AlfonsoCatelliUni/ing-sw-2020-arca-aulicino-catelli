@@ -150,15 +150,15 @@ public class PreGameLobby {
 
     public void addPlayer(String nickname) {
 
-            //fare controllo prima di chiamare addPlayer
-            if (!isNicknameAvailable(nickname)) {
-                throw new RuntimeException("This Lobby already contains this player");
-            }
+        //fare controllo prima di chiamare addPlayer
+        if (!isNicknameAvailable(nickname)) {
+            throw new RuntimeException("This Lobby already contains this player");
+        }
 
         synchronized (lockNicknames) {
-
             playersNicknames.add(nickname);
         }
+
     }
 
 

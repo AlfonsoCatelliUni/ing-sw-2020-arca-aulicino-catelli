@@ -39,12 +39,16 @@ public class Controller implements Observer, ClientToServerManager {
 
     private TimerTask timerTask;
 
+    private Object lock;
+
 
     // MARK : Constructor Section ======================================================================================
 
 
     public Controller(Game game) {
         this.game = game;
+
+        lock = new Object();
 
     }
 
@@ -54,6 +58,8 @@ public class Controller implements Observer, ClientToServerManager {
 
         this.preGameLobby = new PreGameLobby();
 
+        lock = new Object();
+
     }
 
     //ONLY FOR TESTING
@@ -62,6 +68,8 @@ public class Controller implements Observer, ClientToServerManager {
         this.virtualView = virtualView;
 
         this.preGameLobby = new PreGameLobby();
+
+        lock = new Object();
 
     }
 
@@ -76,7 +84,10 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void update(ClientToServerEvent event) {
-        receiveEvent(event);
+
+        synchronized (lock) {
+            receiveEvent(event);
+        }
     }
 
 
@@ -869,6 +880,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenCellToForceEvent event) {
+
        String nickname = event.playerNickname;
 
        int pawnRow = event.pawnRow;
@@ -950,6 +962,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     public List<String> generateActionIDByActions(List<Action> actions){
+
         List<String> actionsID = new ArrayList<>();
         for (Action a : actions)
             actionsID.add(a.getActionID());
@@ -958,6 +971,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     public List<Integer> generateLevelByBuilding(List<Building> buildings){
+
         List<Integer> levels = new ArrayList<>();
         for (Building b : buildings)
             levels.add(b.getLevel());

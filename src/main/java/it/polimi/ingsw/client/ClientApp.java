@@ -3,6 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.client.CLI.CLI;
 import it.polimi.ingsw.client.GUI.GUI;
 
+import java.util.Scanner;
+
 /**
  * <h3> Client </h3>
  * <p> this class is the initial point of the client runnable program
@@ -33,9 +35,15 @@ public class ClientApp {
      */
     public static void main(String[] args) {
 
+        Scanner input = new Scanner(System.in);
+
         Client client = null;
 
-        switch (args[0]) {
+        System.out.println("inserisci cli o gui e taci!");
+
+        String param = input.nextLine();
+
+        switch (param) {
             case "cli":
                 client = new CLI();
                 break;

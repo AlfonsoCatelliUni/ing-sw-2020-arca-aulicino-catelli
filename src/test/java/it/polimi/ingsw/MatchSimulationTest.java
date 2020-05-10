@@ -2173,4 +2173,64 @@ public class MatchSimulationTest  {
 
     }
 
+    @Test
+    void destroyTowersTest(){
+
+        player1 = "Alfantasy";
+
+        player2 = "Mashu7";
+
+
+        virtualView.update(new NewConnectionEvent(player1));
+
+        virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
+
+        virtualView.update(new NewConnectionEvent(player2));
+
+
+        controller.getPreGameLobby().getPickedCards().clear();
+
+        Card Pan = JsonHandler.deserializeCardList().get(7);
+
+        Card Ares = JsonHandler.deserializeCardList().get(9);
+
+
+        controller.getPreGameLobby().getPickedCards().add(Pan);
+        controller.getPreGameLobby().getPickedCards().add(Ares);
+
+
+        virtualView.update(new ChosenCardEvent(player1, Pan.getName()));
+
+
+        virtualView.update(new ChosenCardEvent(player2, Ares.getName()));
+
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
+
+
+        virtualView.update(new ChosenInitialPawnCellEvent(player2, 1,2,2,2));
+
+
+
+      /*
+
+              ╔═══╦════╦════╦════╦════╦════╗
+              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
+              ╠═══╬════╬════╬════╬════╬════╣
+              ║ 0 ║ A0 ║ a0 ║ 0  ║ 0  ║ 0  ║
+              ║ 1 ║ 0  ║ 0  ║ M0 ║ 0  ║ 0  ║
+              ║ 2 ║ 0  ║ 0  ║ m0 ║ 0  ║ 0  ║
+              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
+              ╚═══╩════╩════╩════╩════╩════╝
+
+
+      */
+
+        // se ci sono 14 torri di livello 3 senza nessuna cupola (quindi non torri complete) e devo fare un'altra torre di livello 3 come faccio?
+        
+
+    }
+
 }

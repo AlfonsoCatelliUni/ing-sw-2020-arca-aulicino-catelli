@@ -9,7 +9,7 @@
 .idea
 *.iml
 *iws
-out
+
 
 #MacOS
 .DS_Store

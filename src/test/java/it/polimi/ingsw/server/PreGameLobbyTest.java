@@ -90,6 +90,7 @@ class PreGameLobbyTest {
         preGameLobby.setNumberOfPlayers(2);
         preGameLobby.addPlayer(nicknames.get(0));
         preGameLobby.addPlayer(nicknames.get(1));
+        preGameLobby.closeLobby();
 
 
         //first test, normal bonding player-card
@@ -196,6 +197,7 @@ class PreGameLobbyTest {
         for(int i = 0; i < numberOfPlayers; i++) {
             preGameLobby.addPlayer(nicknames.get(i));
         }
+        preGameLobby.closeLobby();
 
         pickedCards = preGameLobby.getPickedCards();
         assertEquals(numberOfPlayers, pickedCards.size());

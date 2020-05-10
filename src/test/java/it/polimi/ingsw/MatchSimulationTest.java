@@ -2172,9 +2172,10 @@ public class MatchSimulationTest  {
 
 
     }
-
+ /*
     @Test
     void destroyTowersTest(){
+
 
         player1 = "Alfantasy";
 
@@ -2213,24 +2214,8 @@ public class MatchSimulationTest  {
 
 
 
-      /*
-
-              ╔═══╦════╦════╦════╦════╦════╗
-              ║   ║ 0  ║ 1  ║ 2  ║ 3  ║ 4  ║
-              ╠═══╬════╬════╬════╬════╬════╣
-              ║ 0 ║ A0 ║ a0 ║ 0  ║ 0  ║ 0  ║
-              ║ 1 ║ 0  ║ 0  ║ M0 ║ 0  ║ 0  ║
-              ║ 2 ║ 0  ║ 0  ║ m0 ║ 0  ║ 0  ║
-              ║ 3 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
-              ║ 4 ║ 0  ║ 0  ║ 0  ║ 0  ║ 0  ║
-              ╚═══╩════╩════╩════╩════╩════╝
-
-
-      */
 
         // se ci sono 14 torri di livello 3 senza nessuna cupola (quindi non torri complete) e devo fare un'altra torre di livello 3 come faccio?
-        
-
     }
-
+*/
 }

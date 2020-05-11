@@ -6,7 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class StartScene implements TheScene {
@@ -20,6 +21,7 @@ public class StartScene implements TheScene {
     public StartScene(GUI gui, Stage stage){
 
         this.stage = stage;
+        this.stage.setResizable(false);
 
         VBox startLayout = new VBox(50);
         startLayout.setAlignment(Pos.CENTER);
@@ -31,9 +33,17 @@ public class StartScene implements TheScene {
         Button startGameButton = new Button("Start game");
 
 
-        this.scene = new Scene(startLayout, 750, 500);
+        this.scene = new Scene(startLayout, 750, 750);
+
+        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/santorini-copia.png"));
+
+        Background background = new Background(
+                new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        new BackgroundSize(scene.getWidth(), scene.getHeight(),
+                                true, true, true, true)));
 
         startLayout.getChildren().addAll(welcomeLabel, startGameButton);
+        startLayout.setBackground(background);
 
 
         startGameButton.setOnAction(e -> {

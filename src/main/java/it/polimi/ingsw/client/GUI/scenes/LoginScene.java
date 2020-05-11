@@ -10,6 +10,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.regex.Pattern;
+
 public class LoginScene implements TheScene {
 
     private Scene scene;
@@ -36,22 +38,37 @@ public class LoginScene implements TheScene {
 
         GridPane.setConstraints( usernameLabel, 1,8);
 
-        TextField usernameInput = new TextField();
+        TextField nicknameInput = new TextField();
 
-        GridPane.setConstraints(usernameInput, 2,8);
+        GridPane.setConstraints(nicknameInput, 2,8);
 
         Button loginButton = new Button("Login");
         loginButton.setTextFill(Color.BLACK);
         GridPane.setConstraints(loginButton, 2, 15);
 
-        loginLayout.getChildren().addAll(usernameLabel, usernameInput, loginButton);
+        loginLayout.getChildren().addAll(usernameLabel, nicknameInput, loginButton);
 
         scene = new Scene(loginLayout, 750, 500);
+
+        loginButton.setOnAction(e -> {
+            manageLogin(gui, nicknameInput.getText());
+        });
 
 
     }
 
 
+    private void manageLogin(GUI gui, String nickname ) {
+
+        String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
+
+        if (username.isEmpty() || (Pattern.matches(nicknamePattern, nickname) )) {
+            //TODO: invalid nickname
+        }
+
+        gui.setNickname(nickname);
+
+    }
 
     @Override
     public Scene getScene() {

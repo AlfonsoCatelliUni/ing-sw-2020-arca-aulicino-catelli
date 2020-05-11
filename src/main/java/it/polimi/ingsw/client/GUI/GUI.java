@@ -1,18 +1,17 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.GUI.scenes.LoginScene;
 import it.polimi.ingsw.client.GUI.scenes.StartScene;
 import it.polimi.ingsw.client.GUI.scenes.TheScene;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
-import it.polimi.ingsw.events.manager.ServerToClientManager;
 
 public class GUI extends Application implements Client, ServerToClientManager {
 
@@ -33,7 +32,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     private ClientView clientView;
 
 
-    protected Stage window;
+    protected Stage stage;
 
 
 
@@ -51,16 +50,16 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void start(Stage stage) {
 
-        this.window = stage;
+        this.stage = stage;
 
-        window.setTitle("Santorini");
+        this.stage.setTitle("Santorini");
 
-        TheScene next = new StartScene(this, window);
+        TheScene next = new StartScene(this, this.stage);
         Scene nextScene = next.getScene();
 
-        window.setScene(nextScene);
+        this.stage.setScene(nextScene);
 
-        window.show();
+        this.stage.show();
     }
 
     public static void main(String[] args) {
@@ -68,14 +67,32 @@ public class GUI extends Application implements Client, ServerToClientManager {
         gui.run();
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setClientView(ClientView clientView) {
+        this.clientView = clientView;
+    }
 
     @Override
     public void receiveEvent(ServerToClientEvent event) {
-
+        event.accept(this);
     }
 
     @Override
     public void manageEvent(ConnectionEstablishedEvent event) {
+
+        System.out.println("RECEIVED ConnectionEstablished EVENT");
+
+       /* TheScene next = new LoginScene(this, this.stage);
+        Scene nextScene = next.getScene();
+        stage.setScene(nextScene);*/
+
+        Platform.runLater( () -> {
+            TheScene next = new LoginScene(this, this.stage);
+            Scene nextScene = next.getScene();
+            stage.setScene(nextScene);});
 
     }
 

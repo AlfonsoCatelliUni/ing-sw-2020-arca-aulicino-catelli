@@ -1,7 +1,8 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
-import com.sun.javafx.scene.control.IntegerField;
+
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.view.client.ClientView;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,7 +12,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.net.Socket;
+
 
 public class IpPortScene implements TheScene {
 
@@ -19,6 +22,7 @@ public class IpPortScene implements TheScene {
     private Stage stage;
 
     private String inputIP;
+    private int inputPort;
 
 
 public IpPortScene(GUI gui, Stage stage){
@@ -64,16 +68,46 @@ public IpPortScene(GUI gui, Stage stage){
 
 
     connectButton.setOnAction(e -> {
+
         inputIP = iPInput.getText();
+
+        inputPort = Integer.parseInt(portInput.getText());
 
         if (!isValidIP(inputIP)) {
             // TODO: show to chose another valid ip
         }
+
+        startConnection(gui, inputIP, inputPort);
+
+
+
     } );
 
 
 
 }
+
+    private void startConnection(GUI gui, String ipAddress, int port) {
+
+        Socket serverSocket = null;
+        try {
+            //Connects with the server through socket
+            serverSocket = new Socket(ipAddress, port);
+        }
+        catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        //Creates a new RemoteViewSocket object which is used to keep the connection open and read all new messages
+        assert serverSocket != null;
+        ClientView clientSocket = new ClientView(serverSocket, gui);
+
+        gui.setClientView(clientSocket);
+
+        new Thread(clientSocket).start();
+        System.out.println("Connection established!");
+
+    }
 
 
     private boolean isValidIP(String ip) {

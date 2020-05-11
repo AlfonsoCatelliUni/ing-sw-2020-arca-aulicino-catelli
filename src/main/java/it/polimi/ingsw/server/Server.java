@@ -15,7 +15,7 @@ import java.util.logging.Level;
 
 public class Server {
 
-    private static final int SOCKET_PORT = 6969;
+    private static final int SOCKET_PORT = 4200;
 
 
     private Controller controller;

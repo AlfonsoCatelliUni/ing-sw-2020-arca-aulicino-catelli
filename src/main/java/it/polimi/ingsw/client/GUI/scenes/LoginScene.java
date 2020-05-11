@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,16 +16,13 @@ import java.util.regex.Pattern;
 public class LoginScene implements TheScene {
 
     private Scene scene;
+
     private Stage stage;
 
-    private String username;
-
-    private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
 
 
-    public LoginScene(GUI gui, Stage stage){
+    public LoginScene(GUI gui, int ID){
 
-        this.stage = stage;
 
         GridPane loginLayout = new GridPane();
 
@@ -51,22 +49,27 @@ public class LoginScene implements TheScene {
         scene = new Scene(loginLayout, 750, 500);
 
         loginButton.setOnAction(e -> {
-            manageLogin(gui, nicknameInput.getText());
+            manageLogin(gui, nicknameInput.getText(), ID);
         });
+
 
 
     }
 
 
-    private void manageLogin(GUI gui, String nickname ) {
+    private void manageLogin(GUI gui, String nickname, int ID ) {
 
         String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
 
-        if (username.isEmpty() || (Pattern.matches(nicknamePattern, nickname) )) {
-            //TODO: invalid nickname
+        if (nickname.isEmpty() || !(Pattern.matches(nicknamePattern, nickname) )) {
+            Dialog.display("Invalid nickname");
         }
 
         gui.setNickname(nickname);
+
+        gui.getClientView().sendCTSEvent(new NewConnectionEvent(ID, nickname));
+
+
 
     }
 

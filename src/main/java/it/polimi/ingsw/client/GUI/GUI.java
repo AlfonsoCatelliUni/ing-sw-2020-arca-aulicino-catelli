@@ -1,9 +1,11 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.GUI.scenes.LobbyScene;
 import it.polimi.ingsw.client.GUI.scenes.LoginScene;
 import it.polimi.ingsw.client.GUI.scenes.StartScene;
 import it.polimi.ingsw.client.GUI.scenes.TheScene;
+import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
@@ -75,6 +77,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
         this.clientView = clientView;
     }
 
+
+    public ClientView getClientView() {
+        return clientView;
+    }
+
     @Override
     public void receiveEvent(ServerToClientEvent event) {
         event.accept(this);
@@ -83,16 +90,19 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(ConnectionEstablishedEvent event) {
 
-        System.out.println("RECEIVED ConnectionEstablished EVENT");
+        System.out.println("RECEIVED ConnectionEstablishedEvent");
 
        /* TheScene next = new LoginScene(this, this.stage);
         Scene nextScene = next.getScene();
         stage.setScene(nextScene);*/
 
+        // i need Platform because i can not modify a scene of a current thread, i have to modify the thread using runLater
         Platform.runLater( () -> {
-            TheScene next = new LoginScene(this, this.stage);
+            TheScene next = new LoginScene(this, event.ID);
             Scene nextScene = next.getScene();
             stage.setScene(nextScene);});
+
+
 
     }
 
@@ -103,6 +113,16 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(SuccessfullyConnectedEvent event) {
+
+        System.out.println("RECEIVED SuccessfullyConnectedEvent");
+
+
+        Platform.runLater( () -> {
+            TheScene next = new LobbyScene(event.connectedPlayers);
+            Scene nextScene = next.getScene();
+            stage.setScene(nextScene);});
+
+
 
     }
 

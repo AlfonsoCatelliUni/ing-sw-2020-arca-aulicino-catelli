@@ -40,7 +40,7 @@ public IpPortScene(GUI gui, Stage stage){
 
     GridPane.setConstraints(iPLabel, 1,8);
 
-    TextField iPInput = new TextField();
+    TextField iPInput = new TextField("127.0.0.1");
 
     GridPane.setConstraints(iPInput, 2,8);
 
@@ -51,7 +51,7 @@ public IpPortScene(GUI gui, Stage stage){
 
     GridPane.setConstraints(portLabel, 1,12);
 
-    TextField portInput = new TextField();
+    TextField portInput = new TextField("4200");
 
     GridPane.setConstraints(portInput, 2,12);
 
@@ -74,10 +74,11 @@ public IpPortScene(GUI gui, Stage stage){
         inputPort = Integer.parseInt(portInput.getText());
 
         if (!isValidIP(inputIP)) {
-            // TODO: show to chose another valid ip
+            Dialog.display("Enter a valip IP address");
+            return;
         }
 
-        startConnection(gui, inputIP, inputPort);
+        new Thread(() -> startConnection(gui, inputIP, inputPort) ).start();
 
 
 

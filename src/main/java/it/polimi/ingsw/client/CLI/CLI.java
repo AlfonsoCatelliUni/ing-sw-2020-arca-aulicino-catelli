@@ -11,6 +11,7 @@ import it.polimi.ingsw.view.client.ClientView;
 import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -50,7 +51,7 @@ public class CLI implements Client, ServerToClientManager {
 
     public CLI() {
         this.ipAddress = "127.0.0.1";
-        this.port = 6969;
+        this.port = 4200;
 
         this.input = new Scanner(System.in);
         this.drawer = new GraphicDrawerCLI();
@@ -93,7 +94,7 @@ public class CLI implements Client, ServerToClientManager {
             //Connects with the server through socket
             serverSocket = new Socket(ipAddress, port);
         }
-        catch (IOException e) {
+        catch (IOException e ) {
             System.err.println(e.getMessage());
         }
 

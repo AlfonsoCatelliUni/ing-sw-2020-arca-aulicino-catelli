@@ -65,19 +65,26 @@ public IpPortScene(GUI gui, Stage stage){
 
     this.scene = new Scene(connectionLayout, 750, 500);
 
-    connectionLayout.getChildren().addAll(iPLabel, iPInput, portLabel, portInput, connectButton );
+    connectionLayout.getChildren().addAll(iPLabel, iPInput, portLabel, portInput, connectButton);
 
 
     connectButton.setOnAction(e -> {
 
         inputIP = iPInput.getText();
 
-        inputPort = Integer.parseInt(portInput.getText());
+        String possiblePort = portInput.getText();
 
         if (!isValidIP(inputIP)) {
-            Dialog.display("Enter a valip IP address");
+            Dialog.display("Enter a valid IP address");
             return;
         }
+
+        if (!isValidPort(possiblePort)) {
+            Dialog.display("Enter a valid port number");
+            return;
+        }
+
+        inputPort = Integer.parseInt(possiblePort);
 
         new Thread(() -> startConnection(gui, inputIP, inputPort) ).start();
 
@@ -117,6 +124,23 @@ public IpPortScene(GUI gui, Stage stage){
         String IP_PATTERN = "^((0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)\\.){3}(0|1\\d?\\d?|2[0-4]?\\d?|25[0-5]?|[3-9]\\d?)$";
 
         return ip.matches(IP_PATTERN);
+    }
+
+    private boolean isValidPort(String port) {
+
+        boolean isValid = false;
+
+        try {
+            int possiblePort = Integer.parseInt(port);
+
+            if (possiblePort >= 49152 && possiblePort < 65536)
+                isValid = true;
+
+        } catch (NumberFormatException e) {
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     @Override

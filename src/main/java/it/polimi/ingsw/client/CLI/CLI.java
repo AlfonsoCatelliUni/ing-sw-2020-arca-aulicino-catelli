@@ -10,6 +10,7 @@ import it.polimi.ingsw.view.client.ClientView;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -92,14 +93,17 @@ public class CLI implements Client, ServerToClientManager {
         Socket serverSocket = null;
         try {
             //Connects with the server through socket
-            serverSocket = new Socket(ipAddress, port);
+            serverSocket = new Socket();
+            serverSocket.connect( new InetSocketAddress(ipAddress, port), 5000);
         }
         catch (IOException e ) {
-            System.err.println(e.getMessage());
+
+            System.err.println("Connection Timeout!");
+
+            manageEvent(new DisconnectionClientEvent());
         }
 
         //Creates a new RemoteViewSocket object which is used to keep the connection open and read all new messages
-        assert serverSocket != null;
         ClientView clientSocket = new ClientView(serverSocket, this);
 
         this.clientView = clientSocket;

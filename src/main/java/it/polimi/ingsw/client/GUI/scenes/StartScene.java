@@ -52,7 +52,11 @@ public class StartScene implements TheScene {
             Scene nextScene = next.getScene();
             this.stage.setScene(nextScene);
 
+
+
         });
+
+
     }
 
 

@@ -26,10 +26,6 @@ public class StartScene implements TheScene {
         VBox startLayout = new VBox(50);
         startLayout.setAlignment(Pos.CENTER);
 
-        Label welcomeLabel = new Label("Welcome to Santorini");
-
-        welcomeLabel.setStyle("-fx-font-size: 25px");
-
         Button startGameButton = new Button("Start game");
 
 
@@ -42,7 +38,7 @@ public class StartScene implements TheScene {
                         new BackgroundSize(scene.getWidth(), scene.getHeight(),
                                 true, true, true, true)));
 
-        startLayout.getChildren().addAll(welcomeLabel, startGameButton);
+        startLayout.getChildren().addAll(startGameButton);
         startLayout.setBackground(background);
 
 

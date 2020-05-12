@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.GUI.scenes;
+package it.polimi.ingsw.client.GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -7,6 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class Dialog {
 
@@ -43,7 +45,8 @@ public class Dialog {
         //block the temporary current processing, show and wait to be closed
         stage.showAndWait();
 
-
     }
+
+
 
 }

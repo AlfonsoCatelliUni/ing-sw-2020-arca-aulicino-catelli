@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
+import it.polimi.ingsw.client.GUI.Dialog;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import javafx.geometry.Insets;

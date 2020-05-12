@@ -1,11 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.GUI.scenes.LobbyScene;
-import it.polimi.ingsw.client.GUI.scenes.LoginScene;
-import it.polimi.ingsw.client.GUI.scenes.StartScene;
-import it.polimi.ingsw.client.GUI.scenes.TheScene;
-import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
+import it.polimi.ingsw.client.GUI.scenes.*;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
@@ -33,6 +29,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private ClientView clientView;
 
+    private LobbyStage lobbyScene;
 
     protected Stage stage;
 
@@ -64,14 +61,17 @@ public class GUI extends Application implements Client, ServerToClientManager {
         this.stage.show();
     }
 
+
     public static void main(String[] args) {
         GUI gui = new GUI();
         gui.run();
     }
 
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
 
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
@@ -80,6 +80,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     public ClientView getClientView() {
         return clientView;
+    }
+
+
+    public String getNickname() {
+        return nickname;
     }
 
     @Override
@@ -92,15 +97,14 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED ConnectionEstablishedEvent");
 
-       /* TheScene next = new LoginScene(this, this.stage);
-        Scene nextScene = next.getScene();
-        stage.setScene(nextScene);*/
 
-        // i need Platform because i can not modify a scene of a current thread, i have to modify the thread using runLater
         Platform.runLater( () -> {
             TheScene next = new LoginScene(this, event.ID);
             Scene nextScene = next.getScene();
-            stage.setScene(nextScene);});
+            stage.setScene(nextScene);
+        });
+
+
 
 
 
@@ -108,6 +112,14 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(FirstConnectedEvent event) {
+
+        System.out.println("RECEIVED FirstConnectedEvent");
+
+        Platform.runLater( () -> {
+            TheScene next = new SelectNumberPlayersScene(this, stage);
+            Scene nextScene = next.getScene();
+            stage.setScene(nextScene);
+        });
 
     }
 
@@ -118,10 +130,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
         Platform.runLater( () -> {
-            TheScene next = new LobbyScene(event.connectedPlayers);
-            Scene nextScene = next.getScene();
-            stage.setScene(nextScene);});
+        lobbyScene = new LobbyStage(event.connectedPlayers);
+        lobbyScene.display();
 
+        });
 
 
     }
@@ -149,6 +161,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
 
+        System.out.println("RECEIVED ClosedWaitingRoomEvent ");
+
+        // need to fix
+        lobbyScene.close();
+
     }
 
     @Override
@@ -168,6 +185,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(UnavailableNicknameEvent event) {
+
+        System.out.println("RECEIVED UnavailableNicknameEvent");
+
+        Platform.runLater( () -> {
+            Dialog.display("This Nickname is already used, choose another one");
+        });
+
 
     }
 

@@ -21,7 +21,7 @@ public class CLI implements Client, ServerToClientManager {
 
     private String ipAddress;
 
-    private final int port;
+    private int port;
 
     private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
 
@@ -52,7 +52,6 @@ public class CLI implements Client, ServerToClientManager {
 
     public CLI() {
         this.ipAddress = "127.0.0.1";
-        this.port = 4200;
 
         this.input = new Scanner(System.in);
         this.drawer = new GraphicDrawerCLI();
@@ -89,6 +88,24 @@ public class CLI implements Client, ServerToClientManager {
             System.out.print("Invalid IP, reinsert a new one: ");
             ipAddress = input.nextLine();
         }
+
+        do {
+
+            System.out.print("Insert the port number: ");
+
+            // control if the user insert an number
+            while(!input.hasNextInt()) {
+                System.err.println("Insert an Number!");
+                input.next();
+            }
+            port = input.nextInt();
+
+            // control if the choice is available
+            if( !(port >= 1024 && port < 49152) ) {
+                System.out.println("Unavailable Choice!");
+            }
+
+        } while( !(port >= 1024 && port < 49152) );
 
         Socket serverSocket = null;
         try {

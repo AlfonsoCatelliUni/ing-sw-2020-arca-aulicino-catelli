@@ -21,9 +21,10 @@ public class StartScene implements TheScene {
     public StartScene(GUI gui, Stage stage){
 
         this.stage = stage;
+
         this.stage.setResizable(false);
 
-        VBox startLayout = new VBox(50);
+        StackPane startLayout = new StackPane();
         startLayout.setAlignment(Pos.CENTER);
 
         Button startGameButton = new Button("Start game");
@@ -38,6 +39,11 @@ public class StartScene implements TheScene {
                         new BackgroundSize(scene.getWidth(), scene.getHeight(),
                                 true, true, true, true)));
 
+
+        startGameButton.setStyle("-fx-text-fill: #104abc;");
+        // per coprire il nome sotto santorini nelle dimensioni standard
+        // startGameButton.setTranslateY(235);
+        startGameButton.setPrefSize(220,27);
         startLayout.getChildren().addAll(startGameButton);
         startLayout.setBackground(background);
 

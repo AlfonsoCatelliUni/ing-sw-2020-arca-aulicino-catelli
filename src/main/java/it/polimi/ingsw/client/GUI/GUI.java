@@ -6,9 +6,10 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -30,7 +31,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private ClientView clientView;
 
-    private LobbyStage lobbyScene;
+    private LobbyStage lobbyStage;
 
     private GameScene gameScene;
 
@@ -53,8 +54,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         this.stage.setTitle("Santorini");
 
-        this.stage.setMinHeight(900);
-        this.stage.setMinWidth(1110);
+//        this.stage.setMinHeight(900);
+//        this.stage.setMinWidth(1110);
 
         TheScene next = new StartScene(this, this.stage);
         Scene nextScene = next.getScene();
@@ -87,8 +88,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
         Platform.runLater( () -> {
-//            TheScene next = new LoginScene(this, event.ID);
-            TheScene next = new GameScene(this, stage);
+            TheScene next = new LoginScene(this, stage, event.ID);
             Scene nextScene = next.getScene();
 
             stage.setScene(nextScene);
@@ -105,7 +105,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
             TheScene next = new SelectNumberPlayersScene(this, stage);
-
             Scene nextScene = next.getScene();
             stage.setScene(nextScene);
         });
@@ -119,8 +118,14 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED SuccessfullyConnectedEvent");
 
         Platform.runLater( () -> {
-            lobbyScene = new LobbyStage(event.connectedPlayers);
-            lobbyScene.display();
+            lobbyStage = new LobbyStage(event.connectedPlayers);
+            lobbyStage.display();
+            VBox waitLayout = new VBox(25);
+            waitLayout.setAlignment(Pos.CENTER);
+            Label text = new Label("Wait until the lobby is full");
+            waitLayout.getChildren().add(text);
+            Scene nextScene = new Scene(waitLayout, 750,500);
+            stage.setScene(nextScene);
 
         });
 
@@ -180,8 +185,15 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(ClosedWaitingRoomEvent event) {
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
+        for (String name : event.connectedPlayers){
+            System.out.println(name);
+        }
+
+
         // need to fix
-        lobbyScene.close();
+        Platform.runLater( () -> {
+            lobbyStage.close(event.connectedPlayers);
+        });
     }
 
 
@@ -279,5 +291,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         return this.nickname;
     }
 
-
+    public LobbyStage getLobbyStage() {
+        return lobbyStage;
+    }
 }

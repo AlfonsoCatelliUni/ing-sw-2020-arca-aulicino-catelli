@@ -1,19 +1,17 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.events.STCEvents.GivePossibleCardsEvent;
+import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import javax.lang.model.AnnotatedConstruct;
-import javax.print.DocFlavor;
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
-import java.net.URL;
+import java.util.List;
 
 public class GameScene implements TheScene {
 
@@ -30,6 +28,7 @@ public class GameScene implements TheScene {
         this.stage = stage;
 
 
+        // load the style from FXML file in Resources
         Parent root = null;
         try {
             root = FXMLLoader.load( getClass().getResource("/FXML/new_game_layout.fxml") );
@@ -37,8 +36,28 @@ public class GameScene implements TheScene {
             e.printStackTrace();
         }
 
+
+
         assert root != null;
         this.scene = new Scene(root);
+
+    }
+
+
+
+    public void manageEvent(GivePossibleCardsEvent event) {
+
+    }
+
+
+    public void manageEvent(GivePossibleCellsToMoveEvent event) {
+
+        List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
+
+        for ( Point p : cellsAvailableToMove ) {
+
+        }
+
 
     }
 
@@ -48,30 +67,6 @@ public class GameScene implements TheScene {
     public Scene getScene() {
         return this.scene;
     }
-
-
-    private GridPane buildBoardGrid( int row, int column) {
-
-        GridPane gridPane = new GridPane();
-
-        for( int i = 0; i < row; i++ ) {
-            RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setPercentHeight( 100.0 / row );
-            gridPane.getRowConstraints().add(rowConstraints);
-        }
-
-        for( int i = 0; i < column; i++ ) {
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setPercentWidth( 100.0 / column );
-            gridPane.getColumnConstraints().add(columnConstraints);
-        }
-
-        gridPane.setGridLinesVisible(true);
-
-
-        return gridPane;
-    }
-
 
 
 

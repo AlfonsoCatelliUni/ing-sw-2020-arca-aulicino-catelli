@@ -59,6 +59,10 @@ public class FormattedCellInfo {
         return column;
     }
 
+    public Integer getCellNumber() {
+        return (row * 5) + column;
+    }
+
     public Integer getHeight() {
         return height;
     }
@@ -92,4 +96,5 @@ public class FormattedCellInfo {
     public int hashCode() {
         return Objects.hash(row, column, height, isPawnHere, pawnInfo, roofInfo);
     }
+
 }

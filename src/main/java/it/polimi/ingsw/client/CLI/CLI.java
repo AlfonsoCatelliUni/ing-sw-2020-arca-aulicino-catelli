@@ -23,7 +23,6 @@ public class CLI implements Client, ServerToClientManager {
     private final String RED_C = "\u001b[38;5;196m";
 
     private String ipAddress;
-
     private int port;
 
     private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
@@ -97,16 +96,15 @@ public class CLI implements Client, ServerToClientManager {
                 ipAddress = input.nextLine();
             }
 
-            do {
 
+            do {
                 System.out.print("Insert the port number: ");
 
-                // control if the user insert an number
-                while( !input.hasNextInt() ) {
-                    System.err.println("Insert an Number!");
-                    input.next();
+                try {
+                    port = Integer.parseInt( input.nextLine() );
+                } catch (NumberFormatException e) {
+                    port = -1;
                 }
-                port = input.nextInt();
 
                 // control if the choice is available
                 if( !(port >= 49152 && port < 65535) ) {
@@ -114,6 +112,8 @@ public class CLI implements Client, ServerToClientManager {
                 }
 
             } while( !(port >= 49152 && port < 65535) );
+
+
 
             try {
                 //Connects with the server through socket

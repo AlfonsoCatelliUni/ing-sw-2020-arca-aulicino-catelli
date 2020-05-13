@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -24,7 +25,7 @@ public class SelectNumberPlayersScene implements TheScene {
 
         this.stage = stage;
 
-        VBox numberPlayersLayout = new VBox(50);
+        HBox numberPlayersLayout = new HBox(50);
         numberPlayersLayout.setAlignment(Pos.CENTER);
 
         Label numberLabel = new Label("Choose the number of players:");

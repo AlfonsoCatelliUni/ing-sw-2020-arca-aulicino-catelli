@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.client.GUI.PlayersInteraction;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCardsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ public class GameScene implements TheScene {
     private Scene scene;
 
     private Stage stage;
+
+    public PlayersInteraction playerInteraction;
 
 
     public GameScene(GUI gui, Stage stage) {

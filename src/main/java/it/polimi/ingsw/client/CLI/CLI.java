@@ -100,15 +100,21 @@ public class CLI implements Client, ServerToClientManager {
             do {
                 System.out.print("Insert the port number: ");
 
-                try {
-                    port = Integer.parseInt( input.nextLine() );
-                } catch (NumberFormatException e) {
-                    port = -1;
+                if(input.nextLine().equals("")) {
+                    port = 64209;
                 }
+                else {
 
-                // control if the choice is available
-                if( !(port >= 49152 && port < 65535) ) {
-                    System.out.println("Unavailable Choice!");
+                    try {
+                        port = Integer.parseInt(input.nextLine());
+                    } catch (NumberFormatException e) {
+                        port = -1;
+                    }
+
+                    // control if the choice is available
+                    if (!(port >= 49152 && port < 65535)) {
+                        System.out.println("Unavailable Choice!");
+                    }
                 }
 
             } while( !(port >= 49152 && port < 65535) );

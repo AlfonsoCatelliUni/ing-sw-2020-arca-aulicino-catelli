@@ -41,8 +41,7 @@ public class StartScene implements TheScene {
 
 
         startGameButton.setStyle("-fx-text-fill: #104abc;");
-        // per coprire il nome sotto santorini nelle dimensioni standard
-        // startGameButton.setTranslateY(235);
+        startGameButton.setTranslateY(235);
         startGameButton.setPrefSize(220,27);
         startLayout.getChildren().addAll(startGameButton);
         startLayout.setBackground(background);

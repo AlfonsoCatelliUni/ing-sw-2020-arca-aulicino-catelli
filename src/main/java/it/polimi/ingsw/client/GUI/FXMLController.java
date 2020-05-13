@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
+import it.polimi.ingsw.model.Color;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -86,7 +87,7 @@ public class FXMLController {
 
 
     public FXMLController() {
-        this.cellsList = new ArrayList<>();
+        initialize();
     }
 
 
@@ -142,6 +143,10 @@ public class FXMLController {
 
         //at each cell in cellsList assign a setOnMouseClicked action
         for (Pane cell : cellsList){
+
+            cell.setOnMouseMoved(event ->
+                    cell.setStyle("-fx-border-color: blue"));
+
             cell.setOnMouseClicked(event -> {
                 Pane selectedCell = (Pane) event.getSource();
                 cellSelectionHandler(selectedCell);

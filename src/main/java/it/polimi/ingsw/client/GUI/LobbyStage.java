@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.client.GUI.scenes.GameScene;
+import it.polimi.ingsw.client.GUI.scenes.TheScene;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -86,11 +88,11 @@ public class LobbyStage {
          }
 
 
-        Button closeButtom = new Button("   CLOSE    ");
+        Button closeButton = new Button("   CLOSE    ");
 
-        vBox.getChildren().add(closeButtom);
+        vBox.getChildren().add(closeButton);
 
-        closeButtom.setOnAction(a -> {
+        closeButton.setOnAction(a -> {
             stage.close();
         });
 

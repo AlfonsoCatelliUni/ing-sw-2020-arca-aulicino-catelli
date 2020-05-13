@@ -48,17 +48,28 @@ public class SelectNumberPlayersScene implements TheScene {
 
         twoButton.setOnAction( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 2));
-            Label text = new Label("Wait Until the lobby is full");
-            numberPlayersLayout.getChildren().add(text);
-            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
+            gui.getLobbyStage().displayWait();
+            stage.close();
+//            Label text = new Label("Wait Until the lobby is full");
+//            text.getStyleClass().add("labelWithBackground");
+//            text.setStyle("-fx-font-size: 18px");
+//            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
+//            numberPlayersLayout.getChildren().add(text);
+
 
         });
 
         threeButton.setOnAction( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 3));
-            Label text = new Label("Wait Until the lobby is full");
-            numberPlayersLayout.getChildren().add(text);
-            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
+            gui.getLobbyStage().displayWait();
+            stage.close();
+
+
+
+//            Label text = new Label("Wait Until the lobby is full");
+//            numberPlayersLayout.getChildren().add(text);
+//            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
+
         });
 
 

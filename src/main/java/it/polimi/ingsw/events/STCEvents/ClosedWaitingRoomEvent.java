@@ -3,8 +3,15 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
+import java.util.List;
+
 public class ClosedWaitingRoomEvent extends ServerToClientEvent {
 
+    public List<String> connectedPlayers;
+
+    public ClosedWaitingRoomEvent (List<String> players){
+        connectedPlayers = players;
+    }
 
     @Override
     public void accept(ServerToClientManager visitor) {

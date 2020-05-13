@@ -332,7 +332,7 @@ public class Controller implements Observer, ClientToServerManager {
 
         preGameLobby.closeLobby();
 
-        virtualView.sendMessage(new ClosedWaitingRoomEvent(preGameLobby.getConnectedPlayers()));
+        virtualView.sendMessage(new ClosedWaitingRoomEvent(new ArrayList<>(preGameLobby.getConnectedPlayers())));
 
 
         List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());

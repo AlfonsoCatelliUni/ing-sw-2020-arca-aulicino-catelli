@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.scenes.*;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
@@ -13,6 +14,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUI extends Application implements Client, ServerToClientManager {
 
@@ -37,9 +42,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     protected Stage stage;
 
+    private FXMLController fxmlController;
+
 
     // MARK : Constructor and Run ======================================================================================
-
 
     @Override
     public void run() {
@@ -51,6 +57,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void start(Stage stage) {
 
         this.stage = stage;
+        this.fxmlController = new FXMLController();
 
         this.stage.setTitle("Santorini");
 
@@ -63,6 +70,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         this.stage.setScene(nextScene);
 
         this.stage.show();
+
     }
 
 
@@ -185,12 +193,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(ClosedWaitingRoomEvent event) {
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
-        for (String name : event.connectedPlayers){
-            System.out.println(name);
-        }
 
-
-        // need to fix
         Platform.runLater( () -> {
             lobbyStage.close(event.connectedPlayers);
         });
@@ -213,7 +216,19 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
-        gameScene.manageEvent(event);
+
+        System.out.println("RECEIVED GivePossibleCardsEvent ");
+
+        Platform.runLater( () -> {
+            TheScene next = new ChooseCardScene(this, stage, event);
+            Scene nextScene = next.getScene();
+            stage = new Stage();
+            stage.setMinWidth(750);
+            stage.setMinHeight(500);
+            stage.setScene(nextScene);
+            stage.show();
+        });
+
     }
 
 
@@ -231,7 +246,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
-
     }
 
 
@@ -274,10 +288,21 @@ public class GUI extends Application implements Client, ServerToClientManager {
     // MARK : Support Methods ======================================================================================
 
 
+    private List<FormattedSimpleCell> generateSimpleCellList(List<Point> pointList) {
+
+        List<FormattedSimpleCell> simpleCellList = new ArrayList<>();
+
+        for (Point p : pointList ) {
+            simpleCellList.add( new FormattedSimpleCell(p.x, p.y) );
+        }
+
+        return simpleCellList;
+    }
+
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-
 
     public void setClientView(ClientView clientView) {
         this.clientView = clientView;
@@ -288,7 +313,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
         return clientView;
     }
 
-
     public String getNickname() {
         return this.nickname;
     }
@@ -296,4 +320,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public LobbyStage getLobbyStage() {
         return lobbyStage;
     }
+
+
+
 }

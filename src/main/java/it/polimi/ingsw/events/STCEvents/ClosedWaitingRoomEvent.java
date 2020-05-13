@@ -10,7 +10,7 @@ public class ClosedWaitingRoomEvent extends ServerToClientEvent {
     public List<String> connectedPlayers;
 
     public ClosedWaitingRoomEvent (List<String> players){
-        connectedPlayers = players;
+        this.connectedPlayers = players;
     }
 
     @Override

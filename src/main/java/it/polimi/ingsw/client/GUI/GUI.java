@@ -193,12 +193,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(ClosedWaitingRoomEvent event) {
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
-        for (String name : event.connectedPlayers){
-            System.out.println(name);
-        }
 
-
-        // need to fix
         Platform.runLater( () -> {
             lobbyStage.close(event.connectedPlayers);
         });
@@ -219,7 +214,17 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
-        gameScene.manageEvent(event);
+
+        System.out.println("RECEIVED GivePossibleCardsEvent ");
+
+        Platform.runLater( () -> {
+            TheScene next = new ChooseCardScene(this, stage, event);
+            Scene nextScene = next.getScene();
+            stage = new Stage();
+            stage.setScene(nextScene);
+            stage.show();
+        });
+
     }
 
 

@@ -8,7 +8,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LobbyStage {
@@ -19,7 +18,7 @@ public class LobbyStage {
 
     private VBox vBox;
 
-    private Label label;
+
 
 
     public LobbyStage(List<String> connectedPlayers) {
@@ -38,13 +37,13 @@ public class LobbyStage {
         stage.setMinWidth(350);
         stage.setMinHeight(200);
 
-        label = new Label("The players in the LOBBY are");
-        label.setStyle("-fx-font: 25px 'Stencil', 'Impact', monospace; -fx-text-fill: #7FC0F6");
+        Label title = new Label("The players in the LOBBY are");
+        title.setStyle("-fx-font: 25px 'Stencil', 'Impact', monospace; -fx-text-fill: #7FC0F6");
 
 
         vBox = new VBox(15);
         vBox.setStyle("-fx-background-color: #5C8D3E");
-        vBox.getChildren().add(label);
+        vBox.getChildren().add(title);
 
         for(String player : connectedPlayers){
 
@@ -56,19 +55,42 @@ public class LobbyStage {
 
         vBox.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(vBox);
+        Scene scene = new Scene(vBox, 500, 500);
         stage.setScene(scene);
         stage.show();
     }
 
+    public void displayWait(){
+        Label text = new Label("Wait until the lobby is full");
+        vBox.getChildren().add(text);
+    }
 
-     void close(){
 
-        this.label = new Label("THE LOBBY IS CLOSED");
+     void close(List<String> playerNickname){
 
-        Button okButtom = new Button("   OK    ");
+        vBox.getChildren().clear();
 
-        okButtom.setOnAction( a -> {
+        Label text = new Label("THE LOBBY IS CLOSED, players are");
+        text.setStyle("-fx-font: 25px 'Stencil', 'Impact', monospace; -fx-text-fill: #7FC0F6");
+
+        vBox.getChildren().add(text);
+
+         for(String nickname : playerNickname){
+
+             Label newNickname = new Label(nickname);
+             newNickname.setStyle("-fx-font: 22px 'Stencil', 'Impact', monospace; -fx-text-fill: #C3F1FA");
+
+             vBox.getChildren().add(newNickname);
+
+
+         }
+
+
+        Button closeButtom = new Button("   CLOSE    ");
+
+        vBox.getChildren().add(closeButtom);
+
+        closeButtom.setOnAction(a -> {
             stage.close();
         });
 

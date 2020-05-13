@@ -4,11 +4,13 @@ import it.polimi.ingsw.client.GUI.Dialog;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import javafx.geometry.Insets;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -22,8 +24,9 @@ public class LoginScene implements TheScene {
 
 
 
-    public LoginScene(GUI gui, int ID){
+    public LoginScene(GUI gui, Stage stage, int ID){
 
+        this.stage = stage;
 
         GridPane loginLayout = new GridPane();
 
@@ -69,7 +72,6 @@ public class LoginScene implements TheScene {
         gui.setNickname(nickname);
 
         gui.getClientView().sendCTSEvent(new NewConnectionEvent(ID, nickname));
-
 
 
     }

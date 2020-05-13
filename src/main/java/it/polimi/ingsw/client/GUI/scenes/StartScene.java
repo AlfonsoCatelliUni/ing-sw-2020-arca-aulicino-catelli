@@ -21,6 +21,7 @@ public class StartScene implements TheScene {
     public StartScene(GUI gui, Stage stage){
 
         this.stage = stage;
+
         this.stage.setResizable(false);
 
         VBox startLayout = new VBox(50);

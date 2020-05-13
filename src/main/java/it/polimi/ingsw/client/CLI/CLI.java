@@ -284,6 +284,13 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
         System.out.println("THE WAITING ROOM IS NOW CLOSED!");
+        System.out.println("Players in game are:");
+
+        for (String nickname : event.connectedPlayers){
+            System.out.println(nickname);
+        }
+
+
     }
 
 

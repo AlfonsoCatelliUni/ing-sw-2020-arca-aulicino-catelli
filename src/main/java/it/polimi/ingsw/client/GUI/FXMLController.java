@@ -86,7 +86,6 @@ public class FXMLController {
 
 
     public FXMLController() {
-        this.cellsList = new ArrayList<>();
     }
 
 
@@ -95,8 +94,9 @@ public class FXMLController {
 
     @FXML
     private void initialize() {
-        initializeCells();
+        this.cellsList = new ArrayList<>();
 
+        initializeCells();
     }
 
 
@@ -152,6 +152,16 @@ public class FXMLController {
 
 
     //MARK : Main Methods =================================================================================
+
+
+    public void showAvailableCells( List<FormattedSimpleCell> availableCells ) {
+        setVisibilityAllCells(false);
+
+        for(FormattedSimpleCell cell : availableCells) {
+            cellsList.get(cell.getNumber()).setVisible(true);
+        }
+
+    }
 
 
     private void cellSelectionHandler(Pane cell) {

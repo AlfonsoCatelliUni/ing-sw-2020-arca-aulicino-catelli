@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
 
+import it.polimi.ingsw.client.GUI.CloseStage;
 import it.polimi.ingsw.client.GUI.Dialog;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.view.client.ClientView;
@@ -58,6 +59,12 @@ public IpPortScene(GUI gui, Stage stage){
 
 
 
+    Button exitButton = new Button("EXIT");
+    exitButton.setOnAction(a-> CloseStage.display(stage));
+    exitButton.setTextFill(Color.BLACK);
+    GridPane.setConstraints(exitButton, 2, 19 );
+
+
     Button connectButton = new Button("Connect");
     connectButton.setTextFill(Color.BLACK);
     GridPane.setConstraints(connectButton, 2, 15);
@@ -65,7 +72,7 @@ public IpPortScene(GUI gui, Stage stage){
 
     this.scene = new Scene(connectionLayout, 750, 500);
 
-    connectionLayout.getChildren().addAll(iPLabel, iPInput, portLabel, portInput, connectButton);
+    connectionLayout.getChildren().addAll(iPLabel, iPInput, portLabel, portInput, connectButton, exitButton);
 
 
     connectButton.setOnAction(e -> {

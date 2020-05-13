@@ -48,8 +48,6 @@ public class StartScene implements TheScene {
             Scene nextScene = next.getScene();
             this.stage.setScene(nextScene);
 
-
-
         });
 
 
@@ -58,11 +56,10 @@ public class StartScene implements TheScene {
 
 
 
-
-
-
     @Override
     public Scene getScene() {
         return this.scene;
     }
+
+
 }

@@ -12,7 +12,8 @@ import java.util.List;
 
 public class Dialog {
 
-    public static void display (String plainText){
+
+    public static void display (String plainText) {
 
         Stage stage = new Stage();
 
@@ -24,12 +25,12 @@ public class Dialog {
 
         Label label = new Label(plainText);
 
-        label.setStyle("-fx-text-fill: #E94B2B");
+        label.setStyle("-fx-text-fill: #7FC0F6");
 
         VBox vBox = new VBox(10);
 
         Button button = new Button("OK");
-        button.setStyle("-fx-background-color: #E94B2B; -fx-text-fill: linear-gradient(from 25% 25% to 100% 100%, #300900, #7F1600);");
+        button.setStyle("-fx-background-color: #47D66D; -fx-text-fill: linear-gradient(from 25% 25% to 100% 100%, #C3F1FA, #87E88B);");
         button.setMaxSize(40, 30);
 
         button.setOnAction(e -> stage.close());
@@ -46,7 +47,5 @@ public class Dialog {
         stage.showAndWait();
 
     }
-
-
 
 }

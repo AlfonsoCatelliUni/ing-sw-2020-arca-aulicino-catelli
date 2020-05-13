@@ -52,7 +52,7 @@ public IpPortScene(GUI gui, Stage stage){
 
     GridPane.setConstraints(portLabel, 1,12);
 
-    TextField portInput = new TextField("4200");
+    TextField portInput = new TextField("64209");
 
     GridPane.setConstraints(portInput, 2,12);
 
@@ -87,8 +87,6 @@ public IpPortScene(GUI gui, Stage stage){
         inputPort = Integer.parseInt(possiblePort);
 
         new Thread(() -> startConnection(gui, inputIP, inputPort) ).start();
-
-
 
     } );
 
@@ -126,6 +124,7 @@ public IpPortScene(GUI gui, Stage stage){
         return ip.matches(IP_PATTERN);
     }
 
+
     private boolean isValidPort(String port) {
 
         boolean isValid = false;
@@ -143,8 +142,11 @@ public IpPortScene(GUI gui, Stage stage){
         return isValid;
     }
 
+
     @Override
     public Scene getScene() {
         return this.scene;
     }
+
+
 }

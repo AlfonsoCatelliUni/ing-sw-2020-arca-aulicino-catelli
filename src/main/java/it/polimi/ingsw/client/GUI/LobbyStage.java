@@ -28,6 +28,7 @@ public class LobbyStage {
         this.vBox = null;
     }
 
+
      void display(){
         stage = new Stage();
 
@@ -38,17 +39,17 @@ public class LobbyStage {
         stage.setMinHeight(200);
 
         label = new Label("The players in the LOBBY are");
-        label.setStyle("-fx-font: 25px 'Stencil', 'Impact', monospace; -fx-text-fill: #E94B2B");
+        label.setStyle("-fx-font: 25px 'Stencil', 'Impact', monospace; -fx-text-fill: #7FC0F6");
 
 
         vBox = new VBox(15);
-        vBox.setStyle("-fx-background-color: #200500");
+        vBox.setStyle("-fx-background-color: #5C8D3E");
         vBox.getChildren().add(label);
 
         for(String player : connectedPlayers){
 
             Label newLabel = new Label(player);
-            newLabel.setStyle("-fx-font: 22px 'Stencil', 'Impact', monospace; -fx-text-fill: #FFFEEF");
+            newLabel.setStyle("-fx-font: 22px 'Stencil', 'Impact', monospace; -fx-text-fill: #C3F1FA");
 
             vBox.getChildren().add(newLabel);
         }
@@ -60,6 +61,7 @@ public class LobbyStage {
         stage.show();
     }
 
+
      void close(){
 
         this.label = new Label("THE LOBBY IS CLOSED");
@@ -70,9 +72,8 @@ public class LobbyStage {
             stage.close();
         });
 
-
-
     }
+
 
     void addPlayer(String newPlayer){
 
@@ -80,12 +81,6 @@ public class LobbyStage {
 
         vBox.getChildren().add(newLabel);
     }
-
-
-
-
-
-
 
 
 }

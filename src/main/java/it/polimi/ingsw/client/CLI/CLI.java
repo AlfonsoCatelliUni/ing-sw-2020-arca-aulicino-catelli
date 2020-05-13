@@ -19,6 +19,9 @@ import java.util.regex.Pattern;
 
 public class CLI implements Client, ServerToClientManager {
 
+    private final String RESET = "\u001B[0m";
+    private final String RED_C = "\u001b[38;5;196m";
+
     private String ipAddress;
 
     private int port;
@@ -78,16 +81,21 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void run() {
 
-        System.out.print("Insert the server IP: ");
-        ipAddress = input.nextLine();
-        if(ipAddress.equals("")) {
-            ipAddress = "127.0.0.1";
-        }
+        Boolean isConnected = false;
+        Socket serverSocket = null;
 
-        while(!isValidIP(this.ipAddress)) {
-            System.out.print("Invalid IP, reinsert a new one: ");
+        while( !isConnected ) {
+
+            System.out.print("Insert the server IP: ");
             ipAddress = input.nextLine();
-        }
+            if(ipAddress.equals("")) {
+                ipAddress = "127.0.0.1";
+            }
+
+            while(!isValidIP(this.ipAddress)) {
+                System.out.print("Invalid IP, reinsert a new one: ");
+                ipAddress = input.nextLine();
+            }
 
         do {
 
@@ -107,17 +115,17 @@ public class CLI implements Client, ServerToClientManager {
 
         } while( !(port >= 1024 && port < 49152) );
 
-        Socket serverSocket = null;
-        try {
-            //Connects with the server through socket
-            serverSocket = new Socket();
-            serverSocket.connect( new InetSocketAddress(ipAddress, port), 5000);
-        }
-        catch (IOException e ) {
+            try {
+                //Connects with the server through socket
+                serverSocket = new Socket();
+                serverSocket.connect( new InetSocketAddress(ipAddress, port), 5000);
+                isConnected = true;
+            }
+            catch (IOException e ) {
+                System.out.println( RED_C + "Connection Timeout!" + RESET);
+                isConnected = false;
+            }
 
-            System.err.println("Connection Timeout!");
-
-            manageEvent(new DisconnectionClientEvent());
         }
 
         //Creates a new RemoteViewSocket object which is used to keep the connection open and read all new messages
@@ -247,6 +255,14 @@ public class CLI implements Client, ServerToClientManager {
 
 
     @Override
+    public void manageEvent(RoomNotFilled event) {
+        System.out.println(event.message);
+        System.out.println();
+        manageEvent(new DisconnectionClientEvent());
+    }
+
+
+    @Override
     public void manageEvent(PlainTextEvent event) {
         System.out.println(event.message);
     }
@@ -268,14 +284,6 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
         System.out.println("THE WAITING ROOM IS NOW CLOSED!");
-    }
-
-
-    @Override
-    public void manageEvent(RoomNotFilled event) {
-        System.out.println(event.message);
-        System.out.println();
-        manageEvent(new DisconnectionClientEvent());
     }
 
 

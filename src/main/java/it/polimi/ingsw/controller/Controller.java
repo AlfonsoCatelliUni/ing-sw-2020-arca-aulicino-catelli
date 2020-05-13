@@ -84,7 +84,6 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void update(ClientToServerEvent event) {
-
         synchronized (lock) {
             receiveEvent(event);
         }

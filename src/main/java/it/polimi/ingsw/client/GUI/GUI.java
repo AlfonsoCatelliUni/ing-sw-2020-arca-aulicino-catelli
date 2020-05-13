@@ -32,6 +32,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private LobbyStage lobbyScene;
 
+    private GameScene gameScene;
+
     protected Stage stage;
 
 
@@ -197,7 +199,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
-
+        gameScene.manageEvent(event);
     }
 
 
@@ -209,7 +211,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
-
+        gameScene.manageEvent(event);
     }
 
 

@@ -17,6 +17,8 @@ public class ChooseCardScene implements TheScene {
 
     private Stage stage;
 
+    String chosenCard;
+
 
 
     public ChooseCardScene(GUI gui, Stage stage, GivePossibleCardsEvent event) {
@@ -32,27 +34,36 @@ public class ChooseCardScene implements TheScene {
         // margin between column
         chooseCardLayout.setHgap(12);
 
+        // TODO: fix the placement of the buttoms
         for (int i = 0; i < event.cardsName.size(); i++) {
 
 
-            Label cardName = new Label(event.cardsName.get(i));
-            Label cardEffect = new Label(event.cardsEffect.get(i));
+            String nameCard = event.cardsName.get(i);
+            String effectDescription = event.cardsEffect.get(i);
+
+            Label cardName = new Label(nameCard);
+            Label cardEffect = new Label(effectDescription);
 
 
             Button cardButton = new Button(event.cardsName.get(i));
+
+            cardButton.setOnAction(a -> {
+              chosenCard = nameCard;
+            });
 
 
             GridPane.setConstraints(cardName, 1, i + 1);
             GridPane.setConstraints(cardEffect, 2, i + 1);
             GridPane.setConstraints(cardButton, i + 1, 6);
 
-
             chooseCardLayout.getChildren().addAll(cardName, cardEffect, cardButton);
+
         }
 
         scene = new Scene(chooseCardLayout, 750, 500);
 
     }
+
 
 
 

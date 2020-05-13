@@ -92,28 +92,28 @@ public class CLI implements Client, ServerToClientManager {
                 ipAddress = "127.0.0.1";
             }
 
-            while(!isValidIP(this.ipAddress)) {
+            while( !isValidIP(this.ipAddress) ) {
                 System.out.print("Invalid IP, reinsert a new one: ");
                 ipAddress = input.nextLine();
             }
 
-        do {
+            do {
 
-            System.out.print("Insert the port number: ");
+                System.out.print("Insert the port number: ");
 
-            // control if the user insert an number
-            while(!input.hasNextInt()) {
-                System.err.println("Insert an Number!");
-                input.next();
-            }
-            port = input.nextInt();
+                // control if the user insert an number
+                while( !input.hasNextInt() ) {
+                    System.err.println("Insert an Number!");
+                    input.next();
+                }
+                port = input.nextInt();
 
-            // control if the choice is available
-            if( !(port >= 1024 && port < 49152) ) {
-                System.out.println("Unavailable Choice!");
-            }
+                // control if the choice is available
+                if( !(port >= 49152 && port < 65535) ) {
+                    System.out.println("Unavailable Choice!");
+                }
 
-        } while( !(port >= 1024 && port < 49152) );
+            } while( !(port >= 49152 && port < 65535) );
 
             try {
                 //Connects with the server through socket

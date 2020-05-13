@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client.GUI;
 
+import it.polimi.ingsw.events.CTSEvents.ChosenPawnToUseEvent;
+import it.polimi.ingsw.view.client.ClientView;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -9,10 +12,17 @@ import java.util.List;
 
 public class PlayersInteraction {
 
+    private String playerNickname;
+
     private List<Pane> cellsList;
 
-    //si può ottimizzare
-    public void choosePawnToUse(List<Point> points) {
+    public PlayersInteraction() {
+    }
+
+
+    public void choosePawnToUse(List<Point> points, ClientView clientView) {
+
+        // TODO : tell the player that he has to choose the pawn
 
         int listSize = points.size();
 
@@ -23,9 +33,18 @@ public class PlayersInteraction {
                 if (point.x * 5 + point.y == i) {
 
                     listSize--;
-                    cellsList.get(i).setOnMouseClicked(mouseEvent -> {
-                        //invia messaggio con le coordinate scelte
+
+                    //not sure about this chief
+                    cellsList.get(i).getChildren().clear();
+
+                    Button button = new Button();
+                    cellsList.get(i).getChildren().add(button);
+
+                    button.setOnAction(actionEvent -> {
+                        clientView.sendCTSEvent(new ChosenPawnToUseEvent(playerNickname, point.x, point.y));
                     });
+
+                    points.remove(point);
                     break;
                 }
 

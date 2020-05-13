@@ -45,6 +45,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     private FXMLController fxmlController;
 
 
+
     // MARK : Constructor and Run ======================================================================================
 
     @Override
@@ -209,7 +210,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(AskWhichPawnsUseEvent event) {
 
-        Platform.runLater(() -> gameScene.playerInteraction.choosePawnToUse(event.info));
+        Platform.runLater(() -> gameScene.playerInteraction.choosePawnToUse(event.info, clientView));
 
     }
 

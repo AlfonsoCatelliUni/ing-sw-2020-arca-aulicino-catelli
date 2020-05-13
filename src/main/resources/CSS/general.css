@@ -1,0 +1,13 @@
+
+/*
+styling JavaFX using CSS : https://www.callicoder.com/javafx-css-tutorial/
+ load CSS into JavaFX : https://stackoverflow.com/questions/22627579/how-load-css-file-in-javafx8
+ */
+
+* {
+    -fx-background-color: #47D66D;
+    -fx-font-family: monospace;
+}
+
+
+

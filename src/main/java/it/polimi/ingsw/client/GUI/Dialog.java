@@ -8,12 +8,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.List;
 
 public class Dialog {
 
 
     public static void display (String plainText) {
+
 
         Stage stage = new Stage();
 
@@ -30,7 +32,7 @@ public class Dialog {
         VBox vBox = new VBox(10);
 
         Button button = new Button("OK");
-        button.setStyle("-fx-background-color: #47D66D; -fx-text-fill: linear-gradient(from 25% 25% to 100% 100%, #C3F1FA, #87E88B);");
+        button.setStyle(" -fx-background-color: #47D66D; -fx-text-fill: #C3F1FA; ");
         button.setMaxSize(40, 30);
 
         button.setOnAction(e -> stage.close());
@@ -42,6 +44,7 @@ public class Dialog {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
+
         stage.setScene(scene);
         //block the temporary current processing, show and wait to be closed
         stage.showAndWait();

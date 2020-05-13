@@ -85,7 +85,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
         Platform.runLater( () -> {
-            TheScene next = new LoginScene(this, event.ID);
+//            TheScene next = new LoginScene(this, event.ID);
+            TheScene next = new GameScene(this, stage);
             Scene nextScene = next.getScene();
 
             stage.setScene(nextScene);

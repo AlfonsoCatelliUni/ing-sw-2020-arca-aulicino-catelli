@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Pane?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="900.0" minWidth="1110.0" prefHeight="900.0" prefWidth="1110.0" style="-fx-background-color: #f5ec42;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="900.0" minWidth="1110.0" prefHeight="900.0" prefWidth="1110.0" style="-fx-background-color: #f5ec42;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLGameController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>

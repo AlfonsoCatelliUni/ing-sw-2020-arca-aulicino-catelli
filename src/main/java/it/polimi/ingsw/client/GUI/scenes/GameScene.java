@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
+import it.polimi.ingsw.client.FormattedSimpleCell;
+import it.polimi.ingsw.client.GUI.FXMLGameController;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.client.GUI.PlayersInteraction;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCardsEvent;
@@ -9,9 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameScene implements TheScene {
@@ -24,11 +26,14 @@ public class GameScene implements TheScene {
 
     public PlayersInteraction playerInteraction;
 
+    private FXMLGameController fxmlGameController;
+
 
     public GameScene(GUI gui, Stage stage) {
 
         this.gui = gui;
         this.stage = stage;
+        this.fxmlGameController = new FXMLGameController();
 
 
         // load the style from FXML file in Resources
@@ -47,6 +52,8 @@ public class GameScene implements TheScene {
     }
 
 
+    // MARK : Game Event Managers ======================================================================================
+
 
     public void manageEvent(GivePossibleCardsEvent event) {
 
@@ -55,15 +62,19 @@ public class GameScene implements TheScene {
 
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
-        List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
+        List<FormattedSimpleCell> points = new ArrayList<>();
 
-        for ( Point p : cellsAvailableToMove ) {
-
+        for ( Point p : event.cellsAvailableToMove ) {
+            points.add( new FormattedSimpleCell(p.x, p.y) );
         }
+
+        //fxmlBoardController.showAvailableCells(points);
 
 
     }
 
+
+    // MARK : Supportive Methods ======================================================================================
 
 
     @Override

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +8,23 @@ import java.util.ResourceBundle;
 
 import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
+import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
+import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
+import it.polimi.ingsw.events.ServerToClientEvent;
+import it.polimi.ingsw.view.client.ClientView;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
-public class FXMLController {
+public class FXMLGameController {
 
+    private ClientView clientView;
+
+    //private ClientToServerEvent event;
 
     private List<Pane> cellsList;
 
@@ -85,7 +95,7 @@ public class FXMLController {
     //MARK : Constructor =================================================================================
 
 
-    public FXMLController() {
+    public FXMLGameController() {
     }
 
 
@@ -128,7 +138,7 @@ public class FXMLController {
         cellsList.add(cell23);
         cellsList.add(cell24);
 
-        setVisibilityAllCells(false);
+        setVisibilityAllCells(true);
 
         //at each cell in cellsList assign a FormattedSimpleCell
         int index = 0;
@@ -140,12 +150,23 @@ public class FXMLController {
             }
         }
 
+
         //at each cell in cellsList assign a setOnMouseClicked action
-        for (Pane cell : cellsList){
+        for (Pane cell : cellsList) {
 
-//           cell.setOnMouseMoved(event ->
-//                   cell.setStyle("-fx-border-color: blue"));
+            //highlight the border
+            cell.setOnMouseEntered(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+            });
 
+            //clear the border
+            cell.setOnMouseExited(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 0");
+            });
+
+            //selected cell
             cell.setOnMouseClicked(event -> {
                 Pane selectedCell = (Pane) event.getSource();
                 cellSelectionHandler(selectedCell);
@@ -158,18 +179,65 @@ public class FXMLController {
     //MARK : Main Methods =================================================================================
 
 
-    public void showAvailableCells( List<FormattedSimpleCell> availableCells ) {
-        setVisibilityAllCells(false);
+    public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
-        for(FormattedSimpleCell cell : availableCells) {
-            cellsList.get(cell.getNumber()).setVisible(true);
+        List<FormattedSimpleCell> points = new ArrayList<>();
+
+        for ( Point p : event.cellsAvailableToMove ) {
+            points.add( new FormattedSimpleCell(p.x, p.y) );
+        }
+
+        List<Pane> visibleCells = showAvailableCells(points);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+                //clientView.sendCTSEvent(new ChosenCellToMoveEvent("nickname", info.getRow(), info.getColumn()));
+                clearMouseClick(visibleCells);
+            });
+
         }
 
     }
 
 
+    private void clearMouseClick(List<Pane> visibleCells) {
+        for (Pane p : visibleCells) {
+            p.setOnMouseClicked(e -> {});
+        }
+    }
+
+
+    public List<Pane> showAvailableCells(List<FormattedSimpleCell> availableCells) {
+        setVisibilityAllCells(false);
+
+        List<Pane> visiblePanes = new ArrayList<>();
+
+        for(FormattedSimpleCell cell : availableCells) {
+            cellsList.get(cell.getNumber()).setVisible(true);
+            visiblePanes.add( cellsList.get(cell.getNumber()) );
+        }
+
+        return visiblePanes;
+    }
+
+
     private void cellSelectionHandler(Pane cell) {
+
         FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
+
+        //sender.receiveEvent(event );
+        // in base all'evento salvato fa cose con la cella
+        /*
+        setti parametri
+
+        mandi evento
+
+        * clientView.sendCTSEvent(evento); */
+
+        //svuoti evento
 
         System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());
 

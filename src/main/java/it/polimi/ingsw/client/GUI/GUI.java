@@ -212,7 +212,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(AskWhichPawnsUseEvent event) {
 
-        Platform.runLater(() -> gameScene.playerInteraction.choosePawnToUse(event.info, clientView));
+        Platform.runLater(() -> gameScene.fxmlGameController.choosePawnToUse(event.nickname,event.info, clientView));
 
     }
 

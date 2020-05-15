@@ -65,7 +65,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 //        this.stage.setMinWidth(1110);
 
         //TheScene next = new StartScene(this, this.stage);
-        TheScene next = new GameScene(this, stage);
+        TheScene next = new ChooseCardScene(this, stage);
         Scene nextScene = next.getScene();
 
         this.stage.setScene(nextScene);

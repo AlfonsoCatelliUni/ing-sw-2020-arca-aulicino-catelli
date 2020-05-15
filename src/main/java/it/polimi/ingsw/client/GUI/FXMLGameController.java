@@ -9,8 +9,10 @@ import java.util.ResourceBundle;
 import it.polimi.ingsw.client.FormattedCellInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
+import it.polimi.ingsw.events.CTSEvents.ChosenInitialPawnCellEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenPawnToUseEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.view.client.ClientView;
@@ -23,7 +25,9 @@ import javafx.scene.layout.Pane;
 
 public class FXMLGameController {
 
-    //private ClientToServerEvent event;
+    private ClientView clientView;
+
+    private GUI gui;
 
     private List<Pane> cellsList;
 
@@ -91,6 +95,9 @@ public class FXMLGameController {
     private ResourceBundle resources;
 
 
+    private FormattedSimpleCell maleCellSelected;
+
+
     //MARK : Constructor =================================================================================
 
 
@@ -101,9 +108,19 @@ public class FXMLGameController {
     //MARK : Initialization Methods =================================================================================
 
 
+    public void initGameController( GUI gui, ClientView clientView ) {
+
+        this.gui = gui;
+        this.clientView = clientView;
+
+    }
+
+
     @FXML
     private void initialize() {
+
         this.cellsList = new ArrayList<>();
+        this.maleCellSelected = null;
 
         initializeCells();
     }
@@ -178,28 +195,74 @@ public class FXMLGameController {
     //MARK : Main Methods =================================================================================
 
 
-    public void manageEvent(GivePossibleCellsToMoveEvent event) {
+    public void manageEvent(AskInitPawnsEvent event) {
 
-        List<FormattedSimpleCell> points = new ArrayList<>();
-
-        for ( Point p : event.cellsAvailableToMove ) {
-            points.add( new FormattedSimpleCell(p.x, p.y) );
+        List<Point> freeCells = new ArrayList<>();
+        for(int i = 0; i < 5; i++) {
+            for(int j = 0; j < 5; j++) {
+                Point np = new Point(i, j);
+                if(!event.info.contains(np)) {
+                    freeCells.add(np);
+                }
+            }
         }
 
-        List<Pane> visibleCells = showAvailableCells(points);
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(freeCells);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+
+                Pane selectedCell = (Pane) e.getSource();
+                selectedCell.setVisible(false);
+
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                if(maleCellSelected == null) {
+                    maleCellSelected = info;
+                }
+                else {
+                    clientView.sendCTSEvent( new ChosenInitialPawnCellEvent(event.nickname, maleCellSelected.getRow(), maleCellSelected.getColumn(), info.getRow(), info.getColumn()) );
+                    clearMouseClick(visibleCells);
+                }
+
+            });
+
+        }
+
+    }
+
+
+    public void manageEvent(GivePossibleCellsToMoveEvent event, int pawnRow, int pawnColumn) {
+
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cellsAvailableToMove);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
 
         for(Pane cell : visibleCells) {
 
             cell.setOnMouseClicked(e -> {
                 Pane selectedCell = (Pane) e.getSource();
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
-                //clientView.sendCTSEvent(new ChosenCellToMoveEvent("nickname", info.getRow(), info.getColumn()));
+
+                clientView.sendCTSEvent(new ChosenCellToMoveEvent(event.receiverNickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
                 clearMouseClick(visibleCells);
+
+                gui.setRowUsedPawn(info.getRow());
+                gui.setColumnUsedPawn(info.getColumn());
             });
 
         }
 
     }
+
+
+    public void manageEvent() {
+
+    }
+
 
     public void choosePawnToUse(String playerNickname, List<Point> points, ClientView clientView) {
 
@@ -226,14 +289,17 @@ public class FXMLGameController {
     }
 
 
-    private void clearMouseClick(List<Pane> visibleCells) {
-        for (Pane p : visibleCells) {
-            p.setOnMouseClicked(e -> {});
-        }
+    private void cellSelectionHandler(Pane cell) {
+        FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
+        System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());
     }
 
 
+    //MARK : Support Methods =================================================================================
+
+
     public List<Pane> showAvailableCells(List<FormattedSimpleCell> availableCells) {
+
         setVisibilityAllCells(false);
 
         List<Pane> visiblePanes = new ArrayList<>();
@@ -247,34 +313,19 @@ public class FXMLGameController {
     }
 
 
-    private void cellSelectionHandler(Pane cell) {
-
-        FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
-
-        //sender.receiveEvent(event );
-        // in base all'evento salvato fa cose con la cella
-        /*
-        setti parametri
-
-        mandi evento
-
-        * clientView.sendCTSEvent(evento); */
-
-        //svuoti evento
-
-        System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());
-
-    }
-
-
-    //MARK : Support Methods =================================================================================
-
-
     public void setVisibilityAllCells(Boolean visibilityAllCells) {
         for (Pane cell : cellsList){
             cell.setVisible(visibilityAllCells);
         }
     }
+
+
+    private void clearMouseClick(List<Pane> visibleCells) {
+        for (Pane p : visibleCells) {
+            p.setOnMouseClicked(e -> {});
+        }
+    }
+
 
 
 

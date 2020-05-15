@@ -5,11 +5,15 @@ import it.polimi.ingsw.client.GUI.GUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class ChooseCardScene implements TheScene {
+
+    private GUI gui;
 
     private Scene scene;
 
@@ -19,13 +23,16 @@ public class ChooseCardScene implements TheScene {
 
 
 
-    public ChooseCardScene(GUI gui, Stage stage) {
+    public ChooseCardScene(GUI gui, Stage stage, List<String> cardsUrl) {
 
+        this.gui = gui;
         this.stage = stage;
-
         this.controller = new FXMLChooseCardController();
 
 
+        //Image card = new Image(gui.getClass().getResourceAsStream("/Graphics/Cards/ApolloCard.png"));
+
+        //controller.initializeOneCard(card);
 
 
         Parent root = null;

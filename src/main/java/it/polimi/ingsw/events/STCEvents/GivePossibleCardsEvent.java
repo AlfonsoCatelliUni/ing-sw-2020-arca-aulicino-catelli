@@ -47,4 +47,5 @@ public class GivePossibleCardsEvent extends ServerToClientEvent {
                 "isValid=" + isValid +  ",\n" +
                 '}';
     }
+
 }

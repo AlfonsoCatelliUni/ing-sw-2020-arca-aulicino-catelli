@@ -44,8 +44,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
 
-
-
     // MARK : Constructor and Run ======================================================================================
 
     @Override
@@ -65,7 +63,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
 //        this.stage.setMinWidth(1110);
 
         //TheScene next = new StartScene(this, this.stage);
-        TheScene next = new ChooseCardScene(this, stage);
+
+        List<String> cardsURL = new ArrayList<>();
+        cardsURL.add("/Graphics/Cards/ApolloCard.png");
+
+        TheScene next = new ChooseCardScene(this, stage, cardsURL);
         Scene nextScene = next.getScene();
 
         this.stage.setScene(nextScene);
@@ -192,6 +194,26 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
     @Override
+    public void manageEvent(StartGameEvent event) {
+        System.out.println("RECEIVED StartGameEvent ");
+
+        Platform.runLater( () -> {
+
+            TheScene next = new GameScene(this, stage);
+            Scene nextScene = next.getScene();
+
+            stage = new Stage();
+            stage.setMinWidth(750);
+            stage.setMinHeight(500);
+            stage.setScene(nextScene);
+
+            stage.show();
+        });
+
+    }
+
+
+    @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
@@ -221,13 +243,18 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED GivePossibleCardsEvent ");
 
+        List<String> cardsURL = new ArrayList<>();
+        cardsURL.add("/Graphics/Cards/ApolloCard.png");
+
         Platform.runLater( () -> {
-            TheScene next = new ChooseCardScene(this, stage);
+            TheScene next = new ChooseCardScene(this, stage, cardsURL);
             Scene nextScene = next.getScene();
+
             stage = new Stage();
             stage.setMinWidth(750);
             stage.setMinHeight(500);
             stage.setScene(nextScene);
+
             stage.show();
         });
 
@@ -265,12 +292,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
-
-    }
-
-
-    @Override
-    public void manageEvent(StartGameEvent event) {
 
     }
 

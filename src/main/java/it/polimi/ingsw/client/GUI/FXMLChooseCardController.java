@@ -11,33 +11,33 @@ public class FXMLChooseCardController {
 
     private ClientView clientView;
 
+    private List<String> cardsUrl;
+
     List<ImageView> cardsList;
 
     @FXML
     private ImageView card0;
-
     @FXML
     private ImageView card1;
-
     @FXML
     private ImageView card2;
-
     @FXML
     private ImageView card3;
-
     @FXML
     private ImageView card4;
 
 
-
     @FXML
-    private void initialize(){
+    private void initialize() {
         this.cardsList = new ArrayList<>();
+
+        cardsUrl = new ArrayList<>();
+        cardsUrl.add("/Graphics/Cards/ApolloCard.png");
 
         initializeCards();
     }
 
-    private void initializeCards(){
+    private void initializeCards() {
 
         card1.setVisible(true);
         card2.setVisible(true);
@@ -45,11 +45,8 @@ public class FXMLChooseCardController {
         card4.setVisible(true);
         card0.setVisible(true);
 
-
-      //  Image card = new Image(getClass().getResourceAsStream("/Graphics/Cards/ApolloCard.png"));
-      //  card2.setImage(card);
-
-
+        Image card = new Image(getClass().getResourceAsStream( cardsUrl.get(0) ));
+        card2.setImage(card);
 
         cardsList.add(card0);
         cardsList.add(card1);
@@ -57,12 +54,11 @@ public class FXMLChooseCardController {
         cardsList.add(card3);
         cardsList.add(card4);
 
-
     }
 
-    @FXML
-    public void initializeOneCard(Image cardImage){
-        card2.setImage(cardImage);
+//    public void initializeOneCard(Image cardImage) {
+//        card2.setImage(cardImage);
+//    }
 
-    }
+
 }

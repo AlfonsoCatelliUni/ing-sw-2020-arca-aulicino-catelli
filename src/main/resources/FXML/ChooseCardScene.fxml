@@ -10,10 +10,7 @@
 
 
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0"
-      prefWidth="1070.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="it.polimi.ingsw.client.GUI.FXMLChooseCardController">
-
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="1070.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLChooseCardController">
    <AnchorPane prefHeight="200.0" prefWidth="200.0">
       <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"

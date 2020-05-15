@@ -10,7 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -38,6 +39,7 @@ public IpPortScene(GUI gui, Stage stage){
     connectionLayout.setHgap(12);
 
     Label iPLabel = new Label("Insert IP address:");
+    iPLabel.setStyle("-fx-text-fill: darkblue");
     iPLabel.getStyleClass().add("labelWithBackground");
 
     GridPane.setConstraints(iPLabel, 1,8);
@@ -48,6 +50,7 @@ public IpPortScene(GUI gui, Stage stage){
 
 
     Label portLabel = new Label("Insert PORT:");
+    portLabel.setStyle("-fx-text-fill: darkblue");
     portLabel.getStyleClass().add("labelWithBackground");
 
 
@@ -70,7 +73,18 @@ public IpPortScene(GUI gui, Stage stage){
     GridPane.setConstraints(connectButton, 2, 15);
 
 
+
     this.scene = new Scene(connectionLayout, 750, 500);
+
+    Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/Odyssey-Troy.png"));
+
+    Background background = new Background(
+            new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                    new BackgroundSize(scene.getWidth(), scene.getHeight(),
+                            true, true, true, true)));
+
+    connectionLayout.setBackground(background);
+
 
     connectionLayout.getChildren().addAll(iPLabel, iPInput, portLabel, portInput, connectButton, exitButton);
 

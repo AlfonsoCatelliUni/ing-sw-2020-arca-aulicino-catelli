@@ -27,7 +27,7 @@ public class FXMLChooseCardController {
 
 
 
-        Image cardImage = new Image(getClass().getResourceAsStream("/Graphics/santorini-intro.png"));
+        Image cardImage = new Image(getClass().getResourceAsStream("/Graphics/santorini-start.png"));
         card3.setImage(cardImage);
 
         card3.setVisible(true);

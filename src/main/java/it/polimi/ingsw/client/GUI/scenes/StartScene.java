@@ -31,7 +31,7 @@ public class StartScene implements TheScene {
 
         this.scene = new Scene(startLayout, 750, 750);
 
-        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/santorini-intro.png"));
+        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/santorini-start.png"));
 
         Background background = new Background(
                 new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,

@@ -23,8 +23,6 @@ import javafx.scene.layout.Pane;
 
 public class FXMLGameController {
 
-    private ClientView clientView;
-
     //private ClientToServerEvent event;
 
     private List<Pane> cellsList;
@@ -205,33 +203,23 @@ public class FXMLGameController {
 
     public void choosePawnToUse(String playerNickname, List<Point> points, ClientView clientView) {
 
-        // TODO : tell the player that he has to choose the pawn
+        List<FormattedSimpleCell> cells = new ArrayList<>();
 
-        int listSize = points.size();
+        for(Point point : points) {
+            cells.add(new FormattedSimpleCell(point.x ,point.y));
+        }
 
-        for (int i = 0; i < cellsList.size() && listSize > 0; i++) {
+        List<Pane> visibleCells = showAvailableCells(cells);
 
-            for (Point point : points) {
+        for(Pane cell : visibleCells) {
 
-                if (point.x * 5 + point.y == i) {
+            cell.setOnMouseClicked(e -> {
 
-                    listSize--;
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+                clientView.sendCTSEvent((new ChosenPawnToUseEvent(playerNickname, info.getRow(), info.getColumn())));
 
-                    //not sure about this chief
-                    cellsList.get(i).getChildren().clear();
-
-                    Button button = new Button();
-                    cellsList.get(i).getChildren().add(button);
-
-                    button.setOnAction(actionEvent -> {
-                        clientView.sendCTSEvent(new ChosenPawnToUseEvent(playerNickname, point.x, point.y));
-                    });
-
-                    points.remove(point);
-                    break;
-                }
-
-            }
+            });
 
         }
 

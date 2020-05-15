@@ -9,7 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -51,6 +52,17 @@ public class LoginScene implements TheScene {
         loginLayout.getChildren().addAll(usernameLabel, nicknameInput, loginButton);
 
         scene = new Scene(loginLayout, 750, 500);
+
+
+        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/Odyssey_UI_Backdrop.png"));
+
+        Background background = new Background(
+                new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        new BackgroundSize(scene.getWidth(), scene.getHeight(),
+                                true, true, true, true)));
+
+        loginLayout.setBackground(background);
+
 
         loginButton.setOnAction(e -> {
             manageLogin(gui, nicknameInput.getText(), ID);

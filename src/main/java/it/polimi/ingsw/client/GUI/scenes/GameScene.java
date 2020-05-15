@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.GUI.scenes;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.FXMLGameController;
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCardsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import javafx.fxml.FXMLLoader;
@@ -57,16 +58,16 @@ public class GameScene implements TheScene {
     }
 
 
+    public void manageEvent(AskInitPawnsEvent event) {
+
+        fxmlGameController.manageEvent(event);
+
+    }
+
+
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
-        List<FormattedSimpleCell> points = new ArrayList<>();
-
-        for ( Point p : event.cellsAvailableToMove ) {
-            points.add( new FormattedSimpleCell(p.x, p.y) );
-        }
-
-        //fxmlBoardController.showAvailableCells(points);
-
+        fxmlGameController.manageEvent(event, gui.getRowUsedPawn(), gui.getColumnUsedPawn());
 
     }
 

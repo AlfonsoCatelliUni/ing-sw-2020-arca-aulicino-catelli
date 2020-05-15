@@ -23,10 +23,12 @@ public class ChooseCardScene implements TheScene {
 
 
 
-    public ChooseCardScene(GUI gui, Stage stage, List<String> cardsUrl) {
+    public ChooseCardScene(GUI gui, Stage stage, List<String> cardsUrl, List<String> cardsName, List<String> effectsCard) {
 
         this.gui = gui;
         this.stage = stage;
+        this.stage.setResizable(false);
+
 
         Parent root = null;
         try {
@@ -34,7 +36,7 @@ public class ChooseCardScene implements TheScene {
             root = fxmlLoader.load();
             controller = fxmlLoader.getController();
 
-            controller.setCardsURL(cardsUrl);
+            controller.setCardsURL(cardsUrl, cardsName, effectsCard);
             controller.setCards();
 
         } catch (IOException e) {

@@ -8,6 +8,7 @@ import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCardsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import it.polimi.ingsw.view.client.ClientView;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -44,7 +45,6 @@ public class GameScene implements TheScene {
         this.fxmlGameController = new FXMLGameController();
 
 
-        // load the style from FXML file in Resources
         Parent root = null;
         try {
             root = FXMLLoader.load( getClass().getResource("/FXML/new_game_layout.fxml") );
@@ -56,6 +56,16 @@ public class GameScene implements TheScene {
 
         assert root != null;
         this.scene = new Scene(root);
+
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+
+            System.out.println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
+            //System.out.println("Height: " + fxmlGameController.getControlBoxSectionH() + " Width: " + fxmlGameController.getControlBoxSectionW());
+        };
+
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
+
 
         AnchorPane anchorPane = (AnchorPane) root.getChildrenUnmodifiable().get(2);
         HBox hbox = (HBox) anchorPane.getChildren().get(0);
@@ -88,6 +98,7 @@ public class GameScene implements TheScene {
     public void manageEvent(AskWhichPawnsUseEvent event, ClientView clientView) {
 
         Text label = new Text("Choose the pawn that you want to use");
+
 
         messagePane.add(label, 0,0);
 

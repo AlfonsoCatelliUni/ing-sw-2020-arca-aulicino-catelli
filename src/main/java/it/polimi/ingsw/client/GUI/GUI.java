@@ -63,14 +63,26 @@ public class GUI extends Application implements Client, ServerToClientManager {
 //        this.stage.setMinWidth(1110);
 
         //TheScene next = new StartScene(this, this.stage);
-        TheScene next = new StartScene(this, stage);
+
 
         List<String> cardsURL = new ArrayList<>();
-        cardsURL.add("/Graphics/Cards/apollo.png");
-        cardsURL.add("/Graphics/Cards/atlas.png");
-        cardsURL.add("/Graphics/Cards/zeus.png");
+        cardsURL.add("/Graphics/TransparentCards/podium-characters-Atlas.png");
+        cardsURL.add("/Graphics/TransparentCards/podium-characters-Artemis.png");
+        cardsURL.add("/Graphics/TransparentCards/podium-characters-Apollo.png");
 
-        TheScene next = new ChooseCardScene(this, stage, cardsURL);
+        List<String> cardsName = new ArrayList<>();
+        cardsName.add("Atlas");
+        cardsName.add("Artemis");
+        cardsName.add("Apollo");
+
+        List<String> effectsCard = new ArrayList<>();
+        effectsCard.add("Atlas");
+        effectsCard.add("Artemis");
+        effectsCard.add("Apollo");
+
+        //TheScene next = new StartScene(this, stage);
+        TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
+        //TheScene next = new GameScene(this, stage);
         Scene nextScene = next.getScene();
 
         this.stage.setScene(nextScene);
@@ -250,9 +262,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         List<String> cardsURL = new ArrayList<>();
         cardsURL.add("/Graphics/Cards/ApolloCard.png");
+        List<String> cardsName = new ArrayList<>();
+        cardsName.add("/Graphics/Cards/ApolloCard.png");
+        List<String> effectsCard = new ArrayList<>();
+        effectsCard.add("/Graphics/Cards/ApolloCard.png");
 
         Platform.runLater( () -> {
-            TheScene next = new ChooseCardScene(this, stage, cardsURL);
+            TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
             Scene nextScene = next.getScene();
 
             stage = new Stage();

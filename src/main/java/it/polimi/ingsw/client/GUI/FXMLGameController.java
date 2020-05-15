@@ -19,8 +19,11 @@ import it.polimi.ingsw.view.client.ClientView;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class FXMLGameController {
@@ -86,6 +89,19 @@ public class FXMLGameController {
     private Pane cell23;
     @FXML
     private Pane cell24;
+
+    @FXML
+    private HBox ControlsBoxSection;
+
+    @FXML
+    private ImageView gameBoardImage;
+
+    @FXML
+    private GridPane gameBoardGrid;
+
+    @FXML
+    private Label titleLabel;
+
 
 
     @FXML
@@ -327,6 +343,16 @@ public class FXMLGameController {
     }
 
 
+    public void setBoardDimensions() {
+
+    }
+
+    public double getControlBoxSectionH() {
+        return this.ControlsBoxSection.getHeight();
+    }
+    public double getControlBoxSectionW() {
+        return this.ControlsBoxSection.getWidth();
+    }
 
 
 }

@@ -1,94 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="1070.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLChooseCardController">
-   <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
-         <ImageView fx:id="card0" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
-            <cursor>
-               <Cursor fx:constant="W_RESIZE"/>
-            </cursor>
-         </ImageView>
-         <AnchorPane prefHeight="307.0" prefWidth="200.0">
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="200.0"
-                   text="effetto inutile" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"/>
-         </AnchorPane>
-      </VBox>
-   </AnchorPane>
-   <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
-         <ImageView fx:id="card1" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
-            <cursor>
-               <Cursor fx:constant="W_RESIZE"/>
-            </cursor>
-         </ImageView>
-         <AnchorPane prefHeight="307.0" prefWidth="200.0">
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="200.0"
-                   text="effetto inutile" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"/>
-         </AnchorPane>
-      </VBox>
-   </AnchorPane>
-   <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
-         <ImageView fx:id="card2" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
-            <cursor>
-               <Cursor fx:constant="W_RESIZE"/>
-            </cursor>
-         </ImageView>
-         <AnchorPane prefHeight="307.0" prefWidth="200.0">
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="200.0"
-                   text="effetto inutile" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"/>
-         </AnchorPane>
-      </VBox>
-   </AnchorPane>
-   <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
-         <ImageView fx:id="card3" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
-            <cursor>
-               <Cursor fx:constant="W_RESIZE"/>
-            </cursor>
-         </ImageView>
-         <AnchorPane prefHeight="307.0" prefWidth="200.0">
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="200.0"
-                   text="effetto inutile" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"/>
-         </AnchorPane>
-      </VBox>
-   </AnchorPane>
-   <AnchorPane prefHeight="200.0" prefWidth="200.0">
-      <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0"
-            AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-            AnchorPane.topAnchor="0.0">
-         <ImageView fx:id="card4" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
-            <cursor>
-               <Cursor fx:constant="W_RESIZE"/>
-            </cursor>
-         </ImageView>
-         <AnchorPane prefHeight="307.0" prefWidth="200.0">
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="200.0"
-                   text="effetto inutile" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                   AnchorPane.rightAnchor="0.0"/>
-         </AnchorPane>
-      </VBox>
-   </AnchorPane>
-</HBox>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLChooseCardController">
+   <children>
+      <ImageView fitHeight="600.0" fitWidth="900.0" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Graphics/SceneBackground/choiceCardsBackground.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="card0" fitHeight="294.0" fitWidth="257.0" layoutX="41.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/TransparentCards/podium-characters-Minotaur.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="effect0" alignment="CENTER" layoutX="41.0" layoutY="61.0" prefHeight="159.0" prefWidth="253.0" text="Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="effect1" alignment="CENTER" layoutX="324.0" layoutY="61.0" prefHeight="159.0" prefWidth="253.0" text="Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="effect2" alignment="CENTER" layoutX="614.0" layoutY="61.0" prefHeight="159.0" prefWidth="253.0" text="Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="card1" fitHeight="294.0" fitWidth="257.0" layoutX="324.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/TransparentCards/podium-characters-Aphrodite.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="card2" fitHeight="294.0" fitWidth="257.0" layoutX="614.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/TransparentCards/podium-characters-Zeus.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

@@ -1,5 +1,10 @@
 package it.polimi.ingsw.client;
 
+import java.awt.*;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 public class FormattedSimpleCell {
 
 
@@ -11,6 +16,17 @@ public class FormattedSimpleCell {
     public FormattedSimpleCell(Integer row, Integer column) {
         this.row = row;
         this.column = column;
+    }
+
+
+    public static List<FormattedSimpleCell> generateFromPointList(List<Point> pointList) {
+        List<FormattedSimpleCell> returnList = new ArrayList<>();
+
+        for (Point p : pointList ) {
+            returnList.add( new FormattedSimpleCell( p.x, p.y) );
+        }
+
+        return returnList;
     }
 
 

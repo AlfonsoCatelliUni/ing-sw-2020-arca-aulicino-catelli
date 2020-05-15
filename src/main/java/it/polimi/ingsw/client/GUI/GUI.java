@@ -310,6 +310,22 @@ public class GUI extends Application implements Client, ServerToClientManager {
         this.clientView = clientView;
     }
 
+    public void setRowUsedPawn(int rowUsedPawn) {
+        this.rowUsedPawn = rowUsedPawn;
+    }
+
+    public void setColumnUsedPawn(int columnUsedPawn) {
+        this.columnUsedPawn = columnUsedPawn;
+    }
+
+    public void setNextActionRow(int nextActionRow) {
+        this.nextActionRow = nextActionRow;
+    }
+
+    public void setNextActionColumn(int nextActionColumn) {
+        this.nextActionColumn = nextActionColumn;
+    }
+
 
     public ClientView getClientView() {
         return clientView;
@@ -323,6 +339,21 @@ public class GUI extends Application implements Client, ServerToClientManager {
         return lobbyStage;
     }
 
+    public int getRowUsedPawn() {
+        return rowUsedPawn;
+    }
+
+    public int getColumnUsedPawn() {
+        return columnUsedPawn;
+    }
+
+    public int getNextActionRow() {
+        return nextActionRow;
+    }
+
+    public int getNextActionColumn() {
+        return nextActionColumn;
+    }
 
 
 }

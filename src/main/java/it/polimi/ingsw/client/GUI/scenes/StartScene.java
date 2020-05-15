@@ -1,11 +1,10 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
-import com.sun.javafx.fxml.builder.JavaFXSceneBuilder;
+
 import it.polimi.ingsw.client.GUI.GUI;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -32,7 +31,7 @@ public class StartScene implements TheScene {
 
         this.scene = new Scene(startLayout, 750, 750);
 
-        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/santorini-copia.png"));
+        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/santorini-intro.png"));
 
         Background background = new Background(
                 new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,

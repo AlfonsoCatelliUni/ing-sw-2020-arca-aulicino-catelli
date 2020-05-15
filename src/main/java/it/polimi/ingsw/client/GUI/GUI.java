@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.scenes.*;
-import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
@@ -223,7 +222,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED GivePossibleCardsEvent ");
 
         Platform.runLater( () -> {
-            TheScene next = new ChooseCardScene(this, stage, event);
+            TheScene next = new ChooseCardScene(this, stage);
             Scene nextScene = next.getScene();
             stage = new Stage();
             stage.setMinWidth(750);

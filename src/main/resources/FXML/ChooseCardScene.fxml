@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="1070.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="1070.0" spacing="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLChooseCardController">>
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -18,7 +18,7 @@
                <children>
                   <ImageView fx:id="card0" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
-                        <Image url="@../../../../../../../../Downloads/6240983.jpeg" />
+                        <Image url="" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="W_RESIZE" />
@@ -39,7 +39,7 @@
                <children>
                   <ImageView fx:id="card1" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
-                        <Image url="@../../../../../../../../Downloads/6240983.jpeg" />
+                        <Image url="" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="W_RESIZE" />
@@ -60,7 +60,7 @@
                <children>
                   <ImageView fx:id="card2" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
-                        <Image url="@../../../../../../../../Downloads/6240983.jpeg" />
+                        <Image url="" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="W_RESIZE" />
@@ -80,9 +80,6 @@
             <VBox layoutX="4.0" layoutY="90.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ImageView fx:id="card3" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
-                     <image>
-                        <Image url="@../../../../../../../../Downloads/6240983.jpeg" />
-                     </image>
                      <cursor>
                         <Cursor fx:constant="W_RESIZE" />
                      </cursor>
@@ -102,7 +99,7 @@
                <children>
                   <ImageView fx:id="card4" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true">
                      <image>
-                        <Image url="@../../../../../../../../Downloads/6240983.jpeg" />
+                        <Image url="" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="W_RESIZE" />

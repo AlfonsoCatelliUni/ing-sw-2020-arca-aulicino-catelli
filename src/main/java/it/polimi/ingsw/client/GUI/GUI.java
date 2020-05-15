@@ -65,7 +65,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
         //TheScene next = new StartScene(this, this.stage);
 
         List<String> cardsURL = new ArrayList<>();
-        cardsURL.add("/Graphics/Cards/ApolloCard.png");
+        cardsURL.add("/Graphics/Cards/apollo.png");
+        cardsURL.add("/Graphics/Cards/atlas.png");
+        cardsURL.add("/Graphics/Cards/zeus.png");
 
         TheScene next = new ChooseCardScene(this, stage, cardsURL);
         Scene nextScene = next.getScene();

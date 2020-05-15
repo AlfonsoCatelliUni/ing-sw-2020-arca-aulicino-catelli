@@ -30,23 +30,13 @@ public class FXMLChooseCardController {
     @FXML
     private void initialize() {
         this.cardsList = new ArrayList<>();
-
         cardsUrl = new ArrayList<>();
-        cardsUrl.add("/Graphics/Cards/ApolloCard.png");
 
         initializeCards();
     }
 
+
     private void initializeCards() {
-
-        card1.setVisible(true);
-        card2.setVisible(true);
-        card3.setVisible(true);
-        card4.setVisible(true);
-        card0.setVisible(true);
-
-        Image card = new Image(getClass().getResourceAsStream( cardsUrl.get(0) ));
-        card2.setImage(card);
 
         cardsList.add(card0);
         cardsList.add(card1);
@@ -54,11 +44,43 @@ public class FXMLChooseCardController {
         cardsList.add(card3);
         cardsList.add(card4);
 
+        for( ImageView iw : cardsList  ) {
+            iw.setVisible(true);
+        }
+
     }
 
-//    public void initializeOneCard(Image cardImage) {
-//        card2.setImage(cardImage);
-//    }
+
+    // MARK : Game Event Managers ======================================================================================
+
+
+
+    // MARK : Supportive Methods ======================================================================================
+
+
+    public void setCardsURL(List<String> cardsUrl) {
+        this.cardsUrl = cardsUrl;
+    }
+
+
+    public void setCards() {
+        switch (cardsUrl.size()) {
+            case 3:
+                card0.setImage( new Image(getClass().getResourceAsStream(cardsUrl.get(0))) );
+                card2.setImage( new Image(getClass().getResourceAsStream(cardsUrl.get(1))) );
+                card4.setImage( new Image(getClass().getResourceAsStream(cardsUrl.get(2))) );
+                break;
+
+            case 2:
+                card1.setImage( new Image(getClass().getResourceAsStream(cardsUrl.get(0))) );
+                card3.setImage( new Image(getClass().getResourceAsStream(cardsUrl.get(1))) );
+                break;
+
+            case 1:
+                card2.setImage( new Image(getClass().getResourceAsStream(cardsUrl.get(0))) );
+                break;
+        }
+    }
 
 
 }

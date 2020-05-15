@@ -27,17 +27,16 @@ public class ChooseCardScene implements TheScene {
 
         this.gui = gui;
         this.stage = stage;
-        this.controller = new FXMLChooseCardController();
-
-
-        //Image card = new Image(gui.getClass().getResourceAsStream("/Graphics/Cards/ApolloCard.png"));
-
-        //controller.initializeOneCard(card);
-
 
         Parent root = null;
         try {
-            root = FXMLLoader.load( getClass().getResource("/FXML/ChooseCardScene.fxml") );
+            FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/ChooseCardScene.fxml") );
+            root = fxmlLoader.load();
+            controller = fxmlLoader.getController();
+
+            controller.setCardsURL(cardsUrl);
+            controller.setCards();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

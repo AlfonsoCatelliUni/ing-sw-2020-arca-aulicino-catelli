@@ -99,7 +99,7 @@ public class LobbyStage {
     }
 
 
-    void addPlayer(String newPlayer){
+    void addPlayer(String newPlayer) {
 
         Label newLabel = new Label(newPlayer);
 

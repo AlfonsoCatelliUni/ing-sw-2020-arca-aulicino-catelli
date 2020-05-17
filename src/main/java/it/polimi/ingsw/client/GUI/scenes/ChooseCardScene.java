@@ -52,11 +52,10 @@ public class ChooseCardScene implements TheScene {
     }
 
 
-
-
-
     @Override
     public Scene getScene() {
         return this.scene;
     }
+
+
 }

@@ -192,7 +192,9 @@ public class FXMLChooseCardController {
 
         System.out.println("Selected Card : " + card);
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, card));
-        ((Stage) selectedCard.getScene().getWindow()).close();
+//        ((Stage) selectedCard.getScene().getWindow()).close();
+
+        this.stage.close();
 
 //        //TODO: come cambiare scena, scegliere lo stile
 //        //Dialog.display("Wait until the Game starts");

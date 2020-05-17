@@ -7,7 +7,9 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -16,6 +18,7 @@ import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +43,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private GameScene gameScene;
 
+    //main stage
     protected Stage stage;
+
+    private Stage waitingRoomStage;
 
 
 
@@ -131,10 +137,12 @@ public class GUI extends Application implements Client, ServerToClientManager {
         Platform.runLater( () -> {
             lobbyStage = new LobbyStage(event.connectedPlayers);
             lobbyStage.display();
+
             VBox waitLayout = new VBox(25);
             waitLayout.setAlignment(Pos.CENTER);
             Label text = new Label("Wait until the lobby is full");
             waitLayout.getChildren().add(text);
+
             Scene nextScene = new Scene(waitLayout, 750,500);
             stage.setScene(nextScene);
 
@@ -252,21 +260,35 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED GivePossibleCardsEvent ");
 
-//        List<String> cardsURL = new ArrayList<>();
-//        cardsURL.add("/Graphics/Cards/ApolloCard.png");
-//        List<String> cardsName = new ArrayList<>();
-//        cardsName.add("/Graphics/Cards/ApolloCard.png");
-//        List<String> effectsCard = new ArrayList<>();
-//        effectsCard.add("/Graphics/Cards/ApolloCard.png");
-
         Platform.runLater( () -> {
-            TheScene next = new ChooseCardScene(this, stage, event.cardsName, event.cardsEffect);
-            Scene nextScene = next.getScene();
+//            TheScene next = new ChooseCardScene(this, stage, event.cardsName, event.cardsEffect);
+//            Scene nextScene = next.getScene();
+//
+//            stage = new Stage();
+//            stage.setMinWidth(750);
+//            stage.setMinHeight(500);
+//            stage.setScene(nextScene);
+//
+//            stage.show();
+            Parent root = null;
+            FXMLChooseCardController controller;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/ChooseCardScene.fxml") );
+                root = fxmlLoader.load();
+                controller = fxmlLoader.getController();
 
-            stage = new Stage();
-            stage.setMinWidth(750);
-            stage.setMinHeight(500);
-            stage.setScene(nextScene);
+                controller.setController(stage, nickname, clientView, event.cardsName, event.cardsEffect);
+                controller.setCards();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
 
             stage.show();
         });

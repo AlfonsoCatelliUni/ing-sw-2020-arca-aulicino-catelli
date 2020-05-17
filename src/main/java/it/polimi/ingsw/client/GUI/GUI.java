@@ -81,8 +81,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
         effectsCard.add("Apollo");
 
         //TheScene next = new StartScene(this, stage);
-        TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
-        //TheScene next = new GameScene(this, stage);
+        //TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
+        TheScene next = new GameScene(this, stage);
         Scene nextScene = next.getScene();
 
         this.stage.setScene(nextScene);

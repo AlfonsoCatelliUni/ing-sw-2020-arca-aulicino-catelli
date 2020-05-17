@@ -28,7 +28,7 @@ import javafx.scene.layout.Pane;
 
 public class FXMLGameController {
 
-    private ClientView clientView;
+
 
     private GUI gui;
 
@@ -99,10 +99,71 @@ public class FXMLGameController {
     @FXML
     private GridPane gameBoardGrid;
 
+
+    private ClientView clientView;
+
+
+
+
+    @FXML
+    private Label player1_nickname;
+
+    @FXML
+    private Label player1_color;
+
+    @FXML
+    private Label player1_effect;
+
+    @FXML
+    private Label player2_nickname;
+
+    @FXML
+    private Label player2_color;
+
+    @FXML
+    private Label player2_effect;
+
+    @FXML
+    private Label player3_nickname;
+
+    @FXML
+    private Label player3_color;
+
+    @FXML
+    private Label player3_effect;
+
+    
+    @FXML
+    private Pane titlePane;
+    
     @FXML
     private Label titleLabel;
 
+    @FXML
+    private Pane action1Pane;
+    
+    @FXML
+    private Label action1Label;
+    
+    @FXML
+    private Pane action2Pane;
+    
+    @FXML
+    private Label action2Label;
 
+    @FXML
+    private Pane action3Pane;
+
+    @FXML
+    private Label action3Label;
+
+    @FXML
+    private Pane action4Pane;
+
+    @FXML
+    private Label action4Label;
+
+    
 
     @FXML
     private URL location;

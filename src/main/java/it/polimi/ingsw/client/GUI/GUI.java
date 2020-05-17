@@ -7,6 +7,7 @@ import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -91,7 +92,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         stage.setScene(scene);
         stage.setResizable(false);
 
-        stage.show();;
+        stage.show();
 
     }
 
@@ -116,13 +117,27 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED ConnectionEstablishedEvent");
 
-
         Platform.runLater( () -> {
-            TheScene next = new LoginScene(this, stage, event.ID);
-            Scene nextScene = next.getScene();
+            Parent root = null;
+            FXMLLoginController controller;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoginScene.fxml") );
+                root = fxmlLoader.load();
 
-            stage.setScene(nextScene);
-            this.stage.setResizable(true);
+                controller = fxmlLoader.getController();
+                controller.setController(this, stage, event.ID);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.show();
         });
 
     }
@@ -134,9 +149,29 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED FirstConnectedEvent");
 
         Platform.runLater( () -> {
-            TheScene next = new SelectNumberPlayersScene(this, stage);
-            Scene nextScene = next.getScene();
-            stage.setScene(nextScene);
+            Parent root = null;
+            FXMLSelectNumberPlayersController controller;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/SelectNumberPlayersScene.fxml") );
+                root = fxmlLoader.load();
+
+                controller = fxmlLoader.getController();
+                controller.setController(this);
+                controller.setStage(stage);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.show();
         });
 
     }

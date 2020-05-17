@@ -61,6 +61,9 @@ public class FXMLChooseCardController {
     }
 
 
+    /**
+     * this method initialize all imageView for the cards
+     */
     private void initializeCards() {
 
         cardsList.add(card0);
@@ -74,6 +77,9 @@ public class FXMLChooseCardController {
     }
 
 
+    /**
+     * this method initialize all Label for the gods effects
+     */
     private void initializeLabels() {
 
         labelList.add(effect0);
@@ -166,10 +172,23 @@ public class FXMLChooseCardController {
 
 
     private void sendCard(MouseEvent event) {
+        disableCardsClick();
+
         ImageView selectedCard = (ImageView) event.getSource();
         String card = (String) selectedCard.getUserData();
+
         System.out.println("Selected Card : " + card);
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, card));
+    }
+
+
+    /**
+     * this method is used to disable the function when an image is clicked
+     */
+    private void disableCardsClick() {
+        for( ImageView image : cardsList ) {
+            image.setOnMouseClicked( mouseEvent -> {});
+        }
     }
 
 

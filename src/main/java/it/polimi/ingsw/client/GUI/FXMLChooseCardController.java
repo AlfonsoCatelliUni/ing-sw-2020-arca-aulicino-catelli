@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -192,16 +193,10 @@ public class FXMLChooseCardController {
 
         System.out.println("Selected Card : " + card);
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, card));
-//        ((Stage) selectedCard.getScene().getWindow()).close();
 
-        this.stage.close();
+        showWait();
 
-//        //TODO: come cambiare scena, scegliere lo stile
-//        //Dialog.display("Wait until the Game starts");
-//        Parent newRoot = FXMLLoader.load(getClass().getResource("nuovoFXML"));
-//        Scene nextScene = new Scene(newRoot);
-//        Stage thisStage = (Stage) selectedCard.getScene().getWindow();
-//        thisStage.setScene(nextScene);
+
     }
 
 
@@ -212,6 +207,17 @@ public class FXMLChooseCardController {
         for( ImageView image : cardsList ) {
             image.setOnMouseClicked( mouseEvent -> {});
         }
+    }
+
+    private void showWait(){
+        for (ImageView image : cardsList ){
+            image.setVisible(false);
+        }
+
+        labelList.get(0).setVisible(false);
+        labelList.get(1).setText("Wait until the Game starts");
+        labelList.get(1).setAlignment(Pos.BOTTOM_CENTER);
+        labelList.get(2).setVisible(false);
     }
 
 

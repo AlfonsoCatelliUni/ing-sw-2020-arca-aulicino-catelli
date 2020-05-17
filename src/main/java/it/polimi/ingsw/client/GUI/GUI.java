@@ -242,6 +242,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         Platform.runLater( () -> {
 
             stage.close();
+
             TheScene next = new GameScene(this, stage);
             Scene nextScene = next.getScene();
 
@@ -276,6 +277,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
+
+
 
     }
 

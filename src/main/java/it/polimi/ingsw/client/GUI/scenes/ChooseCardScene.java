@@ -5,8 +5,8 @@ import it.polimi.ingsw.client.GUI.GUI;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -23,7 +23,7 @@ public class ChooseCardScene implements TheScene {
 
 
 
-    public ChooseCardScene(GUI gui, Stage stage, List<String> cardsUrl, List<String> cardsName, List<String> effectsCard) {
+    public ChooseCardScene(GUI gui, Stage stage, List<String> cardsName, List<String> effectsCard) {
 
         this.gui = gui;
         this.stage = stage;
@@ -36,12 +36,14 @@ public class ChooseCardScene implements TheScene {
             root = fxmlLoader.load();
             controller = fxmlLoader.getController();
 
-            controller.setCardsURL(cardsUrl, cardsName, effectsCard);
+            controller.setController(gui.getClientView(), cardsName, effectsCard);
             controller.setCards();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
 
         assert root != null;
         this.scene = new Scene(root);

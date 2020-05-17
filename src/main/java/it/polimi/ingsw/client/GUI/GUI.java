@@ -62,13 +62,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
 //        this.stage.setMinHeight(900);
 //        this.stage.setMinWidth(1110);
 
-        //TheScene next = new StartScene(this, this.stage);
+        TheScene next = new StartScene(this, this.stage);
 
 
         List<String> cardsURL = new ArrayList<>();
-        cardsURL.add("/Graphics/TransparentCards/podium-characters-Atlas.png");
-        cardsURL.add("/Graphics/TransparentCards/podium-characters-Artemis.png");
-        cardsURL.add("/Graphics/TransparentCards/podium-characters-Apollo.png");
+        cardsURL.add("/Graphics/Cards/podium-characters-Atlas.png");
+        cardsURL.add("/Graphics/Cards/podium-characters-Artemis.png");
+        cardsURL.add("/Graphics/Cards/podium-characters-Apollo.png");
 
         List<String> cardsName = new ArrayList<>();
         cardsName.add("Atlas");
@@ -82,7 +82,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         //TheScene next = new StartScene(this, stage);
         //TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
-        TheScene next = new GameScene(this, stage);
+        //TheScene next = new GameScene(this, stage);
         Scene nextScene = next.getScene();
 
         this.stage.setScene(nextScene);
@@ -115,7 +115,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
             TheScene next = new LoginScene(this, stage, event.ID);
-            //TheScene next = new GameScene(this, stage);
             Scene nextScene = next.getScene();
 
             stage.setScene(nextScene);
@@ -260,15 +259,15 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED GivePossibleCardsEvent ");
 
-        List<String> cardsURL = new ArrayList<>();
-        cardsURL.add("/Graphics/Cards/ApolloCard.png");
-        List<String> cardsName = new ArrayList<>();
-        cardsName.add("/Graphics/Cards/ApolloCard.png");
-        List<String> effectsCard = new ArrayList<>();
-        effectsCard.add("/Graphics/Cards/ApolloCard.png");
+//        List<String> cardsURL = new ArrayList<>();
+//        cardsURL.add("/Graphics/Cards/ApolloCard.png");
+//        List<String> cardsName = new ArrayList<>();
+//        cardsName.add("/Graphics/Cards/ApolloCard.png");
+//        List<String> effectsCard = new ArrayList<>();
+//        effectsCard.add("/Graphics/Cards/ApolloCard.png");
 
         Platform.runLater( () -> {
-            TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
+            TheScene next = new ChooseCardScene(this, stage, event.cardsName, event.cardsEffect);
             Scene nextScene = next.getScene();
 
             stage = new Stage();

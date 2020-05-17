@@ -14,9 +14,6 @@
          </image>
       </ImageView>
       <ImageView fx:id="card0" fitHeight="294.0" fitWidth="257.0" layoutX="41.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/TransparentCards/podium-characters-Minotaur.png" />
-         </image>
       </ImageView>
       <Label fx:id="effect0" alignment="CENTER" layoutX="41.0" layoutY="61.0" prefHeight="159.0" prefWidth="253.0" text="Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)." textAlignment="CENTER" wrapText="true">
          <font>
@@ -34,14 +31,8 @@
          </font>
       </Label>
       <ImageView fx:id="card1" fitHeight="294.0" fitWidth="257.0" layoutX="324.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/TransparentCards/podium-characters-Aphrodite.png" />
-         </image>
       </ImageView>
       <ImageView fx:id="card2" fitHeight="294.0" fitWidth="257.0" layoutX="614.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/TransparentCards/podium-characters-Zeus.png" />
-         </image>
       </ImageView>
    </children>
 </AnchorPane>

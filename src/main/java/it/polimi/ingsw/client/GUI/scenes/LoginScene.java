@@ -37,11 +37,12 @@ public class LoginScene implements TheScene {
 
         Label usernameLabel = new Label("Username:");
         usernameLabel.getStyleClass().add("labelWithBackground");
-        usernameLabel.setStyle("-fx-font-size: 18px");
+        usernameLabel.setStyle("-fx-font-size: 18px; -fx-text-fill:white");
 
         GridPane.setConstraints( usernameLabel, 1,8);
 
         TextField nicknameInput = new TextField();
+        nicknameInput.setPromptText("Username");
 
         GridPane.setConstraints(nicknameInput, 2,8);
 
@@ -54,7 +55,7 @@ public class LoginScene implements TheScene {
         scene = new Scene(loginLayout, 750, 500);
 
 
-        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/Odyssey_UI_Backdrop.png"));
+        Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/SceneBackground/loginBackground.png"));
 
         Background background = new Background(
                 new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,

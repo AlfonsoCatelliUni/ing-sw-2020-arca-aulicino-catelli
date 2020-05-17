@@ -9,7 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +82,11 @@ public class FXMLChooseCardController {
 
         for( Label label : labelList  ) {
             label.setVisible(true);
-            //label.setFont( Font.font( getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm()) );
+
+            label.setFont( Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    15
+            ));
         }
 
     }
@@ -92,10 +95,20 @@ public class FXMLChooseCardController {
     // MARK : Game Event Managers ======================================================================================
 
 
-    public void setCardsURL(List<String> cardsUrl, List<String> cardsName, List<String> effectsList) {
-        this.cardsUrl = cardsUrl;
+    public void setController(ClientView clientView, List<String> cardsName, List<String> effectsList) {
+        String prefix = "/Graphics/Cards/";
+
+        this.clientView = clientView;
         this.cardsName = cardsName;
         this.effectsList = effectsList;
+
+        this.cardsUrl = new ArrayList<>();
+
+        for (String cardName : cardsName){
+            cardsUrl.add(prefix + cardName + ".png");
+        }
+
+
     }
 
 
@@ -156,7 +169,7 @@ public class FXMLChooseCardController {
         ImageView selectedCard = (ImageView) event.getSource();
         String card = (String) selectedCard.getUserData();
         System.out.println("Selected Card : " + card);
-        //clientView.sendCTSEvent(new ChosenCardEvent(nickname, card));
+        clientView.sendCTSEvent(new ChosenCardEvent(nickname, card));
     }
 
 

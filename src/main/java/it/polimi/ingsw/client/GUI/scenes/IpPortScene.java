@@ -76,7 +76,7 @@ public IpPortScene(GUI gui, Stage stage){
 
     this.scene = new Scene(connectionLayout, 750, 500);
 
-    Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/Odyssey-Troy.png"));
+    Image backgroundImage = new Image(gui.getClass().getResourceAsStream("/Graphics/SceneBackground/ipBackground.png"));
 
     Background background = new Background(
             new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,

@@ -2,13 +2,19 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.events.CTSEvents.ChosenCardEvent;
 import it.polimi.ingsw.view.client.ClientView;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +33,8 @@ public class FXMLChooseCardController {
 
 
     private List<ImageView> cardsList;
+
+    private Stage stage;
 
     @FXML
     private ImageView card0;
@@ -101,12 +109,14 @@ public class FXMLChooseCardController {
     // MARK : Game Event Managers ======================================================================================
 
 
-    public void setController(ClientView clientView, List<String> cardsName, List<String> effectsList) {
+    public void setController(Stage stage, String nickname, ClientView clientView, List<String> cardsName, List<String> effectsList) {
         String prefix = "/Graphics/Cards/";
 
         this.clientView = clientView;
         this.cardsName = cardsName;
         this.effectsList = effectsList;
+        this.nickname = nickname;
+        this.stage = stage;
 
         this.cardsUrl = new ArrayList<>();
 
@@ -171,14 +181,25 @@ public class FXMLChooseCardController {
     }
 
 
-    private void sendCard(MouseEvent event) {
+    private void sendCard(MouseEvent event)  {
+
         disableCardsClick();
+
+
 
         ImageView selectedCard = (ImageView) event.getSource();
         String card = (String) selectedCard.getUserData();
 
         System.out.println("Selected Card : " + card);
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, card));
+        ((Stage) selectedCard.getScene().getWindow()).close();
+
+//        //TODO: come cambiare scena, scegliere lo stile
+//        //Dialog.display("Wait until the Game starts");
+//        Parent newRoot = FXMLLoader.load(getClass().getResource("nuovoFXML"));
+//        Scene nextScene = new Scene(newRoot);
+//        Stage thisStage = (Stage) selectedCard.getScene().getWindow();
+//        thisStage.setScene(nextScene);
     }
 
 

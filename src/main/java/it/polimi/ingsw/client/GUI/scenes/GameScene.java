@@ -67,10 +67,10 @@ public class GameScene implements TheScene {
         stage.heightProperty().addListener(stageSizeListener);
 
 
-        AnchorPane anchorPane = (AnchorPane) root.getChildrenUnmodifiable().get(2);
-        HBox hbox = (HBox) anchorPane.getChildren().get(0);
-        AnchorPane anchorPane1 = (AnchorPane) hbox.getChildren().get(3);
-        messagePane = (GridPane) anchorPane1.getChildren().get(0);
+//        AnchorPane anchorPane = (AnchorPane) root.getChildrenUnmodifiable().get(2);
+//        HBox hbox = (HBox) anchorPane.getChildren().get(0);
+//        AnchorPane anchorPane1 = (AnchorPane) hbox.getChildren().get(3);
+//        messagePane = (GridPane) anchorPane1.getChildren().get(0);
     }
 
 

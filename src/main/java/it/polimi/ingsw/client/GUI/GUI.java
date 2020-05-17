@@ -64,22 +64,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         TheScene next = new StartScene(this, this.stage);
 
-
-        List<String> cardsURL = new ArrayList<>();
-        cardsURL.add("/Graphics/Cards/podium-characters-Atlas.png");
-        cardsURL.add("/Graphics/Cards/podium-characters-Artemis.png");
-        cardsURL.add("/Graphics/Cards/podium-characters-Apollo.png");
-
-        List<String> cardsName = new ArrayList<>();
-        cardsName.add("Atlas");
-        cardsName.add("Artemis");
-        cardsName.add("Apollo");
-
-        List<String> effectsCard = new ArrayList<>();
-        effectsCard.add("Atlas");
-        effectsCard.add("Artemis");
-        effectsCard.add("Apollo");
-
         //TheScene next = new StartScene(this, stage);
         //TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
         //TheScene next = new GameScene(this, stage);
@@ -142,6 +126,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(SuccessfullyConnectedEvent event) {
 
         System.out.println("RECEIVED SuccessfullyConnectedEvent");
+        
 
         Platform.runLater( () -> {
             lobbyStage = new LobbyStage(event.connectedPlayers);
@@ -213,6 +198,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
+            stage.close();
             TheScene next = new GameScene(this, stage);
             Scene nextScene = next.getScene();
 
@@ -234,6 +220,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
             lobbyStage.close(event.connectedPlayers);
+            VBox waitLayout = new VBox(25);
+            waitLayout.setAlignment(Pos.CENTER);
+            Label text = new Label("Wait your turn");
+            waitLayout.getChildren().add(text);
+            Scene nextScene = new Scene(waitLayout, 750,500);
+            stage.setScene(nextScene);
+
         });
     }
 

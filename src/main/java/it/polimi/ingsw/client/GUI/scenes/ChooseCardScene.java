@@ -36,7 +36,7 @@ public class ChooseCardScene implements TheScene {
             root = fxmlLoader.load();
             controller = fxmlLoader.getController();
 
-            controller.setController(gui.getClientView(), cardsName, effectsCard);
+            controller.setController(stage, gui.getNickname(), gui.getClientView(), cardsName, effectsCard);
             controller.setCards();
 
         } catch (IOException e) {
@@ -47,6 +47,7 @@ public class ChooseCardScene implements TheScene {
 
         assert root != null;
         this.scene = new Scene(root);
+
 
     }
 

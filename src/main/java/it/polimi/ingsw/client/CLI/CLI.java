@@ -100,13 +100,15 @@ public class CLI implements Client, ServerToClientManager {
             do {
                 System.out.print("Insert the port number: ");
 
-                if(input.nextLine().equals("")) {
+                String strPort = input.nextLine();
+
+                if(strPort.equals("")) {
                     port = 64209;
                 }
                 else {
 
                     try {
-                        port = Integer.parseInt(input.nextLine());
+                        port = Integer.parseInt(strPort);
                     } catch (NumberFormatException e) {
                         port = -1;
                     }

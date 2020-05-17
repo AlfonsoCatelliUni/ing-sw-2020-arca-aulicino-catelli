@@ -222,8 +222,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
             stage.close();
 
-            TheScene next = new GameScene(this, stage);
-            Scene nextScene = next.getScene();
+            gameScene = new GameScene(this, stage, event.info);
+            Scene nextScene = gameScene.getScene();
 
             stage = new Stage();
             stage.setMinWidth(750);
@@ -257,7 +257,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
 
-
+        Platform.runLater( () -> {
+            gameScene.manageEvent(event);
+        });
 
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
-import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.FXMLGameController;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.STCEvents.AskWhichPawnsUseEvent;
@@ -10,20 +9,13 @@ import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameScene implements TheScene {
 
@@ -33,26 +25,29 @@ public class GameScene implements TheScene {
 
     private Stage stage;
 
-    private FXMLGameController fxmlGameController;
+    private FXMLGameController controller;
 
     private GridPane messagePane;
 
 
-    public GameScene(GUI gui, Stage stage) {
+    public GameScene(GUI gui, Stage stage, String info) {
 
         this.gui = gui;
         this.stage = stage;
-        this.fxmlGameController = new FXMLGameController();
+        this.controller = new FXMLGameController();
 
 
         Parent root = null;
         try {
-            root = FXMLLoader.load( getClass().getResource("/FXML/new_game_layout.fxml") );
+            FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/GameScene.fxml") );
+            root = fxmlLoader.load();
+            controller = fxmlLoader.getController();
+            controller.initGameController(gui, info);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
 
         assert root != null;
         this.scene = new Scene(root);
@@ -84,14 +79,14 @@ public class GameScene implements TheScene {
 
     public void manageEvent(AskInitPawnsEvent event) {
 
-        fxmlGameController.manageEvent(event);
+        controller.manageEvent(event);
 
     }
 
 
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
-        fxmlGameController.manageEvent(event, gui.getRowUsedPawn(), gui.getColumnUsedPawn());
+        controller.manageEvent(event, gui.getRowUsedPawn(), gui.getColumnUsedPawn());
 
     }
 
@@ -102,7 +97,7 @@ public class GameScene implements TheScene {
 
         messagePane.add(label, 0,0);
 
-        fxmlGameController.choosePawnToUse(event.nickname, event.info, clientView);
+        controller.choosePawnToUse(event.nickname, event.info, clientView);
 
     }
 

@@ -6,22 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import it.polimi.ingsw.client.FormattedCellInfo;
+import it.polimi.ingsw.client.ClientJsonHandler;
+import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenInitialPawnCellEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenPawnToUseEvent;
-import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
-import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.view.client.ClientView;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -33,6 +29,16 @@ public class FXMLGameController {
     private GUI gui;
 
     private List<Pane> cellsList;
+
+    private List<Label> playersNicknames;
+
+    private List<Label> playersColors;
+
+    private List<Label> playersEffects;
+
+    private List<Label> actionsLabel;
+
+    private List<Pane> actionsPane;
 
     // 0 ROW ==================================================================================
     @FXML
@@ -185,10 +191,23 @@ public class FXMLGameController {
     //MARK : Initialization Methods =================================================================================
 
 
-    public void initGameController( GUI gui, ClientView clientView ) {
+    public void initGameController( GUI gui, String info ) {
 
         this.gui = gui;
-        this.clientView = clientView;
+        this.clientView = gui.getClientView();
+
+        List<FormattedPlayerInfo> infoPlayers = ClientJsonHandler.generatePlayersList(info);
+
+        for (int i = 0 ; i < infoPlayers.size(); i++){
+            playersNicknames.get(i).setText(infoPlayers.get(i).getNickname());
+            playersColors.get(i).setText(infoPlayers.get(i).getColor());
+            playersEffects.get(i).setText(infoPlayers.get(i).getCard().getSecond());
+
+            playersNicknames.get(i).setVisible(true);
+            playersColors.get(i).setVisible(true);
+            playersEffects.get(i).setVisible(true);
+
+        }
 
     }
 
@@ -200,6 +219,9 @@ public class FXMLGameController {
         this.maleCellSelected = null;
 
         initializeCells();
+        initializeInfoGrid();
+        initializeActionsGrid();
+
     }
 
 
@@ -265,6 +287,51 @@ public class FXMLGameController {
                 cellSelectionHandler(selectedCell);
             });
         }
+
+    }
+
+    private void initializeInfoGrid(){
+
+        this.playersNicknames = new ArrayList<>();
+        this.playersColors = new ArrayList<>();
+        this.playersEffects = new ArrayList<>();
+
+        playersNicknames.add(player1_nickname);
+        playersNicknames.add(player2_nickname);
+        playersNicknames.add(player3_nickname);
+
+        playersColors.add(player1_color);
+        playersColors.add(player2_color);
+        playersColors.add(player3_color);
+
+        playersEffects.add(player1_effect);
+        playersEffects.add(player2_effect);
+        playersEffects.add(player3_effect);
+
+    }
+
+    private void initializeActionsGrid(){
+
+        this.actionsLabel = new ArrayList<>();
+        this.actionsPane = new ArrayList<>();
+
+        actionsLabel.add(titleLabel);
+        actionsLabel.add(action1Label);
+        actionsLabel.add(action2Label);
+        actionsLabel.add(action3Label);
+        actionsLabel.add(action4Label);
+
+        actionsPane.add(titlePane);
+        actionsPane.add(action1Pane);
+        actionsPane.add(action2Pane);
+        actionsPane.add(action3Pane);
+        actionsPane.add(action4Pane);
+
+        actionsLabel.get(0).setVisible(true);
+
+
+
+
 
     }
 
@@ -394,6 +461,10 @@ public class FXMLGameController {
         for (Pane cell : cellsList){
             cell.setVisible(visibilityAllCells);
         }
+    }
+
+
+    public void showAvailableActions(List<Label> actionsLabel){
     }
 
 

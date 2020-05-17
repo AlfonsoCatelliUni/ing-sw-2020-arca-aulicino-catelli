@@ -20,7 +20,7 @@ public class Dialog {
         Stage stage = new Stage();
 
         //creates a modal window that blocks events from being delivered to any other application window.
-        //stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.APPLICATION_MODAL);
 
         stage.setMinWidth(400);
         stage.setMinHeight(300);
@@ -47,7 +47,7 @@ public class Dialog {
 
         stage.setScene(scene);
         //block the temporary current processing, show and wait to be closed
-        stage.show();
+        stage.showAndWait();
 
     }
 

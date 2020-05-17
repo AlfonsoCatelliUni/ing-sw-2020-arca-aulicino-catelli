@@ -115,6 +115,7 @@ public IpPortScene(GUI gui, Stage stage){
 
 }
 
+
     private void startConnection(GUI gui, String ipAddress, int port) {
 
         Socket serverSocket = null;

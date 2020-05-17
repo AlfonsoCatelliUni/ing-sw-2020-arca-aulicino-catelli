@@ -1,12 +1,13 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.server.Connection;
+
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class FXMLIpController {
@@ -37,11 +38,13 @@ public class FXMLIpController {
 
             if (!isValidIP(ip)) {
                 Dialog.display("Enter a valid IP address");
+                ConnectButton.setDisable(false);
                 return;
             }
 
             if (!isValidPort(port)) {
                 Dialog.display("Enter a valid port number");
+                ConnectButton.setDisable(false);
                 return;
             }
 
@@ -64,10 +67,12 @@ public class FXMLIpController {
         Socket serverSocket = null;
         try {
             //Connects with the server through socket
-            serverSocket = new Socket(ipAddress, port);
+            serverSocket = new Socket();
+            serverSocket.connect( new InetSocketAddress(ipAddress, port), 5000);
         }
-        catch (IOException e) {
-            System.err.println(e.getMessage());
+        catch (IOException e ) {
+            ConnectButton.setDisable(false);
+            return;
         }
 
         //Creates a new RemoteViewSocket object which is used to keep the connection open and read all new messages

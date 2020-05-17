@@ -40,7 +40,7 @@ public class FXMLLoginController {
 
     private void initializeLabel() {
         InfoLabel.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                15
+                12
         ));
     }
 
@@ -72,11 +72,13 @@ public class FXMLLoginController {
         if (nickname.isEmpty() || !(Pattern.matches(nicknamePattern, nickname) )) {
             Dialog.display("Invalid nickname");
             LoginButton.setDisable(false);
+            return;
         }
 
         gui.setNickname(nickname);
 
         gui.getClientView().sendCTSEvent(new NewConnectionEvent(ID, nickname));
     }
+
 
 }

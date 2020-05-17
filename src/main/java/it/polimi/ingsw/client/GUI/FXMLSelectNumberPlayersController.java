@@ -23,6 +23,7 @@ public class FXMLSelectNumberPlayersController {
         initializeImages();
     }
 
+
     private void initializeImages() {
 
         twoPlayers.setOnMouseClicked( e -> {
@@ -34,7 +35,6 @@ public class FXMLSelectNumberPlayersController {
 //            text.setStyle("-fx-font-size: 18px");
 //            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
 //            numberPlayersLayout.getChildren().add(text);
-
 
         });
 
@@ -52,6 +52,7 @@ public class FXMLSelectNumberPlayersController {
         });
 
     }
+
 
     public void setController(GUI gui) {
         this.gui = gui;

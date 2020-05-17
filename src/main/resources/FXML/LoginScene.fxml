@@ -2,21 +2,20 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<?import javafx.scene.control.TextField?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="533.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLLoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLLoginController">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="645.0" fitWidth="860.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphics/SceneBackground/loginBackground.png" />
          </image>
       </ImageView>
-      <TextField fx:id="UsernameTextField" layoutX="187.0" layoutY="138.0" prefHeight="0.0" prefWidth="149.0" promptText="Username" />
-      <Label fx:id="InfoLabel" layoutX="198.0" layoutY="118.0" text="Insert Username Here " textFill="WHITE" />
-      <Button fx:id="LoginButton" layoutX="189.0" layoutY="190.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="147.0" text="Login" />
+      <TextField fx:id="UsernameTextField" layoutX="349.0" layoutY="284.0" prefHeight="0.0" prefWidth="149.0" promptText="Username" />
+      <Label fx:id="InfoLabel" alignment="CENTER" layoutX="351.0" layoutY="267.0" text="Insert Username Here " textFill="WHITE" />
+      <Button fx:id="LoginButton" layoutX="351.0" layoutY="336.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="147.0" text="Login" />
    </children>
 </AnchorPane>

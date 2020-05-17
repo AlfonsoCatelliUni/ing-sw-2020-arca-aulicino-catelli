@@ -117,13 +117,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED ConnectionEstablishedEvent");
 
-
         Platform.runLater( () -> {
-//            TheScene next = new LoginScene(this, stage, event.ID);
-//            Scene nextScene = next.getScene();
-//
-//            stage.setScene(nextScene);
-//            this.stage.setResizable(true);
             Parent root = null;
             FXMLLoginController controller;
             try {

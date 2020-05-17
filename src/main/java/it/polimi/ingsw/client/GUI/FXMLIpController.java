@@ -5,6 +5,7 @@ import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -22,12 +23,20 @@ public class FXMLIpController {
     private Button ConnectButton;
 
 
+    // MARK : Initialize Methods ======================================================================================
+
+
     public void initialize() {
         initializeButton();
+        initializeTextField();
     }
 
 
     private void initializeButton() {
+
+        ConnectButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
 
         ConnectButton.setOnMouseClicked(mouseEvent -> {
 
@@ -57,9 +66,25 @@ public class FXMLIpController {
     }
 
 
+    private void initializeTextField() {
+
+        IPTextField.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                12
+        ));
+
+        PortTextField.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                12
+        ));
+
+    }
+
+
     public void setController( GUI gui ) {
         this.gui = gui;
     }
+
+
+    // MARK : Main Methods ======================================================================================
 
 
     private void startConnection(GUI gui, String ipAddress, int port) {

@@ -65,9 +65,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         this.stage.setTitle("Santorini");
 
-//        this.stage.setMinHeight(900);
-//        this.stage.setMinWidth(1110);
-
         TheScene next = new StartScene(this, this.stage);
 
         //TheScene next = new StartScene(this, stage);

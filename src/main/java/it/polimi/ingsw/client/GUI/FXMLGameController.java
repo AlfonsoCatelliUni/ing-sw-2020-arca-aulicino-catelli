@@ -21,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class FXMLGameController {
 
@@ -198,7 +200,11 @@ public class FXMLGameController {
 
         List<FormattedPlayerInfo> infoPlayers = ClientJsonHandler.generatePlayersList(info);
 
+
+
         for (int i = 0 ; i < infoPlayers.size(); i++){
+
+
             playersNicknames.get(i).setText(infoPlayers.get(i).getNickname());
             playersColors.get(i).setText(infoPlayers.get(i).getColor());
             playersEffects.get(i).setText(infoPlayers.get(i).getCard().getSecond());
@@ -290,6 +296,7 @@ public class FXMLGameController {
 
     }
 
+
     private void initializeInfoGrid(){
 
         this.playersNicknames = new ArrayList<>();
@@ -308,7 +315,29 @@ public class FXMLGameController {
         playersEffects.add(player2_effect);
         playersEffects.add(player3_effect);
 
+        for (Label label : playersNicknames){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    10
+            ));
+        }
+
+        for (Label label : playersColors){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    8
+            ));
+        }
+
+        for (Label label : playersEffects){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    6
+            ));
+        }
+
     }
+
 
     private void initializeActionsGrid(){
 

@@ -19,7 +19,7 @@ public class FXMLSelectNumberPlayersController {
     private ImageView threePlayers;
 
 
-    private void initialize() {
+    public void initialize() {
         initializeImages();
     }
 

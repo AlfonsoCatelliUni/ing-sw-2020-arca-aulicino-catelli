@@ -68,16 +68,29 @@ public class GUI extends Application implements Client, ServerToClientManager {
 //        this.stage.setMinHeight(900);
 //        this.stage.setMinWidth(1110);
 
-        TheScene next = new StartScene(this, this.stage);
+        Parent root = null;
+        FXMLStartController controller;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/SantoriniStartScene.fxml") );
+            root = fxmlLoader.load();
 
-        //TheScene next = new StartScene(this, stage);
-        //TheScene next = new ChooseCardScene(this, stage, cardsURL, cardsName, effectsCard);
-        //TheScene next = new GameScene(this, stage);
-        Scene nextScene = next.getScene();
+            controller = fxmlLoader.getController();
+            controller.setController(this);
+            controller.setStage(stage);
 
-        this.stage.setScene(nextScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        this.stage.show();
+
+
+        assert root != null;
+        Scene scene = new Scene(root);
+
+        stage.setScene(scene);
+        stage.setResizable(false);
+
+        stage.show();;
 
     }
 

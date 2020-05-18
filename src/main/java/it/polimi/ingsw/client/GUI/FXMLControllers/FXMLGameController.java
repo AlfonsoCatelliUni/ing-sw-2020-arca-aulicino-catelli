@@ -11,10 +11,7 @@ import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
-import it.polimi.ingsw.events.STCEvents.AskWhichPawnsUseEvent;
-import it.polimi.ingsw.events.STCEvents.GivePossibleActionsEvent;
-import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
+import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -184,6 +181,7 @@ public class FXMLGameController {
 
 
     private FormattedSimpleCell maleCellSelected;
+
 
 
     //MARK : Constructor =================================================================================
@@ -359,20 +357,18 @@ public class FXMLGameController {
         actionsPane.add(action3Pane);
         actionsPane.add(action4Pane);
 
-        actionsLabel.get(0).setVisible(true);
-
         for (Pane pane : actionsPane) {
 
             //highlight the border
             pane.setOnMouseEntered(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+                Pane actionPane = (Pane) event.getSource();
+                actionPane.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
             });
 
             //clear the border
             pane.setOnMouseExited(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                selectedCell.setStyle("-fx-opacity: 0");
+                Pane actionPane = (Pane) event.getSource();
+                actionPane.setStyle("-fx-opacity: 0");
             });
 
         }
@@ -403,6 +399,8 @@ public class FXMLGameController {
 
         List<Pane> visibleCells = showAvailableCells(cells);
 
+
+
         for(Pane cell : visibleCells) {
 
             cell.setOnMouseClicked(e -> {
@@ -424,6 +422,8 @@ public class FXMLGameController {
                     setVisibilityAllCells(false);
                     clientView.sendCTSEvent( new ChosenInitialPawnCellEvent(event.nickname, maleCellSelected.getRow(), maleCellSelected.getColumn(), info.getRow(), info.getColumn()) );
                     clearMouseClick(visibleCells);
+                    resetStyleCell(cellsList.get(maleCellSelected.getNumber()));
+                    resetStyleCell(selectedCell);
                 }
 
             });
@@ -436,6 +436,8 @@ public class FXMLGameController {
     public void chooseCellToMove(GivePossibleCellsToMoveEvent event, int pawnRow, int pawnColumn) {
 
         titleLabel.setText("CHOOSE CELL TO MOVE");
+
+        checkValidity(event.isValid);
 
         List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cellsAvailableToMove);
 
@@ -456,6 +458,36 @@ public class FXMLGameController {
             });
 
         }
+
+    }
+
+
+    public void chooseCellToBuild(GivePossibleCellsToBuildEvent event, int pawnRow, int pawnColumn){
+        titleLabel.setText("CHOOSE CELL TO BUILD");
+
+        checkValidity(event.isValid);
+
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cellsAvailableToBuild);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                titleLabel.setText("WAIT UNTIL YOUR TURN");
+                clientView.sendCTSEvent(new ChosenCellToBuildEvent(event.receiverNickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
+                clearMouseClick(visibleCells);
+
+                gui.setRowUsedPawn(info.getRow());
+                gui.setColumnUsedPawn(info.getColumn());
+            });
+
+        }
+
+
 
     }
 
@@ -496,11 +528,34 @@ public class FXMLGameController {
 
         checkValidity(event.isValid);
 
-        for (int i = 1; i < event.actions.size(); i++) {
+        for (int i = 0; i < event.actions.size(); i++) {
 
             actionsLabel.get(i).setText(event.actions.get(i));
             actionsLabel.get(i).setVisible(true);
+            actionsPane.get(i).setVisible(true);
             int finalI = i;
+
+            actionsLabel.get(i).setOnMouseEntered(e -> {
+                Label actionPane = (Label) e.getSource();
+                actionPane.setStyle("-fx-opacity: 1; -fx-border-color: black; -fx-border-width: 10");
+            });
+
+            //clear the border
+            actionsLabel.get(i).setOnMouseExited(e -> {
+                Label actionPane = (Label) e.getSource();
+                actionPane.setStyle("-fx-opacity: 0");
+            });
+
+            actionsPane.get(i).setOnMouseEntered(e -> {
+                Pane actionPane = (Pane) e.getSource();
+                actionPane.setStyle("-fx-opacity: 1; -fx-border-color: black; -fx-border-width: 10");
+            });
+
+            //clear the border
+            actionsPane.get(i).setOnMouseExited(e -> {
+                Pane actionPane = (Pane) e.getSource();
+                actionPane.setStyle("-fx-opacity: 0");
+            });
 
             actionsLabel.get(i).setOnMouseClicked(mouseEvent -> {
 
@@ -588,6 +643,11 @@ public class FXMLGameController {
             p.setOnMouseClicked(e -> {});
         }
     }
+
+    private void resetStyleCell(Pane cell){
+        cell.setStyle("-fx-opacity: 0");
+    }
+
 
     private void clearMouseClick(Pane cell){
         cell.setOnMouseClicked(e -> {});

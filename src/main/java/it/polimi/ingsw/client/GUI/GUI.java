@@ -404,6 +404,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
+
+        gameSceneController.chooseCellToBuild(event, rowUsedPawn, columnUsedPawn);
+
     }
 
 

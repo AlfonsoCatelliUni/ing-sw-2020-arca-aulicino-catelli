@@ -52,7 +52,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
      */
     private Stage waitingRoomStage;
 
-    private FXMLGameController gameSceneController;
 
     // Controllers
 
@@ -62,6 +61,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private FXMLSelectNumberPlayersController selectNumberPlayersController;
 
+    private FXMLGameController gameSceneController;
 
 
     // MARK : Constructor and Run ======================================================================================
@@ -129,7 +129,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
 
                 loginController = fxmlLoader.getController();
-                loginController.setController(this, stage, event.ID);
+                loginController.initLoginController(this, stage, event.ID);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -159,8 +159,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
 
                 selectNumberPlayersController = fxmlLoader.getController();
-                selectNumberPlayersController.setController(this);
-                selectNumberPlayersController.setStage(stage);
+                selectNumberPlayersController.initSelectNumberPlayersController(this, stage);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -234,7 +233,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
 
                 loginController = fxmlLoader.getController();
-                loginController.setController(this, stage, event.ID);
+                loginController.initLoginController(this, stage, event.ID);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -351,7 +350,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(AskInitPawnsEvent event) {
 
         Platform.runLater( () -> {
-            gameSceneController.manageEvent(event);
+            //gameSceneController.manageEvent(event);
         });
 
     }

@@ -73,7 +73,7 @@ public class FXMLLoginController {
     }
 
 
-    public void initLoginController(GUI gui, int id ) {
+    public void initLoginController(GUI gui, Stage stage, int id ) {
         this.gui = gui;
         this.id = id;
         this.stage = stage;

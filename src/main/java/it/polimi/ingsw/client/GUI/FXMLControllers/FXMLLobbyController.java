@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import it.polimi.ingsw.events.STCEvents.ClosedWaitingRoomEvent;
+import it.polimi.ingsw.events.STCEvents.RoomNotFilled;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,12 +11,16 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FXMLLobbyController {
 
     private Stage stage;
 
     private List<String> connectedPlayers;
+
+    private TimerTask timerTask;
 
 
     private List<Label> labelList;
@@ -98,7 +103,16 @@ public class FXMLLobbyController {
         CloseButton.setVisible(true);
         CloseButton.setDisable(false);
 
+        new Timer().schedule( timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                stage.close();
+            }
+        }, 10 * 1000); // 10 seconds timer
+
+
         CloseButton.setOnMouseClicked(mouseEvent -> {
+            timerTask.cancel();
             stage.close();
         });
 

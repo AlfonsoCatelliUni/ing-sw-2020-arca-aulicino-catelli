@@ -1,6 +1,8 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 
+import it.polimi.ingsw.client.GUI.Dialog;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,9 +36,12 @@ public class FXMLIpController {
 
     private void initializeButton() {
 
+        /*
         ConnectButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 15
         ));
+
+         */
 
         ConnectButton.setOnMouseClicked(mouseEvent -> {
 
@@ -68,6 +73,7 @@ public class FXMLIpController {
 
     private void initializeTextField() {
 
+        /*
         IPTextField.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 12
         ));
@@ -76,6 +82,7 @@ public class FXMLIpController {
                 12
         ));
 
+         */
     }
 
 

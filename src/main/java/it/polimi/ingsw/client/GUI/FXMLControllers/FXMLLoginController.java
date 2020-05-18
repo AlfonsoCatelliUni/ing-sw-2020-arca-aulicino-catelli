@@ -1,5 +1,7 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
+import it.polimi.ingsw.client.GUI.Dialog;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -32,24 +34,34 @@ public class FXMLLoginController {
 
 
     private void initializeTextField() {
+
+        /*
         UsernameTextField.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 15
         ));
+
+         */
     }
 
 
     private void initializeLabel() {
+        /*
         InfoLabel.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 12
         ));
+
+         */
     }
 
 
     private void initializeButton() {
 
+        /*
         LoginButton.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                         15
                 ));
+
+         */
 
         LoginButton.setOnMouseClicked(mouseEvent -> {
             LoginButton.setDisable(true);

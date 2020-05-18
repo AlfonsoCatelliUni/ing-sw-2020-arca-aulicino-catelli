@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.GUI.scenes;
 
-import it.polimi.ingsw.client.GUI.FXMLGameController;
+import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLGameController;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.STCEvents.AskWhichPawnsUseEvent;
 import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;

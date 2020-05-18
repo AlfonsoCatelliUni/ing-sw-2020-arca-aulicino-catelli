@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import java.awt.*;
 import java.net.URL;
@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import it.polimi.ingsw.client.ClientJsonHandler;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenInitialPawnCellEvent;
 import it.polimi.ingsw.events.CTSEvents.ChosenPawnToUseEvent;

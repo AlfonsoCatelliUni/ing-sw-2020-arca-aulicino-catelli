@@ -1,5 +1,6 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.ChosenPlayerNumberEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -30,25 +31,32 @@ public class FXMLSelectNumberPlayersController {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 2));
             gui.getLobbyStage().displayWait();
             stage.close();
-//            Label text = new Label("Wait Until the lobby is full");
-//            text.getStyleClass().add("labelWithBackground");
-//            text.setStyle("-fx-font-size: 18px");
-//            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
-//            numberPlayersLayout.getChildren().add(text);
-
         });
 
         threePlayers.setOnMouseClicked( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 3));
             gui.getLobbyStage().displayWait();
             stage.close();
+        });
 
+        twoPlayers.setOnMouseEntered(e -> {
 
+            twoPlayers.setOpacity(0.7);
 
-//            Label text = new Label("Wait Until the lobby is full");
-//            numberPlayersLayout.getChildren().add(text);
-//            numberPlayersLayout.getChildren().removeAll(numberLabel, twoButton, threeButton);
+        });
 
+        threePlayers.setOnMouseEntered(e -> {
+            threePlayers.setOpacity(0.7);
+        });
+
+        twoPlayers.setOnMouseExited(e -> {
+
+            twoPlayers.setOpacity(1);
+
+        });
+
+        threePlayers.setOnMouseExited(e -> {
+            threePlayers.setOpacity(1);
         });
 
     }

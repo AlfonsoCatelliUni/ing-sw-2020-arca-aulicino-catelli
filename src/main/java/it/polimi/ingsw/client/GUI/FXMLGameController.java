@@ -370,6 +370,8 @@ public class FXMLGameController {
 
     public void manageEvent(AskInitPawnsEvent event) {
 
+        titleLabel.setText("SELECT THE CELL FOR THE MALE PAWN");
+
         List<Point> freeCells = new ArrayList<>();
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 5; j++) {
@@ -392,6 +394,8 @@ public class FXMLGameController {
                 selectedCell.setVisible(false);
 
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                titleLabel.setText("SELECT THE CELL FOR THE FEMALE PAWN");
 
                 if(maleCellSelected == null) {
                     maleCellSelected = info;

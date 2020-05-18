@@ -29,13 +29,13 @@ public class FXMLSelectNumberPlayersController {
 
         twoPlayers.setOnMouseClicked( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 2));
-            gui.getLobbyStage().displayWait();
+            //gui.getLobbyStage().displayWait();
             stage.close();
         });
 
         threePlayers.setOnMouseClicked( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 3));
-            gui.getLobbyStage().displayWait();
+            //gui.getLobbyStage().displayWait();
             stage.close();
         });
 

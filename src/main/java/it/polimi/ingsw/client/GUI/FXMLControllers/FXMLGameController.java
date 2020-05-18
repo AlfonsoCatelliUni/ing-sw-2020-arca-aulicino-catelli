@@ -205,7 +205,6 @@ public class FXMLGameController {
         List<FormattedPlayerInfo> infoPlayers = ClientJsonHandler.generatePlayersList(info);
 
 
-
         for (int i = 0 ; i < infoPlayers.size(); i++){
 
 

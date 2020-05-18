@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLLobbyController">
+   <children>
+      <ImageView fitHeight="862.0" fitWidth="1132.0" layoutX="-196.0" layoutY="-147.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/SceneBackground/lobbyBackground.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="secondImage" fitHeight="59.0" fitWidth="38.0" layoutX="291.0" layoutY="467.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/smallBoat.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="thirdImage" fitHeight="45.0" fitWidth="44.0" layoutX="201.0" layoutY="521.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/smallBoat.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="firstNicknameLabel" layoutX="205.0" layoutY="421.0" text="First Nickname" />
+      <Label fx:id="secondNicknameLabel" layoutX="329.0" layoutY="481.0" text="Second Nickname" />
+      <Label fx:id="thirdNicknameLabel" layoutX="239.0" layoutY="549.0" text="Third Nickname" />
+      <Label fx:id="titleLabel" layoutX="20.0" layoutY="64.0" prefHeight="58.0" prefWidth="290.0" text="Wait for Other Players" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button fx:id="CloseButton" defaultButton="true" layoutX="20.0" layoutY="115.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="158.0" style="-fx-background-color: #0077FF;" text="Close" textFill="WHITE" />
+   </children>
+</AnchorPane>

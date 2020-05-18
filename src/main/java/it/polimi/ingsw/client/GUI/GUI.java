@@ -40,16 +40,27 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private ClientView clientView;
 
-    private LobbyStage lobbyStage;
-
     private GameScene gameScene;
+
+    /**
+     * this is the Main Stage, the one where the game board i showed on
+     */
+    protected Stage stage;
+
+    /**
+     * this is the Waiting Room Stage, the one where is showed which players are in the lobby
+     */
+    private Stage waitingRoomStage;
 
     private FXMLGameController gameSceneController;
 
-    //main stage
-    protected Stage stage;
+    // Controllers
 
-    private Stage waitingRoomStage;
+    private FXMLLobbyController lobbyController;
+
+    private FXMLLoginController loginController;
+
+    private FXMLSelectNumberPlayersController selectNumberPlayersController;
 
 
 
@@ -59,7 +70,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void run() {
         launch();
     }
-
 
     @Override
     public void start(Stage stage) {
@@ -114,13 +124,12 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
             Parent root = null;
-            FXMLLoginController controller;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoginScene.fxml") );
                 root = fxmlLoader.load();
 
-                controller = fxmlLoader.getController();
-                controller.initLoginController(this, event.ID);
+                loginController = fxmlLoader.getController();
+                loginController.setController(this, stage, event.ID);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -145,18 +154,17 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
             Parent root = null;
-            FXMLSelectNumberPlayersController controller;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/SelectNumberPlayersScene.fxml") );
                 root = fxmlLoader.load();
 
-                controller = fxmlLoader.getController();
-                controller.initSelectNumberPlayersController(this, stage);
+                selectNumberPlayersController = fxmlLoader.getController();
+                selectNumberPlayersController.setController(this);
+                selectNumberPlayersController.setStage(stage);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
 
 
             assert root != null;
@@ -175,19 +183,38 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(SuccessfullyConnectedEvent event) {
 
         System.out.println("RECEIVED SuccessfullyConnectedEvent");
-        
 
         Platform.runLater( () -> {
-            lobbyStage = new LobbyStage(event.connectedPlayers);
-            lobbyStage.display();
+//            lobbyStage = new LobbyStage(event.connectedPlayers);
+//            lobbyStage.display();
+//
+//            VBox waitLayout = new VBox(25);
+//            waitLayout.setAlignment(Pos.CENTER);
+//            Label text = new Label("Wait until the lobby is full");
+//            waitLayout.getChildren().add(text);
+//
+//            Scene nextScene = new Scene(waitLayout, 750,500);
+//            stage.setScene(nextScene);
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LobbyScene.fxml") );
+                root = fxmlLoader.load();
+                lobbyController = fxmlLoader.getController();
 
-            VBox waitLayout = new VBox(25);
-            waitLayout.setAlignment(Pos.CENTER);
-            Label text = new Label("Wait until the lobby is full");
-            waitLayout.getChildren().add(text);
+                lobbyController.initController(waitingRoomStage, event.connectedPlayers);
 
-            Scene nextScene = new Scene(waitLayout, 750,500);
-            stage.setScene(nextScene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            this.waitingRoomStage = new Stage();
+            this.waitingRoomStage.setScene(scene);
+            this.waitingRoomStage.setResizable(false);
+
+            this.waitingRoomStage.show();
 
         });
 
@@ -200,7 +227,28 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
             Dialog.display("This Nickname is already used, choose another one");
+
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoginScene.fxml") );
+                root = fxmlLoader.load();
+
+                loginController = fxmlLoader.getController();
+                loginController.setController(this, stage, event.ID);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.show();
         });
+
     }
 
 
@@ -284,12 +332,15 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
         Platform.runLater( () -> {
-            lobbyStage.close(event.connectedPlayers);
+            lobbyController.close(event.connectedPlayers);
+
             VBox waitLayout = new VBox(25);
             waitLayout.setAlignment(Pos.CENTER);
             Label text = new Label("Wait your turn");
             waitLayout.getChildren().add(text);
+
             Scene nextScene = new Scene(waitLayout, 750,500);
+
             stage.setScene(nextScene);
 
         });
@@ -322,15 +373,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED GivePossibleCardsEvent ");
 
         Platform.runLater( () -> {
-//            TheScene next = new ChooseCardScene(this, stage, event.cardsName, event.cardsEffect);
-//            Scene nextScene = next.getScene();
-//
-//            stage = new Stage();
-//            stage.setMinWidth(750);
-//            stage.setMinHeight(500);
-//            stage.setScene(nextScene);
-//
-//            stage.show();
+
             Parent root = null;
             FXMLChooseCardController controller;
             try {
@@ -454,10 +497,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     public String getNickname() {
         return this.nickname;
-    }
-
-    public LobbyStage getLobbyStage() {
-        return lobbyStage;
     }
 
     public int getRowUsedPawn() {

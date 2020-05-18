@@ -359,7 +359,7 @@ public class FXMLGameController {
         actionsPane.add(action3Pane);
         actionsPane.add(action4Pane);
 
-        actionsLabel.get(0).setVisible(true);
+        titleLabel.setVisible(true);
 
         for (Pane pane : actionsPane) {
 
@@ -496,7 +496,9 @@ public class FXMLGameController {
 
         checkValidity(event.isValid);
 
-        for (int i = 1; i < event.actions.size(); i++) {
+        titleLabel.setText("CHOOSE YOUR ACTION");
+
+        for (int i = 0; i < event.actions.size(); i++) {
 
             actionsLabel.get(i).setText(event.actions.get(i));
             actionsLabel.get(i).setVisible(true);
@@ -610,7 +612,7 @@ public class FXMLGameController {
     public void checkValidity(boolean isValid) {
 
         if(!isValid) {
-            actionsLabel.get(0).setText("Apparently an error occurred, please reinsert your choice");
+            titleLabel.setText("Apparently an error occurred, please reinsert your choice");
         }
 
     }
@@ -624,7 +626,7 @@ public class FXMLGameController {
         }
 
         if(isEndTurn)
-            actionsLabel.get(0).setText("-- WAIT UNTIL YOUR NEXT TURN --");
+            titleLabel.setText("-- WAIT UNTIL YOUR NEXT TURN --");
 
     }
 }

@@ -155,13 +155,16 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED FirstConnectedEvent");
 
         Platform.runLater( () -> {
+
+            Stage selectNumberPlayersStage = new Stage();
+            selectNumberPlayersStage.setTitle("Santorini");
             Parent root = null;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/SelectNumberPlayersScene.fxml") );
                 root = fxmlLoader.load();
 
                 selectNumberPlayersController = fxmlLoader.getController();
-                selectNumberPlayersController.initSelectNumberPlayersController(this, stage);
+                selectNumberPlayersController.initSelectNumberPlayersController(this, selectNumberPlayersStage);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -171,10 +174,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
-            stage.setScene(scene);
-            stage.setResizable(false);
+            selectNumberPlayersStage.setScene(scene);
+            selectNumberPlayersStage.setResizable(false);
 
-            stage.show();
+            selectNumberPlayersStage.show();
         });
 
     }

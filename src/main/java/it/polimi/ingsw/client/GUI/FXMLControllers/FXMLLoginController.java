@@ -94,7 +94,6 @@ public class FXMLLoginController {
 
         gui.getClientView().sendCTSEvent(new NewConnectionEvent(ID, nickname));
 
-        stage.close();
     }
 
 

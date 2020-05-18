@@ -319,26 +319,26 @@ public class FXMLGameController {
         playersEffects.add(player2_effect);
         playersEffects.add(player3_effect);
 
-        for (Label label : playersNicknames){
-            label.setFont(Font.loadFont(
-                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    20
-            ));
-        }
-
-        for (Label label : playersColors){
-            label.setFont(Font.loadFont(
-                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    20
-            ));
-        }
-
-        for (Label label : playersEffects){
-            label.setFont(Font.loadFont(
-                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    20
-            ));
-        }
+//        for (Label label : playersNicknames){
+//            label.setFont(Font.loadFont(
+//                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+//                    20
+//            ));
+//        }
+//
+//        for (Label label : playersColors){
+//            label.setFont(Font.loadFont(
+//                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+//                    20
+//            ));
+//        }
+//
+//        for (Label label : playersEffects){
+//            label.setFont(Font.loadFont(
+//                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+//                    20
+//            ));
+//    }
 
     }
 
@@ -386,7 +386,7 @@ public class FXMLGameController {
     //MARK : Main Methods =================================================================================
 
 
-    public void ChooseInitPawn(AskInitPawnsEvent event) {
+    public void chooseInitPawn(AskInitPawnsEvent event) {
 
         titleLabel.setText("SELECT THE CELL FOR THE MALE PAWN");
 
@@ -463,6 +463,8 @@ public class FXMLGameController {
 
     public void choosePawnToUse(AskWhichPawnsUseEvent event) {
 
+        titleLabel.setText("CHOOSE PAWN TO USE");
+
         List<FormattedSimpleCell> cells = new ArrayList<>();
 
         List<Point> points = event.info;
@@ -489,6 +491,7 @@ public class FXMLGameController {
         }
 
     }
+    
 
     public void chooseAction(GivePossibleActionsEvent event) {
 
@@ -567,6 +570,12 @@ public class FXMLGameController {
         return visiblePanes;
     }
 
+
+    public void setVisibleCells(List<Pane> cells){
+        for (Pane cell : cells){
+            cell.setVisible(true);
+        }
+    }
 
     public void setVisibilityAllCells(Boolean visibilityAllCells) {
         for (Pane cell : cellsList){

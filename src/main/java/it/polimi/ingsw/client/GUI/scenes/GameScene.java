@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.STCEvents.AskWhichPawnsUseEvent;
 import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCardsEvent;
-import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +41,7 @@ public class GameScene implements TheScene {
             FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/GameScene.fxml") );
             root = fxmlLoader.load();
             controller = fxmlLoader.getController();
-            controller.initGameController(gui, info);
+            controller.initGameController(gui, info, stage);
 
 
         } catch (IOException e) {
@@ -61,7 +60,7 @@ public class GameScene implements TheScene {
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
 
-        
+
     }
 
 
@@ -75,7 +74,7 @@ public class GameScene implements TheScene {
 
     public void manageEvent(AskInitPawnsEvent event) {
 
-        controller.ChooseInitPawn(event);
+        controller.chooseInitPawn(event);
 
     }
 
@@ -88,7 +87,7 @@ public class GameScene implements TheScene {
 
         messagePane.add(label, 0,0);
 
-        controller.choosePawnToUse(event.nickname, event.info, clientView);
+        controller.choosePawnToUse(event);
 
     }
 

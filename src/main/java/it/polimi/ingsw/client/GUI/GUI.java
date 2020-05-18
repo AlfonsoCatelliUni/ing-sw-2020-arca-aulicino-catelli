@@ -51,8 +51,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private Stage waitingRoomStage;
 
-    private FXMLGameController gameSceneController;
-
 
 
     // MARK : Constructor and Run ======================================================================================
@@ -302,7 +300,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(AskInitPawnsEvent event) {
 
         Platform.runLater( () -> {
-            gameSceneController.manageEvent(event);
+            gameSceneController.chooseInitPawn(event);
         });
 
     }

@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 public class FXMLLoginController {
 
+    private Stage stage;
+
     private GUI gui;
 
     private int id;
@@ -74,6 +76,7 @@ public class FXMLLoginController {
     public void setController(GUI gui, Stage stage, int id ) {
         this.gui = gui;
         this.id = id;
+        this.stage = stage;
     }
 
 
@@ -90,6 +93,8 @@ public class FXMLLoginController {
         gui.setNickname(nickname);
 
         gui.getClientView().sendCTSEvent(new NewConnectionEvent(ID, nickname));
+
+        stage.close();
     }
 
 

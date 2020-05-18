@@ -2,10 +2,7 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.FormattedSimpleCell;
-import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLChooseCardController;
-import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLLoginController;
-import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLSelectNumberPlayersController;
-import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLStartController;
+import it.polimi.ingsw.client.GUI.FXMLControllers.*;
 import it.polimi.ingsw.client.GUI.scenes.*;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
@@ -46,6 +43,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
     private LobbyStage lobbyStage;
 
     private GameScene gameScene;
+
+    private FXMLGameController gameSceneController;
 
     //main stage
     protected Stage stage;
@@ -355,7 +354,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
-        gameScene.manageEvent(event);
+        gameSceneController.chooseCellToMove(event, rowUsedPawn, columnUsedPawn);
     }
 
 

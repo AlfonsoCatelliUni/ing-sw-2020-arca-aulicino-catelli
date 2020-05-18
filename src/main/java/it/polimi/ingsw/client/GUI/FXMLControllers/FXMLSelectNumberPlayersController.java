@@ -29,20 +29,16 @@ public class FXMLSelectNumberPlayersController {
 
         twoPlayers.setOnMouseClicked( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 2));
-            //gui.getLobbyStage().displayWait();
-            stage.close();
+            twoPlayers.setOnMouseClicked(event -> {});
         });
 
         threePlayers.setOnMouseClicked( e -> {
             gui.getClientView().sendCTSEvent(new ChosenPlayerNumberEvent(gui.getNickname(), 3));
-            //gui.getLobbyStage().displayWait();
-            stage.close();
+            threePlayers.setOnMouseClicked(event -> {});
         });
 
         twoPlayers.setOnMouseEntered(e -> {
-
             twoPlayers.setOpacity(0.7);
-
         });
 
         threePlayers.setOnMouseEntered(e -> {
@@ -50,9 +46,7 @@ public class FXMLSelectNumberPlayersController {
         });
 
         twoPlayers.setOnMouseExited(e -> {
-
             twoPlayers.setOpacity(1);
-
         });
 
         threePlayers.setOnMouseExited(e -> {

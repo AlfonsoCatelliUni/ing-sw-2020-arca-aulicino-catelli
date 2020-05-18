@@ -194,6 +194,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 //
 //            Scene nextScene = new Scene(waitLayout, 750,500);
 //            stage.setScene(nextScene);
+            this.waitingRoomStage = new Stage();
             Parent root = null;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LobbyScene.fxml") );
@@ -209,7 +210,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
-            this.waitingRoomStage = new Stage();
+
             this.waitingRoomStage.setScene(scene);
             this.waitingRoomStage.setResizable(false);
 

@@ -80,9 +80,12 @@ public class FXMLLobbyController {
 
             label.setText("");
             label.setVisible(false);
+            /*
             label.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                     15
             ));
+
+             */
         }
 
     }

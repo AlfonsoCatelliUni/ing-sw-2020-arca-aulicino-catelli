@@ -93,6 +93,7 @@ public class FXMLLoginController {
         gui.setNickname(nickname);
 
         gui.getClientView().sendCTSEvent(new NewConnectionEvent(ID, nickname));
+
     }
 
 

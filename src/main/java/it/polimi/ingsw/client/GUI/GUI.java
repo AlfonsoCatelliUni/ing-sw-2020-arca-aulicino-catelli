@@ -394,21 +394,26 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED GivePossibleActionsEvent");
 
-        Platform.runLater(() -> gameSceneController.chooseAction(event));
+        Platform.runLater( () -> gameSceneController.chooseAction(event) );
 
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
-        gameSceneController.chooseCellToMove(event, rowUsedPawn, columnUsedPawn);
+
+        System.out.println("RECEIVED GivePossibleCellsToMoveEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToMove(event, rowUsedPawn, columnUsedPawn) );
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
 
-        gameSceneController.chooseCellToBuild(event, rowUsedPawn, columnUsedPawn);
+        System.out.println("RECEIVED GivePossibleCellsToBuildEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToBuild(event, rowUsedPawn, columnUsedPawn) );
 
     }
 
@@ -416,6 +421,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleBuildingsEvent event) {
 
+        System.out.println("RECEIVED GivePossibleBuildingsEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseLevelBuilding(event));
     }
 
 

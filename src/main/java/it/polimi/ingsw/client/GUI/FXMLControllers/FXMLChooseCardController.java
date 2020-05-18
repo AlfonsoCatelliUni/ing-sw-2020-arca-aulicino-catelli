@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import it.polimi.ingsw.events.CTSEvents.ChosenCardEvent;
 import it.polimi.ingsw.view.client.ClientView;

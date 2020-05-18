@@ -2,12 +2,15 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.FormattedSimpleCell;
+import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLChooseCardController;
+import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLLoginController;
+import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLSelectNumberPlayersController;
+import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLStartController;
 import it.polimi.ingsw.client.GUI.scenes.*;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -66,10 +69,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         this.stage.setTitle("Santorini");
 
-        TheScene next = new StartScene(this, this.stage);
-//        this.stage.setMinHeight(900);
-//        this.stage.setMinWidth(1110);
-
         Parent root = null;
         FXMLStartController controller;
         try {
@@ -84,15 +83,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
             e.printStackTrace();
         }
 
-
-
         assert root != null;
         Scene scene = new Scene(root);
 
-        stage.setScene(scene);
-        stage.setResizable(false);
+        this.stage.setScene(scene);
+        this.stage.setResizable(false);
 
-        stage.show();
+        this.stage.show();
 
     }
 

@@ -1,6 +1,8 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 
+import it.polimi.ingsw.client.GUI.Dialog;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

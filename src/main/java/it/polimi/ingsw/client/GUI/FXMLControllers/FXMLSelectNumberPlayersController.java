@@ -1,5 +1,6 @@
-package it.polimi.ingsw.client.GUI;
+package it.polimi.ingsw.client.GUI.FXMLControllers;
 
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.ChosenPlayerNumberEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;

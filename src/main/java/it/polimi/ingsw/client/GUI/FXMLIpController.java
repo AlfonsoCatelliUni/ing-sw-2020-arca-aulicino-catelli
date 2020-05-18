@@ -34,9 +34,12 @@ public class FXMLIpController {
 
     private void initializeButton() {
 
+        /*
         ConnectButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 15
         ));
+
+         */
 
         ConnectButton.setOnMouseClicked(mouseEvent -> {
 
@@ -68,6 +71,7 @@ public class FXMLIpController {
 
     private void initializeTextField() {
 
+        /*
         IPTextField.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 12
         ));
@@ -76,6 +80,7 @@ public class FXMLIpController {
                 12
         ));
 
+         */
     }
 
 

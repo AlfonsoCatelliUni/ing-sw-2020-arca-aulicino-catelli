@@ -98,10 +98,13 @@ public class FXMLChooseCardController {
         for( Label label : labelList  ) {
             label.setVisible(true);
 
+            /*
             label.setFont( Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                     15
             ));
+
+             */
         }
 
     }

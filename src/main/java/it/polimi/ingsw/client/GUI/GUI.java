@@ -51,6 +51,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private Stage waitingRoomStage;
 
+    private FXMLGameController gameSceneController;
+
 
 
     // MARK : Constructor and Run ======================================================================================
@@ -75,8 +77,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
             root = fxmlLoader.load();
 
             controller = fxmlLoader.getController();
-            controller.setController(this);
-            controller.setStage(stage);
+            controller.initStartController(this,stage);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,7 +122,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
 
                 controller = fxmlLoader.getController();
-                controller.setController(this, stage, event.ID);
+                controller.initLoginController(this, event.ID);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -152,8 +153,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
 
                 controller = fxmlLoader.getController();
-                controller.setController(this);
-                controller.setStage(stage);
+                controller.initSelectNumberPlayersController(this, stage);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -247,19 +247,31 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(StartGameEvent event) {
+
         System.out.println("RECEIVED StartGameEvent ");
 
         Platform.runLater( () -> {
 
-            stage.close();
+            Parent root = null;
 
-            gameScene = new GameScene(this, stage, event.info);
-            Scene nextScene = gameScene.getScene();
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/GameScene.fxml") );
+                root = fxmlLoader.load();
 
-            stage = new Stage();
-            stage.setMinWidth(750);
-            stage.setMinHeight(500);
-            stage.setScene(nextScene);
+                gameSceneController = fxmlLoader.getController();
+                gameSceneController.initGameController(this, event.info, stage);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
 
             stage.show();
         });
@@ -269,6 +281,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
+
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
 
@@ -289,7 +302,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(AskInitPawnsEvent event) {
 
         Platform.runLater( () -> {
-            gameScene.manageEvent(event);
+            gameSceneController.manageEvent(event);
         });
 
     }
@@ -300,7 +313,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED AskWhichPawnsUseEvent");
 
-        Platform.runLater(() -> gameScene.manageEvent(event, clientView));
+        Platform.runLater(() -> gameSceneController.choosePawnToUse(event));
 
     }
 
@@ -348,6 +361,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(GivePossibleActionsEvent event) {
+
+        System.out.println("RECEIVED GivePossibleActionsEvent");
+
+        Platform.runLater(() -> gameSceneController.chooseAction(event));
 
     }
 

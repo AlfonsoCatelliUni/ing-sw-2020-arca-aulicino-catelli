@@ -62,11 +62,11 @@ public class FXMLSelectNumberPlayersController {
     }
 
 
-    public void setController(GUI gui) {
+    public void initSelectNumberPlayersController(GUI gui, Stage stage) {
+
         this.gui = gui;
+        this.stage = stage;
+
     }
 
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 }

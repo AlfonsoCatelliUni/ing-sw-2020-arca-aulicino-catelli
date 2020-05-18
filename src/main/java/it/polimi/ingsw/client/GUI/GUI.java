@@ -63,6 +63,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private FXMLGameController gameSceneController;
 
+    private FXMLChooseCardController chooseCardController;
+
 
     // MARK : Constructor and Run ======================================================================================
 
@@ -184,24 +186,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED SuccessfullyConnectedEvent");
 
         Platform.runLater( () -> {
-//            lobbyStage = new LobbyStage(event.connectedPlayers);
-//            lobbyStage.display();
-//
-//            VBox waitLayout = new VBox(25);
-//            waitLayout.setAlignment(Pos.CENTER);
-//            Label text = new Label("Wait until the lobby is full");
-//            waitLayout.getChildren().add(text);
-//
-//            Scene nextScene = new Scene(waitLayout, 750,500);
-//            stage.setScene(nextScene);
-            this.waitingRoomStage = new Stage();
             Parent root = null;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LobbyScene.fxml") );
                 root = fxmlLoader.load();
                 lobbyController = fxmlLoader.getController();
 
-                lobbyController.initController(waitingRoomStage, event.connectedPlayers);
+                lobbyController.initController(stage, event.connectedPlayers);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -210,11 +201,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
+            this.stage.setScene(scene);
+            this.stage.setResizable(false);
 
-            this.waitingRoomStage.setScene(scene);
-            this.waitingRoomStage.setResizable(false);
-
-            this.waitingRoomStage.show();
+            this.stage.show();
 
         });
 
@@ -330,19 +320,16 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
-
         Platform.runLater( () -> {
             lobbyController.close(event.connectedPlayers);
-
-            VBox waitLayout = new VBox(25);
-            waitLayout.setAlignment(Pos.CENTER);
-            Label text = new Label("Wait your turn");
-            waitLayout.getChildren().add(text);
-
-            Scene nextScene = new Scene(waitLayout, 750,500);
-
-            stage.setScene(nextScene);
-
+//            VBox waitLayout = new VBox(25);
+//            waitLayout.setAlignment(Pos.CENTER);
+//            Label text = new Label("Wait your turn");
+//            waitLayout.getChildren().add(text);
+//
+//            Scene nextScene = new Scene(waitLayout, 750,500);
+//
+//            stage.setScene(nextScene);
         });
     }
 
@@ -375,14 +362,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
         Platform.runLater( () -> {
 
             Parent root = null;
-            FXMLChooseCardController controller;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/ChooseCardScene.fxml") );
                 root = fxmlLoader.load();
-                controller = fxmlLoader.getController();
+                chooseCardController = fxmlLoader.getController();
 
-                controller.setController(stage, nickname, clientView, event.cardsName, event.cardsEffect);
-                controller.setCards();
+                chooseCardController.setController(stage, nickname, clientView, event.cardsName, event.cardsEffect);
+                chooseCardController.setCards();
 
             } catch (IOException e) {
                 e.printStackTrace();

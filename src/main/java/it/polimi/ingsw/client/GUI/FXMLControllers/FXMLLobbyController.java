@@ -97,28 +97,11 @@ public class FXMLLobbyController {
     }
 
 
-    public void close(List<String> playerNickname){
+    public void close(List<String> playerNickname) {
 
         titleLabel.setText("The Lobby is Closed!");
 
         fillNicknames(playerNickname);
-
-        CloseButton.setVisible(true);
-        CloseButton.setDisable(false);
-
-        new Timer().schedule( timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                stage.close();
-            }
-        }, 10 * 1000); // 10 seconds timer
-
-
-        CloseButton.setOnMouseClicked(mouseEvent -> {
-            timerTask.cancel();
-            stage.close();
-        });
-
     }
 
 

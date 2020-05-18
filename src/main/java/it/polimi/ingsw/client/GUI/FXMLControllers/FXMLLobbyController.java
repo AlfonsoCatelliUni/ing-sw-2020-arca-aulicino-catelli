@@ -99,7 +99,7 @@ public class FXMLLobbyController {
 
     public void close(List<String> playerNickname) {
 
-        titleLabel.setText("The Lobby is Closed!");
+        titleLabel.setText("The Lobby is Closed! Wait until is your turn...");
 
         fillNicknames(playerNickname);
     }

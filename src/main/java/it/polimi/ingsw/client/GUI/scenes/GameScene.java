@@ -61,11 +61,7 @@ public class GameScene implements TheScene {
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
 
-
-//        AnchorPane anchorPane = (AnchorPane) root.getChildrenUnmodifiable().get(2);
-//        HBox hbox = (HBox) anchorPane.getChildren().get(0);
-//        AnchorPane anchorPane1 = (AnchorPane) hbox.getChildren().get(3);
-//        messagePane = (GridPane) anchorPane1.getChildren().get(0);
+        
     }
 
 
@@ -79,16 +75,11 @@ public class GameScene implements TheScene {
 
     public void manageEvent(AskInitPawnsEvent event) {
 
-        controller.manageEvent(event);
+        controller.ChooseInitPawn(event);
 
     }
 
 
-    public void manageEvent(GivePossibleCellsToMoveEvent event) {
-
-        controller.manageEvent(event, gui.getRowUsedPawn(), gui.getColumnUsedPawn());
-
-    }
 
     public void manageEvent(AskWhichPawnsUseEvent event, ClientView clientView) {
 

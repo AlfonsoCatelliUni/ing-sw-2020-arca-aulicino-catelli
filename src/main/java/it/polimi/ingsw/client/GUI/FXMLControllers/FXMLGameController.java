@@ -10,10 +10,10 @@ import it.polimi.ingsw.client.ClientJsonHandler;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.GUI;
-import it.polimi.ingsw.events.CTSEvents.ChosenCellToMoveEvent;
-import it.polimi.ingsw.events.CTSEvents.ChosenInitialPawnCellEvent;
-import it.polimi.ingsw.events.CTSEvents.ChosenPawnToUseEvent;
+import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.STCEvents.AskInitPawnsEvent;
+import it.polimi.ingsw.events.STCEvents.AskWhichPawnsUseEvent;
+import it.polimi.ingsw.events.STCEvents.GivePossibleActionsEvent;
 import it.polimi.ingsw.events.STCEvents.GivePossibleCellsToMoveEvent;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
@@ -23,13 +23,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class FXMLGameController {
 
 
 
     private GUI gui;
+
+    private Stage stage;
 
     private List<Pane> cellsList;
 
@@ -194,10 +196,11 @@ public class FXMLGameController {
     //MARK : Initialization Methods =================================================================================
 
 
-    public void initGameController( GUI gui, String info ) {
+    public void initGameController( GUI gui, String info, Stage stage ) {
 
         this.gui = gui;
         this.clientView = gui.getClientView();
+        this.stage = stage;
 
         List<FormattedPlayerInfo> infoPlayers = ClientJsonHandler.generatePlayersList(info);
 
@@ -318,21 +321,21 @@ public class FXMLGameController {
         for (Label label : playersNicknames){
             label.setFont(Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    10
+                    20
             ));
         }
 
         for (Label label : playersColors){
             label.setFont(Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    8
+                    20
             ));
         }
 
         for (Label label : playersEffects){
             label.setFont(Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    6
+                    20
             ));
         }
 
@@ -344,13 +347,13 @@ public class FXMLGameController {
         this.actionsLabel = new ArrayList<>();
         this.actionsPane = new ArrayList<>();
 
-        actionsLabel.add(titleLabel);
+
         actionsLabel.add(action1Label);
         actionsLabel.add(action2Label);
         actionsLabel.add(action3Label);
         actionsLabel.add(action4Label);
 
-        actionsPane.add(titlePane);
+
         actionsPane.add(action1Pane);
         actionsPane.add(action2Pane);
         actionsPane.add(action3Pane);
@@ -358,7 +361,21 @@ public class FXMLGameController {
 
         actionsLabel.get(0).setVisible(true);
 
+        for (Pane pane : actionsPane) {
 
+            //highlight the border
+            pane.setOnMouseEntered(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+            });
+
+            //clear the border
+            pane.setOnMouseExited(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 0");
+            });
+
+        }
 
 
 
@@ -368,7 +385,7 @@ public class FXMLGameController {
     //MARK : Main Methods =================================================================================
 
 
-    public void manageEvent(AskInitPawnsEvent event) {
+    public void ChooseInitPawn(AskInitPawnsEvent event) {
 
         titleLabel.setText("SELECT THE CELL FOR THE MALE PAWN");
 
@@ -391,7 +408,9 @@ public class FXMLGameController {
             cell.setOnMouseClicked(e -> {
 
                 Pane selectedCell = (Pane) e.getSource();
-                selectedCell.setVisible(false);
+                clearMouseClick(selectedCell);
+
+                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: red; -fx-border-width: 5");
 
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
 
@@ -401,6 +420,8 @@ public class FXMLGameController {
                     maleCellSelected = info;
                 }
                 else {
+                    titleLabel.setText("WAIT UNTIL YOUR TURN");
+                    setVisibilityAllCells(false);
                     clientView.sendCTSEvent( new ChosenInitialPawnCellEvent(event.nickname, maleCellSelected.getRow(), maleCellSelected.getColumn(), info.getRow(), info.getColumn()) );
                     clearMouseClick(visibleCells);
                 }
@@ -412,7 +433,9 @@ public class FXMLGameController {
     }
 
 
-    public void manageEvent(GivePossibleCellsToMoveEvent event, int pawnRow, int pawnColumn) {
+    public void chooseCellToMove(GivePossibleCellsToMoveEvent event, int pawnRow, int pawnColumn) {
+
+        titleLabel.setText("CHOOSE CELL TO MOVE");
 
         List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cellsAvailableToMove);
 
@@ -424,6 +447,7 @@ public class FXMLGameController {
                 Pane selectedCell = (Pane) e.getSource();
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
 
+                titleLabel.setText("WAIT UNTIL YOUR TURN");
                 clientView.sendCTSEvent(new ChosenCellToMoveEvent(event.receiverNickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
                 clearMouseClick(visibleCells);
 
@@ -436,14 +460,13 @@ public class FXMLGameController {
     }
 
 
-    public void manageEvent() {
-
-    }
-
-
-    public void choosePawnToUse(String playerNickname, List<Point> points, ClientView clientView) {
+    public void choosePawnToUse(AskWhichPawnsUseEvent event) {
 
         List<FormattedSimpleCell> cells = new ArrayList<>();
+
+        List<Point> points = event.info;
+
+        checkValidity(event.isValid);
 
         for(Point point : points) {
             cells.add(new FormattedSimpleCell(point.x ,point.y));
@@ -457,10 +480,64 @@ public class FXMLGameController {
 
                 Pane selectedCell = (Pane) e.getSource();
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
-                clientView.sendCTSEvent((new ChosenPawnToUseEvent(playerNickname, info.getRow(), info.getColumn())));
+                clientView.sendCTSEvent((new ChosenPawnToUseEvent(event.nickname, info.getRow(), info.getColumn())));
 
+                clearMouseClick(visibleCells);
             });
 
+        }
+
+    }
+
+    public void chooseAction(GivePossibleActionsEvent event) {
+
+        checkValidity(event.isValid);
+
+        for (int i = 1; i < event.actions.size(); i++) {
+
+            actionsLabel.get(i).setText(event.actions.get(i));
+            actionsLabel.get(i).setVisible(true);
+            int finalI = i;
+
+            actionsLabel.get(i).setOnMouseClicked(mouseEvent -> {
+
+                switch (actionsLabel.get(finalI).getText()) {
+
+                    case "Move":
+                        clientView.sendCTSEvent(new ChosenMoveActionEvent(event.receiverNickname, "Move", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
+                        clearMouseClick(actionsPane);
+                        clearLabels(actionsLabel,false);
+                        break;
+
+                    case "Build":
+                        clientView.sendCTSEvent(new ChosenBuildActionEvent(event.receiverNickname, "Build", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
+                        clearMouseClick(actionsPane);
+                        clearLabels(actionsLabel,false);
+                        break;
+
+                    case "Force":
+                        clientView.sendCTSEvent(new ChosenForceActionEvent(event.receiverNickname, "Force", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
+                        clearMouseClick(actionsPane);
+                        clearLabels(actionsLabel,false);
+                        break;
+
+                    case "Destroy":
+                        clientView.sendCTSEvent(new ChosenDestroyActionEvent(event.receiverNickname, "Destroy", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
+                        clearMouseClick(actionsPane);
+                        clearLabels(actionsLabel,false);
+                        break;
+
+                    case "End turn":
+                        clientView.sendCTSEvent(new ChosenFinishActionEvent(event.receiverNickname, "End turn"));
+                        clearMouseClick(actionsPane);
+                        clearLabels(actionsLabel,true);
+                        break;
+
+                    default:
+                        throw new RuntimeException("Error while selecting the next action!");
+                }
+
+            });
         }
 
     }
@@ -497,14 +574,16 @@ public class FXMLGameController {
     }
 
 
-    public void showAvailableActions(List<Label> actionsLabel){
-    }
-
-
     private void clearMouseClick(List<Pane> visibleCells) {
         for (Pane p : visibleCells) {
             p.setOnMouseClicked(e -> {});
         }
+    }
+
+    private void clearMouseClick(Pane cell){
+        cell.setOnMouseClicked(e -> {});
+        cell.setOnMouseEntered(e -> {});
+        cell.setOnMouseExited(e -> {});
     }
 
 
@@ -519,5 +598,24 @@ public class FXMLGameController {
         return this.ControlsBoxSection.getWidth();
     }
 
+    public void checkValidity(boolean isValid) {
 
+        if(!isValid) {
+            actionsLabel.get(0).setText("Apparently an error occurred, please reinsert your choice");
+        }
+
+    }
+
+    public void clearLabels(List<Label> actionsLabel, boolean isEndTurn) {
+
+        for (Label label : actionsLabel) {
+
+            label.setText("");
+
+        }
+
+        if(isEndTurn)
+            actionsLabel.get(0).setText("-- WAIT UNTIL YOUR NEXT TURN --");
+
+    }
 }

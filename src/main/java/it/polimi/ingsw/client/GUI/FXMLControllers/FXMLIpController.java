@@ -73,6 +73,9 @@ public class FXMLIpController {
 
     private void initializeTextField() {
 
+        IPTextField.setText("127.0.0.1");
+        PortTextField.setText("64209");
+
         /*
         IPTextField.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 12

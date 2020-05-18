@@ -57,11 +57,9 @@ public class FXMLStartController {
 
     }
 
-    public void setController(GUI gui) {
+    public void initStartController(GUI gui, Stage stage) {
         this.gui = gui;
-    }
-
-    public void setStage(Stage stage) {
         this.stage = stage;
     }
+
 }

@@ -65,11 +65,11 @@ public class ClientView implements Runnable {
 
         }
         catch (ClassNotFoundException e) {
-            System.err.println("The class ServerToClientEvent has not been found!");
+            //System.err.println("The class ServerToClientEvent has not been found!");
             //e.printStackTrace();
         }
         catch (IOException e) {
-            System.err.println("There's an error while receiving a ServerToClientEvent, please fix me!");
+            System.err.println("There's an error whit the server!");
             //e.printStackTrace();
         }
         finally {
@@ -86,8 +86,8 @@ public class ClientView implements Runnable {
             outputStream.flush();
         }
         catch (IOException e) {
-            System.err.println("Error while trying writeObject on client side");
-            e.printStackTrace();
+            //System.err.println("Error while trying to send the message to the server!");
+            //e.printStackTrace();
         }
 
     }

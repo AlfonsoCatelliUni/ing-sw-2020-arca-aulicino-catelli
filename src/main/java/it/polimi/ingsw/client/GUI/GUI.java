@@ -62,6 +62,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private FXMLChooseCardController chooseCardController;
 
+    private FXMLEndGameController endGameController;
+
 
     // MARK : Constructor and Run ======================================================================================
 
@@ -513,6 +515,30 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void manageEvent(EndGameSTCEvent event) {
 
         System.out.println("RECEIVED EndGameSTCEvent");
+
+        Platform.runLater( () -> {
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/VictoryScene.fxml") );
+                root = fxmlLoader.load();
+
+                endGameController = fxmlLoader.getController();
+                endGameController.initController(stage, event.winner);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.show();
+        });
+
+
 
     }
 

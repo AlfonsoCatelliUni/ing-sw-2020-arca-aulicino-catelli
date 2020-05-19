@@ -430,11 +430,20 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCellsToDestroyEvent event) {
 
+        System.out.println("RECEIVED GivePossibleCellsToDestroyEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToDestroy(event, rowUsedPawn, columnUsedPawn));
+
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
+
+        System.out.println("RECEIVED GivePossibleCellsToForceEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToForce(event, rowUsedPawn, columnUsedPawn));
+
 
     }
 
@@ -442,11 +451,17 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
 
+        System.out.println("RECEIVED LosingByNoActionEvent");
+
+        //TODO : creare losing e winning scene
+
     }
 
 
     @Override
     public void manageEvent(EndGameSTCEvent event) {
+
+        System.out.println("RECEIVED EndGameSTCEvent");
 
     }
 

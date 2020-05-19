@@ -512,6 +512,69 @@ public class FXMLGameController {
     }
 
 
+    public void chooseCellToDestroy(GivePossibleCellsToDestroyEvent event, int pawnRow, int pawnColumn) {
+
+        titleLabel.setText("CHOOSE CELL TO DESTROY");
+
+        checkValidity(event.isValid);
+
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cells);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+
+                disableCells(visibleCells);
+
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                titleLabel.setText("");
+                clientView.sendCTSEvent(new ChosenCellToDestroyEvent(event.nickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
+
+            });
+
+        }
+    }
+
+
+    public void chooseCellToForce(GivePossibleCellsToForceEvent event, int pawnRow, int pawnColumn) {
+
+        titleLabel.setText("CHOOSE CELL TO FORCE");
+
+        checkValidity(event.isValid);
+
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cells);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+
+                disableCells(visibleCells);
+
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                titleLabel.setText("");
+                clientView.sendCTSEvent(new ChosenCellToForceEvent(event.nickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
+
+
+                //save the new position of the pawn
+                gui.setRowUsedPawn(info.getRow());
+                gui.setColumnUsedPawn(info.getColumn());
+            });
+
+        }
+
+    }
+
+
     public void choosePawnToUse(AskWhichPawnsUseEvent event) {
 
         titleLabel.setText("CHOOSE PAWN TO USE");
@@ -610,6 +673,7 @@ public class FXMLGameController {
         }
 
     }
+
 
     public void chooseLevelBuilding(GivePossibleBuildingsEvent event){
 

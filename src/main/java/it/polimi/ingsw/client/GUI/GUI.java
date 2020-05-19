@@ -504,7 +504,36 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED LosingByNoActionEvent");
 
-        //TODO : creare losing e winning scene
+        //this player lost the game
+        if(event.nickname.equals(nickname)) {
+
+
+            Stage losingStage = new Stage();
+            losingStage.setTitle("Santorini");
+
+            Parent root = null;
+            FXMLLoseGameController controller;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoseEndGameScene.fxml") );
+                root = fxmlLoader.load();
+
+                controller = fxmlLoader.getController();
+                controller.initLoseController(this, losingStage, stage);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            losingStage.setScene(scene);
+            losingStage.setResizable(false);
+
+            losingStage.show();
+
+        }
+        //TODO : finire il metodo con l'else
 
     }
 

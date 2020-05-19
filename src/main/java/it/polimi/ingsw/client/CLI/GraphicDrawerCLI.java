@@ -577,6 +577,7 @@ public class GraphicDrawerCLI {
 
         }
 
+        fillExit(cellsChoicePanel);
     }
 
 
@@ -599,6 +600,7 @@ public class GraphicDrawerCLI {
             print(refRow, 77, actionsChoicePanel.get(a));
         }
 
+        fillExit(actionsChoicePanel);
     }
 
 
@@ -622,6 +624,8 @@ public class GraphicDrawerCLI {
             choiceValue = "Level " + String.valueOf(buildingsChoicePanel.get(i));
             print(refRow, 77, choiceValue);
         }
+
+        fillExit(buildingsChoicePanel);
     }
 
 
@@ -660,6 +664,15 @@ public class GraphicDrawerCLI {
     }
 
 
+    private void fillExit(List<?> list) {
+
+        String exitNumber = "[" + String.valueOf(list.size()) + "]";
+        print(55, 124, exitNumber, RED_C);
+
+        String exit = "Exit";
+        print(55, 130, exit);
+
+    }
 
 
 

@@ -67,7 +67,6 @@ public class CLI implements Client, ServerToClientManager {
 
         this.nextActionRow = -1;
         this.nextActionColumn = -1;
-
     }
 
 
@@ -80,7 +79,7 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void run() {
 
-        Boolean isConnected = false;
+        boolean isConnected = false;
         Socket serverSocket = null;
 
         while( !isConnected ) {
@@ -407,7 +406,7 @@ public class CLI implements Client, ServerToClientManager {
             drawer.savePlayerCardChoice(cardsName, cardsEffect);
         }
 
-        choiceNum = userChoice( cardsName.size() );
+        choiceNum = userChoice(cardsName.size());
 
         clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
@@ -823,8 +822,13 @@ public class CLI implements Client, ServerToClientManager {
             }
             selected = input.nextInt();
 
-            // control if the choice is availabel
-            if( !(selected >= 0 && selected < choicesListSize) ) {
+            // control if the choice is available
+            if(selected == choicesListSize) {
+                clientView.sendCTSEvent(new ClientDisconnectionEvent(nickname));
+                manageEvent(new DisconnectionClientEvent());
+                return -1;
+            }
+            else if( !(selected >= 0 && selected < choicesListSize) ) {
                 System.err.println("Unavailable Choice!");
             }
 

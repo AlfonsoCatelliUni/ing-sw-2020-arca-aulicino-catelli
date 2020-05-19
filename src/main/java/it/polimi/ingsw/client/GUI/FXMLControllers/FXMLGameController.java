@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.scene.control.IntegerField;
 import it.polimi.ingsw.client.ClientJsonHandler;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
@@ -19,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class FXMLGameController {
@@ -273,27 +273,28 @@ public class FXMLGameController {
         }
 
 
-        //at each cell in cellsList assign a setOnMouseClicked action
-        for (Pane cell : cellsList) {
-
-            //highlight the border
-            cell.setOnMouseEntered(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
-            });
-
-            //clear the border
-            cell.setOnMouseExited(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                selectedCell.setStyle("-fx-opacity: 0");
-            });
-
-            //selected cell
-            cell.setOnMouseClicked(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                cellSelectionHandler(selectedCell);
-            });
-        }
+        //moved in method enableCell
+//        //at each cell in cellsList assign a setOnMouseClicked action
+//        for (Pane cell : cellsList) {
+//
+//            //highlight the border
+//            cell.setOnMouseEntered(event -> {
+//                Pane selectedCell = (Pane) event.getSource();
+//                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+//            });
+//
+//            //clear the border
+//            cell.setOnMouseExited(event -> {
+//                Pane selectedCell = (Pane) event.getSource();
+//                selectedCell.setStyle("-fx-opacity: 0");
+//            });
+//
+//            //selected cell
+//            cell.setOnMouseClicked(event -> {
+//                Pane selectedCell = (Pane) event.getSource();
+//                cellSelectionHandler(selectedCell);
+//            });
+//        }
 
     }
 
@@ -401,6 +402,8 @@ public class FXMLGameController {
 
         List<Pane> visibleCells = showAvailableCells(cells);
 
+        enableCells(visibleCells);
+
 
 
         for(Pane cell : visibleCells) {
@@ -408,9 +411,12 @@ public class FXMLGameController {
             cell.setOnMouseClicked(e -> {
 
                 Pane selectedCell = (Pane) e.getSource();
-                clearMouseClick(selectedCell);
 
+
+                //andrà sostituito con l'immagine del pawn
                 selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: red; -fx-border-width: 5");
+                disableCell(selectedCell);
+
 
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
 
@@ -423,9 +429,8 @@ public class FXMLGameController {
                     titleLabel.setText("WAIT UNTIL YOUR TURN");
                     setVisibilityAllCells(false);
                     clientView.sendCTSEvent( new ChosenInitialPawnCellEvent(event.nickname, maleCellSelected.getRow(), maleCellSelected.getColumn(), info.getRow(), info.getColumn()) );
-                    clearMouseClick(visibleCells);
-                    resetStyleCell(cellsList.get(maleCellSelected.getNumber()));
-                    resetStyleCell(selectedCell);
+                    disableCells(visibleCells);
+
                 }
 
             });
@@ -444,17 +449,24 @@ public class FXMLGameController {
         List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cellsAvailableToMove);
 
         List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
 
         for(Pane cell : visibleCells) {
 
             cell.setOnMouseClicked(e -> {
+
+                disableCells(visibleCells);
+
                 Pane selectedCell = (Pane) e.getSource();
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
 
-                titleLabel.setText("WAIT UNTIL YOUR TURN");
-                clientView.sendCTSEvent(new ChosenCellToMoveEvent(event.receiverNickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
-                clearMouseClick(visibleCells);
+                gui.setNextActionRow(info.getRow());
+                gui.setNextActionColumn(info.getColumn());
 
+                titleLabel.setText("");
+                clientView.sendCTSEvent(new ChosenCellToMoveEvent(event.receiverNickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
+
+                //save the new position of the pawn
                 gui.setRowUsedPawn(info.getRow());
                 gui.setColumnUsedPawn(info.getColumn());
             });
@@ -472,24 +484,93 @@ public class FXMLGameController {
         List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cellsAvailableToBuild);
 
         List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
 
         for(Pane cell : visibleCells) {
 
             cell.setOnMouseClicked(e -> {
+
+                disableCells(visibleCells);
+
                 Pane selectedCell = (Pane) e.getSource();
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
 
-                titleLabel.setText("WAIT UNTIL YOUR TURN");
+                titleLabel.setText("");
                 clientView.sendCTSEvent(new ChosenCellToBuildEvent(event.receiverNickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
-                clearMouseClick(visibleCells);
 
-                gui.setRowUsedPawn(info.getRow());
-                gui.setColumnUsedPawn(info.getColumn());
+                gui.setNextActionRow(info.getRow());
+                gui.setNextActionColumn(info.getColumn());
+
+
+
             });
 
         }
 
 
+
+    }
+
+
+    public void chooseCellToDestroy(GivePossibleCellsToDestroyEvent event, int pawnRow, int pawnColumn) {
+
+        titleLabel.setText("CHOOSE CELL TO DESTROY");
+
+        checkValidity(event.isValid);
+
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cells);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+
+                disableCells(visibleCells);
+
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                titleLabel.setText("");
+                clientView.sendCTSEvent(new ChosenCellToDestroyEvent(event.nickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
+
+            });
+
+        }
+    }
+
+
+    public void chooseCellToForce(GivePossibleCellsToForceEvent event, int pawnRow, int pawnColumn) {
+
+        titleLabel.setText("CHOOSE CELL TO FORCE");
+
+        checkValidity(event.isValid);
+
+        List<FormattedSimpleCell> cells = FormattedSimpleCell.generateFromPointList(event.cells);
+
+        List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
+
+        for(Pane cell : visibleCells) {
+
+            cell.setOnMouseClicked(e -> {
+
+                disableCells(visibleCells);
+
+                Pane selectedCell = (Pane) e.getSource();
+                FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
+
+                titleLabel.setText("");
+                clientView.sendCTSEvent(new ChosenCellToForceEvent(event.nickname, pawnRow, pawnColumn, info.getRow(), info.getColumn()));
+
+
+                //save the new position of the pawn
+                gui.setRowUsedPawn(info.getRow());
+                gui.setColumnUsedPawn(info.getColumn());
+            });
+
+        }
 
     }
 
@@ -509,16 +590,20 @@ public class FXMLGameController {
         }
 
         List<Pane> visibleCells = showAvailableCells(cells);
+        enableCells(visibleCells);
 
         for(Pane cell : visibleCells) {
 
             cell.setOnMouseClicked(e -> {
+                //first i disable cells
+                disableCells(visibleCells);
 
                 Pane selectedCell = (Pane) e.getSource();
                 FormattedSimpleCell info = (FormattedSimpleCell) selectedCell.getUserData();
                 clientView.sendCTSEvent((new ChosenPawnToUseEvent(event.nickname, info.getRow(), info.getColumn())));
+                gui.setRowUsedPawn(info.getRow());
+                gui.setColumnUsedPawn(info.getColumn());
 
-                clearMouseClick(visibleCells);
             });
 
         }
@@ -536,64 +621,48 @@ public class FXMLGameController {
         for (int i = 0; i < event.actions.size(); i++) {
 
             actionsLabel.get(i).setText(event.actions.get(i));
+            actionsLabel.get(i).setUserData(event.actions.get(i));
             actionsLabel.get(i).setVisible(true);
             actionsPane.get(i).setVisible(true);
-            int finalI = i;
+            enableLabel(actionsLabel.get(i));
 
-            actionsLabel.get(i).setOnMouseEntered(e -> {
-                Label actionPane = (Label) e.getSource();
-                actionPane.setStyle("-fx-opacity: 1; -fx-border-color: black; -fx-border-width: 10");
-            });
-
-            //clear the border
-            actionsLabel.get(i).setOnMouseExited(e -> {
-                Label actionPane = (Label) e.getSource();
-                actionPane.setStyle("-fx-opacity: 0");
-            });
-
-            actionsPane.get(i).setOnMouseEntered(e -> {
-                Pane actionPane = (Pane) e.getSource();
-                actionPane.setStyle("-fx-opacity: 1; -fx-border-color: black; -fx-border-width: 10");
-            });
-
-            //clear the border
-            actionsPane.get(i).setOnMouseExited(e -> {
-                Pane actionPane = (Pane) e.getSource();
-                actionPane.setStyle("-fx-opacity: 0");
-            });
 
             actionsLabel.get(i).setOnMouseClicked(mouseEvent -> {
 
-                switch (actionsLabel.get(finalI).getText()) {
+                Label labelSelected = (Label) mouseEvent.getSource();
+                String actionSelected = (String) labelSelected.getUserData();
+
+                switch (actionSelected) {
 
                     case "Move":
                         clientView.sendCTSEvent(new ChosenMoveActionEvent(event.receiverNickname, "Move", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
                         clearMouseClick(actionsPane);
-                        clearLabels(actionsLabel,false);
+                        disableLabels(actionsLabel);
                         break;
 
                     case "Build":
                         clientView.sendCTSEvent(new ChosenBuildActionEvent(event.receiverNickname, "Build", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
                         clearMouseClick(actionsPane);
-                        clearLabels(actionsLabel,false);
+                        disableLabels(actionsLabel);
                         break;
 
                     case "Force":
                         clientView.sendCTSEvent(new ChosenForceActionEvent(event.receiverNickname, "Force", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
                         clearMouseClick(actionsPane);
-                        clearLabels(actionsLabel,false);
+                        disableLabels(actionsLabel);
                         break;
 
                     case "Destroy":
                         clientView.sendCTSEvent(new ChosenDestroyActionEvent(event.receiverNickname, "Destroy", gui.getRowUsedPawn(), gui.getColumnUsedPawn()));
                         clearMouseClick(actionsPane);
-                        clearLabels(actionsLabel,false);
+                        disableLabels(actionsLabel);
                         break;
 
                     case "End turn":
                         clientView.sendCTSEvent(new ChosenFinishActionEvent(event.receiverNickname, "End turn"));
                         clearMouseClick(actionsPane);
-                        clearLabels(actionsLabel,true);
+                        disableLabels(actionsLabel);
+                        titleLabel.setText("-- WAIT UNTIL YOUR NEXT TURN --");
                         break;
 
                     default:
@@ -601,6 +670,43 @@ public class FXMLGameController {
                 }
 
             });
+        }
+
+    }
+
+
+    public void chooseLevelBuilding(GivePossibleBuildingsEvent event){
+
+        checkValidity(event.isValid);
+
+        List<Integer> buildingsLevel = event.buildings;
+        int selectedLevel = 0;
+
+        if(buildingsLevel.size() > 1) {
+
+            titleLabel.setText("Choose the building to build on the selected cell");
+
+            for (int i = 0; i<buildingsLevel.size(); i++){
+                actionsLabel.get(i).setText(event.buildings.get(i).toString());
+                actionsLabel.get(i).setUserData(event.buildings.get(i));
+                actionsLabel.get(i).setVisible(true);
+                actionsPane.get(i).setVisible(true);
+                enableLabel(actionsLabel.get(i));
+
+                actionsLabel.get(i).setOnMouseClicked(e -> {
+                    //first i disable labels
+                    disableLabels(actionsLabel);
+
+                    Label labelSelected = (Label) e.getSource();
+                    Integer chosenLevel = (Integer) labelSelected.getUserData();
+
+                    clientView.sendCTSEvent(new ChosenBuildingEvent(event.receiverNickname, chosenLevel, gui.getRowUsedPawn(), gui.getColumnUsedPawn(), gui.getNextActionRow(), gui.getNextActionColumn()));
+                });
+            }
+
+        } else {
+            // if the size is 1
+            clientView.sendCTSEvent(new ChosenBuildingEvent(event.receiverNickname, buildingsLevel.get(selectedLevel), gui.getRowUsedPawn(), gui.getColumnUsedPawn(), gui.getNextActionRow(), gui.getNextActionColumn()));
         }
 
     }
@@ -636,9 +742,10 @@ public class FXMLGameController {
         }
     }
 
-    public void setVisibilityAllCells(Boolean visibilityAllCells) {
+
+    public void setVisibilityAllCells(Boolean visibility) {
         for (Pane cell : cellsList){
-            cell.setVisible(visibilityAllCells);
+            cell.setVisible(visibility);
         }
     }
 
@@ -656,13 +763,10 @@ public class FXMLGameController {
 
     private void clearMouseClick(Pane cell){
         cell.setOnMouseClicked(e -> {});
-        cell.setOnMouseEntered(e -> {});
-        cell.setOnMouseExited(e -> {});
     }
 
 
     public void setBoardDimensions() {
-
     }
 
     public double getControlBoxSectionH() {
@@ -680,16 +784,102 @@ public class FXMLGameController {
 
     }
 
-    public void clearLabels(List<Label> actionsLabel, boolean isEndTurn) {
+    //MARK : Graphic Methods =================================================================================
 
+
+    private void clearLabels(List<Label> actionsLabel) {
         for (Label label : actionsLabel) {
-
             label.setText("");
+            label.setOnMouseEntered(e -> {});
 
         }
 
-        if(isEndTurn)
-            titleLabel.setText("-- WAIT UNTIL YOUR NEXT TURN --");
+    }
+
+
+    private void enableCells(List<Pane> cells){
+        for (Pane cell : cells){
+
+            cell.setOnMouseEntered(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+            });
+
+            //clear the border
+            cell.setOnMouseExited(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 0");
+            });
+
+
+        }
+    }
+
+
+    private void enableLabels(List<Label> labels){
+        for (Label label  : labels) {
+
+            //highlight the border
+            label.setOnMouseEntered(event -> {
+                Label actionLabel = (Label) event.getSource();
+                actionLabel.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+            });
+
+            //clear the border
+            label.setOnMouseExited(event -> {
+                Label actionLabel = (Label) event.getSource();
+                actionLabel.setStyle("-fx-opacity: 0");
+            });
+
+        }
+
+    }
+
+
+    private void enableLabel(Label label){
+        //highlight the border
+        label.setOnMouseEntered(event -> {
+            Label actionLabel = (Label) event.getSource();
+            actionLabel.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+        });
+
+        //clear the border
+        label.setOnMouseExited(event -> {
+            Label actionLabel = (Label) event.getSource();
+            actionLabel.setStyle("");
+        });
+
+    }
+
+
+    private void disableLabels(List<Label> labels){
+        for (Label label : labels){
+            label.setText("");
+            label.setStyle("");
+            label.setOnMouseClicked(e -> {});
+            label.setOnMouseEntered(e -> {});
+            label.setOnMouseExited(e -> {});
+
+        }
+    }
+
+
+    private void disableCells(List<Pane> cells){
+        for(Pane cell : cells){
+            cell.setOnMouseClicked(e -> {});
+            cell.setOnMouseEntered(e -> {});
+            cell.setOnMouseExited(e -> {});
+            cell.setStyle("");
+
+        }
+
+    }
+
+
+    private void disableCell(Pane cell){
+        cell.setOnMouseClicked(e -> {});
+        cell.setOnMouseEntered(e -> {});
+        cell.setOnMouseExited(e -> {});
 
     }
 }

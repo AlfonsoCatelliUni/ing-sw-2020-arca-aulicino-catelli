@@ -150,6 +150,26 @@ public class FXMLChooseCardController {
                 card0.setOnMouseClicked(this::sendCard);
                 card1.setOnMouseClicked(this::sendCard);
                 card2.setOnMouseClicked(this::sendCard);
+
+                //graphic effect
+                card0.setOnMouseEntered(e -> {
+                    card0.setOpacity(0.7);
+                });
+                card0.setOnMouseExited(e -> {
+                    card0.setOpacity(1);
+                });
+                card1.setOnMouseEntered(e -> {
+                    card1.setOpacity(0.7);
+                });
+                card1.setOnMouseExited(e -> {
+                    card1.setOpacity(1);
+                });
+                card2.setOnMouseEntered(e -> {
+                    card2.setOpacity(0.7);
+                });
+                card2.setOnMouseExited(e -> {
+                    card2.setOpacity(1);
+                });
                 break;
 
             case 2:
@@ -166,6 +186,28 @@ public class FXMLChooseCardController {
 
                 card0.setOnMouseClicked(this::sendCard);
                 card2.setOnMouseClicked(this::sendCard);
+
+                //graphic effect
+                card0.setOnMouseEntered(e -> {
+                    card0.setOpacity(0.7);
+                });
+                card0.setOnMouseExited(e -> {
+                    card0.setOpacity(1);
+                });
+                card2.setOnMouseEntered(e -> {
+                    card2.setOpacity(0.7);
+                });
+                card2.setOnMouseExited(e -> {
+                    card2.setOpacity(1);
+                });
+
+                //graphic effect
+                card1.setOnMouseEntered(e -> {
+                    card1.setOpacity(0.7);
+                });
+                card1.setOnMouseExited(e -> {
+                    card1.setOpacity(1);
+                });
                 break;
 
             case 1:

@@ -32,7 +32,7 @@ public interface ServerToClientManager {
 
     void manageEvent(ClosedWaitingRoomEvent event);
 
-    void manageEvent(RoomNotFilled event);
+    void manageEvent(RoomNotFilledEvent event);
 
     void manageEvent(AskInitPawnsEvent event);
 

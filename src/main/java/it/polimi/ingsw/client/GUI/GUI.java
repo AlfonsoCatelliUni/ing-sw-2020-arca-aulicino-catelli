@@ -9,11 +9,8 @@ import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -72,6 +69,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     public void run() {
         launch();
     }
+
 
     @Override
     public void start(Stage stage) {
@@ -248,11 +246,33 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(DisconnectionClientEvent event) {
 
+        System.out.println("RECEIVED DisconnectionClientEvent ");
+
+        Platform.runLater( () -> {
+            // TODO: mettere variabile lo stage del select number
+            stage.close();
+
+            Dialog.displayExit("YOU HAVE BEEN DISCONNECTED");
+        });
+
+
+
     }
 
 
     @Override
     public void manageEvent(OneClientDisconnectedEvent event) {
+
+        System.out.println(" RECEIVED OneClientDisconnectedEvent ");
+
+        Platform.runLater( () -> {
+
+            Dialog.display(event.disconnected + "is disconnected");
+
+            lobbyController.fillNicknames(event.connectedPlayers);
+
+        });
+
 
     }
 
@@ -260,17 +280,48 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(UnableToEnterWaitingRoomEvent event) {
 
+        System.out.println(" RECEIVED UnableToEnterWaitingRoomEvent ");
+
+        Platform.runLater( () -> {
+
+            stage.close();
+
+            Dialog.displayExit("THE WAITING ROOM IS FILLED\n YOU HAVE BEEN DISCONNECTED ");
+
+        });
+
+
+
     }
 
 
     @Override
-    public void manageEvent(RoomNotFilled event) {
+    public void manageEvent(RoomNotFilledEvent event) {
+
+        System.out.println(" RECEIVED RoomNotFilledEvent ");
+
+        Platform.runLater( () -> {
+
+            stage.close();
+
+            Dialog.displayExit(event.message + "YOU HAVE BEEN DISCONNECTED" );
+
+        });
+
 
     }
 
 
     @Override
     public void manageEvent(PlainTextEvent event) {
+
+        System.out.println("RECEIVED PlainTextEvent ");
+
+        Platform.runLater( () -> {
+
+            Dialog.display(event.message);
+
+        });
 
     }
 
@@ -394,21 +445,26 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED GivePossibleActionsEvent");
 
-        Platform.runLater(() -> gameSceneController.chooseAction(event));
+        Platform.runLater( () -> gameSceneController.chooseAction(event) );
 
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
-        gameSceneController.chooseCellToMove(event, rowUsedPawn, columnUsedPawn);
+
+        System.out.println("RECEIVED GivePossibleCellsToMoveEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToMove(event, rowUsedPawn, columnUsedPawn) );
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
 
-        gameSceneController.chooseCellToBuild(event, rowUsedPawn, columnUsedPawn);
+        System.out.println("RECEIVED GivePossibleCellsToBuildEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToBuild(event, rowUsedPawn, columnUsedPawn) );
 
     }
 
@@ -416,11 +472,18 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleBuildingsEvent event) {
 
+        System.out.println("RECEIVED GivePossibleBuildingsEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseLevelBuilding(event));
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToDestroyEvent event) {
+
+        System.out.println("RECEIVED GivePossibleCellsToDestroyEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToDestroy(event, rowUsedPawn, columnUsedPawn));
 
     }
 
@@ -428,17 +491,28 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
 
+        System.out.println("RECEIVED GivePossibleCellsToForceEvent");
+
+        Platform.runLater( () -> gameSceneController.chooseCellToForce(event, rowUsedPawn, columnUsedPawn));
+
+
     }
 
 
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
 
+        System.out.println("RECEIVED LosingByNoActionEvent");
+
+        //TODO : creare losing e winning scene
+
     }
 
 
     @Override
     public void manageEvent(EndGameSTCEvent event) {
+
+        System.out.println("RECEIVED EndGameSTCEvent");
 
     }
 

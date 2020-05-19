@@ -254,7 +254,7 @@ public class Controller implements Observer, ClientToServerManager {
 
                 if(preGameLobby != null && !preGameLobby.isClosed()) {
 
-                        virtualView.sendMessage(new RoomNotFilled("Room Not Filled In Time!"));
+                        virtualView.sendMessage(new RoomNotFilledEvent("Room Not Filled In Time!"));
 
                 }
             }

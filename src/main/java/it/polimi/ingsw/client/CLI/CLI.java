@@ -12,7 +12,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -263,7 +262,7 @@ public class CLI implements Client, ServerToClientManager {
 
 
     @Override
-    public void manageEvent(RoomNotFilled event) {
+    public void manageEvent(RoomNotFilledEvent event) {
         System.out.println(event.message);
         System.out.println();
         manageEvent(new DisconnectionClientEvent());

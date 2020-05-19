@@ -271,7 +271,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
             Dialog.display(event.disconnected + "is disconnected");
 
-            lobbyController.fillNicknames(event.connectedPlayers);
+            if (lobbyController != null) {
+                lobbyController.fillNicknames(event.connectedPlayers);
+            }
 
         });
 

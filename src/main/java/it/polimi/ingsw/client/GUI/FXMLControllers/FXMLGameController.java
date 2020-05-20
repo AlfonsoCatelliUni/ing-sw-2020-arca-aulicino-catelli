@@ -712,6 +712,29 @@ public class FXMLGameController {
     }
 
 
+    public void deleteOpponentPlayer(String nickname) {
+
+        for (int i = 0; i < playersNicknames.size(); i++) {
+
+            if(playersNicknames.get(i).getText().equals(nickname)) {
+
+                //10
+                playersNicknames.get(i).setText("----------");
+
+                //5
+                playersColors.get(i).setText("-----");
+
+                //30
+                playersEffects.get(i).setText("------------------------------");
+                break;
+
+            }
+
+        }
+
+    }
+
+
     private void cellSelectionHandler(Pane cell) {
         FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
         System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());

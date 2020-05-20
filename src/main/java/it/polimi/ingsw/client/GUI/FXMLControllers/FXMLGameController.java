@@ -17,10 +17,9 @@ import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 public class FXMLGameController {
 
@@ -106,6 +105,9 @@ public class FXMLGameController {
 
     @FXML
     private GridPane gameBoardGrid;
+
+    @FXML
+    private GridPane infoGrid;
 
 
     private ClientView clientView;
@@ -228,6 +230,18 @@ public class FXMLGameController {
         initializeCells();
         initializeInfoGrid();
         initializeActionsGrid();
+
+
+        Image imageGrid = new Image(getClass().getResourceAsStream("/Graphics/backgroundPanel.png"));
+
+        Background backgroundGrid = new Background(
+                new BackgroundImage(imageGrid, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        new BackgroundSize(infoGrid.getWidth(), infoGrid.getHeight(),
+                                true, true, true, true)));
+
+        infoGrid.setBackground(backgroundGrid);
+
+
 
     }
 

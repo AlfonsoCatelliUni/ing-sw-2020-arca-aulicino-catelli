@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class FXMLEndGameController {
+public class FXMLVictoryController {
 
     private GUI gui;
 

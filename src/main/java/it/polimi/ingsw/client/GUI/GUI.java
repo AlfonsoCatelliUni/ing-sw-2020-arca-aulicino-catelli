@@ -62,7 +62,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private FXMLChooseCardController chooseCardController;
 
-    private FXMLEndGameController endGameController;
+    private FXMLVictoryController endGameController;
 
 
     // MARK : Constructor and Run ======================================================================================

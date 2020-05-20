@@ -18,6 +18,9 @@ public class FXMLVictoryController {
     private Label exitLabel;
 
 
+    //MARK : Initialization Methods =================================================================================
+
+
     public void initialize(){
         
         //initialize exitButton
@@ -25,10 +28,10 @@ public class FXMLVictoryController {
 
     }
 
-    public void initController(Stage stage, String Winnernickname){
-        this.stage = stage;
 
-        winnerLabel.setText(Winnernickname);
+    public void initController(Stage stage, String winnerNickname){
+        this.stage = stage;
+        winnerLabel.setText(winnerNickname);
 
     }
 

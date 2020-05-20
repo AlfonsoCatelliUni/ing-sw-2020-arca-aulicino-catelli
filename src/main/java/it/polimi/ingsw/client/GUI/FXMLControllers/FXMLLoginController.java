@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BackgroundImage;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -36,7 +38,6 @@ public class FXMLLoginController {
 
 
     private void initializeTextField() {
-
         /*
         UsernameTextField.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 15

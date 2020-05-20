@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import it.polimi.ingsw.client.ClientJsonHandler;
-import it.polimi.ingsw.client.FormattedPlayerInfo;
-import it.polimi.ingsw.client.FormattedSimpleCell;
+import it.polimi.ingsw.JsonHandler;
+import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.*;
 import it.polimi.ingsw.events.STCEvents.*;
@@ -272,6 +271,18 @@ public class FXMLGameController {
     private ImageView pawn24;
 
 
+    private Image blockLevel1;
+    private Image blockLevel2;
+    private Image blockLevel3;
+
+    private Image blueMale;
+    private Image blueFemale;
+    private Image greyMale;
+    private Image greyFemale;
+    private Image whiteMale;
+    private Image whiteFemale;
+
+
 
     @FXML
     private HBox ControlsBoxSection;
@@ -385,6 +396,8 @@ public class FXMLGameController {
         this.clientView = gui.getClientView();
         this.stage = stage;
 
+
+
         List<FormattedPlayerInfo> infoPlayers = ClientJsonHandler.generatePlayersList(info);
 
 
@@ -412,6 +425,17 @@ public class FXMLGameController {
         this.blockImageList = new ArrayList<>();
         this.domeImageList = new ArrayList<>();
         this.pawnImageList = new ArrayList<>();
+
+        this.blockLevel1 = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/BlockLevel1.png"));
+        this.blockLevel2 = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/BlockLevel2.png"));
+        this.blockLevel3 = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/BlockLevel3.png"));
+
+        this.blueMale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/blueMalePawn.png"));
+        this.blueFemale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/blueFemalePawn.png"));
+        this.greyMale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/greyMalePawn.png"));
+        this.greyFemale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/greyFemalePawn.png"));
+        this.whiteMale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/whiteMalePawn.png"));
+        this.whiteFemale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/whiteFemalePawn.png"));
 
         this.maleCellSelected = null;
 
@@ -576,7 +600,9 @@ public class FXMLGameController {
         for(int row = 0; row < 5; row++) {
             for(int column = 0; column < 5; column++) {
                 index = (row * 5) + column;
+                domeImageList.get(index).setVisible(false);
                 domeImageList.get(index).setUserData( new FormattedSimpleCell(row, column) );
+                domeImageList.get(index).setImage( new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/Dome.png")) );
             }
         }
 
@@ -1218,6 +1244,106 @@ public class FXMLGameController {
         cell.setOnMouseClicked(e -> {});
         cell.setOnMouseEntered(e -> {});
         cell.setOnMouseExited(e -> {});
+
+    }
+
+
+    public void updateCells(String jsonInfo) {
+
+        List<FormattedCellInfo> cellsInfo = JsonHandler.generateCellsList(jsonInfo);
+
+        int index;
+
+        for( FormattedCellInfo cell : cellsInfo ) {
+            index = cell.getCellNumber();
+
+            //update dome and blocks
+            if( cell.getRoofInfo().getSecond() ) {
+                domeImageList.get(index).setVisible(true);
+                updateHeight(index, cell.getHeight()-1 );
+            }
+            else {
+                updateHeight(index, cell.getHeight() );
+            }
+
+            //update pawn
+            if( cell.getPawnHere() ) {
+                updatePawn(index, cell.getPawnInfo());
+            }
+            else {
+                pawnImageList.get(index).setImage(null);
+            }
+
+        }
+
+
+    }
+
+
+    private void updateHeight(int index, int height) {
+
+        switch (height) {
+
+            case 1:
+                blockImageList.get(index).setImage(blockLevel1);
+                 break;
+
+            case 2:
+                blockImageList.get(index).setImage(blockLevel2);
+                break;
+
+            case 3:
+                blockImageList.get(index).setImage(blockLevel3);
+                break;
+
+            default:
+                blockImageList.get(index).setImage(null);
+                break;
+
+        }
+
+    }
+
+
+    private void updatePawn(int index, Couple<String, String> pawnInfo) {
+
+        String color = pawnInfo.getFirst();
+        String sex = pawnInfo.getSecond();
+
+        switch (color) {
+
+            case "BLUE" :
+                if(sex.equals("FEMALE")) {
+                    pawnImageList.get(index).setImage(blueFemale);
+                }
+                else {
+                    pawnImageList.get(index).setImage(blueMale);
+                }
+                break;
+
+            case "WHITE" :
+                if(sex.equals("FEMALE")) {
+                    pawnImageList.get(index).setImage(whiteFemale);
+                }
+                else {
+                    pawnImageList.get(index).setImage(whiteMale);
+                }
+                break;
+
+            case "GREY" :
+                if(sex.equals("FEMALE")) {
+                    pawnImageList.get(index).setImage(greyFemale);
+                }
+                else {
+                    pawnImageList.get(index).setImage(greyMale);
+                }
+                break;
+
+            default:
+                pawnImageList.get(index).setImage(null);
+                break;
+
+        }
 
     }
 

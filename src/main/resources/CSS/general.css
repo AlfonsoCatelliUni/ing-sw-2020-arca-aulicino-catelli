@@ -9,5 +9,9 @@ styling JavaFX using CSS : https://www.callicoder.com/javafx-css-tutorial/
     -fx-font-family: monospace;
 }
 
+.nickname-text-field {
+    -fx-background-image: url("../Graphics/Other/newNicknameBG.png");
+}
+
 
 

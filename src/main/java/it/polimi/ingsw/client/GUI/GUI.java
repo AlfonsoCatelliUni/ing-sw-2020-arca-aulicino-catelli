@@ -335,7 +335,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(NotifyStatusEvent event) {
+        System.out.println("RECEIVED NotifyStatus");
 
+        Platform.runLater(() -> {
+            gameSceneController.updateCells(event.status);
+        });
     }
 
 
@@ -510,44 +514,49 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED LosingByNoActionEvent");
 
-        //this player lost the game
-        if(event.nickname.equals(nickname)) {
+        Platform.runLater(() -> {
 
+            //this player lost the game
+            if(event.nickname.equals(nickname)) {
 
-            Stage losingStage = new Stage();
-            losingStage.setTitle("Santorini");
+                Stage losingStage = new Stage();
+                losingStage.setTitle("Santorini");
 
-            Parent root = null;
-            FXMLLoseGameController controller;
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoseEndGameScene.fxml") );
-                root = fxmlLoader.load();
+                Parent root = null;
+                FXMLLoseGameController controller;
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoseEndGameScene.fxml") );
+                    root = fxmlLoader.load();
 
-                controller = fxmlLoader.getController();
-                controller.initLoseController(this, losingStage, stage);
-                controller.showLosingByNoAction(nickname);
+                    controller = fxmlLoader.getController();
+                    controller.initLoseController(this, losingStage, stage);
+                    controller.showLosingByNoAction();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                assert root != null;
+                Scene scene = new Scene(root);
+
+                losingStage.setScene(scene);
+                losingStage.setResizable(false);
+
+                losingStage.show();
+
+            }
+            //tell this player that an opponent player lost the game
+            else {
+
+                gameSceneController.deleteOpponentPlayer(event.nickname);
+
+                //TODO : rimuovere i pawns dalla board
+
             }
 
-            assert root != null;
-            Scene scene = new Scene(root);
+        });
 
-            losingStage.setScene(scene);
-            losingStage.setResizable(false);
 
-            losingStage.show();
-
-        }
-        //tell this player that an opponent player lost the game
-        else {
-
-            gameSceneController.deleteOpponentPlayer(event.nickname);
-
-            //TODO : rimuovere i pawns dalla board
-
-        }
 
     }
 
@@ -595,7 +604,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
                 controller = fxmlLoader.getController();
                 controller.initLoseController(this, losingStage, stage);
-                controller.showLosingEndGame(nickname, event.winner);
+                controller.showLosingEndGame(event.winner);
 
             } catch (IOException e) {
                 e.printStackTrace();

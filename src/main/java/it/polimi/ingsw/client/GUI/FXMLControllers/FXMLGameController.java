@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.scene.control.IntegerField;
 import it.polimi.ingsw.client.ClientJsonHandler;
 import it.polimi.ingsw.client.FormattedPlayerInfo;
 import it.polimi.ingsw.client.FormattedSimpleCell;
@@ -286,6 +285,12 @@ public class FXMLGameController {
     @FXML
     private GridPane infoGrid;
 
+    @FXML
+    private AnchorPane rightPanel;
+
+    @FXML
+    private AnchorPane infoAnchor;
+
 
     private ClientView clientView;
 
@@ -416,14 +421,23 @@ public class FXMLGameController {
         initializeActionsGrid();
 
 
-        Image imageGrid = new Image(getClass().getResourceAsStream("/Graphics/backgroundPanel.png"));
+        Image imageGrid = new Image(getClass().getResourceAsStream("/Graphics/GameScene/backgroundPanel.png"));
 
         Background backgroundGrid = new Background(
                 new BackgroundImage(imageGrid, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
-                        new BackgroundSize(infoGrid.getWidth(), infoGrid.getHeight(),
+                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,
+                                true, true, false, false)));
+
+        infoAnchor.setBackground(backgroundGrid);
+
+        Image imagePanel = new Image(getClass().getResourceAsStream("/Graphics/GameScene/BackgroundRIghtPanel.png"));
+
+        Background backgroundPanel = new Background(
+                new BackgroundImage(imagePanel, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        new BackgroundSize(rightPanel.getWidth(), rightPanel.getHeight(),
                                 true, true, true, true)));
 
-        infoGrid.setBackground(backgroundGrid);
+        rightPanel.setBackground(backgroundPanel);
 
 
 

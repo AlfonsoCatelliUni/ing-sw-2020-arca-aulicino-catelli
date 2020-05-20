@@ -365,7 +365,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
             Scene scene = new Scene(root);
 
             stage.setScene(scene);
-            stage.setResizable(false);
+            stage.setMinHeight(900);
+            stage.setMinWidth(1110);
+            stage.setResizable(true);
 
             stage.show();
         });

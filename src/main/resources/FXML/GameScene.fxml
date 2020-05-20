@@ -114,201 +114,201 @@
                                  <children>
                                     <AnchorPane prefHeight="120.0" prefWidth="120.0">
                                        <children>
+                                          <ImageView fx:id="blocks0" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <ImageView fx:id="pawn0" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <ImageView fx:id="dome0" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                          <ImageView fx:id="blocks0" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Pane fx:id="cell0" opacity="0.0" prefHeight="120.0" prefWidth="120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1">
                                        <children>
+                                          <ImageView fx:id="blocks1" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <ImageView fx:id="pawn1" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <ImageView fx:id="dome1" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                          <ImageView fx:id="blocks1" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Pane fx:id="cell1" opacity="0.0" prefHeight="120.0" prefWidth="120.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2">
                                        <children>
+                                          <ImageView fx:id="blocks2" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <ImageView fx:id="pawn2" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <ImageView fx:id="dome2" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                          <ImageView fx:id="blocks2" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Pane fx:id="cell2" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
                                        <children>
+                                          <ImageView fx:id="blocks3" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn3" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome3" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks3" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell3" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4">
                                        <children>
+                                          <ImageView fx:id="blocks4" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn4" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome4" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks4" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell4" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
+                                          <ImageView fx:id="blocks5" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn5" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome5" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks5" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell5" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
+                                          <ImageView fx:id="blocks6" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn6" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome6" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks6" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell6" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
+                                          <ImageView fx:id="blocks7" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn7" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome7" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks7" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell7" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <children>
+                                          <ImageView fx:id="blocks8" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn8" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome8" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks8" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell8" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                        <children>
+                                          <ImageView fx:id="blocks9" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn9" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome9" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks9" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell9" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                                        <children>
+                                          <ImageView fx:id="blocks10" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn10" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome10" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks10" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell10" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <children>
+                                          <ImageView fx:id="blocks11" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn11" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome11" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks11" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell11" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <children>
+                                          <ImageView fx:id="blocks12" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn12" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome12" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks12" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell12" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                                        <children>
+                                          <ImageView fx:id="blocks13" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn13" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome13" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks13" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell13" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
                                        <children>
+                                          <ImageView fx:id="blocks14" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn14" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome14" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks14" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell14" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                                        <children>
+                                          <ImageView fx:id="blocks15" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn15" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome15" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks15" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell15" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <children>
+                                          <ImageView fx:id="blocks16" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn16" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome16" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks16" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell16" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                        <children>
+                                          <ImageView fx:id="blocks17" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn17" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome17" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks17" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell17" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
                                        <children>
+                                          <ImageView fx:id="blocks18" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn18" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome18" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks18" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell18" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="3">
                                        <children>
+                                          <ImageView fx:id="blocks19" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn19" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome19" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks19" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell19" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                                        <children>
+                                          <ImageView fx:id="blocks20" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn20" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome20" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks20" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell20" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                        <children>
+                                          <ImageView fx:id="blocks21" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn21" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome21" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks21" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell21" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                        <children>
+                                          <ImageView fx:id="blocks22" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn22" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome22" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks22" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell22" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                                        <children>
+                                          <ImageView fx:id="blocks23" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn23" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome23" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks23" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell23" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="4">
                                        <children>
+                                          <ImageView fx:id="blocks24" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="pawn24" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <ImageView fx:id="dome24" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
-                                          <ImageView fx:id="blocks24" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
                                           <Pane fx:id="cell24" opacity="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>

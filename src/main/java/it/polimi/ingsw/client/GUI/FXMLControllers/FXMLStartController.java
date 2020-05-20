@@ -30,6 +30,8 @@ public class FXMLStartController {
 
     private void initializeButton() {
 
+        //startGameButton.setDefaultButton(true);
+
         startGameButton.setOnMouseClicked(mouseEvent -> {
 
             Parent root = null;

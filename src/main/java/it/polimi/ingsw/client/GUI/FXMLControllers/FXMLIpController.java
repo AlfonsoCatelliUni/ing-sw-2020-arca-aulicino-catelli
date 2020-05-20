@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 
 import java.io.IOException;
@@ -43,6 +44,8 @@ public class FXMLIpController {
 
          */
 
+        //ConnectButton.setDefaultButton(true);
+
         ConnectButton.setOnMouseClicked(mouseEvent -> {
 
             ConnectButton.setDisable(true);
@@ -67,6 +70,67 @@ public class FXMLIpController {
             new Thread( () -> startConnection(gui, ip, portNumber) ).start();
 
         });
+
+
+        //Just to catch the enter key
+        IPTextField.setOnKeyPressed(keyEvent -> {
+
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+
+                String ip = IPTextField.getText();
+                String port = PortTextField.getText();
+
+                if (!isValidIP(ip)) {
+                    Dialog.display("Enter a valid IP address");
+                    ConnectButton.setDisable(false);
+                    return;
+                }
+
+                if (!isValidPort(port)) {
+                    Dialog.display("Enter a valid port number");
+                    ConnectButton.setDisable(false);
+                    return;
+                }
+
+                int portNumber = Integer.parseInt(port);
+
+                new Thread( () -> startConnection(gui, ip, portNumber) ).start();
+
+
+            }
+
+        });
+
+
+        PortTextField.setOnKeyPressed(keyEvent -> {
+
+            if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+
+                String ip = IPTextField.getText();
+                String port = PortTextField.getText();
+
+                if (!isValidIP(ip)) {
+                    Dialog.display("Enter a valid IP address");
+                    ConnectButton.setDisable(false);
+                    return;
+                }
+
+                if (!isValidPort(port)) {
+                    Dialog.display("Enter a valid port number");
+                    ConnectButton.setDisable(false);
+                    return;
+                }
+
+                int portNumber = Integer.parseInt(port);
+
+                new Thread( () -> startConnection(gui, ip, portNumber) ).start();
+
+
+            }
+
+        });
+
+
 
     }
 

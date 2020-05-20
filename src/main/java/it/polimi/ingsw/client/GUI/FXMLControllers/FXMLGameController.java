@@ -1261,9 +1261,10 @@ public class FXMLGameController {
 
             //update dome and blocks
             if( cell.getRoofInfo().getSecond() ) {
-                updateHeight(index, cell.getHeight()-1 );
-                domeImageList.get(index).setImage( blockDome );
+                updateHeight(index, cell.getHeight()-1);
+                domeImageList.get(index).setImage(blockDome);
                 domeImageList.get(index).setVisible(true);
+                //blockImageList.get(index).setVisible(false);
 
             }
             else {

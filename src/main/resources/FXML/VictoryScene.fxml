@@ -13,37 +13,37 @@
             <Image url="@../Graphics/SceneBackground/victoryBackground.png" />
          </image>
       </ImageView>
-      <Label layoutX="216.0" layoutY="382.0" prefHeight="96.0" prefWidth="369.0" text="YOU ARE THE WINNER!">
+      <Label layoutX="216.0" layoutY="14.0" prefHeight="96.0" prefWidth="369.0" text="YOU ARE THE WINNER!">
          <font>
             <Font size="34.0" />
          </font>
       </Label>
-      <ImageView fitHeight="128.0" fitWidth="170.0" layoutX="8.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="128.0" fitWidth="170.0" layoutX="-34.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true" rotate="57.3">
          <image>
             <Image url="@../Graphics/Other/endgame_victorytrumpets.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="148.0" fitWidth="173.0" layoutX="660.0" layoutY="366.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="148.0" fitWidth="173.0" layoutX="709.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true" rotate="-55.3">
          <image>
             <Image url="@../Graphics/Other/endgame_victorytrumpetsreverse.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="335.0" fitWidth="347.0" layoutX="453.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="335.0" fitWidth="347.0" layoutX="453.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphics/Other/endgame_victorywin.png" />
          </image>
       </ImageView>
-      <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="518.0" layoutY="181.0" prefHeight="117.0" prefWidth="179.0" text="nickname" textAlignment="CENTER">
+      <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="518.0" layoutY="181.0" prefHeight="117.0" prefWidth="179.0" text="nickname" textAlignment="CENTER" visible="false">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <ImageView fitHeight="49.0" fitWidth="100.0" layoutX="328.0" layoutY="514.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="49.0" fitWidth="100.0" layoutX="258.0" layoutY="537.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphics/Other/blueButton.png" />
          </image>
       </ImageView>
-      <Label fx:id="exitLabel" alignment="CENTER" layoutX="333.0" layoutY="519.0" prefHeight="35.0" prefWidth="79.0" text="EXIT" textAlignment="CENTER" textFill="WHITE">
+      <Label fx:id="exitLabel" alignment="CENTER" layoutX="263.0" layoutY="542.0" prefHeight="35.0" prefWidth="79.0" text="EXIT" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>

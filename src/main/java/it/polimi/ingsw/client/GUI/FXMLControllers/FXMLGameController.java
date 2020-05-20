@@ -29,7 +29,6 @@ public class FXMLGameController {
 
     private Stage stage;
 
-    private List<Pane> cellsList;
 
     private List<Label> playersNicknames;
 
@@ -41,6 +40,8 @@ public class FXMLGameController {
 
     private List<Pane> actionsPane;
 
+
+    private List<Pane> cellsList;
     // 0 ROW ==================================================================================
     @FXML
     private Pane cell0;
@@ -96,6 +97,182 @@ public class FXMLGameController {
     private Pane cell23;
     @FXML
     private Pane cell24;
+
+
+    private List<ImageView> blockImageList;
+    // 0 ROW ==================================================================================
+    @FXML
+    private ImageView blocks0;
+    @FXML
+    private ImageView blocks1;
+    @FXML
+    private ImageView blocks2;
+    @FXML
+    private ImageView blocks3;
+    @FXML
+    private ImageView blocks4;
+    // 1 ROW ==================================================================================
+    @FXML
+    private ImageView blocks5;
+    @FXML
+    private ImageView blocks6;
+    @FXML
+    private ImageView blocks7;
+    @FXML
+    private ImageView blocks8;
+    @FXML
+    private ImageView blocks9;
+    // 2 ROW ==================================================================================
+    @FXML
+    private ImageView blocks10;
+    @FXML
+    private ImageView blocks11;
+    @FXML
+    private ImageView blocks12;
+    @FXML
+    private ImageView blocks13;
+    @FXML
+    private ImageView blocks14;
+    // 3 ROW ==================================================================================
+    @FXML
+    private ImageView blocks15;
+    @FXML
+    private ImageView blocks16;
+    @FXML
+    private ImageView blocks17;
+    @FXML
+    private ImageView blocks18;
+    @FXML
+    private ImageView blocks19;
+    // 4 ROW ==================================================================================
+    @FXML
+    private ImageView blocks20;
+    @FXML
+    private ImageView blocks21;
+    @FXML
+    private ImageView blocks22;
+    @FXML
+    private ImageView blocks23;
+    @FXML
+    private ImageView blocks24;
+
+
+    private List<ImageView> domeImageList;
+    // 0 ROW ==================================================================================
+    @FXML
+    private ImageView dome0;
+    @FXML
+    private ImageView dome1;
+    @FXML
+    private ImageView dome2;
+    @FXML
+    private ImageView dome3;
+    @FXML
+    private ImageView dome4;
+    // 1 ROW ==================================================================================
+    @FXML
+    private ImageView dome5;
+    @FXML
+    private ImageView dome6;
+    @FXML
+    private ImageView dome7;
+    @FXML
+    private ImageView dome8;
+    @FXML
+    private ImageView dome9;
+    // 2 ROW ==================================================================================
+    @FXML
+    private ImageView dome10;
+    @FXML
+    private ImageView dome11;
+    @FXML
+    private ImageView dome12;
+    @FXML
+    private ImageView dome13;
+    @FXML
+    private ImageView dome14;
+    // 3 ROW ==================================================================================
+    @FXML
+    private ImageView dome15;
+    @FXML
+    private ImageView dome16;
+    @FXML
+    private ImageView dome17;
+    @FXML
+    private ImageView dome18;
+    @FXML
+    private ImageView dome19;
+    // 4 ROW ==================================================================================
+    @FXML
+    private ImageView dome20;
+    @FXML
+    private ImageView dome21;
+    @FXML
+    private ImageView dome22;
+    @FXML
+    private ImageView dome23;
+    @FXML
+    private ImageView dome24;
+
+
+    private List<ImageView> pawnImageList;
+    // 0 ROW ==================================================================================
+    @FXML
+    private ImageView pawn0;
+    @FXML
+    private ImageView pawn1;
+    @FXML
+    private ImageView pawn2;
+    @FXML
+    private ImageView pawn3;
+    @FXML
+    private ImageView pawn4;
+    // 1 ROW ==================================================================================
+    @FXML
+    private ImageView pawn5;
+    @FXML
+    private ImageView pawn6;
+    @FXML
+    private ImageView pawn7;
+    @FXML
+    private ImageView pawn8;
+    @FXML
+    private ImageView pawn9;
+    // 2 ROW ==================================================================================
+    @FXML
+    private ImageView pawn10;
+    @FXML
+    private ImageView pawn11;
+    @FXML
+    private ImageView pawn12;
+    @FXML
+    private ImageView pawn13;
+    @FXML
+    private ImageView pawn14;
+    // 3 ROW ==================================================================================
+    @FXML
+    private ImageView pawn15;
+    @FXML
+    private ImageView pawn16;
+    @FXML
+    private ImageView pawn17;
+    @FXML
+    private ImageView pawn18;
+    @FXML
+    private ImageView pawn19;
+    // 4 ROW ==================================================================================
+    @FXML
+    private ImageView pawn20;
+    @FXML
+    private ImageView pawn21;
+    @FXML
+    private ImageView pawn22;
+    @FXML
+    private ImageView pawn23;
+    @FXML
+    private ImageView pawn24;
+
+
 
     @FXML
     private HBox ControlsBoxSection;
@@ -175,6 +352,7 @@ public class FXMLGameController {
 
     
 
+
     @FXML
     private URL location;
 
@@ -225,9 +403,15 @@ public class FXMLGameController {
     private void initialize() {
 
         this.cellsList = new ArrayList<>();
+
+        this.blockImageList = new ArrayList<>();
+        this.domeImageList = new ArrayList<>();
+        this.pawnImageList = new ArrayList<>();
+
         this.maleCellSelected = null;
 
         initializeCells();
+        initializeImage();
         initializeInfoGrid();
         initializeActionsGrid();
 
@@ -280,7 +464,6 @@ public class FXMLGameController {
         int index = 0;
         for(int row = 0; row < 5; row++) {
             for(int column = 0; column < 5; column++) {
-
                 index = (row * 5) + column;
                 cellsList.get(index).setUserData( new FormattedSimpleCell(row, column) );
             }
@@ -309,6 +492,113 @@ public class FXMLGameController {
 //                cellSelectionHandler(selectedCell);
 //            });
 //        }
+
+    }
+
+
+    private void initializeImage() {
+
+        blockImageList.add(blocks0);
+        blockImageList.add(blocks1);
+        blockImageList.add(blocks2);
+        blockImageList.add(blocks3);
+        blockImageList.add(blocks4);
+        blockImageList.add(blocks5);
+        blockImageList.add(blocks6);
+        blockImageList.add(blocks7);
+        blockImageList.add(blocks8);
+        blockImageList.add(blocks9);
+        blockImageList.add(blocks10);
+        blockImageList.add(blocks11);
+        blockImageList.add(blocks12);
+        blockImageList.add(blocks13);
+        blockImageList.add(blocks14);
+        blockImageList.add(blocks15);
+        blockImageList.add(blocks16);
+        blockImageList.add(blocks17);
+        blockImageList.add(blocks18);
+        blockImageList.add(blocks19);
+        blockImageList.add(blocks20);
+        blockImageList.add(blocks21);
+        blockImageList.add(blocks22);
+        blockImageList.add(blocks23);
+        blockImageList.add(blocks24);
+
+        int index = 0;
+        for(int row = 0; row < 5; row++) {
+            for(int column = 0; column < 5; column++) {
+                index = (row * 5) + column;
+                blockImageList.get(index).setUserData( new FormattedSimpleCell(row, column) );
+            }
+        }
+
+        domeImageList.add(dome0);
+        domeImageList.add(dome1);
+        domeImageList.add(dome2);
+        domeImageList.add(dome3);
+        domeImageList.add(dome4);
+        domeImageList.add(dome5);
+        domeImageList.add(dome6);
+        domeImageList.add(dome7);
+        domeImageList.add(dome8);
+        domeImageList.add(dome9);
+        domeImageList.add(dome10);
+        domeImageList.add(dome11);
+        domeImageList.add(dome12);
+        domeImageList.add(dome13);
+        domeImageList.add(dome14);
+        domeImageList.add(dome15);
+        domeImageList.add(dome16);
+        domeImageList.add(dome17);
+        domeImageList.add(dome18);
+        domeImageList.add(dome19);
+        domeImageList.add(dome20);
+        domeImageList.add(dome21);
+        domeImageList.add(dome22);
+        domeImageList.add(dome23);
+        domeImageList.add(dome24);
+
+        index = 0;
+        for(int row = 0; row < 5; row++) {
+            for(int column = 0; column < 5; column++) {
+                index = (row * 5) + column;
+                domeImageList.get(index).setUserData( new FormattedSimpleCell(row, column) );
+            }
+        }
+
+        pawnImageList.add(pawn0);
+        pawnImageList.add(pawn1);
+        pawnImageList.add(pawn2);
+        pawnImageList.add(pawn3);
+        pawnImageList.add(pawn4);
+        pawnImageList.add(pawn5);
+        pawnImageList.add(pawn6);
+        pawnImageList.add(pawn7);
+        pawnImageList.add(pawn8);
+        pawnImageList.add(pawn9);
+        pawnImageList.add(pawn10);
+        pawnImageList.add(pawn11);
+        pawnImageList.add(pawn12);
+        pawnImageList.add(pawn13);
+        pawnImageList.add(pawn14);
+        pawnImageList.add(pawn15);
+        pawnImageList.add(pawn16);
+        pawnImageList.add(pawn17);
+        pawnImageList.add(pawn18);
+        pawnImageList.add(pawn19);
+        pawnImageList.add(pawn20);
+        pawnImageList.add(pawn21);
+        pawnImageList.add(pawn22);
+        pawnImageList.add(pawn23);
+        pawnImageList.add(pawn24);
+
+        index = 0;
+        for(int row = 0; row < 5; row++) {
+            for(int column = 0; column < 5; column++) {
+                index = (row * 5) + column;
+                pawnImageList.get(index).setUserData( new FormattedSimpleCell(row, column) );
+            }
+        }
 
     }
 
@@ -726,6 +1016,29 @@ public class FXMLGameController {
     }
 
 
+    public void deleteOpponentPlayer(String nickname) {
+
+        for (int i = 0; i < playersNicknames.size(); i++) {
+
+            if(playersNicknames.get(i).getText().equals(nickname)) {
+
+                //10
+                playersNicknames.get(i).setText("----------");
+
+                //5
+                playersColors.get(i).setText("-----");
+
+                //30
+                playersEffects.get(i).setText("------------------------------");
+                break;
+
+            }
+
+        }
+
+    }
+
+
     private void cellSelectionHandler(Pane cell) {
         FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
         System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());
@@ -770,6 +1083,7 @@ public class FXMLGameController {
         }
     }
 
+
     private void resetStyleCell(Pane cell){
         cell.setStyle("-fx-opacity: 0");
     }
@@ -783,12 +1097,6 @@ public class FXMLGameController {
     public void setBoardDimensions() {
     }
 
-    public double getControlBoxSectionH() {
-        return this.ControlsBoxSection.getHeight();
-    }
-    public double getControlBoxSectionW() {
-        return this.ControlsBoxSection.getWidth();
-    }
 
     public void checkValidity(boolean isValid) {
 
@@ -797,6 +1105,7 @@ public class FXMLGameController {
         }
 
     }
+
 
     //MARK : Graphic Methods =================================================================================
 
@@ -831,6 +1140,7 @@ public class FXMLGameController {
 
 
     private void enableLabels(List<Label> labels){
+
         for (Label label  : labels) {
 
             //highlight the border
@@ -896,4 +1206,6 @@ public class FXMLGameController {
         cell.setOnMouseExited(e -> {});
 
     }
+
+
 }

@@ -274,6 +274,7 @@ public class FXMLGameController {
     private Image blockLevel1;
     private Image blockLevel2;
     private Image blockLevel3;
+    private Image blockDome;
 
     private Image blueMale;
     private Image blueFemale;
@@ -429,6 +430,7 @@ public class FXMLGameController {
         this.blockLevel1 = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/BlockLevel1.png"));
         this.blockLevel2 = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/BlockLevel2.png"));
         this.blockLevel3 = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/BlockLevel3.png"));
+        this.blockDome = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/Dome.png"));
 
         this.blueMale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/blueMalePawn.png"));
         this.blueFemale = new Image(getClass().getResourceAsStream("/Graphics/GameScene/Pawns/blueFemalePawn.png"));
@@ -600,9 +602,9 @@ public class FXMLGameController {
         for(int row = 0; row < 5; row++) {
             for(int column = 0; column < 5; column++) {
                 index = (row * 5) + column;
-                domeImageList.get(index).setVisible(false);
                 domeImageList.get(index).setUserData( new FormattedSimpleCell(row, column) );
-                domeImageList.get(index).setImage( new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/Dome.png")) );
+                //domeImageList.get(index).setImage( new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/Dome.png")) );
+                //domeImageList.get(index).setVisible(false);
             }
         }
 
@@ -1259,10 +1261,13 @@ public class FXMLGameController {
 
             //update dome and blocks
             if( cell.getRoofInfo().getSecond() ) {
-                domeImageList.get(index).setVisible(true);
                 updateHeight(index, cell.getHeight()-1 );
+                domeImageList.get(index).setImage( blockDome );
+                domeImageList.get(index).setVisible(true);
+
             }
             else {
+                domeImageList.get(index).setImage(null);
                 updateHeight(index, cell.getHeight() );
             }
 

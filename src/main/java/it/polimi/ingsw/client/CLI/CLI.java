@@ -310,7 +310,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedFemale = -1;
 
         if(!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... AskInitPawnsEvent");
         }
 
         for(int i = 0; i < 5; i++) {
@@ -367,7 +367,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedPawn = -1;
 
         if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... AskWhichPawnsUseEvent");
         }
 
         drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
@@ -397,7 +397,7 @@ public class CLI implements Client, ServerToClientManager {
         int choiceNum = -1;
 
         if(!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
         }
 
         drawer.saveTitlePlayerPanel("choose your card");
@@ -428,7 +428,7 @@ public class CLI implements Client, ServerToClientManager {
         int indexChosenAction = -1;
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleActionsEvent");
         }
 
         drawer.saveTitleChoicePanel("choose your next action");
@@ -499,7 +499,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedCell = -1;
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToMoveEvent");
         }
 
         drawer.saveTitleChoicePanel("choose the cell where you want to move");
@@ -544,7 +544,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedCell = 0;
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToBuildEvent");
         }
 
         drawer.saveTitleChoicePanel("choose the cell where you want to build");
@@ -583,7 +583,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedLevel = 0;
 
         if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleBuildingsEvent");
         }
 
         //if there are more than one single options then I
@@ -623,7 +623,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedCell = -1;
 
         if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToDestroyEvent");
         }
 
         drawer.saveTitleChoicePanel("choose the cell where you want to destroy the roof");
@@ -661,7 +661,7 @@ public class CLI implements Client, ServerToClientManager {
         int selectedCell = -1;
 
         if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect...");
+            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToForceEvent");
         }
 
         drawer.saveTitleChoicePanel("choose the cell where you want to force an opponent pawn");

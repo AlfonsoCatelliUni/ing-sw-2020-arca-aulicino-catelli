@@ -217,6 +217,7 @@ public class PreGameLobby {
 
     }
 
+
     public void clearLobby(){
         this.playersNicknames.clear();
         this.numberOfPlayers = -1;

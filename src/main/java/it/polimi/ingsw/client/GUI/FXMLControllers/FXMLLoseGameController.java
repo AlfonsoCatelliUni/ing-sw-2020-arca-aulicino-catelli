@@ -36,9 +36,6 @@ public class FXMLLoseGameController {
 
     public void initializeButtons() {
 
-        spectateButton = new Button();
-        leaveButton = new Button();
-
         spectateButton.setOnMouseClicked(mouseEvent -> {
             stage.close();
         });
@@ -70,6 +67,8 @@ public class FXMLLoseGameController {
 
     public void showLosingByNoAction() {
         loserEndGameLabel.setText("You Have Lost the Match!");
+
+        loserEndGameLabel.setVisible(true);
         spectateButton.setVisible(true);
         leaveButton.setVisible(true);
     }

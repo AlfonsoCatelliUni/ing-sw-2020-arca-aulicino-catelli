@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
@@ -541,6 +542,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
                 losingStage.setScene(scene);
                 losingStage.setResizable(false);
+                losingStage.initModality(Modality.APPLICATION_MODAL);
 
                 losingStage.show();
 

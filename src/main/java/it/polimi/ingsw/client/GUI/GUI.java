@@ -523,6 +523,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
                 controller = fxmlLoader.getController();
                 controller.initLoseController(this, losingStage, stage);
+                controller.showLosingByNoAction(nickname);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -537,7 +538,14 @@ public class GUI extends Application implements Client, ServerToClientManager {
             losingStage.show();
 
         }
-        //TODO : finire il metodo con l'else
+        //tell this player that an opponent player lost the game
+        else {
+
+            gameSceneController.deleteOpponentPlayer(event.nickname);
+
+            //TODO : rimuovere i pawns dalla board
+
+        }
 
     }
 
@@ -547,14 +555,45 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED EndGameSTCEvent");
 
-        Platform.runLater( () -> {
+        if(event.winner.equals(nickname)) {
+
+            Platform.runLater(() -> {
+                Parent root = null;
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/VictoryScene.fxml"));
+                    root = fxmlLoader.load();
+
+                    endGameController = fxmlLoader.getController();
+                    endGameController.initController(stage, event.winner);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                assert root != null;
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+                stage.setResizable(false);
+
+                stage.show();
+            });
+
+        }
+        else {
+
+            Stage losingStage = new Stage();
+            losingStage.setTitle("Santorini");
+
             Parent root = null;
+            FXMLLoseGameController controller;
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/VictoryScene.fxml") );
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoseEndGameScene.fxml") );
                 root = fxmlLoader.load();
 
-                endGameController = fxmlLoader.getController();
-                endGameController.initController(stage, event.winner);
+                controller = fxmlLoader.getController();
+                controller.initLoseController(this, losingStage, stage);
+                controller.showLosingEndGame(nickname, event.winner);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -563,12 +602,14 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
-            stage.setScene(scene);
-            stage.setResizable(false);
+            losingStage.setScene(scene);
+            losingStage.setResizable(false);
 
-            stage.show();
-        });
+            stage.close();
 
+            losingStage.show();
+
+        }
 
 
     }

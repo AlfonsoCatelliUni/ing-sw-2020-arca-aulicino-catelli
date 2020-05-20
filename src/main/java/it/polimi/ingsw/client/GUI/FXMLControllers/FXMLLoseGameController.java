@@ -66,6 +66,39 @@ public class FXMLLoseGameController {
 
         });
 
+        spectateButton.setVisible(false);
+        leaveButton.setVisible(false);
+        loserEndGameLabel.setVisible(false);
+        winnerEndGameLabel.setVisible(false);
+        playAgainLabel.setVisible(false);
+        payPalDonationsLabel.setVisible(false);
+        loserNoActionLabel.setVisible(false);
+        loserNameLabel.setVisible(false);
+    }
+
+    public void showLosingByNoAction(String nickname) {
+
+        loserNameLabel.setText(nickname);
+
+        loserNameLabel.setVisible(true);
+        loserNoActionLabel.setVisible(true);
+        spectateButton.setVisible(true);
+        leaveButton.setVisible(true);
+        payPalDonationsLabel.setVisible(true);
+
+
+    }
+
+
+    public void showLosingEndGame(String loserNickname, String winnerNickname) {
+
+        loserNameLabel.setText(loserNickname);
+        winnerEndGameLabel.setText(winnerNickname + "is the winner btw, NOOB!");
+        playAgainLabel.setVisible(true);
+        loserNameLabel.setVisible(true);
+        winnerEndGameLabel.setVisible(true);
+        loserEndGameLabel.setVisible(true);
+        payPalDonationsLabel.setVisible(true);
     }
 
 

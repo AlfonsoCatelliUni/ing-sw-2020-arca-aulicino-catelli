@@ -46,6 +46,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
     protected Stage stage;
 
     /**
+     * this is the dialog to show in another stage plain text and important informations during game
+     */
+    protected Dialog dialog = new Dialog();
+
+    /**
      * this is the Waiting Room Stage, the one where is showed which players are in the lobby
      */
     private Stage waitingRoomStage;
@@ -66,6 +71,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     private FXMLChooseCardController chooseCardController;
 
     private FXMLVictoryController endGameController;
+
 
 
     // MARK : Constructor and Run ======================================================================================
@@ -222,7 +228,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED UnavailableNicknameEvent");
 
         Platform.runLater( () -> {
-            Dialog.display("This Nickname is already used, choose another one");
+            dialog.display("This Nickname is already used, choose another one");
 
             Parent root = null;
             try {
@@ -261,7 +267,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
             stage.close();
 
-            Dialog.displayExit("YOU HAVE BEEN DISCONNECTED");
+            dialog.displayExit("YOU HAVE BEEN DISCONNECTED");
         });
 
 
@@ -276,7 +282,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
-            Dialog.display(event.disconnected + "is disconnected");
+            dialog.display(event.disconnected + "is disconnected");
 
             if (lobbyController != null) {
                 lobbyController.fillNicknames(event.connectedPlayers);
@@ -297,7 +303,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
             stage.close();
 
-            Dialog.displayExit("THE WAITING ROOM IS FILLED\n YOU HAVE BEEN DISCONNECTED ");
+            dialog.displayExit("THE WAITING ROOM IS FILLED\n YOU HAVE BEEN DISCONNECTED ");
 
         });
 
@@ -315,7 +321,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
             stage.close();
 
-            Dialog.displayExit(event.message + "YOU HAVE BEEN DISCONNECTED" );
+            dialog.displayExit(event.message + "\nYOU HAVE BEEN DISCONNECTED" );
 
         });
 
@@ -330,7 +336,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
-            Dialog.display(event.message);
+            dialog.display(event.message);
 
         });
 
@@ -673,7 +679,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
         this.nextActionColumn = nextActionColumn;
     }
 
-
     public ClientView getClientView() {
         return clientView;
     }
@@ -698,5 +703,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         return nextActionColumn;
     }
 
-
+    public Dialog getDialog() {
+        return dialog;
+    }
 }

@@ -6,25 +6,44 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="411.0" style="-fx-background-color: #808080;" xmlns="http://javafx.com/javafx/11.0.1" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="411.0" style="-fx-background-color: #808080;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLDialogController">
    <children>
       <ImageView fitHeight="400.0" fitWidth="426.0" layoutX="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../Graphics/SceneBackground/dialogModalBAckground.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="31.0" layoutY="80.0" prefHeight="213.0" prefWidth="353.0" text="Label" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-      <ImageView fitHeight="51.0" fitWidth="103.0" layoutX="152.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="okButton" fitHeight="51.0" fitWidth="103.0" layoutX="152.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphics/Other/blueButton.png" />
          </image>
       </ImageView>
-      <Label alignment="CENTER" layoutX="172.0" layoutY="326.0" prefHeight="26.0" prefWidth="53.0" text="OK" textFill="WHITE">
+      <ImageView fx:id="yesButton" fitHeight="51.0" fitWidth="103.0" layoutX="49.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="noButton" fitHeight="51.0" fitWidth="103.0" layoutX="270.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="plainTextLabel" alignment="CENTER" layoutX="31.0" layoutY="80.0" prefHeight="213.0" prefWidth="353.0" text="Label" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="okLabel" alignment="CENTER" layoutX="155.0" layoutY="317.0" prefHeight="42.0" prefWidth="86.0" text="OK" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="noLabel" alignment="CENTER" layoutX="273.0" layoutY="319.0" prefHeight="42.0" prefWidth="86.0" text="NO" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="yesLabel" alignment="CENTER" layoutX="52.0" layoutY="313.0" prefHeight="51.0" prefWidth="86.0" text="YES" textFill="WHITE">
          <font>
             <Font size="23.0" />
          </font>

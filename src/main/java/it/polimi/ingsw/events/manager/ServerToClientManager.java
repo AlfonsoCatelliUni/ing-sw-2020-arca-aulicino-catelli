@@ -22,6 +22,8 @@ public interface ServerToClientManager {
 
     void manageEvent(OneClientDisconnectedEvent event);
 
+    void manageEvent(OnePlayerEnteredEvent event);
+
     void manageEvent(UnableToEnterWaitingRoomEvent event);
 
     void manageEvent(PlainTextEvent event);

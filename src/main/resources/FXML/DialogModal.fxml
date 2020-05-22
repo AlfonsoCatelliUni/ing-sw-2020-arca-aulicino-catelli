@@ -43,7 +43,7 @@
             <Image url="@../Graphics/Other/blueButton.png" />
          </image>
       </ImageView>
-      <Label fx:id="plainTextLabel" alignment="CENTER" layoutX="31.0" layoutY="80.0" prefHeight="213.0" prefWidth="353.0" text="Label" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+      <Label fx:id="plainTextLabel" alignment="CENTER" layoutX="31.0" layoutY="80.0" prefHeight="213.0" prefWidth="353.0" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
             <Font size="24.0" />
          </font>

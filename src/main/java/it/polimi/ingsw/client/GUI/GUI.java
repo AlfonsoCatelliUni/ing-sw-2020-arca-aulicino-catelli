@@ -23,9 +23,6 @@ import java.util.List;
 
 public class GUI extends Application implements Client, ServerToClientManager {
 
-
-    private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
-
     private String nickname;
 
     private int rowUsedPawn;
@@ -282,7 +279,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
-            dialog.display(event.disconnected + "is disconnected");
+            dialog.display(event.disconnected + " is disconnected");
 
             if (lobbyController != null) {
                 lobbyController.fillNicknames(event.connectedPlayers);
@@ -290,6 +287,20 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         });
 
+
+    }
+
+
+    @Override
+    public void manageEvent(OnePlayerEnteredEvent event) {
+
+        System.out.println("RECEIVED: OnePlayerEnteredEvent");
+
+        Platform.runLater( () -> {
+
+            lobbyController.fillNicknames(event.connectedPlayers);
+
+        });
 
     }
 
@@ -320,6 +331,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
         Platform.runLater( () -> {
 
             stage.close();
+
+            if(selectNumberStage != null)
+                selectNumberStage.close();
 
             dialog.displayExit(event.message + "\nYOU HAVE BEEN DISCONNECTED" );
 

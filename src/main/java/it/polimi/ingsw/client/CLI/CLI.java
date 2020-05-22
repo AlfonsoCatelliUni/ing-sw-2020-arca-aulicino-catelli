@@ -249,6 +249,13 @@ public class CLI implements Client, ServerToClientManager {
 
     }
 
+    @Override
+    public void manageEvent(OnePlayerEnteredEvent event) {
+
+        System.out.println(event.newPlayer + "is connected in lobby");
+        System.out.println("now players in lobby are\n" + event.connectedPlayers);
+    }
+
 
     @Override
     public void manageEvent(UnableToEnterWaitingRoomEvent event) {

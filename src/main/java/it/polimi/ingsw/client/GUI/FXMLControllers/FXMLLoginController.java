@@ -108,7 +108,7 @@ public class FXMLLoginController {
         String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
 
         if (nickname.isEmpty() || !(Pattern.matches(nicknamePattern, nickname) )) {
-            Dialog.display("Invalid nickname");
+            gui.getDialog().display("Invalid nickname");
             LoginButton.setDisable(false);
             return;
         }

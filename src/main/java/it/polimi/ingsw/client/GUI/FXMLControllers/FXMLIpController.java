@@ -54,13 +54,13 @@ public class FXMLIpController {
             String port = PortTextField.getText();
 
             if (!isValidIP(ip)) {
-                Dialog.display("Enter a valid IP address");
+                gui.getDialog().display("Enter a valid IP address");
                 ConnectButton.setDisable(false);
                 return;
             }
 
             if (!isValidPort(port)) {
-                Dialog.display("Enter a valid port number");
+                gui.getDialog().display("Enter a valid port number");
                 ConnectButton.setDisable(false);
                 return;
             }
@@ -81,13 +81,13 @@ public class FXMLIpController {
                 String port = PortTextField.getText();
 
                 if (!isValidIP(ip)) {
-                    Dialog.display("Enter a valid IP address");
+                    gui.getDialog().display("Enter a valid IP address");
                     ConnectButton.setDisable(false);
                     return;
                 }
 
                 if (!isValidPort(port)) {
-                    Dialog.display("Enter a valid port number");
+                    gui.getDialog().display("Enter a valid port number");
                     ConnectButton.setDisable(false);
                     return;
                 }
@@ -110,13 +110,13 @@ public class FXMLIpController {
                 String port = PortTextField.getText();
 
                 if (!isValidIP(ip)) {
-                    Dialog.display("Enter a valid IP address");
+                    gui.getDialog().display("Enter a valid IP address");
                     ConnectButton.setDisable(false);
                     return;
                 }
 
                 if (!isValidPort(port)) {
-                    Dialog.display("Enter a valid port number");
+                    gui.getDialog().display("Enter a valid port number");
                     ConnectButton.setDisable(false);
                     return;
                 }

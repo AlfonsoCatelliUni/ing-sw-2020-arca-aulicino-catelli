@@ -1,95 +1,115 @@
 package it.polimi.ingsw.client.GUI;
 
-import javafx.geometry.Pos;
+import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLDialogController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.List;
+import java.io.IOException;
 
 public class Dialog {
 
+    FXMLDialogController dialogController;
 
-    public static void display (String plainText) {
+    Stage dialogStage;
+
+    public void display(String plainText) {
 
 
-        Stage stage = new Stage();
+        if (dialogStage == null) {
+            dialogStage = new Stage();
 
-        //creates a modal window that blocks events from being delivered to any other application window.
-        stage.initModality(Modality.APPLICATION_MODAL);
 
-        stage.setMinWidth(400);
-        stage.setMinHeight(300);
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/DialogModal.fxml"));
+                root = fxmlLoader.load();
 
-        Label label = new Label(plainText);
+                dialogController = fxmlLoader.getController();
+                dialogController.initController(dialogStage);
+                dialogController.display(plainText);
 
-        label.setStyle("-fx-text-fill: #7FC0F6");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        VBox vBox = new VBox(10);
+            assert root != null;
+            Scene scene = new Scene(root);
 
-        Button button = new Button("OK");
-        button.setStyle(" -fx-background-color: #47D66D; -fx-text-fill: #C3F1FA; ");
-        button.setMaxSize(40, 30);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
 
-        button.setOnAction(e -> stage.close());
+            dialogStage.showAndWait();
+        }
+        else {
+            dialogController.addText(plainText);
+        }
+    }
 
-        vBox.setStyle("-fx-background-color: #200500");
+    public void displayExit(String plainText){
 
-        vBox.getChildren().addAll(label, button);
+        if (dialogStage == null) {
+            dialogStage = new Stage();
 
-        vBox.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(vBox);
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/DialogModal.fxml"));
+                root = fxmlLoader.load();
 
-        stage.setScene(scene);
-        //block the temporary current processing, show and wait to be closed
-        stage.showAndWait();
+                dialogController = fxmlLoader.getController();
+                dialogController.initController(dialogStage);
+                dialogController.displayExit(plainText);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+            dialogStage.showAndWait();
+        }
+        else {
+            dialogController.displayExit(plainText);
+        }
+    }
+
+    public void displayClose(Stage stage){
+
+        dialogStage = new Stage();
+
+        Parent root = null;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/DialogModal.fxml") );
+            root = fxmlLoader.load();
+
+            dialogController = fxmlLoader.getController();
+            dialogController.initController(dialogStage);
+            dialogController.displayClose(stage);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assert root != null;
+        Scene scene = new Scene(root);
+
+        dialogStage.setScene(scene);
+        dialogStage.setResizable(false);
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+        dialogStage.showAndWait();
 
     }
 
-    public static void displayExit(String plainText){
-        Stage stage = new Stage();
 
-        //creates a modal window that blocks events from being delivered to any other application window.
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        stage.setMinWidth(400);
-        stage.setMinHeight(300);
-
-        Label label = new Label(plainText);
-
-        label.setStyle("-fx-text-fill: #7FC0F6");
-
-        VBox vBox = new VBox(10);
-
-        Button button = new Button("OK");
-        button.setStyle(" -fx-background-color: #47D66D; -fx-text-fill: #C3F1FA; ");
-        button.setMaxSize(40, 30);
-
-        button.setOnAction(e -> {
-            stage.close();
-            System.exit(0);
-        });
-
-        vBox.setStyle("-fx-background-color: #200500");
-
-        vBox.getChildren().addAll(label, button);
-
-        vBox.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(vBox);
-
-        stage.setScene(scene);
-        //block the temporary current processing, show and wait to be closed
-        stage.showAndWait();
-
-
-
-
-    }
 
 }

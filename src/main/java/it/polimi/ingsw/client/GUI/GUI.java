@@ -261,7 +261,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
-            if(selectNumberStage.isShowing()) {
+            if(selectNumberStage != null) {
                 selectNumberStage.close();
             }
 

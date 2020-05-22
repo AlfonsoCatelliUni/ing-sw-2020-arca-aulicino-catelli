@@ -43,6 +43,8 @@ public class FXMLLobbyController {
 
 
     public void initialize() {
+
+        connectedPlayers = new ArrayList<>();
         labelList = new ArrayList<>();
         imageViewList = new ArrayList<>();
 
@@ -103,6 +105,14 @@ public class FXMLLobbyController {
 
     public void fillNicknames(List<String> connectedPlayers) {
 
+
+        if(this.connectedPlayers.size() > connectedPlayers.size()) {
+
+            initializeBoats();
+            initializeLabels();
+
+        }
+
         this.connectedPlayers = connectedPlayers;
 
         firstNicknameLabel.setText(connectedPlayers.get(0));
@@ -113,6 +123,8 @@ public class FXMLLobbyController {
             labelList.get(i).setVisible(true);
             imageViewList.get(i-1).setVisible(true);
         }
+
+
 
     }
 

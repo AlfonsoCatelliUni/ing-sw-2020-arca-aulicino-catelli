@@ -33,7 +33,14 @@ public class FXMLDialogController {
     @FXML
     private Label yesLabel;
 
+    @FXML
+    private ImageView noButtonPressed;
 
+    @FXML
+    private ImageView yesButtonPressed;
+
+    @FXML
+    private ImageView okButtonPressed;
 
 
 
@@ -48,6 +55,10 @@ public class FXMLDialogController {
 
         noButton.setVisible(false);
         noLabel.setVisible(false);
+
+        noButtonPressed.setVisible(false);
+        yesButtonPressed.setVisible(false);
+        okButtonPressed.setVisible(false);
 
     }
 
@@ -68,6 +79,19 @@ public class FXMLDialogController {
             dialogStage = null;
         });
 
+        okLabel.setOnMousePressed(mouseEvent -> {
+
+            okButtonPressed.setVisible(true);
+            okButton.setVisible(false);
+
+        });
+
+        okLabel.setOnMouseReleased(mouseEvent -> {
+
+            okButton.setVisible(true);
+            okButtonPressed.setVisible(false);
+
+        });
     }
 
     public void displayExit(String plainText){
@@ -91,6 +115,20 @@ public class FXMLDialogController {
             System.exit(0);
         });
 
+        okLabel.setOnMousePressed(mouseEvent -> {
+
+            okButtonPressed.setVisible(true);
+            okButton.setVisible(false);
+
+        });
+
+        okLabel.setOnMouseReleased(mouseEvent -> {
+
+            okButton.setVisible(true);
+            okButtonPressed.setVisible(false);
+
+        });
+
     }
 
     public void displayClose(Stage stage){
@@ -109,11 +147,38 @@ public class FXMLDialogController {
             System.exit(0);
         });
 
+        yesLabel.setOnMousePressed(mouseEvent -> {
+
+            yesButtonPressed.setVisible(true);
+            yesButton.setVisible(false);
+
+        });
+
+        yesLabel.setOnMouseReleased(mouseEvent -> {
+
+            yesButton.setVisible(true);
+            yesButtonPressed.setVisible(false);
+
+        });
+
         noLabel.setOnMouseClicked(e ->{
             dialogStage.close();
             dialogStage = null;
         });
 
+        noLabel.setOnMousePressed(mouseEvent -> {
+
+            noButtonPressed.setVisible(true);
+            noButton.setVisible(false);
+
+        });
+
+        noLabel.setOnMouseReleased(mouseEvent -> {
+
+            noButton.setVisible(true);
+            noButtonPressed.setVisible(false);
+
+        });
     }
 
     public void addText(String plainText){

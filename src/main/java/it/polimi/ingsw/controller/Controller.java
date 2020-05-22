@@ -409,9 +409,16 @@ public class Controller implements Observer, ClientToServerManager {
         if(isNicknameFree && isNicknameValid && !preGameLobby.isClosed()) {
 
             preGameLobby.addPlayer(nickname);
-            virtualView.newNicknameID(nickname, ID);
 
             List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
+            List<String> connectedPlayerExceptThis = new ArrayList<>(connectedPlayers);
+            connectedPlayerExceptThis.remove(nickname);
+
+            for (String playerConnected : connectedPlayerExceptThis) {
+                virtualView.sendMessageTo(playerConnected, new OnePlayerEnteredEvent(nickname, new ArrayList<>(connectedPlayers)));
+            }
+
+            virtualView.newNicknameID(nickname, ID);
 
 
             //if there's only one player connected to the waitingRoom, than this is the first one

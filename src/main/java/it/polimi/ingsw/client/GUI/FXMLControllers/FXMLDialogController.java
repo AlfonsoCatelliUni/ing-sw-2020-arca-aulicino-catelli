@@ -76,7 +76,6 @@ public class FXMLDialogController {
 
         okLabel.setOnMouseClicked(e->{
             dialogStage.close();
-            dialogStage = null;
         });
 
         okLabel.setOnMousePressed(mouseEvent -> {
@@ -163,7 +162,6 @@ public class FXMLDialogController {
 
         noLabel.setOnMouseClicked(e ->{
             dialogStage.close();
-            dialogStage = null;
         });
 
         noLabel.setOnMousePressed(mouseEvent -> {

@@ -18,9 +18,9 @@ public class Dialog {
     public void display(String plainText) {
 
 
-        if (dialogStage == null) {
-            dialogStage = new Stage();
+        if (dialogStage == null || !dialogStage.isShowing()) {
 
+            dialogStage = new Stage();
 
             Parent root = null;
             try {
@@ -42,7 +42,7 @@ public class Dialog {
             dialogStage.setResizable(false);
             dialogStage.initModality(Modality.APPLICATION_MODAL);
 
-            dialogStage.showAndWait();
+            dialogStage.show();
         }
         else {
             dialogController.addText(plainText);
@@ -51,9 +51,9 @@ public class Dialog {
 
     public void displayExit(String plainText){
 
-        if (dialogStage == null) {
-            dialogStage = new Stage();
+        if (dialogStage == null || !dialogStage.isShowing() ) {
 
+            dialogStage = new Stage();
 
             Parent root = null;
             try {

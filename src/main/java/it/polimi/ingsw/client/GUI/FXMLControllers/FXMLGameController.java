@@ -367,14 +367,14 @@ public class FXMLGameController {
     private Pane action4Pane;
 
     @FXML
-    private Label action4Label;
+    private Label exitLabel;
 
 
     @FXML
-    private ImageView action4ImageButton;
+    private ImageView exitButton;
 
     @FXML
-    private ImageView action4ImageButtonPressed;
+    private ImageView exitButtonPressed;
 
     @FXML
     private ImageView action3ImageButton;
@@ -736,7 +736,7 @@ public class FXMLGameController {
         actionsLabel.add(action1Label);
         actionsLabel.add(action2Label);
         actionsLabel.add(action3Label);
-        actionsLabel.add(action4Label);
+
 
 
         actionsPane.add(action1Pane);
@@ -765,12 +765,12 @@ public class FXMLGameController {
         actionsButtons.add(action1ImageButton);
         actionsButtons.add(action2ImageButton);
         actionsButtons.add(action3ImageButton);
-        actionsButtons.add(action4ImageButton);
+
 
         actionsButtonsPressed.add(action1ImageButtonPressed);
         actionsButtonsPressed.add(action2ImageButtonPressed);
         actionsButtonsPressed.add(action3ImageButtonPressed);
-        actionsButtonsPressed.add(action4ImageButtonPressed);
+
 
         for (ImageView imageView : actionsButtons) {
             imageView.setVisible(false);
@@ -779,6 +779,26 @@ public class FXMLGameController {
         for (ImageView imageView : actionsButtonsPressed) {
             imageView.setVisible(false);
         }
+
+        exitLabel.setOnMouseClicked(mouseEvent -> {
+
+            gui.getDialog().displayClose(stage);
+
+        });
+
+        exitLabel.setOnMousePressed(mouseEvent -> {
+
+            exitButtonPressed.setVisible(true);
+            exitButton.setVisible(false);
+
+        });
+
+        exitLabel.setOnMouseReleased(mouseEvent -> {
+
+            exitButtonPressed.setVisible(false);
+            exitButton.setVisible(true);
+
+        });
 
 
 

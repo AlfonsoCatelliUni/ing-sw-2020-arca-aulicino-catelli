@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BackgroundImage;
@@ -28,10 +29,21 @@ public class FXMLLoginController {
 
     @FXML
     private TextField UsernameTextField;
+
     @FXML
     private Label InfoLabel;
+
     @FXML
     private Button LoginButton;
+
+    @FXML
+    private ImageView exitButtonPressed;
+
+    @FXML
+    private ImageView exitButton;
+
+    @FXML
+    private Label exitLabel;
 
 
     public void initialize() {
@@ -88,6 +100,26 @@ public class FXMLLoginController {
                 manageLogin(gui, UsernameTextField.getText(), id);
 
             }
+
+        });
+
+        exitLabel.setOnMouseClicked(mouseEvent -> {
+
+            gui.getDialog().displayClose(stage);
+
+        });
+
+        exitLabel.setOnMousePressed(mouseEvent -> {
+
+            exitButtonPressed.setVisible(true);
+            exitButton.setVisible(false);
+
+        });
+
+        exitLabel.setOnMouseReleased(mouseEvent -> {
+
+            exitButtonPressed.setVisible(false);
+            exitButton.setVisible(true);
 
         });
 

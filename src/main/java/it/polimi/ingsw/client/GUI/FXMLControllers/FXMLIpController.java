@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -19,6 +20,8 @@ import java.net.Socket;
 public class FXMLIpController {
 
     private GUI gui;
+
+    private Stage stage;
 
     @FXML
     private TextField IPTextField;
@@ -146,7 +149,7 @@ public class FXMLIpController {
 
         exitLabel.setOnMouseClicked(mouseEvent -> {
 
-            //Dialog.display();
+            gui.getDialog().displayClose(stage);
 
         });
 
@@ -187,7 +190,8 @@ public class FXMLIpController {
     }
 
 
-    public void setController( GUI gui ) {
+    public void setController( GUI gui, Stage stage ) {
+        this.stage = stage;
         this.gui = gui;
     }
 

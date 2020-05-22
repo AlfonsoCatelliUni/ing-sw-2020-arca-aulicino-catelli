@@ -41,7 +41,7 @@ public class FXMLStartController {
                 root = fxmlLoader.load();
 
                 controller = fxmlLoader.getController();
-                controller.setController(gui);
+                controller.setController(gui, stage);
 
             } catch (IOException e) {
                 e.printStackTrace();

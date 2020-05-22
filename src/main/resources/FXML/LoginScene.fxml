@@ -17,5 +17,16 @@
       <TextField fx:id="UsernameTextField" layoutX="349.0" layoutY="284.0" prefHeight="0.0" prefWidth="149.0" promptText="Username" />
       <Label fx:id="InfoLabel" alignment="CENTER" layoutX="351.0" layoutY="267.0" text="Insert Username Here " textFill="WHITE" />
       <Button fx:id="LoginButton" layoutX="351.0" layoutY="336.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="147.0" text="Login" />
+      <ImageView fx:id="exitButtonPressed" fitHeight="35.0" fitWidth="67.0" layoutX="16.0" layoutY="596.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="exitButton" fitHeight="35.0" fitWidth="67.0" layoutX="16.0" layoutY="596.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="exitLabel" alignment="CENTER" layoutX="14.0" layoutY="596.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="67.0" text="Exit" textFill="WHITE" />
    </children>
 </AnchorPane>

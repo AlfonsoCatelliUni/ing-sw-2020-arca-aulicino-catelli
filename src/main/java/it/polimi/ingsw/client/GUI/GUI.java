@@ -55,6 +55,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
      */
     private Stage waitingRoomStage;
 
+    private Stage selectNumberStage;
+
 
     // Controllers
 
@@ -163,15 +165,15 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
-            Stage selectNumberPlayersStage = new Stage();
-            selectNumberPlayersStage.setTitle("Santorini");
+            selectNumberStage = new Stage();
+            selectNumberStage.setTitle("Santorini");
             Parent root = null;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/SelectNumberPlayersScene.fxml") );
                 root = fxmlLoader.load();
 
                 selectNumberPlayersController = fxmlLoader.getController();
-                selectNumberPlayersController.initSelectNumberPlayersController(this, selectNumberPlayersStage);
+                selectNumberPlayersController.initSelectNumberPlayersController(this, selectNumberStage);
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -181,10 +183,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
-            selectNumberPlayersStage.setScene(scene);
-            selectNumberPlayersStage.setResizable(false);
+            selectNumberStage.setScene(scene);
+            selectNumberStage.setResizable(false);
 
-            selectNumberPlayersStage.show();
+            selectNumberStage.show();
         });
 
     }
@@ -258,7 +260,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED DisconnectionClientEvent ");
 
         Platform.runLater( () -> {
-            // TODO: mettere variabile lo stage del select number
+
+            if(selectNumberStage.isShowing()) {
+                selectNumberStage.close();
+            }
+
             stage.close();
 
             dialog.displayExit("YOU HAVE BEEN DISCONNECTED");

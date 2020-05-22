@@ -22,7 +22,6 @@ import javafx.scene.image.Image;
 public class FXMLGameController {
 
 
-
     private GUI gui;
 
     private Stage stage;
@@ -298,6 +297,9 @@ public class FXMLGameController {
     private GridPane infoGrid;
 
     @FXML
+    private AnchorPane generalAnchor;
+
+    @FXML
     private AnchorPane rightPanel;
 
     @FXML
@@ -465,7 +467,14 @@ public class FXMLGameController {
 
         rightPanel.setBackground(backgroundPanel);
 
+        Image imageBackground = new Image(getClass().getResourceAsStream("/Graphics/SceneBackground/gameSceneBackground.png"));
 
+        Background background = new Background(
+                new BackgroundImage(imageBackground, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,
+                                true, true, true, true)));
+
+        generalAnchor.setBackground(background);
 
     }
 

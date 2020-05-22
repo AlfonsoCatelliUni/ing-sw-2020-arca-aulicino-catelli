@@ -8,21 +8,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="411.0" style="-fx-background-color: #808080;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLDialogController">
    <children>
-      <ImageView fx:id="noButtonPressed" fitHeight="51.0" fitWidth="103.0" layoutX="270.0" layoutY="315.0" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/Other/blueButtonPressed.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="yesButtonPressed" fitHeight="51.0" fitWidth="103.0" layoutX="49.0" layoutY="313.0" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/Other/blueButtonPressed.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="okButtonPressed" fitHeight="51.0" fitWidth="103.0" layoutX="159.0" layoutY="313.0" preserveRatio="true">
-         <image>
-            <Image url="@../Graphics/Other/blueButtonPressed.png" />
-         </image>
-      </ImageView>
       <ImageView fitHeight="400.0" fitWidth="426.0" layoutX="-5.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../Graphics/SceneBackground/dialogModalBAckground.png" />
@@ -33,14 +18,29 @@
             <Image url="@../Graphics/Other/blueButton.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="okButtonPressed" fitHeight="51.0" fitWidth="103.0" layoutX="159.0" layoutY="313.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="yesButton" fitHeight="51.0" fitWidth="103.0" layoutX="49.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphics/Other/blueButton.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="yesButtonPressed" fitHeight="51.0" fitWidth="103.0" layoutX="49.0" layoutY="313.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="noButton" fitHeight="51.0" fitWidth="103.0" layoutX="270.0" layoutY="315.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphics/Other/blueButton.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="noButtonPressed" fitHeight="51.0" fitWidth="103.0" layoutX="270.0" layoutY="315.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
          </image>
       </ImageView>
       <Label fx:id="plainTextLabel" alignment="CENTER" layoutX="31.0" layoutY="80.0" prefHeight="213.0" prefWidth="353.0" text="Label" textAlignment="CENTER" textFill="WHITE" wrapText="true">

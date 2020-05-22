@@ -69,7 +69,7 @@ public class ClientView implements Runnable {
             //e.printStackTrace();
         }
         catch (IOException e) {
-            System.err.println("There's an error whit the server!");
+            System.err.println("There's an error with the server!");
             //e.printStackTrace();
         }
         finally {

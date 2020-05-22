@@ -369,6 +369,35 @@ public class FXMLGameController {
     @FXML
     private Label action4Label;
 
+
+    @FXML
+    private ImageView action4ImageButton;
+
+    @FXML
+    private ImageView action4ImageButtonPressed;
+
+    @FXML
+    private ImageView action3ImageButton;
+
+    @FXML
+    private ImageView action3ImageButtonPressed;
+
+    @FXML
+    private ImageView action2ImageButton;
+
+    @FXML
+    private ImageView action2ImageButtonPressed;
+
+    @FXML
+    private ImageView action1ImageButton;
+
+    @FXML
+    private ImageView action1ImageButtonPressed;
+
+    private List<ImageView> actionsButtons;
+
+    private List<ImageView> actionsButtonsPressed;
+
     
 
 
@@ -700,6 +729,8 @@ public class FXMLGameController {
 
         this.actionsLabel = new ArrayList<>();
         this.actionsPane = new ArrayList<>();
+        this.actionsButtons = new ArrayList<>();
+        this.actionsButtonsPressed = new ArrayList<>();
 
 
         actionsLabel.add(action1Label);
@@ -729,6 +760,24 @@ public class FXMLGameController {
                 actionPane.setStyle("-fx-opacity: 0");
             });
 
+        }
+
+        actionsButtons.add(action1ImageButton);
+        actionsButtons.add(action2ImageButton);
+        actionsButtons.add(action3ImageButton);
+        actionsButtons.add(action4ImageButton);
+
+        actionsButtonsPressed.add(action1ImageButtonPressed);
+        actionsButtonsPressed.add(action2ImageButtonPressed);
+        actionsButtonsPressed.add(action3ImageButtonPressed);
+        actionsButtonsPressed.add(action4ImageButtonPressed);
+
+        for (ImageView imageView : actionsButtons) {
+            imageView.setVisible(false);
+        }
+
+        for (ImageView imageView : actionsButtonsPressed) {
+            imageView.setVisible(false);
         }
 
 
@@ -979,6 +1028,7 @@ public class FXMLGameController {
             actionsLabel.get(i).setUserData(event.actions.get(i));
             actionsLabel.get(i).setVisible(true);
             actionsPane.get(i).setVisible(true);
+            actionsButtons.get(i).setVisible(true);
             enableLabel(actionsLabel.get(i));
 
 
@@ -1023,6 +1073,31 @@ public class FXMLGameController {
                     default:
                         throw new RuntimeException("Error while selecting the next action!");
                 }
+
+            });
+
+            actionsLabel.get(i).setOnMousePressed(mouseEvent -> {
+
+                Label labelSelected = (Label) mouseEvent.getSource();
+
+                int index = actionsLabel.indexOf(labelSelected);
+
+                ImageView actionButton = actionsButtons.get(index);
+                ImageView actionButtonPressed = actionsButtonsPressed.get(index);
+
+                actionButton.setVisible(false);
+                actionButtonPressed.setVisible(true);
+            });
+
+            actionsLabel.get(i).setOnMouseReleased(mouseEvent -> {
+
+                Label labelSelected = (Label) mouseEvent.getSource();
+
+                int index = actionsLabel.indexOf(labelSelected);
+
+                ImageView actionButtonPressed = actionsButtonsPressed.get(index);
+
+                actionButtonPressed.setVisible(false);
 
             });
         }
@@ -1229,11 +1304,16 @@ public class FXMLGameController {
 
     private void disableLabels(List<Label> labels){
         for (Label label : labels){
+            int index = labels.indexOf(label);
+            actionsButtons.get(index).setVisible(false);
+            actionsButtonsPressed.get(index).setVisible(false);
             label.setText("");
             label.setStyle("");
             label.setOnMouseClicked(e -> {});
             label.setOnMouseEntered(e -> {});
             label.setOnMouseExited(e -> {});
+            label.setOnMousePressed(e -> {});
+            label.setOnMouseReleased(e -> {});
 
         }
     }

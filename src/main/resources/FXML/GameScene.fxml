@@ -96,7 +96,7 @@
                                     <Image url="@../Graphics/GameScene/SantoriniBoard.png" />
                                  </image>
                               </ImageView>
-                              <GridPane fx:id="gameBoardGrid" gridLinesVisible="true" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <GridPane fx:id="gameBoardGrid" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -339,24 +339,64 @@
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                                        <children>
+                                          <ImageView fx:id="action1ImageButtonPressed" fitHeight="114.0" fitWidth="353.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButtonPressed.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="action1ImageButton" fitHeight="114.0" fitWidth="356.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButton.png" />
+                                             </image>
+                                          </ImageView>
                                           <Pane fx:id="action1Pane" prefHeight="200.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Label fx:id="action1Label" alignment="CENTER" prefHeight="120.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                                        <children>
+                                          <ImageView fx:id="action2ImageButtonPressed" fitHeight="114.0" fitWidth="353.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButtonPressed.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="action2ImageButton" fitHeight="114.0" fitWidth="356.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButton.png" />
+                                             </image>
+                                          </ImageView>
                                           <Pane fx:id="action2Pane" prefHeight="200.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Label fx:id="action2Label" alignment="CENTER" prefHeight="120.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3">
                                        <children>
+                                          <ImageView fx:id="action3ImageButtonPressed" fitHeight="114.0" fitWidth="353.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButtonPressed.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="action3ImageButton" fitHeight="114.0" fitWidth="356.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButton.png" />
+                                             </image>
+                                          </ImageView>
                                           <Pane fx:id="action3Pane" prefHeight="200.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Label fx:id="action3Label" alignment="CENTER" prefHeight="120.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                                        <children>
+                                          <ImageView fx:id="action4ImageButtonPressed" fitHeight="114.0" fitWidth="353.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButtonPressed.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fx:id="action4ImageButton" fitHeight="114.0" fitWidth="356.0" layoutX="10.0" layoutY="10.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                             <image>
+                                                <Image url="@../Graphics/GameScene/coralButton.png" />
+                                             </image>
+                                          </ImageView>
                                           <Pane fx:id="action4Pane" prefHeight="200.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                           <Label fx:id="action4Label" alignment="CENTER" prefHeight="120.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                        </children>

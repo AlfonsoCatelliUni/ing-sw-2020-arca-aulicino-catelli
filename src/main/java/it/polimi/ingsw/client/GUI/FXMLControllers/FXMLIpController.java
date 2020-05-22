@@ -6,7 +6,9 @@ import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 
@@ -24,6 +26,15 @@ public class FXMLIpController {
     private TextField PortTextField;
     @FXML
     private Button ConnectButton;
+
+    @FXML
+    private ImageView exitButtonPressed;
+
+    @FXML
+    private ImageView exitButton;
+
+    @FXML
+    private Label exitLabel;
 
 
     // MARK : Initialize Methods ======================================================================================
@@ -45,6 +56,9 @@ public class FXMLIpController {
          */
 
         //ConnectButton.setDefaultButton(true);
+
+        exitButton.setVisible(true);
+        exitButtonPressed.setVisible(false);
 
         ConnectButton.setOnMouseClicked(mouseEvent -> {
 
@@ -127,6 +141,26 @@ public class FXMLIpController {
 
 
             }
+
+        });
+
+        exitLabel.setOnMouseClicked(mouseEvent -> {
+
+            //Dialog.display();
+
+        });
+
+        exitLabel.setOnMousePressed(mouseEvent -> {
+
+            exitButtonPressed.setVisible(true);
+            exitButton.setVisible(false);
+
+        });
+
+        exitLabel.setOnMouseReleased(mouseEvent -> {
+
+            exitButtonPressed.setVisible(false);
+            exitButton.setVisible(true);
 
         });
 

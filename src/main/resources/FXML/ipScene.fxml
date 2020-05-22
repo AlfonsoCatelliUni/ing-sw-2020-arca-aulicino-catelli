@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -26,5 +27,16 @@
       <TextField fx:id="IPTextField" layoutX="141.0" layoutY="18.0" promptText="IP Address" />
       <TextField fx:id="PortTextField" layoutX="374.0" layoutY="18.0" promptText="Port Number" />
       <Button fx:id="ConnectButton" defaultButton="true" layoutX="249.0" layoutY="144.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="152.0" text="Connect" />
+      <ImageView fx:id="exitButtonPressed" fitHeight="35.0" fitWidth="67.0" layoutX="4.0" layoutY="407.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="exitButton" fitHeight="35.0" fitWidth="67.0" layoutX="4.0" layoutY="407.0" preserveRatio="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="exitLabel" alignment="CENTER" layoutX="2.0" layoutY="407.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="67.0" text="Exit" textFill="WHITE" />
    </children>
 </AnchorPane>

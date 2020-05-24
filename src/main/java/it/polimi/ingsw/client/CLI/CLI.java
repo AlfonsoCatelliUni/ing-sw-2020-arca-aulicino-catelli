@@ -34,18 +34,35 @@ public class CLI implements Client, ServerToClientManager {
 
     private ClientView clientView;
 
-
+    /**
+     * All the info about the current game that have to be shown to the player
+     */
     private List<FormattedPlayerInfo> playersInfo;
 
 
+    /**
+     * The nickname of the player
+     */
     private String nickname;
 
+    /**
+     * the row of the pawn used in an entire turn
+     */
     private int rowUsedPawn;
 
+    /**
+     * the column of the pawn used in an entire turn
+     */
     private int columnUsedPawn;
 
+    /**
+     * the row of the cell where the player will do his next action
+     */
     private int nextActionRow;
 
+    /**
+     * the column of the cell where the player will do his next action
+     */
     private int nextActionColumn;
 
 

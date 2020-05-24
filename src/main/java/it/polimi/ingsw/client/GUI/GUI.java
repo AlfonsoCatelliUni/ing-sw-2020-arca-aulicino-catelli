@@ -59,7 +59,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     protected Stage stage;
 
     /**
-     * this is the dialog to show in another stage plain text and important informations during game
+     * this is the dialog to show in another stage plain text and important information during game
      */
     protected Dialog dialog = new Dialog();
 

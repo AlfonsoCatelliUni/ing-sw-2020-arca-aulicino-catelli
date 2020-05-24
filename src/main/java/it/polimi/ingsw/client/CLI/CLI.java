@@ -22,6 +22,7 @@ public class CLI implements Client, ServerToClientManager {
     private final String RED_C = "\u001b[38;5;196m";
 
     private String ipAddress;
+
     private int port;
 
     private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";

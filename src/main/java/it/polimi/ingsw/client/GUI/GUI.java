@@ -3,7 +3,6 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.FormattedSimpleCell;
 import it.polimi.ingsw.client.GUI.FXMLControllers.*;
-import it.polimi.ingsw.client.GUI.scenes.*;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.application.Application;
@@ -23,19 +22,35 @@ import java.util.List;
 
 public class GUI extends Application implements Client, ServerToClientManager {
 
+    /**
+     * it's the nickname of the player using the gui
+     */
     private String nickname;
 
+    /**
+     * it's the information of the row of the usedPawn during the turn
+     */
     private int rowUsedPawn;
 
+    /**
+     * it's the information of the column of the usedPawn during the turn
+     */
     private int columnUsedPawn;
 
+    /**
+     * it's the information of the row of target of action during the turn
+     */
     private int nextActionRow;
 
+    /**
+     * it's the information of the column of target of action during the turn
+     */
     private int nextActionColumn;
 
+    /**
+     * the view used to send and receive messages
+     */
     private ClientView clientView;
-
-    private GameScene gameScene;
 
     /**
      * this is the Main Stage, the one where the game board i showed on
@@ -48,14 +63,15 @@ public class GUI extends Application implements Client, ServerToClientManager {
     protected Dialog dialog = new Dialog();
 
     /**
-     * this is the Waiting Room Stage, the one where is showed which players are in the lobby
+     * it's the stage showed to choose number of players, it's the stage only for the first player in the lobby
      */
-    private Stage waitingRoomStage;
-
     private Stage selectNumberStage;
 
 
     // Controllers
+    /**
+     * controllers to managed events and handle graphics built with FXML
+     */
 
     private FXMLLobbyController lobbyController;
 
@@ -199,9 +215,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LobbyScene.fxml") );
                 root = fxmlLoader.load();
-                lobbyController = fxmlLoader.getController();
 
-                lobbyController.initController(stage, event.connectedPlayers);
+                lobbyController = fxmlLoader.getController();
+                lobbyController.fillNicknames(event.connectedPlayers);
 
             } catch (IOException e) {
                 e.printStackTrace();

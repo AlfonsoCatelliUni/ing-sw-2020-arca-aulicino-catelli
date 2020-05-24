@@ -3,14 +3,13 @@ package it.polimi.ingsw.client.GUI.FXMLControllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
 public class FXMLDialogController {
 
-
     Stage dialogStage;
-
 
     @FXML
     private Label plainTextLabel;
@@ -60,13 +59,23 @@ public class FXMLDialogController {
         yesButtonPressed.setVisible(false);
         okButtonPressed.setVisible(false);
 
+        plainTextLabel.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
     }
 
+
     public void initController(Stage stage){
+
         dialogStage = stage;
 
     }
 
+    /**
+     * this method fill the text in the scene and shows all the elements needed to show the stage correctly
+     * @param plainText the text to show
+     */
     public void display(String plainText){
 
         okButton.setVisible(true);
@@ -74,25 +83,13 @@ public class FXMLDialogController {
 
         plainTextLabel.setText(plainText);
 
-        okLabel.setOnMouseClicked(e->{
-            dialogStage.close();
-        });
-
-        okLabel.setOnMousePressed(mouseEvent -> {
-
-            okButtonPressed.setVisible(true);
-            okButton.setVisible(false);
-
-        });
-
-        okLabel.setOnMouseReleased(mouseEvent -> {
-
-            okButton.setVisible(true);
-            okButtonPressed.setVisible(false);
-
-        });
+        setAttributes(okLabel, okButtonPressed, okButton);
     }
 
+    /**
+     * this method fill the text in the scene and shows all the elements needed to show the stage correctly like the button to close connection
+     * @param plainText the text to show
+     */
     public void displayExit(String plainText){
 
         String previousText = plainTextLabel.getText();
@@ -130,6 +127,10 @@ public class FXMLDialogController {
 
     }
 
+    /**
+     * this method fill the text in the scene and shows all the elements needed to show the stage correctly like the button to close the  currentstage
+     * @param stage the current stage to close
+     */
     public void displayClose(Stage stage){
 
         yesLabel.setVisible(true);
@@ -160,30 +161,45 @@ public class FXMLDialogController {
 
         });
 
-        noLabel.setOnMouseClicked(e ->{
-            dialogStage.close();
-        });
-
-        noLabel.setOnMousePressed(mouseEvent -> {
-
-            noButtonPressed.setVisible(true);
-            noButton.setVisible(false);
-
-        });
-
-        noLabel.setOnMouseReleased(mouseEvent -> {
-
-            noButton.setVisible(true);
-            noButtonPressed.setVisible(false);
-
-        });
+        setAttributes(noLabel, noButtonPressed, noButton);
     }
 
+    /**
+     * this method fill the previous text with new text received during game
+     * @param plainText the text to add in dialog stage
+     */
     public void addText(String plainText){
         String previousText = plainTextLabel.getText();
 
         plainTextLabel.setText(previousText + "\n" + plainText);
 
+    }
+
+    /**
+     * this method set the correct attributes of the Images, Buttons and Label to show the right dialog stage
+     * @param label the label to click and close the stage
+     * @param buttonPressed the image to show when click
+     * @param button the image to show when button is not clicked
+     */
+    private void setAttributes(Label label, ImageView buttonPressed, ImageView button) {
+
+        label.setOnMouseClicked(e->{
+            dialogStage.close();
+        });
+
+        label.setOnMousePressed(mouseEvent -> {
+
+            buttonPressed.setVisible(true);
+            button.setVisible(false);
+
+        });
+
+        label.setOnMouseReleased(mouseEvent -> {
+
+            button.setVisible(true);
+            buttonPressed.setVisible(false);
+
+        });
     }
 
 

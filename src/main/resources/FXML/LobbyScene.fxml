@@ -32,6 +32,6 @@
             <Font size="30.0" />
          </font>
       </Label>
-      <Button fx:id="CloseButton" defaultButton="true" layoutX="20.0" layoutY="115.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="158.0" style="-fx-background-color: #0077FF;" text="Close" textFill="WHITE" />
+      <Button fx:id="closeButton" defaultButton="true" layoutX="20.0" layoutY="115.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="158.0" style="-fx-background-color: #0077FF;" text="Close" textFill="WHITE" />
    </children>
 </AnchorPane>

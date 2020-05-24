@@ -55,8 +55,25 @@ public class FXMLLoseGameController {
             gui.manageEvent(new DisconnectionClientEvent());
         });
 
+        spectateButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                10
+        ));
+
+        leaveButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                10
+        ));
+
         spectateButton.setVisible(false);
         leaveButton.setVisible(false);
+
+        loserEndGameLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
+        winnerLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
         loserEndGameLabel.setVisible(false);
         winnerLabel.setVisible(false);
     }

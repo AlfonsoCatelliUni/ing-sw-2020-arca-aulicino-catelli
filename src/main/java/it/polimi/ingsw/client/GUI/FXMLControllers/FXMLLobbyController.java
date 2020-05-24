@@ -48,7 +48,7 @@ public class FXMLLobbyController {
     private Label titleLabel;
 
     @FXML
-    private Button CloseButton;
+    private Button closeButton;
 
 
 
@@ -58,15 +58,19 @@ public class FXMLLobbyController {
         labelList = new ArrayList<>();
         imageViewList = new ArrayList<>();
 
-        CloseButton.setDisable(true);
-        CloseButton.setVisible(false);
+        closeButton.setDisable(true);
+        closeButton.setVisible(false);
+
+        closeButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
 
         initializeBoats();
         initializeLabels();
     }
 
     /**
-     * initializes images and set not visibles because it changes a run time when players connect in lobby
+     * initializes images and set not visible because it changes a run time when players connect in lobby
      */
     private void initializeBoats() {
 
@@ -80,7 +84,7 @@ public class FXMLLobbyController {
     }
 
     /**
-     * initializes labels and set not visibles because it changes a run time when players connect in lobby
+     * initializes labels and set not visible because it changes a run time when players connect in lobby
      */
     private void initializeLabels() {
 
@@ -113,6 +117,10 @@ public class FXMLLobbyController {
      * @param playerNickname the final nicknames in game
      */
     public void close(List<String> playerNickname) {
+
+        titleLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
 
         titleLabel.setText("The Lobby is Closed! Wait until is your turn...");
 

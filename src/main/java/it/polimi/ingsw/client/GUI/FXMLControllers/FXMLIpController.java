@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 
-import it.polimi.ingsw.client.GUI.Dialog;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
@@ -23,6 +22,10 @@ public class FXMLIpController {
 
     private Stage stage;
 
+
+    /**
+     * bindings with ipScene.fxml
+     */
     @FXML
     private TextField IPTextField;
     @FXML
@@ -51,12 +54,12 @@ public class FXMLIpController {
 
     private void initializeButton() {
 
-        /*
+
         ConnectButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 15
         ));
 
-         */
+
 
         //ConnectButton.setDefaultButton(true);
 
@@ -177,7 +180,7 @@ public class FXMLIpController {
         IPTextField.setText("127.0.0.1");
         PortTextField.setText("64209");
 
-        /*
+
         IPTextField.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 12
         ));
@@ -186,7 +189,7 @@ public class FXMLIpController {
                 12
         ));
 
-         */
+
     }
 
 

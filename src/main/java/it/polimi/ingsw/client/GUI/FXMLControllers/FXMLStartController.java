@@ -18,6 +18,9 @@ public class FXMLStartController {
 
     private Stage stage;
 
+    /**
+     * bindings to SantoriniStartScene.fxml
+     */
     @FXML
     private Button startGameButton;
 

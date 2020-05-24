@@ -25,8 +25,14 @@ public class FXMLLoginController {
 
     private GUI gui;
 
+    /**
+     * id that the server gave to this player
+     */
     private int id;
 
+    /**
+     * bindings to LoginScene.fxml
+     */
     @FXML
     private TextField UsernameTextField;
 
@@ -54,33 +60,33 @@ public class FXMLLoginController {
 
 
     private void initializeTextField() {
-        /*
+
         UsernameTextField.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 15
         ));
 
-         */
+
     }
 
 
     private void initializeLabel() {
-        /*
+
         InfoLabel.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                 12
         ));
 
-         */
+
     }
 
 
     private void initializeButton() {
 
-        /*
+
         LoginButton.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                         15
                 ));
 
-         */
+
 
         //LoginButton.setDefaultButton(true);
 

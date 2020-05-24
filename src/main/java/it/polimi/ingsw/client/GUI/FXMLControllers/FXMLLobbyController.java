@@ -65,6 +65,10 @@ public class FXMLLobbyController {
                 15
         ));
 
+        titleLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
         initializeBoats();
         initializeLabels();
     }
@@ -117,10 +121,6 @@ public class FXMLLobbyController {
      * @param playerNickname the final nicknames in game
      */
     public void close(List<String> playerNickname) {
-
-        titleLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                15
-        ));
 
         titleLabel.setText("The Lobby is Closed! Wait until is your turn...");
 

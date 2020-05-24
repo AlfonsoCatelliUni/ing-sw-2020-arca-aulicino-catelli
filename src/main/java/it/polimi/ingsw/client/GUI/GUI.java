@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
+import javax.swing.text.html.ImageView;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -611,10 +612,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED EndGameSTCEvent");
 
-        if(event.winner.equals(nickname)) {
+        Platform.runLater(() -> {
 
-            Platform.runLater(() -> {
-                Parent root = null;
+            Parent root = null;
+            if (event.winner.equals(nickname)) {
+
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/VictoryScene.fxml"));
                     root = fxmlLoader.load();
@@ -630,37 +632,36 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 Scene scene = new Scene(root);
 
                 stage.setScene(scene);
-                stage.setResizable(false);
+                stage.setWidth(scene.getWidth());
+                stage.setHeight(scene.getHeight());
 
-                stage.show();
-            });
 
-        }
-        else {
+            } else {
 
-            Parent root = null;
-            FXMLLoseGameController controller;
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/LoseEndGameScene.fxml") );
-                root = fxmlLoader.load();
+                FXMLLoseGameController controller;
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/FXML/LoseEndGameScene.fxml"));
+                    root = fxmlLoader.load();
 
-                controller = fxmlLoader.getController();
-                controller.initLoseEndGameController(this, stage);
-                controller.showLosingEndGame(event.winner);
+                    controller = fxmlLoader.getController();
+                    controller.initLoseEndGameController(this, stage);
+                    controller.showLosingEndGame(event.winner);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                assert root != null;
+
+                Scene scene = new Scene(root);
+
+                stage.setScene(scene);
+
+
             }
-
-            assert root != null;
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
             stage.setResizable(false);
-
             stage.show();
-
-        }
+        });
 
 
     }

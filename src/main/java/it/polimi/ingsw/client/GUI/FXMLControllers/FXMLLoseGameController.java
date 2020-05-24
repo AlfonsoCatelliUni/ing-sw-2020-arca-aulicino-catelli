@@ -52,8 +52,6 @@ public class FXMLLoseGameController {
 
         leaveButton.setOnMouseClicked(mouseEvent -> {
             gui.manageEvent(new DisconnectionClientEvent());
-            stage.close();
-            gameStage.close();
         });
 
         spectateButton.setVisible(false);

@@ -629,11 +629,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 }
 
                 assert root != null;
+
                 Scene scene = new Scene(root);
 
                 stage.setScene(scene);
-                stage.setWidth(scene.getWidth());
-                stage.setHeight(scene.getHeight());
 
 
             } else {
@@ -659,8 +658,15 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
             }
+
             stage.setResizable(false);
+
+            stage.setMinWidth(0);
+            stage.setMinHeight(0);
+            stage.sizeToScene();
+
             stage.show();
+
         });
 
 

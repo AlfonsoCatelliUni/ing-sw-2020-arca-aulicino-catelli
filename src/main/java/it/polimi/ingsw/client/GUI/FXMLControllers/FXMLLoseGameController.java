@@ -5,6 +5,7 @@ import it.polimi.ingsw.events.STCEvents.DisconnectionClientEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class FXMLLoseGameController {
@@ -102,8 +103,12 @@ public class FXMLLoseGameController {
 
     public void showLosingEndGame(String winnerNickname) {
 
-        winnerLabel.setText(winnerNickname + "is the winner");
+        winnerLabel.setText(winnerNickname + " is the winner");
         winnerLabel.setVisible(true);
+        winnerLabel.setFont(Font.loadFont(
+                getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
 
         loserEndGameLabel.setText("You Have Lost the Match!");
         loserEndGameLabel.setVisible(true);

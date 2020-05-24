@@ -438,6 +438,7 @@ public class Controller implements Observer, ClientToServerManager {
                 virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
 
                 closeGameLobby();
+                timerTask.cancel();
 
             }
             //if is an intermediate connection than nothing happens

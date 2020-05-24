@@ -751,7 +751,7 @@ public class FXMLGameController {
         for (Label label : playersEffects){
             label.setFont(Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    15
+                    12
             ));
     }
 
@@ -770,6 +770,12 @@ public class FXMLGameController {
         actionsLabel.add(action2Label);
         actionsLabel.add(action3Label);
 
+        for (Label label : actionsLabel){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    20
+            ));
+        }
 
 
         actionsPane.add(action1Pane);
@@ -778,6 +784,11 @@ public class FXMLGameController {
         actionsPane.add(action4Pane);
 
         titleLabel.setVisible(true);
+        titleLabel.setText(" -- WAIT UNTIL YOUR TURN -- ");
+        titleLabel.setFont(Font.loadFont(
+                getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
 
         for (Pane pane : actionsPane) {
 

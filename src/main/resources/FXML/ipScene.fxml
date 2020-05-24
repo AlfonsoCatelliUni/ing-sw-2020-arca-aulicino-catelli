@@ -24,8 +24,8 @@
             <Image url="@../Graphics/Other/LoginPanel.png" />
          </image>
       </ImageView>
-      <TextField fx:id="IPTextField" layoutX="141.0" layoutY="18.0" promptText="IP Address" />
-      <TextField fx:id="PortTextField" layoutX="374.0" layoutY="18.0" promptText="Port Number" />
+      <TextField fx:id="IPTextField" layoutX="155.0" layoutY="18.0" prefHeight="26.0" prefWidth="124.0" promptText="IP Address" />
+      <TextField fx:id="PortTextField" layoutX="384.0" layoutY="19.0" prefHeight="26.0" prefWidth="132.0" promptText="Port Number" />
       <Button fx:id="ConnectButton" defaultButton="true" layoutX="249.0" layoutY="144.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="152.0" text="Connect" />
       <ImageView fx:id="exitButtonPressed" fitHeight="35.0" fitWidth="67.0" layoutX="4.0" layoutY="407.0" preserveRatio="true">
          <image>

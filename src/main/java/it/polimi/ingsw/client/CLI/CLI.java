@@ -267,6 +267,7 @@ public class CLI implements Client, ServerToClientManager {
 
     }
 
+
     @Override
     public void manageEvent(OnePlayerEnteredEvent event) {
 

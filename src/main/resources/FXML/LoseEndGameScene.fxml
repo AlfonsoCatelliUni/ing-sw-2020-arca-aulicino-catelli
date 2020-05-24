@@ -7,20 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="442.0" prefWidth="587.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLLoseGameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLLoseGameController">
    <children>
-      <ImageView fitHeight="442.0" fitWidth="603.0" preserveRatio="true">
+      <ImageView fitHeight="606.0" fitWidth="800.0" layoutX="-1.0" preserveRatio="true">
          <image>
             <Image url="@../Graphics/SceneBackground/loseBackground.png" />
          </image>
       </ImageView>
-      <Label fx:id="loserEndGameLabel" alignment="CENTER" layoutY="372.0" prefHeight="69.0" prefWidth="231.0" text="You Lost the Match!" textFill="WHITE" wrapText="true">
+      <Label fx:id="loserEndGameLabel" alignment="CENTER" layoutX="14.0" layoutY="503.0" prefHeight="69.0" prefWidth="231.0" text="You Lost the Match!" textFill="WHITE" wrapText="true">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="spectateButton" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="393.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Spectate" />
-      <Button fx:id="leaveButton" layoutX="436.0" layoutY="393.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Leave" />
-      <Label fx:id="winnerLabel" layoutX="229.0" layoutY="141.0" text="nickname is the winner" textFill="WHITE" />
+      <Button fx:id="spectateButton" alignment="CENTER" contentDisplay="CENTER" layoutX="608.0" layoutY="490.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Spectate" />
+      <Button fx:id="leaveButton" layoutX="608.0" layoutY="545.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Leave" />
+      <Label fx:id="winnerLabel" layoutX="337.0" layoutY="207.0" text="nickname is the winner" textFill="WHITE" />
    </children>
 </AnchorPane>

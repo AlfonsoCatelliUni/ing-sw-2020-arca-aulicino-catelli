@@ -39,7 +39,7 @@ public class ClientApp {
 
         Client client = null;
 
-        System.out.println("inserisci cli o gui e taci!");
+        System.out.println("inserisci 'cli' o 'gui' e taci!");
 
         String param = input.nextLine();
 

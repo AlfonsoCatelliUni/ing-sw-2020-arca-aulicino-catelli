@@ -175,7 +175,9 @@ public class GraphicDrawerCLI {
 
     //MARK : Board Panel Section ======================================================================================
 
-
+    /**
+     * the information of the board
+     */
     private FormattedCellInfo[][] formattedBoardInfo;
 
 
@@ -339,19 +341,30 @@ public class GraphicDrawerCLI {
 
     //MARK : Player Panel Section ======================================================================================
 
-
+    /**
+     * the title of the players information panel
+     */
     private String playerPanelTitle;
 
-
+    /**
+     * the list of information of the players
+     */
     private List<FormattedPlayerInfo> playersInfo;
 
-
+    /**
+     * the list of names of the available gods
+     */
     private List<String> cardsNameChoices;
 
-
+    /**
+     * the list of effect of the available gods
+     */
     private List<String> cardsEffectChoices;
 
 
+    /**
+     * this method draw the skeleton of the players information panel
+     */
     private void drawPlayersPanel() {
 
         int startRow = 4;
@@ -373,6 +386,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method fills the players information panel with the right type of information
+     */
     private void fillPlayersPanel() {
         fillTitlePlayerPanel(playerPanelTitle);
         fillInfoPlayerPanel(playersInfo);
@@ -383,11 +399,17 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method saves the title of the players information panel
+     */
     public void saveTitlePlayerPanel(String title) {
         this.playerPanelTitle = title.toUpperCase();
     }
 
 
+    /**
+     * this method saves the actual players information
+     */
     public void saveInfoPlayerPanel(List<FormattedPlayerInfo> playerInfoList) {
         this.playersInfo = playerInfoList;
 
@@ -397,12 +419,18 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method saves the available cards information
+     */
     public void savePlayerCardChoice(List<String> cardsNameList, List<String> cardsEffectList) {
         this.cardsNameChoices = cardsNameList;
         this.cardsEffectChoices = cardsEffectList;
     }
 
 
+    /**
+     * this method fills the players information panel with the available cards
+     */
     private void fillPlayerCardChoice( List<String> cardsNameList, List<String> cardsEffectList) {
 
         int startRow = 11;
@@ -430,6 +458,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method print the title of the players information panel
+     */
     private void fillTitlePlayerPanel(String title) {
 
         if(title.length() > 132)
@@ -442,6 +473,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method fills the players information panel with the actual information
+     */
     private void fillInfoPlayerPanel( List<FormattedPlayerInfo> playerInfoList ) {
 
         //nickname length 30
@@ -478,19 +512,30 @@ public class GraphicDrawerCLI {
 
     //MARK : Choice Panel Section ======================================================================================
 
-
+    /**
+     * the title of the choice panel
+     */
     private String choicePanelTitle;
 
-
+    /**
+     * the available cells list
+     */
     private List<Point> cellsChoicePanel;
 
-
+    /**
+     * the available actions list
+     */
     private List<String> actionsChoicePanel;
 
-
+    /**
+     * the available buildings list
+     */
     private List<Integer> buildingsChoicePanel;
 
 
+    /**
+     * this method draw the skeleton of the choice panel
+     */
     private void drawChoicePanel() {
 
         int startRow = 23;
@@ -510,6 +555,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method print the right information in the choice panel
+     */
     private void fillChoicePanel() {
         fillTitleChoicePanel();
 
@@ -526,11 +574,17 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method print the title of the choice panel
+     */
     private void fillTitleChoicePanel() {
         print(25, 72, choicePanelTitle);
     }
 
 
+    /**
+     * this method print the available cells in the choice panel
+     */
     private void fillCellsChoicePanel() {
 
         int startRow = 31;
@@ -581,6 +635,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method print the available actions in the choice panel
+     */
     private void fillActionsChoicesPanel() {
 
         int startRow = 31;
@@ -604,6 +661,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method print the available buildings in the choice panel
+     */
     private void fillBuildingsChoicePanel() {
 
         int startRow = 31;
@@ -629,6 +689,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method saves the title of the choice panel
+     */
     public void saveTitleChoicePanel(String title) {
 
         if(title.length() > 72 )
@@ -639,24 +702,36 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method saves the available cells information
+     */
     public void saveCellsChoicesValue(List<Point> cellsList) {
         clearChoicePanelValues();
         this.cellsChoicePanel = cellsList;
     }
 
 
+    /**
+     * this method saves the available actions information
+     */
     public void saveActionsChoicesValue(List<String> actionsList) {
         clearChoicePanelValues();
         this.actionsChoicePanel = actionsList;
     }
 
 
+    /**
+     * this method saves the available buildings information
+     */
     public void saveBuildingsChoicesValue(List<Integer> buildingsList) {
         clearChoicePanelValues();
         this.buildingsChoicePanel = buildingsList;
     }
 
 
+    /**
+     * this method clear all the saved information for the choice
+     */
     public void clearChoicePanelValues() {
         this.cellsChoicePanel = new ArrayList<>();
         this.actionsChoicePanel = new ArrayList<>();
@@ -664,6 +739,9 @@ public class GraphicDrawerCLI {
     }
 
 
+    /**
+     * this method print the exit value in the choice panel
+     */
     private void fillExit(List<?> list) {
 
         String exitNumber = "[" + String.valueOf(list.size()) + "]";

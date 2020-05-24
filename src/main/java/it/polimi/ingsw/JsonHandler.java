@@ -85,7 +85,10 @@ public class JsonHandler {
 
     //MARK : generate All Buildings from the JSON file in Resources ======================================================================================
 
-
+    /**
+     * generate a list of buildings list from the json file
+     * @return the list of buildings
+     */
     public static List<Building> deserializeBuildingList() {
         List<Building> buildings = new ArrayList<>();
 
@@ -99,7 +102,9 @@ public class JsonHandler {
         return buildings;
     }
 
-
+    /**
+     * this map each building with the corresponding decorator class
+     */
     private static Building deserializeBuilding(JsonObject buildingJson) {
 
         int level = buildingJson.get("level").getAsInt();
@@ -111,7 +116,10 @@ public class JsonHandler {
 
     //MARK : generate All Cards from the JSON file in Resources ======================================================================================
 
-
+    /**
+     * generate a list of cards list from the json file
+     * @return the list of cards
+     */
     public static List<Card> deserializeCardList() {
         List<Card> cards = new ArrayList<>();
 
@@ -124,7 +132,6 @@ public class JsonHandler {
 
         return cards;
     }
-
 
     /**
      * this map each card with the corresponding decorator class
@@ -150,6 +157,11 @@ public class JsonHandler {
     //MARK : Section to Generate All the Information from the Update ======================================================================================
 
 
+    /**
+     * generate a list of FormattedCellInfo from a json string
+     * @param update the json string that will be parsed
+     * @return the list of cells info
+     */
     public static List<FormattedCellInfo> generateCellsList(String update) {
         List<FormattedCellInfo> cellsInfo = new ArrayList<>();
 
@@ -162,7 +174,11 @@ public class JsonHandler {
         return cellsInfo;
     }
 
-
+    /**
+     * generate a single cell information
+     * @param cellJson the json object that will be parsed
+     * @return a single cell information
+     */
     private static FormattedCellInfo generateSingleCellInfo(JsonObject cellJson) {
 
         Integer row = cellJson.get("row").getAsInt();

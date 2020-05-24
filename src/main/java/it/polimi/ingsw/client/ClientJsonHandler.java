@@ -19,9 +19,17 @@ import java.util.List;
  */
 public class ClientJsonHandler {
 
+    /**
+     * the json parser
+     */
     public static JsonParser parser = new JsonParser();
 
 
+    /**
+     * generate a list of cells information, the information contain the row and column
+     * @param cellsString the json formatted string
+     * @return a list of cells information
+     */
     public static List<Couple<Integer, Integer>> generateCellsList(String cellsString) {
 
         List<Couple<Integer, Integer>> cells = new ArrayList<>();
@@ -35,6 +43,11 @@ public class ClientJsonHandler {
         return cells;
     }
 
+    /**
+     * generate a single cell information
+     * @param cellJson the json object that will be parsed
+     * @return a single cell information
+     */
     private static Couple<Integer, Integer> generateSingleCell(JsonObject cellJson) {
 
         Integer row = cellJson.get("row").getAsInt();
@@ -45,6 +58,11 @@ public class ClientJsonHandler {
 
 
 
+    /**
+     * generate a list of cells information, the information contain the name and effect
+     * @param cardsString the json formatted string
+     * @return a list of cards information
+     */
     public static List<Couple<String, String>> generateCardsList(String cardsString) {
 
         List<Couple<String, String>> cards = new ArrayList<>();
@@ -58,6 +76,11 @@ public class ClientJsonHandler {
         return cards;
     }
 
+    /**
+     * generate a single card information
+     * @param cardJson the json object that will be parsed
+     * @return a single card information
+     */
     private static Couple<String, String> generateSingleCard(JsonObject cardJson) {
 
         String name = cardJson.get("name").getAsString();
@@ -68,6 +91,11 @@ public class ClientJsonHandler {
 
 
 
+    /**
+     * generate a list of buildings information, the information contain level and if it's a dome or note
+     * @param buildingsString the json formatted string
+     * @return a list of cards information
+     */
     public static List<Couple<Integer, Boolean>> generateBuildingsList(String buildingsString) {
 
         List<Couple<Integer, Boolean>> buildings = new ArrayList<>();
@@ -82,6 +110,11 @@ public class ClientJsonHandler {
         return buildings;
     }
 
+    /**
+     * generate a single building information
+     * @param buildingJson the json object that will be parsed
+     * @return a single building information
+     */
     private static Couple<Integer, Boolean> generateSingleBuilding(JsonObject buildingJson) {
 
         Integer level = buildingJson.get("level").getAsInt();
@@ -92,6 +125,11 @@ public class ClientJsonHandler {
 
 
 
+    /**
+     * generate a list of actions information, the information contain the name of the actions
+     * @param actionsString the json formatted string
+     * @return a list of actions information
+     */
     public static List<String> generateActionsList(String actionsString) {
 
         List<String> actions = new ArrayList<>();
@@ -105,12 +143,22 @@ public class ClientJsonHandler {
         return actions;
     }
 
+    /**
+     * generate a single actions information
+     * @param actionJson the json object that will be parsed
+     * @return a single action information
+     */
     private static String generateSingleAction(JsonObject actionJson) {
         return actionJson.get("action_id").getAsString();
     }
 
 
 
+    /**
+     * generate a list of players information
+     * @param playersString the json formatted string
+     * @return a list of players information
+     */
     public static List<FormattedPlayerInfo> generatePlayersList(String playersString) {
 
         List<FormattedPlayerInfo> players = new ArrayList<>();
@@ -124,6 +172,11 @@ public class ClientJsonHandler {
         return players;
     }
 
+    /**
+     * generate a single player information
+     * @param playerJson the json object that will be parsed
+     * @return a single player information
+     */
     private static FormattedPlayerInfo generateSinglePlayer(JsonObject playerJson) {
 
         String nickname = playerJson.get("nickname").getAsString();

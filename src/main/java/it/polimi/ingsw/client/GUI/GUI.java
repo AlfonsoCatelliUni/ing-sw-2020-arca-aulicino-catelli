@@ -562,8 +562,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
             //this player lost the game
             if(event.nickname.equals(nickname)) {
 
-                Stage losingStage = new Stage();
-                losingStage.setTitle("Santorini");
+                Stage loseStage = new Stage();
+                loseStage.setTitle("Santorini");
 
                 Parent root = null;
                 FXMLLoseGameController controller;
@@ -572,7 +572,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                     root = fxmlLoader.load();
 
                     controller = fxmlLoader.getController();
-                    controller.initLoseController(this, losingStage, stage);
+                    controller.initLoseController(this, loseStage, stage);
                     controller.showLosingByNoAction();
 
                 } catch (IOException e) {
@@ -582,11 +582,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 assert root != null;
                 Scene scene = new Scene(root);
 
-                losingStage.setScene(scene);
-                losingStage.setResizable(false);
-                losingStage.initModality(Modality.APPLICATION_MODAL);
+                loseStage.setScene(scene);
+                loseStage.setResizable(false);
+                loseStage.initModality(Modality.APPLICATION_MODAL);
 
-                losingStage.show();
+                loseStage.show();
 
             }
             //tell this player that an opponent player lost the game
@@ -594,7 +594,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
                 gameSceneController.deleteOpponentPlayer(event.nickname);
 
-                //TODO : rimuovere i pawns dalla board
+                dialog.display(event.nickname + " lost the game");
+
 
             }
 
@@ -637,9 +638,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
         }
         else {
 
-            Stage losingStage = new Stage();
-            losingStage.setTitle("Santorini");
-
             Parent root = null;
             FXMLLoseGameController controller;
             try {
@@ -647,7 +645,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
 
                 controller = fxmlLoader.getController();
-                controller.initLoseController(this, losingStage, stage);
+                controller.initLoseEndGameController(this, stage);
                 controller.showLosingEndGame(event.winner);
 
             } catch (IOException e) {
@@ -657,12 +655,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
-            losingStage.setScene(scene);
-            losingStage.setResizable(false);
+            stage.setScene(scene);
+            stage.setResizable(false);
 
-            stage.close();
-
-            losingStage.show();
+            stage.show();
 
         }
 

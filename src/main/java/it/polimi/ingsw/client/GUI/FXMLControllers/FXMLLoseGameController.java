@@ -9,8 +9,12 @@ import javafx.stage.Stage;
 
 public class FXMLLoseGameController {
 
+
     @FXML
     private Label loserEndGameLabel;
+
+    @FXML
+    private Label winnerLabel;
 
     @FXML
     private Button spectateButton;
@@ -55,6 +59,7 @@ public class FXMLLoseGameController {
         spectateButton.setVisible(false);
         leaveButton.setVisible(false);
         loserEndGameLabel.setVisible(false);
+        winnerLabel.setVisible(false);
     }
 
     /**
@@ -66,6 +71,15 @@ public class FXMLLoseGameController {
     public void initLoseController(GUI gui, Stage stage, Stage gameStage) {
         this.gui = gui;
         this.stage = stage;
+        this.gameStage = gameStage;
+
+        initializeButtons();
+
+    }
+
+    public void initLoseEndGameController(GUI gui, Stage gameStage){
+
+        this.gui = gui;
         this.gameStage = gameStage;
 
         initializeButtons();
@@ -89,7 +103,14 @@ public class FXMLLoseGameController {
 
 
     public void showLosingEndGame(String winnerNickname) {
+
+        winnerLabel.setText(winnerNickname + "is the winner");
+        winnerLabel.setVisible(true);
+
+        loserEndGameLabel.setText("You Have Lost the Match!");
         loserEndGameLabel.setVisible(true);
+        leaveButton.setVisible(true);
+
     }
 
 

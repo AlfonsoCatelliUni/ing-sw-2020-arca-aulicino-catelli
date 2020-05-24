@@ -27,7 +27,7 @@
       <Label fx:id="firstNicknameLabel" layoutX="205.0" layoutY="421.0" text="First Nickname" />
       <Label fx:id="secondNicknameLabel" layoutX="329.0" layoutY="481.0" text="Second Nickname" />
       <Label fx:id="thirdNicknameLabel" layoutX="239.0" layoutY="549.0" text="Third Nickname" />
-      <Label fx:id="titleLabel" layoutX="20.0" layoutY="64.0" prefHeight="58.0" prefWidth="290.0" text="Wait for Other Players" textFill="WHITE">
+      <Label fx:id="titleLabel" layoutX="20.0" layoutY="64.0" prefHeight="58.0" prefWidth="794.0" text="Wait for Other Players" textFill="WHITE">
          <font>
             <Font size="30.0" />
          </font>

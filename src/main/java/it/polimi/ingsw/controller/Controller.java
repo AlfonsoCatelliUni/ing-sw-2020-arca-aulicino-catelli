@@ -283,8 +283,9 @@ public class Controller implements Observer, ClientToServerManager {
 
         //if the player has ended his turn because he has lost then we send to him a losing message and remove his info from the game
         if(isLosingEnding) {
-            //virtualView.sendMessageTo(nickname, new LosingByNoActionEvent(nickname, "So Sad!"));
-            virtualView.sendMessage(new LosingByNoActionEvent(nameWhoEndedTurn, "So Sad!"));
+            if (game.getPlayersNickname().size() > 2) {
+                virtualView.sendMessage(new LosingByNoActionEvent(nameWhoEndedTurn, "So Sad!"));
+            }
             game.removePlayer(nameWhoEndedTurn);
         } else {
             game.nextCurrentPlayer();
@@ -299,8 +300,9 @@ public class Controller implements Observer, ClientToServerManager {
         while(currentPlayerAvailablePawns.size() == 0 && game.getPlayers().size() > 1) {
 
             //send the message that the current player has lost the game because he can't do any action
-            //virtualView.sendMessageTo(currentPlayerNickname, new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
-            virtualView.sendMessage(new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
+            if (game.getPlayersNickname().size() > 2) {
+                virtualView.sendMessage(new LosingByNoActionEvent(currentPlayerNickname, "So Sad!"));
+            }
 
             //save the nickname of the loser player
             String loserPlayer = currentPlayerNickname;

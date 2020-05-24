@@ -751,7 +751,7 @@ public class FXMLGameController {
         for (Label label : playersEffects){
             label.setFont(Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    20
+                    15
             ));
     }
 

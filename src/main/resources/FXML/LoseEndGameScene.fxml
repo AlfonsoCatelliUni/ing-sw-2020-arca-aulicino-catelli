@@ -21,5 +21,6 @@
       </Label>
       <Button fx:id="spectateButton" alignment="CENTER" contentDisplay="CENTER" layoutX="279.0" layoutY="393.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Spectate" />
       <Button fx:id="leaveButton" layoutX="436.0" layoutY="393.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="83.0" text="Leave" />
+      <Label fx:id="winnerLabel" layoutX="229.0" layoutY="141.0" text="nickname is the winner" textFill="WHITE" />
    </children>
 </AnchorPane>

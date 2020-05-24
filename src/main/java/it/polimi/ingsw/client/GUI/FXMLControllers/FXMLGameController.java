@@ -1398,8 +1398,11 @@ public class FXMLGameController {
 
             int index = actionsLabel.indexOf(labelSelected);
 
+
+            ImageView actionButton = actionsButtons.get(index);
             ImageView actionButtonPressed = actionsButtonsPressed.get(index);
 
+            actionButton.setVisible(true);
             actionButtonPressed.setVisible(false);
 
         });

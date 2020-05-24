@@ -39,7 +39,7 @@ public class ClientApp {
 
         Client client = null;
 
-        System.out.println("choose 'cli' or 'gui' ");
+        System.out.println(" choose 'cli' or 'gui' ");
 
         String param = input.nextLine();
 

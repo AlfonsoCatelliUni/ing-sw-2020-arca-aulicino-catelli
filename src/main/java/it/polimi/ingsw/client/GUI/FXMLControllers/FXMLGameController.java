@@ -23,23 +23,51 @@ import javafx.scene.text.Font;
 public class FXMLGameController {
 
 
+    /**
+     * the gui where the stage to control is
+     */
     private GUI gui;
 
+    /**
+     * the stage of the GameScene
+     */
     private Stage stage;
 
+    /**
+     * the clientView used to send messages based on mouse click events
+     */
+    private ClientView clientView;
 
+    /**
+     * List of the players' nicknames to display in game scene
+     */
     private List<Label> playersNicknames;
 
+    /**
+     * List of the player's colors to display in game scene
+     */
     private List<Label> playersColors;
 
+    /**
+     * List of the player effectsDescriptions' to display in game scene
+     */
     private List<Label> playersEffects;
 
+    /**
+     * List of actions label to display during match
+     */
     private List<Label> actionsLabel;
 
+    /**
+     * the list of the pane where the buttons of the actions are
+     */
     private List<Pane> actionsPane;
 
-
+    /**
+     * the list of panes, each pane correspond to a cell, the events are managed using the pane
+     */
     private List<Pane> cellsList;
+
     // 0 ROW ==================================================================================
 
     /**
@@ -100,7 +128,9 @@ public class FXMLGameController {
     @FXML
     private Pane cell24;
 
-
+    /**
+     * list of ImageView of the buildings to display during the game
+     */
     private List<ImageView> blockImageList;
     // 0 ROW ==================================================================================
     @FXML
@@ -158,7 +188,9 @@ public class FXMLGameController {
     @FXML
     private ImageView blocks24;
 
-
+    /**
+     * list of ImageView of the dome to display during the game
+     */
     private List<ImageView> domeImageList;
     // 0 ROW ==================================================================================
     @FXML
@@ -216,7 +248,9 @@ public class FXMLGameController {
     @FXML
     private ImageView dome24;
 
-
+    /**
+     * list of ImageView of the pawn to display during the game
+     */
     private List<ImageView> pawnImageList;
     // 0 ROW ==================================================================================
     @FXML
@@ -308,17 +342,6 @@ public class FXMLGameController {
     /**
      * bindings with GameScene.fxml
      */
-    @FXML
-    private HBox ControlsBoxSection;
-
-    @FXML
-    private ImageView gameBoardImage;
-
-    @FXML
-    private GridPane gameBoardGrid;
-
-    @FXML
-    private GridPane infoGrid;
 
     @FXML
     private AnchorPane generalAnchor;
@@ -328,12 +351,6 @@ public class FXMLGameController {
 
     @FXML
     private AnchorPane infoAnchor;
-
-
-    private ClientView clientView;
-
-
-
 
     @FXML
     private Label player1_nickname;
@@ -361,10 +378,6 @@ public class FXMLGameController {
 
     @FXML
     private Label player3_effect;
-
-    
-    @FXML
-    private Pane titlePane;
     
     @FXML
     private Label titleLabel;
@@ -418,24 +431,17 @@ public class FXMLGameController {
     @FXML
     private ImageView action1ImageButtonPressed;
 
+
     /**
      * list of images of buttons for the action to be chosen
      */
     private List<ImageView> actionsButtons;
 
+
     /**
      * list of images of pressed buttons for the action to be chosen
      */
     private List<ImageView> actionsButtonsPressed;
-
-    
-
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private ResourceBundle resources;
 
 
     /**
@@ -541,6 +547,9 @@ public class FXMLGameController {
     }
 
 
+    /**
+     * add each cell Pane to list of cells on order to manage the event and to set the user date, FormattedSimpleCell to manage the clickEvents
+     */
     private void initializeCells() {
 
         cellsList.add(cell0);
@@ -580,33 +589,12 @@ public class FXMLGameController {
             }
         }
 
-
-        //moved in method enableCell
-//        //at each cell in cellsList assign a setOnMouseClicked action
-//        for (Pane cell : cellsList) {
-//
-//            //highlight the border
-//            cell.setOnMouseEntered(event -> {
-//                Pane selectedCell = (Pane) event.getSource();
-//                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
-//            });
-//
-//            //clear the border
-//            cell.setOnMouseExited(event -> {
-//                Pane selectedCell = (Pane) event.getSource();
-//                selectedCell.setStyle("-fx-opacity: 0");
-//            });
-//
-//            //selected cell
-//            cell.setOnMouseClicked(event -> {
-//                Pane selectedCell = (Pane) event.getSource();
-//                cellSelectionHandler(selectedCell);
-//            });
-//        }
-
     }
 
 
+    /**
+     * set all the images to the right list to manage the events and to set property
+     */
     private void initializeImage() {
 
         blockImageList.add(blocks0);
@@ -716,6 +704,9 @@ public class FXMLGameController {
     }
 
 
+    /**
+     * set all the list of information grid display and set graphic content
+     */
     private void initializeInfoGrid(){
 
         this.playersNicknames = new ArrayList<>();
@@ -758,6 +749,9 @@ public class FXMLGameController {
     }
 
 
+    /**
+     * set attributes in grid to display the actions during game
+     */
     private void initializeActionsGrid(){
 
         this.actionsLabel = new ArrayList<>();
@@ -1140,30 +1134,7 @@ public class FXMLGameController {
 
             });
 
-            actionsLabel.get(i).setOnMousePressed(mouseEvent -> {
-
-                Label labelSelected = (Label) mouseEvent.getSource();
-
-                int index = actionsLabel.indexOf(labelSelected);
-
-                ImageView actionButton = actionsButtons.get(index);
-                ImageView actionButtonPressed = actionsButtonsPressed.get(index);
-
-                actionButton.setVisible(false);
-                actionButtonPressed.setVisible(true);
-            });
-
-            actionsLabel.get(i).setOnMouseReleased(mouseEvent -> {
-
-                Label labelSelected = (Label) mouseEvent.getSource();
-
-                int index = actionsLabel.indexOf(labelSelected);
-
-                ImageView actionButtonPressed = actionsButtonsPressed.get(index);
-
-                actionButtonPressed.setVisible(false);
-
-            });
+            enableButtons(i);
         }
 
     }
@@ -1185,6 +1156,7 @@ public class FXMLGameController {
                 actionsLabel.get(i).setUserData(event.buildings.get(i));
                 actionsLabel.get(i).setVisible(true);
                 actionsPane.get(i).setVisible(true);
+                actionsButtons.get(i).setVisible(true);
                 enableLabel(actionsLabel.get(i));
 
                 actionsLabel.get(i).setOnMouseClicked(e -> {
@@ -1196,6 +1168,8 @@ public class FXMLGameController {
 
                     clientView.sendCTSEvent(new ChosenBuildingEvent(event.receiverNickname, chosenLevel, gui.getRowUsedPawn(), gui.getColumnUsedPawn(), gui.getNextActionRow(), gui.getNextActionColumn()));
                 });
+
+                enableButtons(i);
             }
 
         } else {
@@ -1229,176 +1203,10 @@ public class FXMLGameController {
     }
 
 
-    private void cellSelectionHandler(Pane cell) {
-        FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
-        System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());
-    }
-
-
-    //MARK : Support Methods =================================================================================
-
-
-    public List<Pane> showAvailableCells(List<FormattedSimpleCell> availableCells) {
-
-        setVisibilityAllCells(false);
-
-        List<Pane> visiblePanes = new ArrayList<>();
-
-        for(FormattedSimpleCell cell : availableCells) {
-            cellsList.get(cell.getNumber()).setVisible(true);
-            visiblePanes.add( cellsList.get(cell.getNumber()) );
-        }
-
-        return visiblePanes;
-    }
-
-
-    public void setVisibleCells(List<Pane> cells){
-        for (Pane cell : cells){
-            cell.setVisible(true);
-        }
-    }
-
-
-    public void setVisibilityAllCells(Boolean visibility) {
-        for (Pane cell : cellsList){
-            cell.setVisible(visibility);
-        }
-    }
-
-
-    private void clearMouseClick(List<Pane> visibleCells) {
-        for (Pane p : visibleCells) {
-            p.setOnMouseClicked(e -> {});
-        }
-    }
-
-
-    private void resetStyleCell(Pane cell){
-        cell.setStyle("-fx-opacity: 0");
-    }
-
-
-    private void clearMouseClick(Pane cell){
-        cell.setOnMouseClicked(e -> {});
-    }
-
-
-    public void checkValidity(boolean isValid) {
-
-        if(!isValid) {
-            titleLabel.setText("Apparently an error occurred, please reinsert your choice");
-        }
-
-    }
-
-
-    //MARK : Graphic Methods =================================================================================
-
-
-    private void clearLabels(List<Label> actionsLabel) {
-        for (Label label : actionsLabel) {
-            label.setText("");
-            label.setOnMouseEntered(e -> {});
-
-        }
-
-    }
-
-
-    private void enableCells(List<Pane> cells){
-        for (Pane cell : cells){
-
-            cell.setOnMouseEntered(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
-            });
-
-            //clear the border
-            cell.setOnMouseExited(event -> {
-                Pane selectedCell = (Pane) event.getSource();
-                selectedCell.setStyle("-fx-opacity: 0");
-            });
-
-
-        }
-    }
-
-
-    private void enableLabels(List<Label> labels){
-
-        for (Label label  : labels) {
-
-            //highlight the border
-            label.setOnMouseEntered(event -> {
-                Label actionLabel = (Label) event.getSource();
-                actionLabel.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
-            });
-
-            //clear the border
-            label.setOnMouseExited(event -> {
-                Label actionLabel = (Label) event.getSource();
-                actionLabel.setStyle("-fx-opacity: 0");
-            });
-
-        }
-
-    }
-
-
-    private void enableLabel(Label label){
-        //highlight the border
-        label.setOnMouseEntered(event -> {
-            Label actionLabel = (Label) event.getSource();
-            actionLabel.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
-        });
-
-        //clear the border
-        label.setOnMouseExited(event -> {
-            Label actionLabel = (Label) event.getSource();
-            actionLabel.setStyle("");
-        });
-
-    }
-
-
-    private void disableLabels(List<Label> labels){
-        for (Label label : labels){
-            int index = labels.indexOf(label);
-            actionsButtons.get(index).setVisible(false);
-            actionsButtonsPressed.get(index).setVisible(false);
-            label.setText("");
-            label.setStyle("");
-            label.setOnMouseClicked(e -> {});
-            label.setOnMouseEntered(e -> {});
-            label.setOnMouseExited(e -> {});
-            label.setOnMousePressed(e -> {});
-            label.setOnMouseReleased(e -> {});
-
-        }
-    }
-
-
-    private void disableCells(List<Pane> cells){
-        for(Pane cell : cells){
-            cell.setOnMouseClicked(e -> {});
-            cell.setOnMouseEntered(e -> {});
-            cell.setOnMouseExited(e -> {});
-            cell.setStyle("");
-
-        }
-
-    }
-
-
-    private void disableCell(Pane cell){
-        cell.setOnMouseClicked(e -> {});
-        cell.setOnMouseEntered(e -> {});
-        cell.setOnMouseExited(e -> {});
-
-    }
-
-
+    /**
+     * this method update the gameScene due to NotifyStatusEvent
+     * @param jsonInfo the info received by the event
+     */
     public void updateCells(String jsonInfo) {
 
         List<FormattedCellInfo> cellsInfo = JsonHandler.generateCellsList(jsonInfo);
@@ -1432,6 +1240,168 @@ public class FXMLGameController {
         }
 
 
+    }
+
+
+
+    //MARK : Support Methods =================================================================================
+
+
+    public List<Pane> showAvailableCells(List<FormattedSimpleCell> availableCells) {
+
+        setVisibilityAllCells(false);
+
+        List<Pane> visiblePanes = new ArrayList<>();
+
+        for(FormattedSimpleCell cell : availableCells) {
+            cellsList.get(cell.getNumber()).setVisible(true);
+            visiblePanes.add( cellsList.get(cell.getNumber()) );
+        }
+
+        return visiblePanes;
+    }
+
+
+    public void setVisibilityAllCells(Boolean visibility) {
+        for (Pane cell : cellsList){
+            cell.setVisible(visibility);
+        }
+    }
+
+
+    private void clearMouseClick(List<Pane> visibleCells) {
+        for (Pane p : visibleCells) {
+            p.setOnMouseClicked(e -> {});
+        }
+    }
+
+
+    public void checkValidity(boolean isValid) {
+
+        if(!isValid) {
+            titleLabel.setText("Apparently an error occurred, please reinsert your choice");
+        }
+
+    }
+
+
+    //MARK : Graphic Methods =================================================================================
+
+    /**
+     * enable the graphic content on cells
+     * @param cells the list of cells to enable the attributes
+     */
+    private void enableCells(List<Pane> cells){
+        for (Pane cell : cells){
+
+            cell.setOnMouseEntered(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+            });
+
+            //clear the border
+            cell.setOnMouseExited(event -> {
+                Pane selectedCell = (Pane) event.getSource();
+                selectedCell.setStyle("-fx-opacity: 0");
+            });
+
+
+        }
+    }
+
+
+    /**
+     * enable the graphic content on label
+     * @param label the label to enable the attributes
+     */
+    private void enableLabel(Label label){
+        //highlight the border
+        label.setOnMouseEntered(event -> {
+            Label actionLabel = (Label) event.getSource();
+            actionLabel.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+        });
+
+        //clear the border
+        label.setOnMouseExited(event -> {
+            Label actionLabel = (Label) event.getSource();
+            actionLabel.setStyle("");
+        });
+
+    }
+
+
+    /**
+     * disable labels after click event in order to prevent some errors
+     * @param labels list of labels to disable
+     */
+    private void disableLabels(List<Label> labels){
+        for (Label label : labels){
+            int index = labels.indexOf(label);
+            actionsButtons.get(index).setVisible(false);
+            actionsButtonsPressed.get(index).setVisible(false);
+            label.setText("");
+            label.setStyle("");
+            label.setOnMouseClicked(e -> {});
+            label.setOnMouseEntered(e -> {});
+            label.setOnMouseExited(e -> {});
+            label.setOnMousePressed(e -> {});
+            label.setOnMouseReleased(e -> {});
+
+        }
+    }
+
+
+    /**
+     * disable each pane of all events
+     * @param cells the list of Pane to prevent errors
+     */
+    private void disableCells(List<Pane> cells){
+        for(Pane cell : cells){
+            disableCell(cell);
+            cell.setStyle("");
+
+        }
+
+    }
+
+
+    private void disableCell(Pane cell){
+        cell.setOnMouseClicked(e -> {});
+        cell.setOnMouseEntered(e -> {});
+        cell.setOnMouseExited(e -> {});
+
+    }
+
+
+    /**
+     * this method enable the only the correct buttons of the actions during the game, set the right properties
+     * @param i integer to the right index of the list of graphic elements to enable
+     */
+    private void enableButtons(int i) {
+        actionsLabel.get(i).setOnMousePressed(mouseEvent -> {
+
+            Label labelSelected = (Label) mouseEvent.getSource();
+
+            int index = actionsLabel.indexOf(labelSelected);
+
+            ImageView actionButton = actionsButtons.get(index);
+            ImageView actionButtonPressed = actionsButtonsPressed.get(index);
+
+            actionButton.setVisible(false);
+            actionButtonPressed.setVisible(true);
+        });
+
+        actionsLabel.get(i).setOnMouseReleased(mouseEvent -> {
+
+            Label labelSelected = (Label) mouseEvent.getSource();
+
+            int index = actionsLabel.indexOf(labelSelected);
+
+            ImageView actionButtonPressed = actionsButtonsPressed.get(index);
+
+            actionButtonPressed.setVisible(false);
+
+        });
     }
 
 
@@ -1512,5 +1482,11 @@ public class FXMLGameController {
 
     }
 
+
+    //ONLY FOR TESTING
+    private void cellSelectionHandler(Pane cell) {
+        FormattedSimpleCell cellInfo = (FormattedSimpleCell) cell.getUserData();
+        System.out.println("row " + cellInfo.getRow() + " column " + cellInfo.getColumn());
+    }
 
 }

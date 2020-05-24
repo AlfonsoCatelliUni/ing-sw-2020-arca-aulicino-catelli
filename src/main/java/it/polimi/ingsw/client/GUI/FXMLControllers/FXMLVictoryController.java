@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI.FXMLControllers;
 
-import it.polimi.ingsw.client.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -25,7 +24,11 @@ public class FXMLVictoryController {
     public void initialize(){
         
         //initialize exitButton
-        exitLabel.setOnMouseClicked(e -> stage.close() );
+        exitLabel.setOnMouseClicked(e -> {
+            stage.close();
+            System.exit(0);
+
+    });
 
     }
 

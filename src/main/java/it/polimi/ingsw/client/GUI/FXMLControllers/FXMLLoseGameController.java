@@ -120,7 +120,7 @@ public class FXMLLoseGameController {
 
     public void showLosingEndGame(String winnerNickname) {
 
-        winnerLabel.setText(winnerNickname + "is the winner");
+        winnerLabel.setText(winnerNickname + " is the winner");
         winnerLabel.setVisible(true);
 
         loserEndGameLabel.setText("You Have Lost the Match!");

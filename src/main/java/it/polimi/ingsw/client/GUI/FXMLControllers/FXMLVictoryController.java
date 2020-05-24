@@ -35,16 +35,15 @@ public class FXMLVictoryController {
                 15
         ));
 
+        winnerLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
     }
 
 
     public void initController(Stage stage, String winnerNickname){
         this.stage = stage;
         winnerLabel.setText(winnerNickname);
-
-        winnerLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                15
-        ));
 
     }
 

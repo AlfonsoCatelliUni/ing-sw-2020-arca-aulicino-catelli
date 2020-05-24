@@ -838,7 +838,8 @@ public class FXMLGameController {
 
         });
 
-
+        exitLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15));
 
     }
 

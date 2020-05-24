@@ -3,7 +3,9 @@ package it.polimi.ingsw.client.GUI.FXMLControllers;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.ChosenPlayerNumberEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class FXMLSelectNumberPlayersController {
@@ -22,9 +24,16 @@ public class FXMLSelectNumberPlayersController {
     @FXML
     private ImageView threePlayers;
 
+    @FXML
+    private Label label;
+
 
     public void initialize() {
         initializeImages();
+
+        label.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
     }
 
 

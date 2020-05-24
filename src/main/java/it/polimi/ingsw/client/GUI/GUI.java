@@ -59,7 +59,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
     protected Stage stage;
 
     /**
-     * this is the dialog to show in another stage plain text and important informations during game
+     * this is the dialog to show in another stage plain text and important information during game
      */
     protected Dialog dialog = new Dialog();
 
@@ -485,6 +485,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
+            System.out.println(stage.isShowing());
             stage.setScene(scene);
             stage.setResizable(false);
 
@@ -581,9 +582,13 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 }
 
                 assert root != null;
-                Scene scene = new Scene(root);
+                Scene scene = new Scene(root, 799,602);
 
                 loseStage.setScene(scene);
+                loseStage.sizeToScene();
+
+                //loseStage.setHeight(600);
+                //loseStage.setWidth(800);
                 loseStage.setResizable(false);
                 loseStage.initModality(Modality.APPLICATION_MODAL);
 
@@ -632,7 +637,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
                 Scene scene = new Scene(root);
 
+                stage.setHeight(600);
+                stage.setWidth(800);
+
                 stage.setScene(scene);
+
 
 
             } else {
@@ -653,6 +662,9 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 assert root != null;
 
                 Scene scene = new Scene(root);
+
+                stage.setHeight(600);
+                stage.setWidth(800);
 
                 stage.setScene(scene);
 

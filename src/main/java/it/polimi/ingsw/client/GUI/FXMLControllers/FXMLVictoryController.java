@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class FXMLVictoryController {
@@ -30,12 +31,20 @@ public class FXMLVictoryController {
 
     });
 
+        exitLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
     }
 
 
     public void initController(Stage stage, String winnerNickname){
         this.stage = stage;
         winnerLabel.setText(winnerNickname);
+
+        winnerLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
 
     }
 

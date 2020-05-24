@@ -53,14 +53,33 @@ public class FXMLLoseGameController {
 
         leaveButton.setOnMouseClicked(mouseEvent -> {
             gui.manageEvent(new DisconnectionClientEvent());
+            stage.close();
+            gameStage.close();
         });
+
+        spectateButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                10));
+
+        leaveButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                10
+        ));
 
         spectateButton.setVisible(false);
         leaveButton.setVisible(false);
+
+        loserEndGameLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
+        winnerLabel.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                15
+        ));
+
         loserEndGameLabel.setVisible(false);
         winnerLabel.setVisible(false);
     }
 
+    
     /**
      * set the attributes in order to managed the events
      * @param gui the gui where sta stage is
@@ -103,12 +122,8 @@ public class FXMLLoseGameController {
 
     public void showLosingEndGame(String winnerNickname) {
 
-        winnerLabel.setText(winnerNickname + " is the winner");
+        winnerLabel.setText(winnerNickname + "is the winner");
         winnerLabel.setVisible(true);
-        winnerLabel.setFont(Font.loadFont(
-                getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                15
-        ));
 
         loserEndGameLabel.setText("You Have Lost the Match!");
         loserEndGameLabel.setVisible(true);

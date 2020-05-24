@@ -13,6 +13,9 @@ public class FXMLSelectNumberPlayersController {
 
     private Stage stage;
 
+    /**
+     * bindings to SelectNumberPlayersScene.fxml
+     */
     @FXML
     private ImageView twoPlayers;
 

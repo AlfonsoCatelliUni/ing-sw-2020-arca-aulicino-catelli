@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.scene.text.Font;
 
 public class FXMLGameController {
 
@@ -40,6 +41,10 @@ public class FXMLGameController {
 
     private List<Pane> cellsList;
     // 0 ROW ==================================================================================
+
+    /**
+     * bindings with GameScene.fxml
+     */
     @FXML
     private Pane cell0;
     @FXML
@@ -270,20 +275,39 @@ public class FXMLGameController {
     private ImageView pawn24;
 
 
+    /**
+     * image of the first block only
+     */
     private Image blockLevel1;
+
+    /**
+     * image of the second block above the first one
+     */
     private Image blockLevel2;
+
+    /**
+     * image of the third block above the second one, and the second one above the first one
+     */
     private Image blockLevel3;
+
+    /**
+     * image of the dome
+     */
     private Image blockDome;
 
     private Image blueMale;
     private Image blueFemale;
+
     private Image greyMale;
     private Image greyFemale;
+
     private Image whiteMale;
     private Image whiteFemale;
 
 
-
+    /**
+     * bindings with GameScene.fxml
+     */
     @FXML
     private HBox ControlsBoxSection;
 
@@ -394,8 +418,14 @@ public class FXMLGameController {
     @FXML
     private ImageView action1ImageButtonPressed;
 
+    /**
+     * list of images of buttons for the action to be chosen
+     */
     private List<ImageView> actionsButtons;
 
+    /**
+     * list of images of pressed buttons for the action to be chosen
+     */
     private List<ImageView> actionsButtonsPressed;
 
     
@@ -408,6 +438,9 @@ public class FXMLGameController {
     private ResourceBundle resources;
 
 
+    /**
+     * cell of the male Pawn which is the first pawn to be chosen when the games starts
+     */
     private FormattedSimpleCell maleCellSelected;
 
 
@@ -701,26 +734,26 @@ public class FXMLGameController {
         playersEffects.add(player2_effect);
         playersEffects.add(player3_effect);
 
-//        for (Label label : playersNicknames){
-//            label.setFont(Font.loadFont(
-//                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-//                    20
-//            ));
-//        }
-//
-//        for (Label label : playersColors){
-//            label.setFont(Font.loadFont(
-//                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-//                    20
-//            ));
-//        }
-//
-//        for (Label label : playersEffects){
-//            label.setFont(Font.loadFont(
-//                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-//                    20
-//            ));
-//    }
+        for (Label label : playersNicknames){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    20
+            ));
+        }
+
+        for (Label label : playersColors){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    20
+            ));
+        }
+
+        for (Label label : playersEffects){
+            label.setFont(Font.loadFont(
+                    getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
+                    20
+            ));
+    }
 
     }
 
@@ -1240,10 +1273,6 @@ public class FXMLGameController {
     }
 
 
-    public void setBoardDimensions() {
-    }
-
-
     public void checkValidity(boolean isValid) {
 
         if(!isValid) {
@@ -1395,6 +1424,11 @@ public class FXMLGameController {
     }
 
 
+    /**
+     * when the height of a cell changes, the image on the cell has to change
+     * @param index is the index of the cell that has to be updated (from 0 to 24)
+     * @param height is the height of the cell
+     */
     private void updateHeight(int index, int height) {
 
         switch (height) {
@@ -1420,6 +1454,11 @@ public class FXMLGameController {
     }
 
 
+    /**
+     * when a pawn moves to a new cell, it has to be updated
+     * @param index is the index of the cell that has to be updated (from 0 to 24)
+     * @param pawnInfo are the info of the pawn
+     */
     private void updatePawn(int index, Couple<String, String> pawnInfo) {
 
         String color = pawnInfo.getFirst();

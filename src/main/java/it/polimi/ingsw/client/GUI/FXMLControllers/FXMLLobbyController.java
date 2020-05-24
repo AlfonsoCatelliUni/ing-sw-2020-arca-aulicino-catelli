@@ -4,36 +4,46 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
+import javafx.scene.text.Font;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimerTask;
+
 
 public class FXMLLobbyController {
 
-    private Stage stage;
-
+    /**
+     * this is the list of connected player to show in lobby stage and to modify during connection events
+     */
     private List<String> connectedPlayers;
 
-    private TimerTask timerTask;
-
-
+    /**
+     * list of the labels of the nickname entered in the lobby
+     */
     private List<Label> labelList;
 
+    /**
+     * list of image view to show graphics content in lobby scene
+     */
     private List<ImageView> imageViewList;
+
 
     @FXML
     private ImageView secondImage;
+
     @FXML
     private ImageView thirdImage;
 
     @FXML
     private Label firstNicknameLabel;
+
     @FXML
     private Label secondNicknameLabel;
+
     @FXML
     private Label thirdNicknameLabel;
+
     @FXML
     private Label titleLabel;
 
@@ -55,7 +65,9 @@ public class FXMLLobbyController {
         initializeLabels();
     }
 
-
+    /**
+     * initializes images and set not visibles because it changes a run time when players connect in lobby
+     */
     private void initializeBoats() {
 
         imageViewList.add(secondImage);
@@ -67,7 +79,9 @@ public class FXMLLobbyController {
 
     }
 
-
+    /**
+     * initializes labels and set not visibles because it changes a run time when players connect in lobby
+     */
     private void initializeLabels() {
 
         labelList.add(firstNicknameLabel);
@@ -78,23 +92,26 @@ public class FXMLLobbyController {
 
             label.setText("");
             label.setVisible(false);
-            /*
+
             label.setFont( Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                     15
             ));
 
-             */
+
         }
 
     }
 
 
-    public void initController(Stage stage, List<String> connectedPlayers) {
-        this.stage = stage;
+    public void initController(List<String> connectedPlayers) {
         fillNicknames(connectedPlayers);
     }
 
 
+    /**
+     * when lobby is closed, the scene modifies to show closing lobby and to show the players connected
+     * @param playerNickname the final nicknames in game
+     */
     public void close(List<String> playerNickname) {
 
         titleLabel.setText("The Lobby is Closed! Wait until is your turn...");
@@ -102,7 +119,10 @@ public class FXMLLobbyController {
         fillNicknames(playerNickname);
     }
 
-
+    /**
+     * this method fill the lobby with the nicknames in lobby
+     * @param connectedPlayers the list of nickname to fill labels in lobby FXML
+     */
     public void fillNicknames(List<String> connectedPlayers) {
 
 

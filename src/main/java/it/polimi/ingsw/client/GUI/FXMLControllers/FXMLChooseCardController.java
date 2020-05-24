@@ -24,19 +24,37 @@ public class FXMLChooseCardController {
 
     private ClientView clientView;
 
-    private String nickname;
-
-    private List<String> cardsUrl;
-
-    private List<String> cardsName;
-
-    private List<String> effectsList;
-
-
-    private List<ImageView> cardsList;
-
     private Stage stage;
 
+    /**
+     * the nickname of the player
+     */
+    private String nickname;
+
+    /**
+     * list of urls for the images of the chosen cards for the game
+     */
+    private List<String> cardsUrl;
+
+    /**
+     * list of names of the chosen cards for the game
+     */
+    private List<String> cardsName;
+
+    /**
+     * list of effects of the chosen cards for the game
+     */
+    private List<String> effectsList;
+
+    /**
+     * list of the images of the chosen cards for the game
+     */
+    private List<ImageView> cardsList;
+
+
+    /**
+     * bindings with ChooseCardScene.fxml
+     */
     @FXML
     private ImageView card0;
     @FXML
@@ -98,13 +116,13 @@ public class FXMLChooseCardController {
         for( Label label : labelList  ) {
             label.setVisible(true);
 
-            /*
+
             label.setFont( Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
                     15
             ));
 
-             */
+
         }
 
     }

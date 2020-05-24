@@ -7,10 +7,11 @@ import javafx.stage.Stage;
 
 public class FXMLVictoryController {
 
-    private GUI gui;
-
     private Stage stage;
 
+    /**
+     * bindings to VictoryScene.fxml
+     */
     @FXML
     private Label winnerLabel;
 

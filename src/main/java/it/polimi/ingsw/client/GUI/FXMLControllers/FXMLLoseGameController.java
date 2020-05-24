@@ -53,8 +53,6 @@ public class FXMLLoseGameController {
 
         leaveButton.setOnMouseClicked(mouseEvent -> {
             gui.manageEvent(new DisconnectionClientEvent());
-            stage.close();
-            gameStage.close();
         });
 
         spectateButton.setFont(Font.loadFont(getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),

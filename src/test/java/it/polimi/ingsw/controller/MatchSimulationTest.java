@@ -1,10 +1,14 @@
-package it.polimi.ingsw;
+package it.polimi.ingsw.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.CTSEvents.*;
+import it.polimi.ingsw.events.ClientToServerEvent;
+import it.polimi.ingsw.events.STCEvents.DisconnectionClientEvent;
+import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
@@ -2218,4 +2222,76 @@ public class MatchSimulationTest  {
         // se ci sono 14 torri di livello 3 senza nessuna cupola (quindi non torri complete) e devo fare un'altra torre di livello 3 come faccio?
     }
 */
+
+    @Test
+    void disconnectionControllerTest(){
+
+        Controller controllerTest = new Controller();
+
+        player1 = "Alfantasy";
+
+        player2 = "Mashu7";
+
+        virtualView.update(new NewConnectionEvent(player1));
+
+        virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
+
+        virtualView.update(new NewConnectionEvent(player2));
+
+        virtualView.update(new ClientDisconnectionEvent(player2));
+
+        assertEquals(player1, controller.getPreGameLobby().getConnectedPlayers().get(0));
+
+        assertEquals(3, controller.getPreGameLobby().getNumberOfPlayers());
+
+        virtualView.update(new ClientDisconnectionEvent(player1));
+
+        assertEquals(-1, controller.getPreGameLobby().getNumberOfPlayers());
+
+
+
+
+    }
+
+
+    @Test
+    void disconnectionDuringGameControllerTest(){
+
+        player1 = "Alfantasy";
+
+        player2 = "Mashu7";
+
+        player3 = "Giammi10";
+
+
+        virtualView.update(new NewConnectionEvent(player1));
+
+        virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
+
+        virtualView.update(new NewConnectionEvent(player2));
+
+        virtualView.update(new NewConnectionEvent(player3));
+
+        controller.getPreGameLobby().getPickedCards().clear();
+
+
+        Card Atlas = JsonHandler.deserializeCardList().get(3);
+
+        Card Demeter = JsonHandler.deserializeCardList().get(4);
+
+        Card Hephaestus = JsonHandler.deserializeCardList().get(5);
+
+        controller.getPreGameLobby().getPickedCards().add(Atlas);
+        controller.getPreGameLobby().getPickedCards().add(Demeter);
+        controller.getPreGameLobby().getPickedCards().add(Hephaestus);
+
+
+        virtualView.update(new ChosenCardEvent(player1, Atlas.getName()));
+
+        virtualView.update(new ClientDisconnectionEvent(player2));
+
+        assertNull(controller.getGame());
+
+
+    }
 }

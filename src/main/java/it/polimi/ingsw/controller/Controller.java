@@ -25,18 +25,32 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+/**
+ * Controller to handle events from the view and modify model in order of pattern MVC
+ */
 public class Controller implements Observer, ClientToServerManager {
 
-
+    /**
+     * View to send and receive events
+     */
     private VirtualView virtualView;
 
 
+    /**
+     * Lobby to handle new connections in game and manage the login events
+     */
     private PreGameLobby preGameLobby;
 
 
+    /**
+     * tha manager of the model od the game
+     */
     private Game game;
 
 
+    /**
+     * timer to control the time during lobby
+     */
     private TimerTask timerTask;
 
     private Object lock;
@@ -44,13 +58,6 @@ public class Controller implements Observer, ClientToServerManager {
 
     // MARK : Constructor Section ======================================================================================
 
-
-    public Controller(Game game) {
-        this.game = game;
-
-        lock = new Object();
-
-    }
 
 
     public Controller() {
@@ -73,7 +80,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     }
 
-
+    //used in server to connect controller with its virtual View
     public VirtualView getVirtualView() {
         return this.virtualView;
     }
@@ -102,125 +109,12 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    // MARK : Json Generator Section ======================================================================================
-
-
-    public String generateJsonActions(List<Action> actions) {
-
-        String generatedJSON = "";
-
-        JSONArray jsonList = new JSONArray();
-
-        for (Action a : actions ) {
-            JSONObject cellObj = new JSONObject();
-
-            // writing the cell coordinate into the Json
-            cellObj.put("action_id", a.getActionID());
-
-            jsonList.add(cellObj);
-        }
-
-        generatedJSON = jsonList.toString();
-
-        return generatedJSON;
-    }
-
-
-    public String generateJsonCells(List<Cell> cells) {
-
-        String generatedJSON = "";
-
-        JSONArray jsonList = new JSONArray();
-
-        for (Cell c : cells ) {
-            JSONObject cellObj = new JSONObject();
-
-            // writing the cell coordinate into the Json
-            cellObj.put("row", c.getRowPosition());
-            cellObj.put("column", c.getColumnPosition());
-
-            jsonList.add(cellObj);
-        }
-
-        generatedJSON = jsonList.toString();
-
-        return generatedJSON;
-    }
-
-
-    public String generateJsonBuildings(List<Building> buildings) {
-
-        String generatedJSON = "";
-
-        JSONArray jsonList = new JSONArray();
-
-        for (Building b : buildings ) {
-            JSONObject cellObj = new JSONObject();
-
-            // writing the building info into the Json
-            cellObj.put("level", b.getLevel());
-            cellObj.put("is_dome", b.getIsDome());
-
-            jsonList.add(cellObj);
-        }
-
-        generatedJSON = jsonList.toString();
-
-        return generatedJSON;
-    }
-
-
-    public String generateJsonCards(List<Card> cards) {
-
-        String generatedJSON = "";
-
-        JSONArray jsonList = new JSONArray();
-
-        for (Card c : cards ) {
-            JSONObject cellObj = new JSONObject();
-
-            // writing the cards info into the Json
-            cellObj.put("name", c.getName());
-            cellObj.put("effect", c.getEffectDescription());
-
-            jsonList.add(cellObj);
-        }
-
-        generatedJSON = jsonList.toString();
-
-        return generatedJSON;
-    }
-
-
-    public String generateJsonPlayersInfo(List<String> players,
-                                        List<Color> colors,
-                                        List<Card> cards) {
-
-        String generatedJSON = "";
-
-        JSONArray jsonList = new JSONArray();
-
-        for(int i = 0; i < players.size(); i++) {
-            JSONObject cellObj = new JSONObject();
-
-            // writing the cards info into the Json
-            cellObj.put("nickname", players.get(i));
-            cellObj.put("color", colors.get(i).toString());
-            cellObj.put("card", cards.get(i).getName());
-            cellObj.put("effect", cards.get(i).getEffectDescription());
-
-            jsonList.add(cellObj);
-        }
-
-        generatedJSON = jsonList.toString();
-
-        return generatedJSON;
-    }
-
-
     // MARK : Controller Function Section ======================================================================================
 
 
+    /**
+     * start the game and initialize all the information using arguments in Game constructor
+     */
     public void startGame (){
 
        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
@@ -238,6 +132,7 @@ public class Controller implements Observer, ClientToServerManager {
 
        virtualView.sendMessage(new StartGameEvent(info));
 
+       // the game starts so lobby is closed and null
        preGameLobby = null;
 
        String firstPlayer = game.getPlayersNickname().get(0);
@@ -330,6 +225,9 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    /**
+     * close game lobby and send events, then send to the first player the event to choose a card for the game
+     */
     public void closeGameLobby(){
 
         preGameLobby.closeLobby();
@@ -347,6 +245,10 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    /**
+     * send events of end game and create a new lobby to manage another game
+     * @param winner nickname of the winner
+     */
     public void endGame(String winner) {
 
         Player winnerPlayer = game.getPlayerByName(winner);
@@ -398,7 +300,7 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
-    public synchronized void manageEvent(NewConnectionEvent event) {
+    public void manageEvent(NewConnectionEvent event) {
 
         Integer ID = event.ID;
 
@@ -989,21 +891,131 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
-    /**
-     * USED ONLY FOR TESTING
-     * @return the preGameLobby
-     */
+    // USED ONLY FOR TESTING
     public PreGameLobby getPreGameLobby() {
         return this.preGameLobby;
     }
 
 
-    /**
-     * USED ONLY FOR TESTING
-     * @return the game
-     */
+    // USED ONLY FOR TESTING
     public Game getGame() {
         return this.game;
+    }
+
+
+    // MARK : Json Generator Section ======================================================================================
+
+
+    public String generateJsonActions(List<Action> actions) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Action a : actions ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cell coordinate into the Json
+            cellObj.put("action_id", a.getActionID());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonCells(List<Cell> cells) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Cell c : cells ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cell coordinate into the Json
+            cellObj.put("row", c.getRowPosition());
+            cellObj.put("column", c.getColumnPosition());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonBuildings(List<Building> buildings) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Building b : buildings ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the building info into the Json
+            cellObj.put("level", b.getLevel());
+            cellObj.put("is_dome", b.getIsDome());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonCards(List<Card> cards) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for (Card c : cards ) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cards info into the Json
+            cellObj.put("name", c.getName());
+            cellObj.put("effect", c.getEffectDescription());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
+    }
+
+
+    public String generateJsonPlayersInfo(List<String> players,
+                                          List<Color> colors,
+                                          List<Card> cards) {
+
+        String generatedJSON = "";
+
+        JSONArray jsonList = new JSONArray();
+
+        for(int i = 0; i < players.size(); i++) {
+            JSONObject cellObj = new JSONObject();
+
+            // writing the cards info into the Json
+            cellObj.put("nickname", players.get(i));
+            cellObj.put("color", colors.get(i).toString());
+            cellObj.put("card", cards.get(i).getName());
+            cellObj.put("effect", cards.get(i).getEffectDescription());
+
+            jsonList.add(cellObj);
+        }
+
+        generatedJSON = jsonList.toString();
+
+        return generatedJSON;
     }
 
 

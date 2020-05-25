@@ -22,9 +22,9 @@
                <children>
                   <GridPane fx:id="infoGrid" prefHeight="175.0" prefWidth="1010.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="423.0" minWidth="8.0" prefWidth="178.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="666.0" minWidth="10.0" prefWidth="144.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="689.0" minWidth="10.0" prefWidth="688.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="423.0" minWidth="8.0" prefWidth="153.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="666.0" minWidth="10.0" prefWidth="87.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="778.0" minWidth="10.0" prefWidth="770.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />

@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import java.awt.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.client.*;
@@ -431,6 +429,9 @@ public class FXMLGameController {
     @FXML
     private ImageView action1ImageButtonPressed;
 
+    @FXML
+    private GridPane infoGrid;
+
 
     /**
      * list of images of buttons for the action to be chosen
@@ -517,14 +518,15 @@ public class FXMLGameController {
         initializeActionsGrid();
 
 
-        Image imageGrid = new Image(getClass().getResourceAsStream("/Graphics/GameScene/backgroundPanel.png"));
+        Image imageGrid = new Image(getClass().getResourceAsStream("/Graphics/GameScene/infoPanelBackground.png"));
 
         Background backgroundGrid = new Background(
                 new BackgroundImage(imageGrid, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO,
                                 true, true, false, false)));
 
-        infoAnchor.setBackground(backgroundGrid);
+        infoGrid.setBackground(backgroundGrid);
+
 
         Image imagePanel = new Image(getClass().getResourceAsStream("/Graphics/GameScene/BackgroundRIghtPanel.png"));
 

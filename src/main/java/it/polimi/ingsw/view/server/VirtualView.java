@@ -111,7 +111,7 @@ public class VirtualView extends Observable implements Observer {
             }
         }
         catch (NullPointerException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             //USED ONLY FOR TESTING
             //System.out.println(event.toString() + "\n");
         }

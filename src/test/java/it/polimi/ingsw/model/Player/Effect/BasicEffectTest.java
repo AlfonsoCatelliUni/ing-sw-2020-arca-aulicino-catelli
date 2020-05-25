@@ -267,7 +267,7 @@ class BasicEffectTest {
 
         building.decreasePlacedQuantity();
 
-        assertEquals(21, building.getPlacedNumber());
+        assertEquals(24, building.getPlacedNumber());
 
         buildConsequence = alfoPlayer.build(alfoPlayer.getPawns().get(0), gameBoard.getCell(0,0), 1, buildings);
 

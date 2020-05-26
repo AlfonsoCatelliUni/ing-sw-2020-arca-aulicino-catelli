@@ -100,7 +100,6 @@ public class Connection implements Runnable {
             output.flush();
         }
         catch (IOException e) {
-
             System.err.println("SOCKET exception: disconnecting " + connectionID);
             //e.printStackTrace();
         }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.client.CLI.CLI;
 import it.polimi.ingsw.client.GUI.GUI;
+import it.polimi.ingsw.server.Server;
 
 import java.util.Scanner;
 
@@ -10,7 +11,7 @@ import java.util.Scanner;
  * <p> this class is the initial point of the client runnable program
  * </p>
  */
-public class ClientApp {
+public class App {
 
 
     /* HOW TO RUN A MAIN WITH A PARAMETER
@@ -35,28 +36,30 @@ public class ClientApp {
      */
     public static void main(String[] args) {
 
-        Scanner input = new Scanner(System.in);
-
         Client client = null;
+        Server server = null;
 
-        System.out.println("choose 'cli' or 'gui' ");
+        String mode = args[0];
 
-        String param = input.nextLine();
-
-        switch (param) {
+        switch (mode) {
             case "cli":
                 client = new CLI();
+                client.run();
                 break;
             case "gui" :
                 client = new GUI();
+                client.run();
+                break;
+            case "server" :
+                server = new Server();
+                server.run();
                 break;
             default:
-                System.err.println("Invalid parameter!");
+                System.err.println("Invalid Running Mode!");
                 System.exit(0);
                 break;
         }
 
-        client.run();
     }
 
 

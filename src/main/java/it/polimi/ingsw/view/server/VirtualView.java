@@ -37,6 +37,7 @@ public class VirtualView extends Observable implements Observer {
 
     }
 
+
     public VirtualView() {
 
         connectionMap = new HashMap<>();

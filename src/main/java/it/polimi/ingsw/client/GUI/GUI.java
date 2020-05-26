@@ -124,6 +124,11 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         this.stage.show();
 
+        this.stage.setOnCloseRequest( event -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
     }
 
 

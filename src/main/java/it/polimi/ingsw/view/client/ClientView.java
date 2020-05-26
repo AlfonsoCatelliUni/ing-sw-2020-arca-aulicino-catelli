@@ -86,7 +86,7 @@ public class ClientView implements Runnable {
             outputStream.flush();
         }
         catch (IOException e) {
-            //System.err.println("Error while trying to send the message to the server!");
+             System.err.println("Error while trying to send the message to the server!");
             //e.printStackTrace();
         }
 

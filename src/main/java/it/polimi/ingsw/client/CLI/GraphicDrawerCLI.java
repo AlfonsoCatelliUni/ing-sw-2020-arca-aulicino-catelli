@@ -305,31 +305,21 @@ public class GraphicDrawerCLI {
             print(printRow, printCol, retString, GREEN_C);
         }
         else {
+            if (sex.equals("MALE")) {
+                retString += "M";
+            } else if (sex.equals("FEMALE")) {
+                retString += "F";
+            }
             switch (color) {
                 case "BLUE":
-                    if (sex.equals("MALE")) {
-                        retString += "B";
-                    } else if (sex.equals("FEMALE")) {
-                        retString += "b";
-                    }
                     print(printRow, printCol, retString, BLUE_C);
                     break;
 
                 case "GREY":
-                    if (sex.equals("MALE")) {
-                        retString += "G";
-                    } else if (sex.equals("FEMALE")) {
-                        retString += "g";
-                    }
                     print(printRow, printCol, retString, GREY_C);
                     break;
 
                 case "WHITE":
-                    if (sex.equals("MALE")) {
-                        retString += "W";
-                    } else if (sex.equals("FEMALE")) {
-                        retString += "w";
-                    }
                     print(printRow, printCol, retString, WHITE_C);
                     break;
             }

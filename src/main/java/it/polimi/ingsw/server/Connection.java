@@ -40,7 +40,7 @@ public class Connection implements Runnable {
         }
         catch (Exception e){
             TheLogger.LOGGER.log(Level.SEVERE, "Error while creating a new Connection object");
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }
@@ -102,7 +102,7 @@ public class Connection implements Runnable {
         catch (IOException e) {
 
             System.err.println("SOCKET exception: disconnecting " + connectionID);
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }

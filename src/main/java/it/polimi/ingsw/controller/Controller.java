@@ -115,29 +115,32 @@ public class Controller implements Observer, ClientToServerManager {
     /**
      * start the game and initialize all the information using arguments in Game constructor
      */
-    public void startGame (){
+    public void startGame ( String firstPlayerNickname ) {
 
-       List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
+        List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
+        int indexOfFirstPlayer = connectedPlayers.indexOf(firstPlayerNickname);
+        List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
-       game = new Game(preGameLobby.getConnectedPlayers(), colors, preGameLobby.getPlayerCardMap(), virtualView);
+        game = new Game(connectedPlayers, indexOfFirstPlayer, colors, preGameLobby.getPlayerCardMap(), virtualView);
 
-       List<Card> cards = new ArrayList<>();
+        List<Card> cards = new ArrayList<>();
 
-       for (String name : preGameLobby.getConnectedPlayers())
-           cards.add(preGameLobby.getCardOfPlayer(name));
+        for ( String name : preGameLobby.getConnectedPlayers() ) {
+            cards.add( preGameLobby.getCardOfPlayer(name) );
+        }
 
-       String cardsInfo = generateJsonCards(cards);
+        //String cardsInfo = generateJsonCards(cards);
 
-       String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
+        String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
 
-       virtualView.sendMessage(new StartGameEvent(info));
+        virtualView.sendMessage(new StartGameEvent(info));
 
-       // the game starts so lobby is closed and null
-       preGameLobby = null;
+        // the game starts so lobby is closed and null
+        preGameLobby = null;
 
-       String firstPlayer = game.getPlayersNickname().get(0);
+        String firstPlayer = game.getPlayersNickname().get(indexOfFirstPlayer);
 
-       virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true));
+        virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true));
     }
 
 
@@ -235,12 +238,21 @@ public class Controller implements Observer, ClientToServerManager {
         virtualView.sendMessage(new ClosedWaitingRoomEvent(new ArrayList<>(preGameLobby.getConnectedPlayers())));
 
 
-        List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
-        List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());
+        //List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
+        //List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());
 
-        String firstPlayer = preGameLobby.getConnectedPlayers().get(0);
+        //String firstPlayer = preGameLobby.getConnectedPlayers().get(0);
 
-        virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cardsName, cardsEffect,  true));
+        //virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cardsName, cardsEffect,  true));
+
+        //MARK : Con Challenger
+        List<String> cardsName  = preGameLobby.getAllCardsForPlayers().stream().map(Card::getName).collect(Collectors.toList());
+        List<String> cardsEffect = preGameLobby.getAllCardsForPlayers().stream().map(Card::getEffectDescription).collect(Collectors.toList());
+        int numberOfPlayers = preGameLobby.getNumberOfPlayers();
+
+        String challenger = preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1);
+
+        virtualView.sendMessageTo(challenger, new AllCardsEvent(challenger, cardsName, cardsEffect, numberOfPlayers,true));
 
     }
 
@@ -474,6 +486,119 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     @Override
+    public void manageEvent(ChosenCardsChallengerEvent event) {
+
+        Boolean cardsAreValid = preGameLobby.areValidCards(event.cardsName);
+
+        int numberOfPlayers = preGameLobby.getNumberOfPlayers();
+        Boolean isChallenger = event.challengerNickname.equals( preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1) );
+
+        if(cardsAreValid && isChallenger) {
+
+            preGameLobby.setPickedCards(event.cardsName);
+
+            String firstPickingPlayer = preGameLobby.getConnectedPlayers().get(0);
+
+            List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
+            List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());
+
+            virtualView.sendMessageTo(firstPickingPlayer, new GivePossibleCardsEvent(firstPickingPlayer, cardsName, cardsEffect, true));
+
+        }
+        else {
+
+            List<String> cardsName  = preGameLobby.getAllCardsForPlayers().stream().map(Card::getName).collect(Collectors.toList());
+            List<String> cardsEffect = preGameLobby.getAllCardsForPlayers().stream().map(Card::getEffectDescription).collect(Collectors.toList());
+
+            String challenger = preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1);
+
+            virtualView.sendMessageTo(challenger, new AllCardsEvent(challenger, cardsName, cardsEffect, numberOfPlayers,false));
+
+        }
+
+
+    }
+
+
+    @Override
+    public void manageEvent(ChosenCardEvent event) {
+
+        Boolean isCardAvailable = preGameLobby.isCardAvailable(event.card);
+
+        if(isCardAvailable) {
+            preGameLobby.addCard(event.playerNickname, event.card);
+
+            int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
+            index++;
+
+            if (index < preGameLobby.getNumberOfPlayers() - 1) {
+                String nextPlayer = preGameLobby.getConnectedPlayers().get(index);
+
+                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer,
+                        preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
+                        preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),
+                        true));
+
+            } else if(index == preGameLobby.getNumberOfPlayers() - 1) {
+
+                //startGame();
+                String challenger = preGameLobby.getConnectedPlayers().get(index);
+                preGameLobby.addCard(challenger, preGameLobby.getPickedCards().get(0).getName());
+
+                List<String> playersNickname = preGameLobby.getConnectedPlayers();
+                List<String> cardsName = new ArrayList<>();
+                List<String> cardsEffect = new ArrayList<>();
+                for (String p : playersNickname) {
+                    cardsName.add( preGameLobby.getCardOfPlayer(p).getName() );
+                    cardsEffect.add( preGameLobby.getCardOfPlayer(p).getEffectDescription() );
+                }
+
+                virtualView.sendMessageTo(challenger, new GiveFirstPlayerChoiceEvent(playersNickname, cardsName, cardsEffect, true));
+            }
+        }
+        else {
+            virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname,
+                    preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
+                    preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),
+                    false));
+        }
+
+
+
+    }
+
+
+    @Override
+    public void manageEvent(ChosenFirstPlayerEvent event) {
+
+        int numberOfPlayers = preGameLobby.getNumberOfPlayers();
+        Boolean isChallenger = event.challengerNickname.equals( preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1) );
+
+        Boolean isValidNickname = preGameLobby.getConnectedPlayers().contains(event.firstPlayerNickname);
+
+        if(isChallenger && isValidNickname) {
+            startGame( event.firstPlayerNickname );
+        }
+        else {
+
+            String challenger = preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1);
+
+            List<String> playersNickname = preGameLobby.getConnectedPlayers();
+            List<String> cardsName = new ArrayList<>();
+            List<String> cardsEffect = new ArrayList<>();
+
+            for (String p : playersNickname) {
+                cardsName.add( preGameLobby.getCardOfPlayer(p).getName() );
+                cardsEffect.add( preGameLobby.getCardOfPlayer(p).getEffectDescription() );
+            }
+
+            virtualView.sendMessageTo(challenger, new GiveFirstPlayerChoiceEvent(playersNickname, cardsName, cardsEffect, false));
+        }
+
+    }
+
+
+    @Override
     public void manageEvent(ChosenInitialPawnCellEvent event) {
 
 
@@ -508,41 +633,6 @@ public class Controller implements Observer, ClientToServerManager {
             List<Point> info = generatePointsByCells(occupiedCell);
             virtualView.sendMessageTo(event.playerNickname, new AskInitPawnsEvent(event.playerNickname, false, info));
         }
-
-
-    }
-
-
-    @Override
-    public void manageEvent(ChosenCardEvent event) {
-
-        Boolean isCardAvailable = preGameLobby.isCardAvailable(event.card);
-
-        if(isCardAvailable) {
-            preGameLobby.addCard(event.playerNickname, event.card);
-
-            int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);
-            index++;
-
-            if (index < preGameLobby.getNumberOfPlayers()) {
-                String nextPlayer = preGameLobby.getConnectedPlayers().get(index);
-
-                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer,
-                        preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
-                        preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),
-                        true));
-
-            } else {
-                startGame();
-            }
-        }
-        else {
-            virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname,
-                    preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),
-                    preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),
-                    false));
-        }
-
 
 
     }

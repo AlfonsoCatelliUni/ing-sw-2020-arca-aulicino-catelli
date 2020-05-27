@@ -415,6 +415,50 @@ public class CLI implements Client, ServerToClientManager {
    }
 
 
+   @Override
+   public void manageEvent(AllCardsEvent event) {
+
+       List<String> cardsName = event.cardsName;
+       List<String> cardsEffect = event.cardsEffect;
+       int numberOfPlayers = event.numberOfPlayers;
+       int choiceNum = -1;
+
+       if(!event.isValid) {
+           System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
+       }
+
+       String title = "you are the challenger! choose " + numberOfPlayers + " cards!";
+       drawer.saveTitleChallengerPanel(title);
+
+       List<String> chosenCards = new ArrayList<>();
+       while (chosenCards.size() < numberOfPlayers) {
+
+           title = "you are the challenger! choose " + (numberOfPlayers - chosenCards.size()) + " cards!";
+           drawer.saveTitleChallengerPanel(title);
+
+           drawer.saveChallengerChoice(cardsName, cardsEffect);
+
+           drawer.showChallenger();
+
+           choiceNum = challengerChoice(cardsName.size());
+
+           chosenCards.add(cardsName.get(choiceNum));
+
+           cardsName.remove(choiceNum);
+           cardsEffect.remove(choiceNum);
+
+       }
+
+       clientView.sendCTSEvent(new ChosenCardsChallengerEvent(nickname, chosenCards));
+
+
+       drawer.saveTitlePlayerPanel("players information");
+       drawer.saveTitleChoicePanel("wait for your turn");
+       drawer.show();
+
+   }
+
+
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
@@ -427,9 +471,7 @@ public class CLI implements Client, ServerToClientManager {
         }
 
         drawer.saveTitlePlayerPanel("choose your card");
-        for (int i = 0; i < cardsName.size(); i++) {
-            drawer.savePlayerCardChoice(cardsName, cardsEffect);
-        }
+        drawer.savePlayerCardChoice(cardsName, cardsEffect);
 
         choiceNum = userChoice(cardsName.size());
 
@@ -443,6 +485,37 @@ public class CLI implements Client, ServerToClientManager {
         drawer.saveInfoPlayerPanel(playersInfo);
 
         drawer.show();
+    }
+
+
+    @Override
+    public void manageEvent(GiveFirstPlayerChoiceEvent event) {
+
+        List<String> playersNicknames = event.playersNickname;
+        List<String> playersCards = event.playersCard;
+        List<String> playersEffect = event.playersCardEffect;
+        boolean isEventValid = event.isValid;
+        int indexChosenPlayer = -1;
+
+        if(!isEventValid) {
+            System.err.println("Apparently there was an error! Reselect... GiveFirstPlayerChoiceEvent");
+        }
+
+        List<FormattedPlayerInfo> playerInfos = new ArrayList<>();
+        for (int i = 0; i < playersNicknames.size(); i++) {
+            playerInfos.add( FormattedPlayerInfo.create(playersNicknames.get(i), "", Couple.create(playersCards.get(i), playersEffect.get(i))) );
+        }
+
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playerInfos);
+
+        drawer.saveTitleChoicePanel("choose the first player");
+        drawer.saveActionsChoicesValue(playersNicknames);
+
+        indexChosenPlayer = userChoice( playersNicknames.size() );
+
+        clientView.sendCTSEvent( new ChosenFirstPlayerEvent(nickname, playersNicknames.get(indexChosenPlayer)) );
+
     }
 
 
@@ -461,23 +534,6 @@ public class CLI implements Client, ServerToClientManager {
         drawer.saveActionsChoicesValue(possibleActions);
 
         indexChosenAction = userChoice( possibleActions.size() );
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert a Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            indexChosenAction = input.nextInt();
-//
-//            if( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) ) {
-//                System.err.println("Choice Unavailable!");
-//            }
-//
-//        } while( !(indexChosenAction >= 0 && indexChosenAction < possibleActions.size()) );
-
 
         //in case there is only one possible action I directly send the possible action
         //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
@@ -532,30 +588,12 @@ public class CLI implements Client, ServerToClientManager {
         drawer.saveCellsChoicesValue(cellsAvailableToMove);
 
         selectedCell = userChoice( cellsAvailableToMove.size() );
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert an Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            selectedCell = input.nextInt();
-//
-//            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) ) {
-//                System.err.println("Unavailable Choice!");
-//            }
-//
-//        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToMove.size()) );
+
         nextActionRow = cellsAvailableToMove.get(selectedCell).x;
         nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
 
         clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
 
-        /*TODO : io lo salvo anche se non so ancora se il server riceverà in modo corretto l'evento
-        *  è possibile quindi che mi torni un GivePossibleCellsToMoveEvent con isValid=false e queste
-        * coordinate sarebbero sbagliate non consentendo di eseguire correttamente la mossa*/
         //save the new position of the pawn
         rowUsedPawn = cellsAvailableToMove.get(selectedCell).x;
         columnUsedPawn = cellsAvailableToMove.get(selectedCell).y;
@@ -837,6 +875,41 @@ public class CLI implements Client, ServerToClientManager {
              * then in here we show them every time the user enter an
              * invalid choice */
             drawer.show();
+
+            // control if the user insert an number
+            while(!input.hasNextInt()) {
+                System.err.println("Insert an Number!");
+                drawer.show();
+
+                input.next();
+            }
+            selected = input.nextInt();
+
+            // control if the choice is available
+            if(selected == choicesListSize) {
+                clientView.sendCTSEvent(new ClientDisconnectionEvent(nickname));
+                manageEvent(new DisconnectionClientEvent());
+                return -1;
+            }
+            else if( !(selected >= 0 && selected < choicesListSize) ) {
+                System.err.println("Unavailable Choice!");
+            }
+
+        } while( !(selected >= 0 && selected < choicesListSize) );
+
+        // if the user insert an available choice then we return to the manageEvent
+        return selected;
+    }
+
+
+    private int challengerChoice( int choicesListSize ) {
+        int selected = -1;
+
+        do {
+            /* in the manageEvent we set the title and the choices
+             * then in here we show them every time the user enter an
+             * invalid choice */
+            drawer.showChallenger();
 
             // control if the user insert an number
             while(!input.hasNextInt()) {

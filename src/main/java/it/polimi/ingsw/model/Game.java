@@ -54,13 +54,13 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param colors is the enumeration of possible colors assignable to the players
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
      */
-    public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, VirtualView virtualView){
+    public Game(List<String> playersNickname, int indexFirstPlayer, List<Color> colors, Map<String, Card> nicknameCardMap, VirtualView virtualView){
 
         super();
 
         this.gameBoard = new Board();
         this.players = new ArrayList<>();
-        this.indexCurrentPlayer = 0;
+        this.indexCurrentPlayer = indexFirstPlayer;
         this.playersNickname = playersNickname;
 
         addObserver(virtualView);

@@ -24,9 +24,13 @@ public interface ClientToServerManager {
     // MARK : Game Based Events
 
 
+    void manageEvent(ChosenCardsChallengerEvent event);
+
     void manageEvent(ChosenInitialPawnCellEvent event);
 
     void manageEvent(ChosenCardEvent event);
+
+    void manageEvent(ChosenFirstPlayerEvent event);
 
 
     void manageEvent(ChosenPawnToUseEvent event);

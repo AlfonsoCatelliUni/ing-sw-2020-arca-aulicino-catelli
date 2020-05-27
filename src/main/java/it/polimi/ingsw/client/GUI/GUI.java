@@ -468,6 +468,12 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
 
     @Override
+    public void manageEvent(AllCardsEvent event) {
+        System.out.println("RECEIVED AllCardsEvent");
+    }
+
+
+    @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
         System.out.println("RECEIVED GivePossibleCardsEvent ");
@@ -497,6 +503,12 @@ public class GUI extends Application implements Client, ServerToClientManager {
             stage.show();
         });
 
+    }
+
+
+    @Override
+    public void manageEvent(GiveFirstPlayerChoiceEvent event) {
+        System.out.println("RECEIVED GiveFirstPlayerChoiceEvent");
     }
 
 

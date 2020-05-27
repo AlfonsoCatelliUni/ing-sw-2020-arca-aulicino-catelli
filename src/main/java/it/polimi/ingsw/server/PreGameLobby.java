@@ -6,6 +6,8 @@ import it.polimi.ingsw.model.Player.*;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class PreGameLobby {
 
@@ -141,7 +143,7 @@ public class PreGameLobby {
         synchronized (lockClose) {
             if (!closed) {
                 this.closed = true;
-                pickCards(allCards);
+                //pickCards(allCards);
 
             }
         }
@@ -256,6 +258,17 @@ public class PreGameLobby {
     }
 
 
+    public void setPickedCards(List<String> pickedCardsName) {
+        Card chosenCars;
+
+        for(String name : pickedCardsName) {
+            chosenCars = getAllCardsForPlayers().stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
+            pickedCards.add(chosenCars);
+        }
+
+    }
+
+
     // ======================================================================================
 
 
@@ -263,6 +276,36 @@ public class PreGameLobby {
     public List<Card> getAllCards() {
         return allCards;
     }
+
+
+    public List<Card> getAllCardsForPlayers() {
+
+        if( numberOfPlayers == 2 ) {
+            return allCards;
+        }
+        else if( numberOfPlayers == 3 ) {
+            List<Card> cardsList = new ArrayList<>();
+
+            for (Card c : allCards) {
+                if(c.isAvailable3P()) {
+                    cardsList.add(c);
+                }
+            }
+
+            return cardsList;
+        }
+
+        return null;
+    }
+
+
+    public Boolean areValidCards( List<String> cardsName ) {
+
+        List<String> availableCards = getAllCardsForPlayers().stream().map(Card::getName).collect(Collectors.toList());
+
+        return availableCards.containsAll(cardsName);
+    }
+
 
 
 }

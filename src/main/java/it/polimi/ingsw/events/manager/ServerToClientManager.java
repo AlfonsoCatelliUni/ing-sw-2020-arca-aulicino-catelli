@@ -42,7 +42,11 @@ public interface ServerToClientManager {
 
     void manageEvent(UnavailableNicknameEvent event);
 
+    void manageEvent(AllCardsEvent event);
+
     void manageEvent(GivePossibleCardsEvent event);
+
+    void manageEvent(GiveFirstPlayerChoiceEvent event);
 
 
 

@@ -61,6 +61,27 @@ public class GraphicDrawerCLI {
     // ======================================================================================
 
 
+    public void drawChallengerCardsChoice() {
+        clearScreen();
+        clear();
+        drawChallengerPanel();
+    }
+
+
+    public void showChallenger() {
+        drawChallengerCardsChoice();
+
+        for(int row = 0; row < ROWS; row++) {
+            System.out.println();
+            for (int column = 0; column < COLUMNS; column++) {
+                System.out.print(screen[row][column]);
+            }
+        }
+
+        System.out.println();
+    }
+
+
     /**
      * this method modify the screen array calling the specific methods for each section
      */
@@ -742,6 +763,115 @@ public class GraphicDrawerCLI {
 
     }
 
+
+    //MARK : Challenger Panel Section ======================================================================================
+
+    /**
+     * the title of the players information panel
+     */
+    private String challengerPanelTitle;
+
+    /**
+     * the list of names of the available gods
+     */
+    private List<String> cardsNameChallenger;
+
+    /**
+     * the list of effect of the available gods
+     */
+    private List<String> cardsEffectChallenger;
+
+
+    /**
+     * this method draw the skeleton of the challenger cards choice panel
+     */
+    private void drawChallengerPanel() {
+
+        int startRow = 4;
+        String divider = "+------------------------------------------------------------------------------------------------------------------------------------------+";
+        String empty = "|                                                                                                                                          |";
+
+        for(int row = startRow; row <= 56; row++) {
+
+            if(row == 4 || row == 8 || row == 56) {
+                print( row, 8, divider, BLUE_GREEN_C);
+            } else {
+                print(row, 8, empty, BLUE_GREEN_C);
+            }
+
+
+        }
+
+        fillChallengerPanel();
+    }
+
+
+    /**
+     * this method fills the players information panel with the right type of information
+     */
+    private void fillChallengerPanel() {
+        fillTitleChallengerPanel(challengerPanelTitle);
+        fillChallengerChoice(cardsNameChallenger, cardsEffectChallenger);
+    }
+
+
+    /**
+     * this method fills the players information panel with the available cards
+     */
+    private void fillChallengerChoice( List<String> cardsNameList, List<String> cardsEffectList) {
+
+        int startRow = 11;
+        int rowOffset = 3;
+        int refRow;
+
+
+        int numCards = cardsNameList.size();
+
+        for(int card = 0; card < numCards; card++) {
+            refRow = startRow + (card * rowOffset);
+
+            print(refRow, 11, "["+String.valueOf(card)+"]", RED_C);
+            print(refRow, 16, cardsNameList.get(card));
+
+            if(cardsEffectList.get(card).length() > 87) {
+                print(refRow, 57, cardsEffectList.get(card).substring(0, 87));
+                print(refRow+1, 57, cardsEffectList.get(card).substring(87));
+            }
+            else {
+                print(refRow, 57, cardsEffectList.get(card));
+            }
+        }
+
+    }
+
+
+    /**
+     * this method print the title of the players information panel
+     */
+    private void fillTitleChallengerPanel(String title) {
+
+        if(title.length() > 132)
+            throw new RuntimeException("Invalid Format for Player Panel Title !");
+
+        String uppercaseTitle = title.toUpperCase();
+
+        print(6, 12, uppercaseTitle, WHITE_C);
+
+    }
+
+
+    public void saveTitleChallengerPanel(String title) {
+        this.challengerPanelTitle = title;
+    }
+
+
+    /**
+     * this method saves the available cards information
+     */
+    public void saveChallengerChoice(List<String> cardsNameList, List<String> cardsEffectList) {
+        this.cardsNameChallenger = cardsNameList;
+        this.cardsEffectChallenger = cardsEffectList;
+    }
 
 
 

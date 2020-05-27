@@ -509,6 +509,10 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GiveFirstPlayerChoiceEvent event) {
         System.out.println("RECEIVED GiveFirstPlayerChoiceEvent");
+
+        Platform.runLater(() -> {
+            //run later
+        });
     }
 
 

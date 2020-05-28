@@ -37,6 +37,7 @@ public class FXMLAllCardsController {
 
 
 
+
     @FXML
     private Label effect0;
 
@@ -78,6 +79,9 @@ public class FXMLAllCardsController {
 
     @FXML
     private Label effect13;
+
+    @FXML
+    private Label effect14;
 
 
 
@@ -123,6 +127,8 @@ public class FXMLAllCardsController {
     @FXML
     private ImageView card13;
 
+    @FXML
+    private ImageView card14;
 
     @FXML
     private void initialize() {
@@ -179,6 +185,7 @@ public class FXMLAllCardsController {
 
     private void initializeLabels() {
 
+
         labelList.add(effect0);
         labelList.add(effect1);
         labelList.add(effect2);
@@ -197,10 +204,12 @@ public class FXMLAllCardsController {
         for (Label label : labelList) {
             label.setVisible(true);
 
+            label.setStyle("-fx-text-fill: black");
 
             label.setFont(Font.loadFont(
                     getClass().getResource("/Font/DisneyHeroic.ttf").toExternalForm(),
-                    15
+                    12
+
             ));
 
 
@@ -244,6 +253,7 @@ public class FXMLAllCardsController {
         card12.setUserData(cardsName.get(12));
         card13.setUserData(cardsName.get(13));
 
+
         effect0.setText( effectsList.get(0) );
         effect1.setText( effectsList.get(1) );
         effect2.setText( effectsList.get(2) );
@@ -258,6 +268,8 @@ public class FXMLAllCardsController {
         effect11.setText( effectsList.get(11) );
         effect12.setText( effectsList.get(12) );
         effect13.setText( effectsList.get(13) );
+
+
 
         //graphic
         for (ImageView image : cardsList){

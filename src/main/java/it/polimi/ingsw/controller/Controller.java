@@ -119,26 +119,43 @@ public class Controller implements Observer, ClientToServerManager {
 
         List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
         int indexOfFirstPlayer = connectedPlayers.indexOf(firstPlayerNickname);
+
+        List<String> orderedPlayers = new ArrayList<>();
+        int i = indexOfFirstPlayer;
+
+
+        do {
+
+            orderedPlayers.add( connectedPlayers.get(i) );
+
+            i++;
+            if(i == connectedPlayers.size()) {
+                i = 0;
+            }
+
+        } while(i != indexOfFirstPlayer);
+
+
         List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
-        game = new Game(connectedPlayers, indexOfFirstPlayer, colors, preGameLobby.getPlayerCardMap(), virtualView);
+        game = new Game(orderedPlayers, colors, preGameLobby.getPlayerCardMap(), virtualView);
 
         List<Card> cards = new ArrayList<>();
 
-        for ( String name : preGameLobby.getConnectedPlayers() ) {
+        for ( String name : orderedPlayers ) {
             cards.add( preGameLobby.getCardOfPlayer(name) );
         }
 
         //String cardsInfo = generateJsonCards(cards);
 
-        String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
+        String info = generateJsonPlayersInfo(orderedPlayers, colors, cards);
 
         virtualView.sendMessage(new StartGameEvent(info));
 
         // the game starts so lobby is closed and null
         preGameLobby = null;
 
-        String firstPlayer = game.getPlayersNickname().get(indexOfFirstPlayer);
+        String firstPlayer = game.getPlayersNickname().get(0);
 
         virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true));
     }
@@ -601,16 +618,13 @@ public class Controller implements Observer, ClientToServerManager {
     @Override
     public void manageEvent(ChosenInitialPawnCellEvent event) {
 
-
         boolean isMaleSpotFree = game.isValidSpot(event.malePawnRow, event.malePawnColumn);
-
         boolean isFemaleSpotFree = game.isValidSpot(event.femalePawnRow, event.femalePawnColumn);
 
-
-        /* before I control that the selected spot is really free and if the player is the current*/
+        /* before I control that the selected spot is really free and if the player is the current */
         if(isMaleSpotFree && isFemaleSpotFree && game.isValidPlayer(event.playerNickname)) {
-            game.initializePawn(event.playerNickname, event.malePawnRow, event.malePawnColumn);
 
+            game.initializePawn(event.playerNickname, event.malePawnRow, event.malePawnColumn);
             game.initializePawn(event.playerNickname, event.femalePawnRow, event.femalePawnColumn);
 
             if (game.getPlayersNickname().indexOf(event.playerNickname) != game.getPlayers().size() - 1) {

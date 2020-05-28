@@ -209,8 +209,9 @@ public class CLI implements Client, ServerToClientManager {
 
         } while( !(selectedNumberOfPlayer == 2 || selectedNumberOfPlayer == 3) );
 
-        System.out.println("Please wait until the lobby is full...");
 
+        drawer.clearScreen();
+        System.out.println("Please wait until the lobby is full...");
 
         clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, selectedNumberOfPlayer));
     }
@@ -221,7 +222,7 @@ public class CLI implements Client, ServerToClientManager {
 
         this.nickname = event.nickname;
 
-        System.out.println("The temporary players are: ");
+        System.out.println("The players are: ");
         for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
@@ -258,11 +259,14 @@ public class CLI implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(OneClientDisconnectedEvent event) {
+
+        drawer.clearScreen();
+
         System.out.println(event.disconnected + " is disconnected");
 
-        System.out.println("Players in lobby are now: ");
-        for (String p : event.connectedPlayers){
-            System.out.println(p);
+        System.out.println("The players are: ");
+        for (String nickname : event.connectedPlayers ) {
+            System.out.println(nickname);
         }
 
     }
@@ -271,8 +275,13 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(OnePlayerEnteredEvent event) {
 
-        System.out.println(event.newPlayer + "is connected in lobby");
-        System.out.println("now players in lobby are\n" + event.connectedPlayers);
+        drawer.clearScreen();
+
+        System.out.println("The players are: ");
+        for (String nickname : event.connectedPlayers ) {
+            System.out.println(nickname);
+        }
+
     }
 
 
@@ -315,14 +324,137 @@ public class CLI implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
-        System.out.println("THE WAITING ROOM IS NOW CLOSED!");
-        System.out.println("Players in game are:");
 
-        for (String nickname : event.connectedPlayers){
+        drawer.clearScreen();
+
+        System.out.println("THE WAITING ROOM IS NOW CLOSED!");
+
+        System.out.println("The players are: ");
+        for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
 
 
+    }
+
+
+   @Override
+   public void manageEvent(AllCardsEvent event) {
+
+       List<String> cardsName = event.cardsName;
+       List<String> cardsEffect = event.cardsEffect;
+       int numberOfPlayers = event.numberOfPlayers;
+       int choiceNum = -1;
+
+       if(!event.isValid) {
+           System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
+       }
+
+       String title = "you are the challenger! choose " + numberOfPlayers + " cards!";
+       drawer.saveTitleChallengerPanel(title);
+
+       List<String> chosenCards = new ArrayList<>();
+       while (chosenCards.size() < numberOfPlayers) {
+
+           title = "you are the challenger! choose " + (numberOfPlayers - chosenCards.size()) + " cards!";
+           drawer.saveTitleChallengerPanel(title);
+
+           drawer.saveChallengerChoice(cardsName, cardsEffect);
+
+           //drawer.showChallenger();
+
+           choiceNum = challengerChoice(cardsName.size());
+
+           chosenCards.add(cardsName.get(choiceNum));
+
+           cardsName.remove(choiceNum);
+           cardsEffect.remove(choiceNum);
+
+       }
+
+       clientView.sendCTSEvent(new ChosenCardsChallengerEvent(nickname, chosenCards));
+
+
+       drawer.saveTitlePlayerPanel("players information");
+       drawer.saveTitleChoicePanel("wait for your turn");
+       drawer.show();
+
+   }
+
+
+    @Override
+    public void manageEvent(GivePossibleCardsEvent event) {
+
+        List<String> cardsName = event.cardsName;
+        List<String> cardsEffect = event.cardsEffect;
+        int choiceNum = -1;
+
+        if(!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
+        }
+
+        drawer.saveTitlePlayerPanel("choose your card");
+        drawer.savePlayerCardChoice(cardsName, cardsEffect);
+
+        choiceNum = userChoice(cardsName.size());
+
+        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
+
+        //show only your information in Players Panel into the CLI graphic
+        this.playersInfo = new ArrayList<>();
+        this.playersInfo.add( new FormattedPlayerInfo(nickname, "", Couple.create(cardsName.get(choiceNum), cardsEffect.get(choiceNum))) );
+
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playersInfo);
+
+        drawer.show();
+    }
+
+
+    @Override
+    public void manageEvent(GiveFirstPlayerChoiceEvent event) {
+
+        List<String> playersNicknames = event.playersNickname;
+        List<String> playersCards = event.playersCard;
+        List<String> playersEffect = event.playersCardEffect;
+        boolean isEventValid = event.isValid;
+        int indexChosenPlayer = -1;
+
+        if(!isEventValid) {
+            System.err.println("Apparently there was an error! Reselect... GiveFirstPlayerChoiceEvent");
+        }
+
+        List<FormattedPlayerInfo> playerInfos = new ArrayList<>();
+        for (int i = 0; i < playersNicknames.size(); i++) {
+            playerInfos.add( FormattedPlayerInfo.create(playersNicknames.get(i), "", Couple.create(playersCards.get(i), playersEffect.get(i))) );
+        }
+
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playerInfos);
+
+        drawer.saveTitleChoicePanel("choose the first player");
+        drawer.saveActionsChoicesValue(playersNicknames);
+
+        indexChosenPlayer = userChoice( playersNicknames.size() );
+
+        clientView.sendCTSEvent( new ChosenFirstPlayerEvent(nickname, playersNicknames.get(indexChosenPlayer)) );
+
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
+        drawer.show();
+
+    }
+
+
+    @Override
+    public void manageEvent(StartGameEvent event) {
+
+        playersInfo = ClientJsonHandler.generatePlayersList(event.info);
+
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playersInfo);
+
+        drawer.show();
     }
 
 
@@ -404,117 +536,13 @@ public class CLI implements Client, ServerToClientManager {
         this.rowUsedPawn = availablePawns.get(selectedPawn).x;
         this.columnUsedPawn = availablePawns.get(selectedPawn).y;
 
-       clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
+        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
 
-       //TODO : forse questo titolo non è necessario
-       drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-       drawer.clearChoicePanelValues();
-
-       drawer.show();
-
-   }
-
-
-   @Override
-   public void manageEvent(AllCardsEvent event) {
-
-       List<String> cardsName = event.cardsName;
-       List<String> cardsEffect = event.cardsEffect;
-       int numberOfPlayers = event.numberOfPlayers;
-       int choiceNum = -1;
-
-       if(!event.isValid) {
-           System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
-       }
-
-       String title = "you are the challenger! choose " + numberOfPlayers + " cards!";
-       drawer.saveTitleChallengerPanel(title);
-
-       List<String> chosenCards = new ArrayList<>();
-       while (chosenCards.size() < numberOfPlayers) {
-
-           title = "you are the challenger! choose " + (numberOfPlayers - chosenCards.size()) + " cards!";
-           drawer.saveTitleChallengerPanel(title);
-
-           drawer.saveChallengerChoice(cardsName, cardsEffect);
-
-           drawer.showChallenger();
-
-           choiceNum = challengerChoice(cardsName.size());
-
-           chosenCards.add(cardsName.get(choiceNum));
-
-           cardsName.remove(choiceNum);
-           cardsEffect.remove(choiceNum);
-
-       }
-
-       clientView.sendCTSEvent(new ChosenCardsChallengerEvent(nickname, chosenCards));
-
-
-       drawer.saveTitlePlayerPanel("players information");
-       drawer.saveTitleChoicePanel("wait for your turn");
-       drawer.show();
-
-   }
-
-
-    @Override
-    public void manageEvent(GivePossibleCardsEvent event) {
-
-        List<String> cardsName = event.cardsName;
-        List<String> cardsEffect = event.cardsEffect;
-        int choiceNum = -1;
-
-        if(!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
-        }
-
-        drawer.saveTitlePlayerPanel("choose your card");
-        drawer.savePlayerCardChoice(cardsName, cardsEffect);
-
-        choiceNum = userChoice(cardsName.size());
-
-        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
-
-        //show only your information in Players Panel into the CLI graphic
-        this.playersInfo = new ArrayList<>();
-        this.playersInfo.add( new FormattedPlayerInfo(nickname, "", Couple.create(cardsName.get(choiceNum), cardsEffect.get(choiceNum))) );
-
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playersInfo);
+        //TODO : forse questo titolo non è necessario
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
 
         drawer.show();
-    }
-
-
-    @Override
-    public void manageEvent(GiveFirstPlayerChoiceEvent event) {
-
-        List<String> playersNicknames = event.playersNickname;
-        List<String> playersCards = event.playersCard;
-        List<String> playersEffect = event.playersCardEffect;
-        boolean isEventValid = event.isValid;
-        int indexChosenPlayer = -1;
-
-        if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect... GiveFirstPlayerChoiceEvent");
-        }
-
-        List<FormattedPlayerInfo> playerInfos = new ArrayList<>();
-        for (int i = 0; i < playersNicknames.size(); i++) {
-            playerInfos.add( FormattedPlayerInfo.create(playersNicknames.get(i), "", Couple.create(playersCards.get(i), playersEffect.get(i))) );
-        }
-
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playerInfos);
-
-        drawer.saveTitleChoicePanel("choose the first player");
-        drawer.saveActionsChoicesValue(playersNicknames);
-
-        indexChosenPlayer = userChoice( playersNicknames.size() );
-
-        clientView.sendCTSEvent( new ChosenFirstPlayerEvent(nickname, playersNicknames.get(indexChosenPlayer)) );
 
     }
 
@@ -753,18 +781,6 @@ public class CLI implements Client, ServerToClientManager {
 
         clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
 
-    }
-
-
-    @Override
-    public void manageEvent(StartGameEvent event) {
-
-        playersInfo = ClientJsonHandler.generatePlayersList(event.info);
-
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playersInfo);
-
-        drawer.show();
     }
 
 

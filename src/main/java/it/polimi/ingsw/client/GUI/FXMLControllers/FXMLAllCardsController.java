@@ -4,6 +4,7 @@ import it.polimi.ingsw.events.CTSEvents.ChosenCardsChallengerEvent;
 import it.polimi.ingsw.view.client.ClientView;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -35,7 +36,8 @@ public class FXMLAllCardsController {
 
 
 
-
+    @FXML
+    private ScrollPane scrollPane;
 
 
     @FXML
@@ -288,8 +290,11 @@ public class FXMLAllCardsController {
     }
 
     private void disableCardsClick() {
+
         for( ImageView image : cardsList ) {
             image.setOnMouseClicked( mouseEvent -> {});
+            image.setOnMouseEntered( mouseEvent -> {});
+            image.setOnMouseExited( mouseEvent -> {});
         }
 
 
@@ -306,7 +311,9 @@ public class FXMLAllCardsController {
 
         ImageView selectedCard = (ImageView) event.getSource();
         String card = (String) selectedCard.getUserData();
+
         disableClickedCard(selectedCard);
+
         selectedCards.add(card);
 
 
@@ -314,11 +321,36 @@ public class FXMLAllCardsController {
 
             disableCardsClick();
 
+            showWait();
+
             clientView.sendCTSEvent(new ChosenCardsChallengerEvent(nicknameChallenger, selectedCards));
+
+
 
         }
 
     }
+
+    private void showWait(){
+
+        scrollPane.setHvalue(0);
+
+        for (ImageView image : cardsList){
+            image.setDisable(true);
+            image.setVisible(false);
+
+        }
+
+        for (Label label : labelList){
+            label.setVisible(false);
+        }
+
+        labelList.get(1).setText("Wait Until your turn");
+        labelList.get(1).setVisible(true);
+
+    }
+
+
 
 
 

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLChooseCardController">
+   <children>
+      <ScrollPane hvalue="1.0" pannable="true" prefHeight="600.0" prefWidth="800.0">
+        <content>
+          <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="3552.0">
+               <children>
+                  <ImageView fitHeight="600.0" fitWidth="3552.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Graphics/SceneBackground/AllCardsBackground.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="effect0" alignment="CENTER" layoutX="39.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect1" alignment="CENTER" layoutX="295.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect2" alignment="CENTER" layoutX="554.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect3" alignment="CENTER" layoutX="787.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect4" alignment="CENTER" layoutX="1046.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect5" alignment="CENTER" layoutX="1302.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect6" alignment="CENTER" layoutX="1541.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect7" alignment="CENTER" layoutX="1795.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect8" alignment="CENTER" layoutX="2048.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect9" alignment="CENTER" layoutX="2288.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect10" alignment="CENTER" layoutX="2540.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect11" alignment="CENTER" layoutX="2801.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect12" alignment="CENTER" layoutX="3038.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="effect13" alignment="CENTER" layoutX="3293.0" layoutY="61.0" prefHeight="177.0" prefWidth="224.0" text="    Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="image0" fitHeight="290.0" fitWidth="225.0" layoutX="39.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image1" fitHeight="284.0" fitWidth="225.0" layoutX="295.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image2" fitHeight="284.0" fitWidth="220.0" layoutX="554.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image3" fitHeight="284.0" fitWidth="225.0" layoutX="787.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image4" fitHeight="284.0" fitWidth="223.0" layoutX="1046.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image5" fitHeight="284.0" fitWidth="220.0" layoutX="1302.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image6" fitHeight="284.0" fitWidth="225.0" layoutX="1541.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image7" fitHeight="284.0" fitWidth="225.0" layoutX="1795.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image8" fitHeight="284.0" fitWidth="225.0" layoutX="2048.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image9" fitHeight="284.0" fitWidth="225.0" layoutX="2288.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image10" fitHeight="284.0" fitWidth="225.0" layoutX="2546.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image11" fitHeight="284.0" fitWidth="225.0" layoutX="2800.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image12" fitHeight="284.0" fitWidth="225.0" layoutX="3038.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="image13" fitHeight="284.0" fitWidth="225.0" layoutX="3293.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

@@ -240,6 +240,7 @@ public class FXMLAllCardsController {
             card.setOnMouseClicked(this::storeCard);
         }
 
+
         card0.setUserData(cardsName.get(0));
         card1.setUserData(cardsName.get(1));
         card2.setUserData(cardsName.get(2));
@@ -285,6 +286,17 @@ public class FXMLAllCardsController {
             });
         }
 
+        for (int i = 0 ; i < cardsList.size() ; i++){
+            int finalI = i;
+            labelList.get(i).setOnMouseEntered(e -> {
+                cardsList.get(finalI).setOpacity(0.7);
+            });
+
+            labelList.get(i).setOnMouseExited(e -> {
+                cardsList.get(finalI).setOpacity(1);
+            });
+        }
+
 
 
     }
@@ -295,6 +307,11 @@ public class FXMLAllCardsController {
             image.setOnMouseClicked( mouseEvent -> {});
             image.setOnMouseEntered( mouseEvent -> {});
             image.setOnMouseExited( mouseEvent -> {});
+        }
+
+        for (Label label : labelList){
+            label.setOnMouseEntered(e -> {});
+            label.setOnMouseExited(e -> {});
         }
 
 
@@ -333,7 +350,7 @@ public class FXMLAllCardsController {
 
     private void showWait(){
 
-        scrollPane.setHvalue(0);
+        scrollPane.setVvalue(0);
 
         for (ImageView image : cardsList){
             image.setDisable(true);

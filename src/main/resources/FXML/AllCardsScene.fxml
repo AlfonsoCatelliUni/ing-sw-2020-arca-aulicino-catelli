@@ -17,7 +17,7 @@
             <Image url="@../Graphics/SceneBackground/title_water.png" />
          </image>
       </ImageView>
-      <ScrollPane layoutY="-1.0" prefHeight="711.0" prefWidth="1016.0" style="-fx-background: transparent;" stylesheets="@../CSS/allCardsChoice.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
+      <ScrollPane fx:id="scrollPane" layoutY="-1.0" prefHeight="711.0" prefWidth="1016.0" style="-fx-background: transparent;" stylesheets="@../CSS/allCardsChoice.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0">
          <content>
             <VBox prefHeight="2000.0" prefWidth="999.0" spacing="100.0" style="-fx-background: transparent;">
                <children>

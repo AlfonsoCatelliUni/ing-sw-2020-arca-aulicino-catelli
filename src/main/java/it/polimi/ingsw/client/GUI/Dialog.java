@@ -56,7 +56,7 @@ public class Dialog {
 
             dialogStage.setScene(scene);
             dialogStage.setResizable(false);
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initModality(Modality.NONE);
 
             dialogStage.show();
         }

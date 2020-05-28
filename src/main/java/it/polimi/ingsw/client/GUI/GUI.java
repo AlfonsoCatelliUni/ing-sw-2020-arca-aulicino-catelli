@@ -471,9 +471,12 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(AllCardsEvent event) {
+
         System.out.println("RECEIVED AllCardsEvent");
 
         Platform.runLater( () -> {
+
+            dialog.display("You are the challenger! Players in game are " + event.numberOfPlayers + ", so choose " + event.numberOfPlayers + " cards to play with");
 
             Parent root = null;
             try {

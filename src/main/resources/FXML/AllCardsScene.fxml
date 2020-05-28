@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLAllCardsController">
    <children>
-      <ScrollPane hvalue="1.0" pannable="true" prefHeight="600.0" prefWidth="800.0">
+      <ScrollPane fx:id="scrollPane" pannable="true" prefHeight="600.0" prefWidth="800.0">
         <content>
           <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="582.0" prefWidth="3552.0">
                <children>

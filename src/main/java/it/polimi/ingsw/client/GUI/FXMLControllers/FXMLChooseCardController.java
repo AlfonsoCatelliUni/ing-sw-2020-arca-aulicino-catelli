@@ -273,6 +273,7 @@ public class FXMLChooseCardController {
     }
 
     private void showWait(){
+
         for (ImageView image : cardsList ){
             image.setVisible(false);
         }

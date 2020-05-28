@@ -209,8 +209,9 @@ public class CLI implements Client, ServerToClientManager {
 
         } while( !(selectedNumberOfPlayer == 2 || selectedNumberOfPlayer == 3) );
 
-        System.out.println("Please wait until the lobby is full...");
 
+        drawer.clearScreen();
+        System.out.println("Please wait until the lobby is full...");
 
         clientView.sendCTSEvent( new ChosenPlayerNumberEvent(nickname, selectedNumberOfPlayer));
     }
@@ -221,7 +222,7 @@ public class CLI implements Client, ServerToClientManager {
 
         this.nickname = event.nickname;
 
-        System.out.println("The temporary players are: ");
+        System.out.println("The players are: ");
         for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
@@ -258,11 +259,14 @@ public class CLI implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(OneClientDisconnectedEvent event) {
+
+        drawer.clearScreen();
+
         System.out.println(event.disconnected + " is disconnected");
 
-        System.out.println("Players in lobby are now: ");
-        for (String p : event.connectedPlayers){
-            System.out.println(p);
+        System.out.println("The players are: ");
+        for (String nickname : event.connectedPlayers ) {
+            System.out.println(nickname);
         }
 
     }
@@ -271,8 +275,13 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(OnePlayerEnteredEvent event) {
 
-        System.out.println(event.newPlayer + "is connected in lobby");
-        System.out.println("now players in lobby are\n" + event.connectedPlayers);
+        drawer.clearScreen();
+
+        System.out.println("The players are: ");
+        for (String nickname : event.connectedPlayers ) {
+            System.out.println(nickname);
+        }
+
     }
 
 
@@ -315,10 +324,13 @@ public class CLI implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
-        System.out.println("THE WAITING ROOM IS NOW CLOSED!");
-        System.out.println("Players in game are:");
 
-        for (String nickname : event.connectedPlayers){
+        drawer.clearScreen();
+
+        System.out.println("THE WAITING ROOM IS NOW CLOSED!");
+
+        System.out.println("The players are: ");
+        for (String nickname : event.connectedPlayers ) {
             System.out.println(nickname);
         }
 
@@ -349,7 +361,7 @@ public class CLI implements Client, ServerToClientManager {
 
            drawer.saveChallengerChoice(cardsName, cardsEffect);
 
-           drawer.showChallenger();
+           //drawer.showChallenger();
 
            choiceNum = challengerChoice(cardsName.size());
 

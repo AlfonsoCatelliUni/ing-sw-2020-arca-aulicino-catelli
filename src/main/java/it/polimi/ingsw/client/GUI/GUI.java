@@ -84,6 +84,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private FXMLChooseCardController chooseCardController;
 
+    private FXMLAllCardsController allCardsController;
+
     private FXMLVictoryController endGameController;
 
 
@@ -470,6 +472,33 @@ public class GUI extends Application implements Client, ServerToClientManager {
     @Override
     public void manageEvent(AllCardsEvent event) {
         System.out.println("RECEIVED AllCardsEvent");
+
+        Platform.runLater( () -> {
+
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/AllCardsScene.fxml") );
+                root = fxmlLoader.load();
+                allCardsController = fxmlLoader.getController();
+
+                allCardsController.setController(nickname, clientView, event.cardsName, event.cardsEffect, event.numberOfPlayers);
+                allCardsController.setCards();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.show();
+
+        });
+
+
     }
 
 
@@ -496,7 +525,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
             assert root != null;
             Scene scene = new Scene(root);
 
-            System.out.println(stage.isShowing());
+
             stage.setScene(scene);
             stage.setResizable(false);
 

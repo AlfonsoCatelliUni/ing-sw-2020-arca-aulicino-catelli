@@ -86,6 +86,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
     private FXMLAllCardsController allCardsController;
 
+    private FXMLChooseFirstPlayerController chooseFirstPlayerController;
+
     private FXMLVictoryController endGameController;
 
 
@@ -543,7 +545,27 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED GiveFirstPlayerChoiceEvent");
 
         Platform.runLater(() -> {
-            //run later
+            Parent root = null;
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/chooseFirstPlayerScene.fxml") );
+                root = fxmlLoader.load();
+                chooseFirstPlayerController = fxmlLoader.getController();
+
+                chooseFirstPlayerController.setController(nickname, clientView, event.playersNickname, event.playersCard, event.playersCardEffect);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            assert root != null;
+            Scene scene = new Scene(root);
+
+
+            stage.setScene(scene);
+            stage.setResizable(false);
+
+            stage.show();
         });
     }
 

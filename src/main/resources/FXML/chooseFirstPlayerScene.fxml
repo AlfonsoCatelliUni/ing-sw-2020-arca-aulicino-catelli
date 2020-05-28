@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.FXMLControllers.FXMLChooseFirstPlayerController">
+   <children>
+      <ImageView fitHeight="607.0" fitWidth="800.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/SceneBackground/chooseFirstPlayerBackground.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="192.0" layoutY="14.0" prefHeight="67.0" prefWidth="435.0" text="Choose first player of the match">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="image0pressed" fitHeight="53.0" fitWidth="200.0" layoutX="42.0" layoutY="99.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image></ImageView>
+      <ImageView fx:id="image0" fitHeight="53.0" fitWidth="200.0" layoutX="42.0" layoutY="99.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image></ImageView>
+      <ImageView fx:id="image1pressed" fitHeight="53.0" fitWidth="200.0" layoutX="300.0" layoutY="99.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image></ImageView>
+      <ImageView fx:id="image1" fitHeight="53.0" fitWidth="200.0" layoutX="300.0" layoutY="99.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image></ImageView>
+      <ImageView fx:id="image2pressed" fitHeight="53.0" fitWidth="200.0" layoutX="573.0" layoutY="99.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButtonPressed.png" />
+         </image></ImageView>
+      <ImageView fx:id="image2" fitHeight="53.0" fitWidth="200.0" layoutX="573.0" layoutY="99.0" pickOnBounds="true">
+         <image>
+            <Image url="@../Graphics/Other/blueButton.png" />
+         </image></ImageView>
+      <Label fx:id="label0" alignment="TOP_CENTER" layoutX="47.0" layoutY="292.0" prefHeight="294.0" prefWidth="190.0" text="&quot;Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="label1" alignment="TOP_CENTER" contentDisplay="CENTER" layoutX="305.0" layoutY="296.0" prefHeight="286.0" prefWidth="190.0" text="&quot;Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="label2" alignment="TOP_CENTER" layoutX="578.0" layoutY="296.0" prefHeight="286.0" prefWidth="190.0" text="&quot;Your Move: Your Worker may move into an opponent Worker's space (using normal movement rules) and force their Worker to the space yours just left (swapping their positions)" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="name0" alignment="CENTER" contentDisplay="CENTER" layoutX="42.0" layoutY="99.0" prefHeight="53.0" prefWidth="200.0" text="Label" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="name1" alignment="CENTER" contentDisplay="CENTER" layoutX="300.0" layoutY="99.0" prefHeight="53.0" prefWidth="200.0" text="Label" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="name2" alignment="CENTER" contentDisplay="CENTER" layoutX="573.0" layoutY="99.0" prefHeight="53.0" prefWidth="200.0" text="Label" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="cardImage0" fitHeight="130.0" fitWidth="175.0" layoutX="95.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cardImage1" fitHeight="130.0" fitWidth="175.0" layoutX="360.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cardImage2" fitHeight="130.0" fitWidth="175.0" layoutX="611.0" layoutY="156.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import it.polimi.ingsw.events.STCEvents.*;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
-import javax.swing.text.html.ImageView;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;

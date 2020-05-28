@@ -657,7 +657,7 @@ public class GraphicDrawerCLI {
 
         String choiceNumber;
 
-        print(29, 77, "Actions");
+        //print(29, 77, "Actions");
 
         for(int a = 0; a < actionsChoicePanel.size(); a++) {
             refRow = startRow + (a * rowOffset);

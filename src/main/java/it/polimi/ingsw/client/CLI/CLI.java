@@ -326,95 +326,6 @@ public class CLI implements Client, ServerToClientManager {
     }
 
 
-    @Override
-    public void manageEvent(AskInitPawnsEvent event) {
-
-
-        List<Point> occupiedCells = event.info;
-        List<Point> freeCells = new ArrayList<>();
-        int selectedMale = -1;
-        int selectedFemale = -1;
-
-        if(!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... AskInitPawnsEvent");
-        }
-
-        for(int i = 0; i < 5; i++) {
-            for(int j = 0; j < 5; j++) {
-                Point np = new Point(i, j);
-                if(!occupiedCells.contains(np)) {
-                    freeCells.add(np);
-                }
-            }
-        }
-
-
-        drawer.saveTitleChoicePanel("select the cell for the male pawn");
-        drawer.saveCellsChoicesValue(freeCells);
-
-        selectedMale = userChoice( freeCells.size() );
-
-        int maleRowPosition = freeCells.get(selectedMale).x;
-        int maleColumnPosition = freeCells.get(selectedMale).y;
-        freeCells.remove(selectedMale);
-
-        String color = "";
-        for (FormattedPlayerInfo info : playersInfo ) {
-            if(info.getNickname().equals(nickname)) {
-                color = info.getColor();
-            }
-        }
-        List<FormattedCellInfo> cellInfoList = new ArrayList<>();
-        cellInfoList.add(new FormattedCellInfo(maleRowPosition, maleColumnPosition, 0, color.toUpperCase(), "MALE", 0, false));
-        drawer.saveBoardChanges(cellInfoList);
-
-
-        drawer.saveTitleChoicePanel("select the cell for the female pawn");
-        drawer.saveCellsChoicesValue(freeCells);
-
-        selectedFemale = userChoice( freeCells.size() );
-
-        int femaleRowPosition = freeCells.get(selectedFemale).x;
-        int femaleColumnPosition = freeCells.get(selectedFemale).y;
-
-        clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
-
-        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        drawer.clearChoicePanelValues();
-
-        drawer.show();
-    }
-
-
-    @Override
-    public void manageEvent(AskWhichPawnsUseEvent event) {
-
-        List<Point> availablePawns = event.info;
-        int selectedPawn = -1;
-
-        if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... AskWhichPawnsUseEvent");
-        }
-
-        drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
-        drawer.saveCellsChoicesValue(availablePawns);
-
-        selectedPawn = userChoice( availablePawns.size() );
-
-        this.rowUsedPawn = availablePawns.get(selectedPawn).x;
-        this.columnUsedPawn = availablePawns.get(selectedPawn).y;
-
-       clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
-
-       //TODO : forse questo titolo non è necessario
-       drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-       drawer.clearChoicePanelValues();
-
-       drawer.show();
-
-   }
-
-
    @Override
    public void manageEvent(AllCardsEvent event) {
 
@@ -515,6 +426,111 @@ public class CLI implements Client, ServerToClientManager {
         indexChosenPlayer = userChoice( playersNicknames.size() );
 
         clientView.sendCTSEvent( new ChosenFirstPlayerEvent(nickname, playersNicknames.get(indexChosenPlayer)) );
+
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
+        drawer.show();
+
+    }
+
+
+    @Override
+    public void manageEvent(StartGameEvent event) {
+
+        playersInfo = ClientJsonHandler.generatePlayersList(event.info);
+
+        drawer.saveTitlePlayerPanel("players information");
+        drawer.saveInfoPlayerPanel(playersInfo);
+
+        drawer.show();
+    }
+
+
+    @Override
+    public void manageEvent(AskInitPawnsEvent event) {
+
+
+        List<Point> occupiedCells = event.info;
+        List<Point> freeCells = new ArrayList<>();
+        int selectedMale = -1;
+        int selectedFemale = -1;
+
+        if(!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect... AskInitPawnsEvent");
+        }
+
+        for(int i = 0; i < 5; i++) {
+            for(int j = 0; j < 5; j++) {
+                Point np = new Point(i, j);
+                if(!occupiedCells.contains(np)) {
+                    freeCells.add(np);
+                }
+            }
+        }
+
+
+        drawer.saveTitleChoicePanel("select the cell for the male pawn");
+        drawer.saveCellsChoicesValue(freeCells);
+
+        selectedMale = userChoice( freeCells.size() );
+
+        int maleRowPosition = freeCells.get(selectedMale).x;
+        int maleColumnPosition = freeCells.get(selectedMale).y;
+        freeCells.remove(selectedMale);
+
+        String color = "";
+        for (FormattedPlayerInfo info : playersInfo ) {
+            if(info.getNickname().equals(nickname)) {
+                color = info.getColor();
+            }
+        }
+        List<FormattedCellInfo> cellInfoList = new ArrayList<>();
+        cellInfoList.add(new FormattedCellInfo(maleRowPosition, maleColumnPosition, 0, color.toUpperCase(), "MALE", 0, false));
+        drawer.saveBoardChanges(cellInfoList);
+
+
+        drawer.saveTitleChoicePanel("select the cell for the female pawn");
+        drawer.saveCellsChoicesValue(freeCells);
+
+        selectedFemale = userChoice( freeCells.size() );
+
+        int femaleRowPosition = freeCells.get(selectedFemale).x;
+        int femaleColumnPosition = freeCells.get(selectedFemale).y;
+
+        clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
+
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
+
+        drawer.show();
+    }
+
+
+    @Override
+    public void manageEvent(AskWhichPawnsUseEvent event) {
+
+        List<Point> availablePawns = event.info;
+        int selectedPawn = -1;
+
+        if (!event.isValid) {
+            System.err.println("Apparently there was an error! Reselect... AskWhichPawnsUseEvent");
+        }
+
+        drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
+        drawer.saveCellsChoicesValue(availablePawns);
+
+        selectedPawn = userChoice( availablePawns.size() );
+
+        this.rowUsedPawn = availablePawns.get(selectedPawn).x;
+        this.columnUsedPawn = availablePawns.get(selectedPawn).y;
+
+        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
+
+        //TODO : forse questo titolo non è necessario
+        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+        drawer.clearChoicePanelValues();
+
+        drawer.show();
 
     }
 
@@ -753,18 +769,6 @@ public class CLI implements Client, ServerToClientManager {
 
         clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
 
-    }
-
-
-    @Override
-    public void manageEvent(StartGameEvent event) {
-
-        playersInfo = ClientJsonHandler.generatePlayersList(event.info);
-
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playersInfo);
-
-        drawer.show();
     }
 
 

@@ -123,9 +123,9 @@ public class Controller implements Observer, ClientToServerManager {
         List<String> orderedPlayers = new ArrayList<>();
         int i = indexOfFirstPlayer;
 
-        orderedPlayers.add( connectedPlayers.get(i) );
 
-        for(i = indexOfFirstPlayer + 1; i != indexOfFirstPlayer; ) {
+        do {
+
             orderedPlayers.add( connectedPlayers.get(i) );
 
             i++;
@@ -133,7 +133,8 @@ public class Controller implements Observer, ClientToServerManager {
                 i = 0;
             }
 
-        }
+        } while(i != indexOfFirstPlayer);
+
 
         List<Color> colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());
 
@@ -141,13 +142,13 @@ public class Controller implements Observer, ClientToServerManager {
 
         List<Card> cards = new ArrayList<>();
 
-        for ( String name : preGameLobby.getConnectedPlayers() ) {
+        for ( String name : orderedPlayers ) {
             cards.add( preGameLobby.getCardOfPlayer(name) );
         }
 
         //String cardsInfo = generateJsonCards(cards);
 
-        String info = generateJsonPlayersInfo(preGameLobby.getConnectedPlayers(), colors, cards);
+        String info = generateJsonPlayersInfo(orderedPlayers, colors, cards);
 
         virtualView.sendMessage(new StartGameEvent(info));
 

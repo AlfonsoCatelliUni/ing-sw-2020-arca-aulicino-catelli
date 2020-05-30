@@ -11,29 +11,62 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * controller to manage the scene of the Challenger to select the first player of the match
+ */
 public class FXMLChooseFirstPlayerController {
 
-
-
+    /**
+     * clientView to send the event causes by the click of the choice
+     */
     private ClientView clientView;
 
+    /**
+     * nickname of the challenger that create the events of choice
+     */
     private String nicknameChallenger;
 
+    /**
+     * list of player in this match to display so the challenger can choose one of them
+     */
     private List<String> playersNicknames;
 
+    /**
+     * name of the card owned to the players
+     */
     private List<String> cardsName;
 
+    /**
+     * description of the effect of the card
+     */
     private List<String> effectsList;
 
+    /**
+     * list of imageview of the buttons to choose the first player
+     */
     private List<ImageView> buttons;
 
+    //graphic content
     private List<ImageView> buttonsPressed;
 
+    /**
+     * label of the nickname of the players in game
+     */
     private List<Label> namesLabel;
 
+    /**
+     * label to display the effect of the card in scene
+     */
     private List<Label> effectsLabel;
 
+    /**
+     * list of url to load the right image of the card and display in scene
+     */
     private List<String> cardsUrl;
+
+    /**
+     * binding the ChooseFirstPlayerScene.fxml
+     */
 
     @FXML
     private ImageView image0;
@@ -82,7 +115,6 @@ public class FXMLChooseFirstPlayerController {
 
     @FXML
     private ImageView cardImage2;
-
 
 
     @FXML
@@ -218,6 +250,14 @@ public class FXMLChooseFirstPlayerController {
 
     }
 
+    /**
+     * set the controller to manage events
+     * @param nicknameChallenger name of the challenger that see the scene
+     * @param clientView clientView to send answers
+     * @param playersNicknames list of nickname to choose the first that starts his turn
+     * @param cardsName name of the card selected by each player
+     * @param effectsList description of each card
+     */
     public void setController( String nicknameChallenger, ClientView clientView, List<String> playersNicknames, List<String> cardsName, List<String> effectsList){
 
         String prefix = "/Graphics/Cards/";
@@ -237,6 +277,9 @@ public class FXMLChooseFirstPlayerController {
 
     }
 
+    /**
+     * set the buttons in order of number of players
+     */
     public void setButtons(){
 
         switch (this.playersNicknames.size()){
@@ -332,6 +375,9 @@ public class FXMLChooseFirstPlayerController {
         }
     }
 
+    /**
+     * disable buttons to prevent errors
+     */
     private void disableButtons(){
 
         name0.setOnMouseClicked(e->{});

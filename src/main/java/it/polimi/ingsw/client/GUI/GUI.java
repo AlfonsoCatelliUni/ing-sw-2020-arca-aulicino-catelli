@@ -72,7 +72,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
     /**
      * controllers to managed events and handle graphics built with FXML
      */
-
     private FXMLLobbyController lobbyController;
 
     private FXMLLoginController loginController;
@@ -519,7 +518,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 root = fxmlLoader.load();
                 chooseCardController = fxmlLoader.getController();
 
-                chooseCardController.setController(stage, nickname, clientView, event.cardsName, event.cardsEffect);
+                chooseCardController.setController(nickname, clientView, event.cardsName, event.cardsEffect);
                 chooseCardController.setCards();
 
             } catch (IOException e) {
@@ -546,7 +545,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
         Platform.runLater(() -> {
             Parent root = null;
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/chooseFirstPlayerScene.fxml") );
+                FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/ChooseFirstPlayerScene.fxml") );
                 root = fxmlLoader.load();
                 chooseFirstPlayerController = fxmlLoader.getController();
 

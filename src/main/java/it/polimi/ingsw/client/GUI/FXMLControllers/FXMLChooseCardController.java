@@ -2,29 +2,23 @@ package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import it.polimi.ingsw.events.CTSEvents.ChosenCardEvent;
 import it.polimi.ingsw.view.client.ClientView;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FXMLChooseCardController {
 
-
+    /**
+     * clientView to send the event causes by the click of the choice
+     */
     private ClientView clientView;
-
-    private Stage stage;
 
     /**
      * the nickname of the player
@@ -131,14 +125,13 @@ public class FXMLChooseCardController {
     // MARK : Game Event Managers ======================================================================================
 
 
-    public void setController(Stage stage, String nickname, ClientView clientView, List<String> cardsName, List<String> effectsList) {
+    public void setController(String nickname, ClientView clientView, List<String> cardsName, List<String> effectsList) {
         String prefix = "/Graphics/Cards/";
 
         this.clientView = clientView;
         this.cardsName = cardsName;
         this.effectsList = effectsList;
         this.nickname = nickname;
-        this.stage = stage;
 
         this.cardsUrl = new ArrayList<>();
 

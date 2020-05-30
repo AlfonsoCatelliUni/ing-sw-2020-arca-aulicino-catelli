@@ -145,13 +145,32 @@ public class MatchSimulationTest  {
 
         System.out.println("The virtualView sends a CloseWaitingRoomEvent to everybody\n");
 
-        card1 = controller.getPreGameLobby().getPickedCards().get(0).getName();
-        card2 = controller.getPreGameLobby().getPickedCards().get(1).getName();
-        card3 = controller.getPreGameLobby().getPickedCards().get(2).getName();
+        card1 = JsonHandler.deserializeCardList().get(0).getName();
 
-        effect1 = controller.getPreGameLobby().getPickedCards().get(0).getEffectDescription();
-        effect2 = controller.getPreGameLobby().getPickedCards().get(1).getEffectDescription();
-        effect3 = controller.getPreGameLobby().getPickedCards().get(2).getEffectDescription();
+        card2 = JsonHandler.deserializeCardList().get(1).getName();
+
+        card3 = JsonHandler.deserializeCardList().get(2).getName();
+
+        effect1 = JsonHandler.deserializeCardList().get(0).getEffectDescription();
+        effect2 = JsonHandler.deserializeCardList().get(1).getEffectDescription();
+        effect3 = JsonHandler.deserializeCardList().get(2).getEffectDescription();
+
+
+
+        List<String> chosenCards = new ArrayList<>();
+        chosenCards.add(card1);
+        chosenCards.add(card2);
+        chosenCards.add(card3);
+
+        virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
+
+       //card1 = controller.getPreGameLobby().getPickedCards().get(0).getName();
+       // card2 = controller.getPreGameLobby().getPickedCards().get(1).getName();
+       // card3 = controller.getPreGameLobby().getPickedCards().get(2).getName();
+
+       // effect1 = controller.getPreGameLobby().getPickedCards().get(0).getEffectDescription();
+       // effect2 = controller.getPreGameLobby().getPickedCards().get(1).getEffectDescription();
+       // effect3 = controller.getPreGameLobby().getPickedCards().get(2).getEffectDescription();
 
 
         System.out.println("Should print a GivePossibleCardEvent with attributes:\n" + player1 + "\n" + card1 + ", " + card2 + ", " + card3 + "\n" + effect1 + ",\n " + effect2 + ",\n " + effect3 + "\n" + "true" + "\n");
@@ -164,7 +183,9 @@ public class MatchSimulationTest  {
 
         System.out.println("Should print a GivePossibleCardEvent with attributes:\n" + player3 + "\n" + card3 + "\n" + effect3 + "\n" + "true" + "\n");
 
-        virtualView.update(new ChosenCardEvent(player3, card3));
+        virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
+
+        //virtualView.update(new ChosenCardEvent(player3, card3));
 
         System.out.println("Should print a AskInitPawnsEvent with attributes:\n" + player1 + "\n" + "true\n" + "info = []\n");
 
@@ -209,16 +230,28 @@ public class MatchSimulationTest  {
 
         Card Athena = JsonHandler.deserializeCardList().get(2);
 
-        controller.getPreGameLobby().getPickedCards().add(Apollo);
-        controller.getPreGameLobby().getPickedCards().add(Artemis);
-        controller.getPreGameLobby().getPickedCards().add(Athena);
+        List<String> chosenCards = new ArrayList<>();
+        chosenCards.add(Apollo.getName());
+        chosenCards.add(Artemis.getName());
+        chosenCards.add(Athena.getName());
+
+    //    controller.getPreGameLobby().getPickedCards().add(Apollo);
+    //    controller.getPreGameLobby().getPickedCards().add(Artemis);
+    //    controller.getPreGameLobby().getPickedCards().add(Athena);
+
+        virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
 
 
         virtualView.update(new ChosenCardEvent(player1,Apollo.getName()));
 
         virtualView.update(new ChosenCardEvent(player2,Artemis.getName()));
 
-        virtualView.update(new ChosenCardEvent(player3, Athena.getName()));
+        //virtualView.update(new ChosenCardEvent(player3, Athena.getName()));
+
+        virtualView.update(new ChosenFirstPlayerEvent(player3, player1));
+
+
+        
 
 
         virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,1,1));
@@ -711,21 +744,30 @@ public class MatchSimulationTest  {
 
         Card Ares = JsonHandler.deserializeCardList().get(9);
 
-        controller.getPreGameLobby().getPickedCards().add(Zeus);
-        controller.getPreGameLobby().getPickedCards().add(Charon);
-        controller.getPreGameLobby().getPickedCards().add(Ares);
+        List<String> chosenCards = new ArrayList<>();
+        chosenCards.add(Zeus.getName());
+        chosenCards.add(Charon.getName());
+        chosenCards.add(Ares.getName());
+
+       // controller.getPreGameLobby().getPickedCards().add(Zeus);
+       // controller.getPreGameLobby().getPickedCards().add(Charon);
+       // controller.getPreGameLobby().getPickedCards().add(Ares);
 
 
-        controller.getPreGameLobby().getPickedCards().add(Zeus);
-        controller.getPreGameLobby().getPickedCards().add(Charon);
-        controller.getPreGameLobby().getPickedCards().add(Ares);
+       // controller.getPreGameLobby().getPickedCards().add(Zeus);
+       // controller.getPreGameLobby().getPickedCards().add(Charon);
+       // controller.getPreGameLobby().getPickedCards().add(Ares);
+
+        virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
 
 
         virtualView.update(new ChosenCardEvent(player1,Zeus.getName()));
 
         virtualView.update(new ChosenCardEvent(player2,Charon.getName()));
 
-        virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
+       // virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
+
+        virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
 
 
         virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,1,1));
@@ -1301,21 +1343,29 @@ public class MatchSimulationTest  {
 
         Card Ares = JsonHandler.deserializeCardList().get(9);
 
-        controller.getPreGameLobby().getPickedCards().add(Prometheus);
-        controller.getPreGameLobby().getPickedCards().add(Charon);
-        controller.getPreGameLobby().getPickedCards().add(Ares);
+        List<String> chosenCards = new ArrayList<>();
+        chosenCards.add(Prometheus.getName());
+        chosenCards.add(Charon.getName());
+        chosenCards.add(Ares.getName());
+
+       // controller.getPreGameLobby().getPickedCards().add(Prometheus);
+       // controller.getPreGameLobby().getPickedCards().add(Charon);
+       // controller.getPreGameLobby().getPickedCards().add(Ares);
 
 
-        controller.getPreGameLobby().getPickedCards().add(Prometheus);
-        controller.getPreGameLobby().getPickedCards().add(Charon);
-        controller.getPreGameLobby().getPickedCards().add(Ares);
+       // controller.getPreGameLobby().getPickedCards().add(Prometheus);
+       // controller.getPreGameLobby().getPickedCards().add(Charon);
+       // controller.getPreGameLobby().getPickedCards().add(Ares);
 
+        virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
 
         virtualView.update(new ChosenCardEvent(player1,Prometheus.getName()));
 
         virtualView.update(new ChosenCardEvent(player2,Charon.getName()));
 
-        virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
+        //virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
+
+        virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
 
 
         virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
@@ -1458,7 +1508,7 @@ public class MatchSimulationTest  {
 
         virtualView.update(new NewConnectionEvent(player3));
 
-        controller.getPreGameLobby().getPickedCards().clear();
+        //controller.getPreGameLobby().getPickedCards().clear();
 
 
         Card Atlas = JsonHandler.deserializeCardList().get(3);
@@ -1467,9 +1517,16 @@ public class MatchSimulationTest  {
 
         Card Hephaestus = JsonHandler.deserializeCardList().get(5);
 
-        controller.getPreGameLobby().getPickedCards().add(Atlas);
-        controller.getPreGameLobby().getPickedCards().add(Demeter);
-        controller.getPreGameLobby().getPickedCards().add(Hephaestus);
+        //controller.getPreGameLobby().getPickedCards().add(Atlas);
+        //controller.getPreGameLobby().getPickedCards().add(Demeter);
+        //controller.getPreGameLobby().getPickedCards().add(Hephaestus);
+
+        List<String> chosenCards = new ArrayList<>();
+        chosenCards.add(Atlas.getName());
+        chosenCards.add(Demeter.getName());
+        chosenCards.add(Hephaestus.getName());
+
+        virtualView.update(new ChosenCardsChallengerEvent(player3,chosenCards));
 
 
         virtualView.update(new ChosenCardEvent(player1, Atlas.getName()));
@@ -1478,7 +1535,9 @@ public class MatchSimulationTest  {
         virtualView.update(new ChosenCardEvent(player2, Demeter.getName()));
 
 
-        virtualView.update(new ChosenCardEvent(player3, Hephaestus.getName()));
+        //virtualView.update(new ChosenCardEvent(player3, Hephaestus.getName()));
+
+        virtualView.update(new ChosenFirstPlayerEvent(player3, player1));
 
 
         virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
@@ -1751,9 +1810,17 @@ public class MatchSimulationTest  {
 
         Card Hestia = JsonHandler.deserializeCardList().get(11);
 
-        controller.getPreGameLobby().getPickedCards().add(Pan);
-        controller.getPreGameLobby().getPickedCards().add(Ares);
-        controller.getPreGameLobby().getPickedCards().add(Hestia);
+        List<String> chosenCards = new ArrayList<>();
+        chosenCards.add(Pan.getName());
+        chosenCards.add(Ares.getName());
+        chosenCards.add(Hestia.getName());
+
+        virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
+
+
+        //controller.getPreGameLobby().getPickedCards().add(Pan);
+        //controller.getPreGameLobby().getPickedCards().add(Ares);
+        //controller.getPreGameLobby().getPickedCards().add(Hestia);
 
 
         virtualView.update(new ChosenCardEvent(player1, Pan.getName()));
@@ -1762,7 +1829,9 @@ public class MatchSimulationTest  {
         virtualView.update(new ChosenCardEvent(player2, Ares.getName()));
 
 
-        virtualView.update(new ChosenCardEvent(player3, Hestia.getName()));
+        //virtualView.update(new ChosenCardEvent(player3, Hestia.getName()));
+
+        virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
 
 
         virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
@@ -2176,52 +2245,6 @@ public class MatchSimulationTest  {
 
 
     }
- /*
-    @Test
-    void destroyTowersTest(){
-
-
-        player1 = "Alfantasy";
-
-        player2 = "Mashu7";
-
-
-        virtualView.update(new NewConnectionEvent(player1));
-
-        virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
-
-        virtualView.update(new NewConnectionEvent(player2));
-
-
-        controller.getPreGameLobby().getPickedCards().clear();
-
-        Card Pan = JsonHandler.deserializeCardList().get(7);
-
-        Card Ares = JsonHandler.deserializeCardList().get(9);
-
-
-        controller.getPreGameLobby().getPickedCards().add(Pan);
-        controller.getPreGameLobby().getPickedCards().add(Ares);
-
-
-        virtualView.update(new ChosenCardEvent(player1, Pan.getName()));
-
-
-        virtualView.update(new ChosenCardEvent(player2, Ares.getName()));
-
-
-
-        virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,0,1));
-
-
-        virtualView.update(new ChosenInitialPawnCellEvent(player2, 1,2,2,2));
-
-
-
-
-        // se ci sono 14 torri di livello 3 senza nessuna cupola (quindi non torri complete) e devo fare un'altra torre di livello 3 come faccio?
-    }
-*/
 
     @Test
     void disconnectionControllerTest(){
@@ -2291,6 +2314,37 @@ public class MatchSimulationTest  {
         virtualView.update(new ClientDisconnectionEvent(player2));
 
         assertNull(controller.getGame());
+
+
+    }
+
+    @Test
+    void challengerEvents(){
+
+        player1 = "Alfantasy";
+
+        player2 = "Mashu7";
+
+        List<String> chosenCard = new ArrayList<>();
+
+        chosenCard.add(JsonHandler.deserializeCardList().get(0).getName());
+
+        chosenCard.add(JsonHandler.deserializeCardList().get(1).getName());
+
+        virtualView.update(new NewConnectionEvent(player1));
+
+        virtualView.update(new ChosenPlayerNumberEvent(player1, 2));
+
+        virtualView.update(new NewConnectionEvent(player2));
+
+        virtualView.update(new ChosenCardsChallengerEvent(player2, chosenCard));
+
+        virtualView.update(new ChosenCardEvent(player1, chosenCard.get(0)));
+
+        virtualView.update(new ChosenFirstPlayerEvent(player2, player2));
+
+        assertEquals(player2, controller.getGame().getCurrentPlayer());
+
 
 
     }

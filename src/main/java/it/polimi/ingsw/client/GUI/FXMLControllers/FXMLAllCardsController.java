@@ -14,31 +14,64 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * this controller manages the event of the challenger to choose the number of cards in order to the number of players in game,
+ * cards are selected between the 14 gods of the game
+ */
 public class FXMLAllCardsController {
 
+    /**
+     * clientView to send the event causes by the click of the choice
+     */
     private ClientView clientView;
 
+    /**
+     * nickname of the challenger that create the events of choice
+     */
     private String nicknameChallenger;
 
+    /**
+     * url to load the image of the 14 cards
+     */
     private List<String> cardsUrl;
 
+    /**
+     * description of the cards
+     */
     private List<String> effectsList;
 
+    /**
+     * name of the cards
+     */
     private List<String> cardsName;
 
+    /**
+     * list of label to manage easier graphic in scene
+     */
     private List<Label> labelList;
 
+    /**
+     * list of imageView to load the image card and set properties in the right position
+     */
     private List<ImageView> cardsList;
 
+    /**
+     * number of players uses to check the number of cards selected
+     */
     private int numberOfPlayers;
 
+    /**
+     * list to store the choice of the challenger and finally sent the answer
+     */
     private List<String> selectedCards;
 
 
+    /**
+     * binding the allCardSceneScene.fxml
+     */
 
     @FXML
     private ScrollPane scrollPane;
-
 
     @FXML
     private Label effect0;
@@ -162,6 +195,9 @@ public class FXMLAllCardsController {
         }
     }
 
+    /**
+     * add the card to the list to handle the initialization easier
+     */
     private void initializeCards() {
 
         cardsList.add(card0);
@@ -185,6 +221,9 @@ public class FXMLAllCardsController {
 
     }
 
+    /**
+     * add the labels of effect card to the list to handle the initialization easier
+     */
     private void initializeLabels() {
 
 
@@ -317,6 +356,10 @@ public class FXMLAllCardsController {
 
     }
 
+    /**
+     * when a card is selected, disable the event in order to prevent errors like select the same card twice
+     * @param card imageView of the card selected
+     */
     private void disableClickedCard(ImageView card){
         card.setOnMouseClicked( mouseEvent -> {});
         card.setOnMouseEntered(e -> {});
@@ -324,6 +367,10 @@ public class FXMLAllCardsController {
         card.setOpacity(0.7);
     }
 
+    /**
+     * save the selected card and if its the last card, send the answer to server
+     * @param event click event on the card selected
+     */
     public void storeCard(MouseEvent event){
 
         ImageView selectedCard = (ImageView) event.getSource();
@@ -348,6 +395,9 @@ public class FXMLAllCardsController {
 
     }
 
+    /**
+     * when challenger selected all cards, display a text until it's his turn again
+     */
     private void showWait(){
 
         scrollPane.setVvalue(0);

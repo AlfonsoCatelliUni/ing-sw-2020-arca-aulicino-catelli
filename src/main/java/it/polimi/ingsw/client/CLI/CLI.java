@@ -18,27 +18,46 @@ import java.util.regex.Pattern;
 
 public class CLI implements Client, ServerToClientManager {
 
+    /**
+     * colors of the element displayed in CLI
+     */
     private final String RESET = "\u001B[0m";
     private final String RED_C = "\u001b[38;5;196m";
 
+    /**
+     * ip of the server to connect with
+     */
     private String ipAddress;
 
+    /**
+     * port of the server to connect with
+     */
     private int port;
 
+    /**
+     * pattern to validate the nickname
+     */
     private final String nicknamePattern = "^[aA-zZ]\\w{5,29}$";
 
-
+    /**
+     * input to receive the choice of the player
+     */
     private final Scanner input;
 
+    /**
+     * manager of the element displayed during game
+     */
     private final GraphicDrawerCLI drawer;
 
+    /**
+     * clientView to send the answer of the event received
+     */
     private ClientView clientView;
 
     /**
      * All the info about the current game that have to be shown to the player
      */
     private List<FormattedPlayerInfo> playersInfo;
-
 
     /**
      * The nickname of the player
@@ -917,7 +936,11 @@ public class CLI implements Client, ServerToClientManager {
         return selected;
     }
 
-
+    /**
+     * this method is dedicated to the challenger because the event of the challenger are different to display in CLI
+     * @param choicesListSize number of possible choice to select
+     * @return the number chosen by the challenger
+     */
     private int challengerChoice( int choicesListSize ) {
         int selected = -1;
 
@@ -951,7 +974,6 @@ public class CLI implements Client, ServerToClientManager {
         // if the user insert an available choice then we return to the manageEvent
         return selected;
     }
-
 
     /**
      * this method control the validity of the ip address

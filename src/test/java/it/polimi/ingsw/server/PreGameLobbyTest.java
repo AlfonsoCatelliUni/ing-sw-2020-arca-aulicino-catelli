@@ -91,6 +91,7 @@ class PreGameLobbyTest {
         preGameLobby.addPlayer(nicknames.get(0));
         preGameLobby.addPlayer(nicknames.get(1));
         preGameLobby.closeLobby();
+        preGameLobby.getPickedCards().add(JsonHandler.deserializeCardList().get(0));
 
 
         //first test, normal bonding player-card
@@ -121,6 +122,7 @@ class PreGameLobbyTest {
         });
 
 
+        preGameLobby.getPickedCards().add(JsonHandler.deserializeCardList().get(1));
         //fifth test, normal bond player-card but not the pickedCards are finished
         card = preGameLobby.getPickedCards().get(0).getName();
         preGameLobby.addCard("Massi", card);
@@ -199,8 +201,13 @@ class PreGameLobbyTest {
         }
         preGameLobby.closeLobby();
 
+        for (int i = 0 ; i < numberOfPlayers; i++){
+            preGameLobby.getPickedCards().add(preGameLobby.getAllCards().get(i));
+        }
+
         pickedCards = preGameLobby.getPickedCards();
         assertEquals(numberOfPlayers, pickedCards.size());
+
         for (Card c : pickedCards ) {
             assertTrue(preGameLobby.getAllCards().contains(c));
         }

@@ -198,5 +198,11 @@ public class VirtualView extends Observable implements Observer {
         return connectionMap;
     }
 
+    //ONLY USED IN TESTING
+    public static void clearVirtualView(){
+        connectionMap.clear();
+        nicknameMap.clear();
+    }
+
 
 }

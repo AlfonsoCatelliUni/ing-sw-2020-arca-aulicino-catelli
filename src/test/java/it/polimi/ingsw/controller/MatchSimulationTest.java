@@ -139,11 +139,7 @@ public class MatchSimulationTest  {
     @Test
     void MVCPreGameStart() {
 
-        String player1 = "Alfantasy";
-
-        String player2 = "Scoiattolo";
-
-        String player3 = "Mascarpone";
+        VirtualView.clearVirtualView();
 
 
         virtualView.update(new NewConnectionEvent(player1));
@@ -242,6 +238,8 @@ public class MatchSimulationTest  {
     @Test
     void MVCGameStart() {
 
+        VirtualView.clearVirtualView();
+
         MVCPreGameStartSetUp();
 
         Card Apollo = JsonHandler.deserializeCardList().get(0);
@@ -271,7 +269,7 @@ public class MatchSimulationTest  {
         virtualView.update(new ChosenFirstPlayerEvent(player3, player1));
 
 
-        
+
 
 
         virtualView.update(new ChosenInitialPawnCellEvent(player1, 0,0,1,1));
@@ -756,6 +754,7 @@ public class MatchSimulationTest  {
     @Test
     void MVCEndGame() {
 
+        VirtualView.clearVirtualView();
         MVCPreGameStartSetUp();
 
         Card Zeus = JsonHandler.deserializeCardList().get(13);
@@ -1352,8 +1351,11 @@ public class MatchSimulationTest  {
     }
 
 
+
     @Test
     void backToBackLoss() {
+
+        VirtualView.clearVirtualView();
 
         MVCPreGameStartSetUp();
 
@@ -1487,6 +1489,8 @@ public class MatchSimulationTest  {
     @Test
     void fakeLoss() {
 
+        VirtualView.clearVirtualView();
+
         MVCPreGameStartSetUp();
 
         Card Artemis = JsonHandler.deserializeCardList().get(1);
@@ -1512,6 +1516,8 @@ public class MatchSimulationTest  {
 
     @Test
     void loosingAtFirstTurn(){
+
+        VirtualView.clearVirtualView();
 
         player1 = "Alfantasy";
 
@@ -1805,6 +1811,8 @@ public class MatchSimulationTest  {
 
     @Test
     void panVictoryTest(){
+
+        VirtualView.clearVirtualView();
 
         player1 = "Alfantasy";
 
@@ -2266,8 +2274,11 @@ public class MatchSimulationTest  {
 
     }
 
+
     @Test
     void disconnectionControllerTest(){
+
+        VirtualView.clearVirtualView();
 
         Controller controllerTest = new Controller();
 
@@ -2311,6 +2322,8 @@ public class MatchSimulationTest  {
 
     @Test
     void disconnectionDuringGameControllerTest(){
+
+        VirtualView.clearVirtualView();
 
         player1 = "Alfantasy";
 

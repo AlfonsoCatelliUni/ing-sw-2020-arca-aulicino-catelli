@@ -537,6 +537,8 @@ public class FXMLGameController {
 
         rightPanel.setBackground(backgroundPanel);
 
+        rightPanel.setStyle("-fx-opacity: 1; -fx-border-color: aquamarine; -fx-border-width: 5");
+
         Image imageBackground = new Image(getClass().getResourceAsStream("/Graphics/SceneBackground/gameSceneBackground.png"));
 
         Background background = new Background(

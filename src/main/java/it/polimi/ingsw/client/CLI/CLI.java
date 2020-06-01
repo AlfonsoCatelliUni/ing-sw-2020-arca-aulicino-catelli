@@ -84,6 +84,10 @@ public class CLI implements Client, ServerToClientManager {
      */
     private int nextActionColumn;
 
+    private Thread eventThread;
+
+    private final Object drawLock;
+
 
     // MARK : Constructor and Run ======================================================================================
 
@@ -95,6 +99,8 @@ public class CLI implements Client, ServerToClientManager {
         this.drawer = new GraphicDrawerCLI();
 
         this.playersInfo = new ArrayList<>();
+
+        drawLock= new Object();
 
         this.nickname = "";
 
@@ -334,25 +340,41 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(NotifyStatusEvent event) {
 
-        List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
-        drawer.saveBoardChanges(cellsInfoList);
+        eventThread = new Thread(() -> {
 
-        drawer.show();
+            List<FormattedCellInfo> cellsInfoList = JsonHandler.generateCellsList(event.status);
+
+            synchronized (drawLock) {
+                drawer.saveBoardChanges(cellsInfoList);
+                drawer.show();
+            }
+        });
+
+        eventThread.start();
+
+
     }
 
 
     @Override
     public void manageEvent(ClosedWaitingRoomEvent event) {
 
-        drawer.clearScreen();
+        eventThread = new Thread(() -> {
 
-        System.out.println("THE WAITING ROOM IS NOW CLOSED!");
+            synchronized (drawLock) {
+                drawer.clearScreen();
+            }
 
-        System.out.println("The players are: ");
-        for (String nickname : event.connectedPlayers ) {
-            System.out.println(nickname);
-        }
+            System.out.println("THE WAITING ROOM IS NOW CLOSED!");
 
+            System.out.println("The players are: ");
+            for (String nickname : event.connectedPlayers) {
+                System.out.println(nickname);
+            }
+
+        });
+
+        eventThread.start();
 
     }
 
@@ -360,43 +382,55 @@ public class CLI implements Client, ServerToClientManager {
    @Override
    public void manageEvent(AllCardsEvent event) {
 
-       List<String> cardsName = event.cardsName;
-       List<String> cardsEffect = event.cardsEffect;
-       int numberOfPlayers = event.numberOfPlayers;
-       int choiceNum = -1;
+       eventThread = new Thread(() -> {
 
-       if(!event.isValid) {
-           System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
-       }
+           List<String> cardsName = event.cardsName;
+           List<String> cardsEffect = event.cardsEffect;
+           int numberOfPlayers = event.numberOfPlayers;
+           int choiceNum = -1;
 
-       String title = "you are the challenger! choose " + numberOfPlayers + " cards!";
-       drawer.saveTitleChallengerPanel(title);
+           if (!event.isValid) {
+               System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
+           }
 
-       List<String> chosenCards = new ArrayList<>();
-       while (chosenCards.size() < numberOfPlayers) {
+           String title = "you are the challenger! choose " + numberOfPlayers + " cards!";
 
-           title = "you are the challenger! choose " + (numberOfPlayers - chosenCards.size()) + " cards!";
-           drawer.saveTitleChallengerPanel(title);
+           synchronized (drawLock) {
+               drawer.saveTitleChallengerPanel(title);
+           }
 
-           drawer.saveChallengerChoice(cardsName, cardsEffect);
+           List<String> chosenCards = new ArrayList<>();
 
-           //drawer.showChallenger();
+           while (chosenCards.size() < numberOfPlayers) {
 
-           choiceNum = challengerChoice(cardsName.size());
+               title = "you are the challenger! choose " + (numberOfPlayers - chosenCards.size()) + " cards!";
 
-           chosenCards.add(cardsName.get(choiceNum));
+               synchronized (drawLock) {
+                   drawer.saveTitleChallengerPanel(title);
 
-           cardsName.remove(choiceNum);
-           cardsEffect.remove(choiceNum);
+                   drawer.saveChallengerChoice(cardsName, cardsEffect);
+               }
+               //drawer.showChallenger();
 
-       }
+               choiceNum = challengerChoice(cardsName.size());
 
-       clientView.sendCTSEvent(new ChosenCardsChallengerEvent(nickname, chosenCards));
+               chosenCards.add(cardsName.get(choiceNum));
 
+               cardsName.remove(choiceNum);
+               cardsEffect.remove(choiceNum);
 
-       drawer.saveTitlePlayerPanel("players information");
-       drawer.saveTitleChoicePanel("wait for your turn");
-       drawer.show();
+           }
+
+           clientView.sendCTSEvent(new ChosenCardsChallengerEvent(nickname, chosenCards));
+
+           synchronized (drawLock) {
+               drawer.saveTitlePlayerPanel("players information");
+               drawer.saveTitleChoicePanel("wait for your turn");
+               drawer.show();
+           }
+       });
+
+       eventThread.start();
 
    }
 
@@ -404,63 +438,82 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleCardsEvent event) {
 
-        List<String> cardsName = event.cardsName;
-        List<String> cardsEffect = event.cardsEffect;
-        int choiceNum = -1;
+        eventThread = new Thread(() -> {
 
-        if(!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
-        }
+            List<String> cardsName = event.cardsName;
+            List<String> cardsEffect = event.cardsEffect;
+            int choiceNum = -1;
 
-        drawer.saveTitlePlayerPanel("choose your card");
-        drawer.savePlayerCardChoice(cardsName, cardsEffect);
+            if (!event.isValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleCardsEvent");
+            }
 
-        choiceNum = userChoice(cardsName.size());
+            synchronized (drawLock) {
+                drawer.saveTitlePlayerPanel("choose your card");
+                drawer.savePlayerCardChoice(cardsName, cardsEffect);
+            }
 
-        clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
+            choiceNum = userChoice(cardsName.size());
 
-        //show only your information in Players Panel into the CLI graphic
-        this.playersInfo = new ArrayList<>();
-        this.playersInfo.add( new FormattedPlayerInfo(nickname, "", Couple.create(cardsName.get(choiceNum), cardsEffect.get(choiceNum))) );
+            clientView.sendCTSEvent(new ChosenCardEvent(nickname, cardsName.get(choiceNum)));
 
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playersInfo);
+            //show only your information in Players Panel into the CLI graphic
+            this.playersInfo = new ArrayList<>();
+            this.playersInfo.add(new FormattedPlayerInfo(nickname, "", Couple.create(cardsName.get(choiceNum), cardsEffect.get(choiceNum))));
 
-        drawer.show();
+            synchronized (drawLock) {
+                drawer.saveTitlePlayerPanel("players information");
+                drawer.saveInfoPlayerPanel(playersInfo);
+
+                drawer.show();
+            }
+        });
+
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(GiveFirstPlayerChoiceEvent event) {
 
-        List<String> playersNicknames = event.playersNickname;
-        List<String> playersCards = event.playersCard;
-        List<String> playersEffect = event.playersCardEffect;
-        boolean isEventValid = event.isValid;
-        int indexChosenPlayer = -1;
+        eventThread = new Thread(() -> {
 
-        if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect... GiveFirstPlayerChoiceEvent");
-        }
+            List<String> playersNicknames = event.playersNickname;
+            List<String> playersCards = event.playersCard;
+            List<String> playersEffect = event.playersCardEffect;
+            boolean isEventValid = event.isValid;
+            int indexChosenPlayer = -1;
 
-        List<FormattedPlayerInfo> playerInfos = new ArrayList<>();
-        for (int i = 0; i < playersNicknames.size(); i++) {
-            playerInfos.add( FormattedPlayerInfo.create(playersNicknames.get(i), "", Couple.create(playersCards.get(i), playersEffect.get(i))) );
-        }
+            if (!isEventValid) {
+                System.err.println("Apparently there was an error! Reselect... GiveFirstPlayerChoiceEvent");
+            }
 
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playerInfos);
+            List<FormattedPlayerInfo> playerInfos = new ArrayList<>();
+            for (int i = 0; i < playersNicknames.size(); i++) {
+                playerInfos.add(FormattedPlayerInfo.create(playersNicknames.get(i), "", Couple.create(playersCards.get(i), playersEffect.get(i))));
+            }
 
-        drawer.saveTitleChoicePanel("choose the first player");
-        drawer.saveActionsChoicesValue(playersNicknames);
+            synchronized (drawLock) {
+                drawer.saveTitlePlayerPanel("players information");
+                drawer.saveInfoPlayerPanel(playerInfos);
 
-        indexChosenPlayer = userChoice( playersNicknames.size() );
+                drawer.saveTitleChoicePanel("choose the first player");
+                drawer.saveActionsChoicesValue(playersNicknames);
+            }
 
-        clientView.sendCTSEvent( new ChosenFirstPlayerEvent(nickname, playersNicknames.get(indexChosenPlayer)) );
+            indexChosenPlayer = userChoice(playersNicknames.size());
 
-        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        drawer.clearChoicePanelValues();
-        drawer.show();
+            clientView.sendCTSEvent(new ChosenFirstPlayerEvent(nickname, playersNicknames.get(indexChosenPlayer)));
+
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+                drawer.clearChoicePanelValues();
+                drawer.show();
+            }
+
+        });
+
+        eventThread.start();
 
     }
 
@@ -468,100 +521,120 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(StartGameEvent event) {
 
-        playersInfo = ClientJsonHandler.generatePlayersList(event.info);
+        eventThread = new Thread(() -> {
+            playersInfo = ClientJsonHandler.generatePlayersList(event.info);
 
-        drawer.saveTitlePlayerPanel("players information");
-        drawer.saveInfoPlayerPanel(playersInfo);
+            synchronized (drawLock) {
+                drawer.saveTitlePlayerPanel("players information");
+                drawer.saveInfoPlayerPanel(playersInfo);
+                drawer.show();
+            }
+        });
 
-        drawer.show();
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
 
+        eventThread = new Thread(() -> {
 
-        List<Point> occupiedCells = event.info;
-        List<Point> freeCells = new ArrayList<>();
-        int selectedMale = -1;
-        int selectedFemale = -1;
+            List<Point> occupiedCells = event.info;
+            List<Point> freeCells = new ArrayList<>();
+            int selectedMale = -1;
+            int selectedFemale = -1;
 
-        if(!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... AskInitPawnsEvent");
-        }
+            if (!event.isValid) {
+                System.err.println("Apparently there was an error! Reselect... AskInitPawnsEvent");
+            }
 
-        for(int i = 0; i < 5; i++) {
-            for(int j = 0; j < 5; j++) {
-                Point np = new Point(i, j);
-                if(!occupiedCells.contains(np)) {
-                    freeCells.add(np);
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 5; j++) {
+                    Point np = new Point(i, j);
+                    if (!occupiedCells.contains(np)) {
+                        freeCells.add(np);
+                    }
                 }
             }
-        }
 
 
-        drawer.saveTitleChoicePanel("select the cell for the male pawn");
-        drawer.saveCellsChoicesValue(freeCells);
-
-        selectedMale = userChoice( freeCells.size() );
-
-        int maleRowPosition = freeCells.get(selectedMale).x;
-        int maleColumnPosition = freeCells.get(selectedMale).y;
-        freeCells.remove(selectedMale);
-
-        String color = "";
-        for (FormattedPlayerInfo info : playersInfo ) {
-            if(info.getNickname().equals(nickname)) {
-                color = info.getColor();
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("select the cell for the male pawn");
+                drawer.saveCellsChoicesValue(freeCells);
             }
-        }
-        List<FormattedCellInfo> cellInfoList = new ArrayList<>();
-        cellInfoList.add(new FormattedCellInfo(maleRowPosition, maleColumnPosition, 0, color.toUpperCase(), "MALE", 0, false));
-        drawer.saveBoardChanges(cellInfoList);
+            selectedMale = userChoice(freeCells.size());
 
+            int maleRowPosition = freeCells.get(selectedMale).x;
+            int maleColumnPosition = freeCells.get(selectedMale).y;
+            freeCells.remove(selectedMale);
 
-        drawer.saveTitleChoicePanel("select the cell for the female pawn");
-        drawer.saveCellsChoicesValue(freeCells);
+            String color = "";
+            for (FormattedPlayerInfo info : playersInfo) {
+                if (info.getNickname().equals(nickname)) {
+                    color = info.getColor();
+                }
+            }
+            List<FormattedCellInfo> cellInfoList = new ArrayList<>();
+            cellInfoList.add(new FormattedCellInfo(maleRowPosition, maleColumnPosition, 0, color.toUpperCase(), "MALE", 0, false));
 
-        selectedFemale = userChoice( freeCells.size() );
+            synchronized (drawLock) {
+                drawer.saveBoardChanges(cellInfoList);
 
-        int femaleRowPosition = freeCells.get(selectedFemale).x;
-        int femaleColumnPosition = freeCells.get(selectedFemale).y;
+                drawer.saveTitleChoicePanel("select the cell for the female pawn");
+                drawer.saveCellsChoicesValue(freeCells);
+            }
+            selectedFemale = userChoice(freeCells.size());
 
-        clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
+            int femaleRowPosition = freeCells.get(selectedFemale).x;
+            int femaleColumnPosition = freeCells.get(selectedFemale).y;
 
-        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        drawer.clearChoicePanelValues();
+            clientView.sendCTSEvent(new ChosenInitialPawnCellEvent(nickname, maleRowPosition, maleColumnPosition, femaleRowPosition, femaleColumnPosition));
 
-        drawer.show();
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+                drawer.clearChoicePanelValues();
+                drawer.show();
+            }
+
+        });
+
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(AskWhichPawnsUseEvent event) {
 
-        List<Point> availablePawns = event.info;
-        int selectedPawn = -1;
+        eventThread = new Thread(() -> {
+            List<Point> availablePawns = event.info;
+            int selectedPawn = -1;
 
-        if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... AskWhichPawnsUseEvent");
-        }
+            if (!event.isValid) {
+                System.err.println("Apparently there was an error! Reselect... AskWhichPawnsUseEvent");
+            }
 
-        drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
-        drawer.saveCellsChoicesValue(availablePawns);
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("select the pawn that you want to use in this turn");
+                drawer.saveCellsChoicesValue(availablePawns);
+            }
+            selectedPawn = userChoice(availablePawns.size());
 
-        selectedPawn = userChoice( availablePawns.size() );
+            this.rowUsedPawn = availablePawns.get(selectedPawn).x;
+            this.columnUsedPawn = availablePawns.get(selectedPawn).y;
 
-        this.rowUsedPawn = availablePawns.get(selectedPawn).x;
-        this.columnUsedPawn = availablePawns.get(selectedPawn).y;
+            clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
 
-        clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
+            //TODO : forse questo titolo non è necessario
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+                drawer.clearChoicePanelValues();
 
-        //TODO : forse questo titolo non è necessario
-        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-        drawer.clearChoicePanelValues();
+                drawer.show();
+            }
+        });
 
-        drawer.show();
+        eventThread.start();
 
     }
 
@@ -569,99 +642,116 @@ public class CLI implements Client, ServerToClientManager {
     @Override
     public void manageEvent(GivePossibleActionsEvent event) {
 
-        List<String> possibleActions = event.actions;
-        boolean isEventValid = event.isValid;
-        int indexChosenAction = -1;
+        eventThread = new Thread(() -> {
 
-        if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleActionsEvent");
-        }
+            List<String> possibleActions = event.actions;
+            boolean isEventValid = event.isValid;
+            int indexChosenAction = -1;
 
-        drawer.saveTitleChoicePanel("choose your next action");
-        drawer.saveActionsChoicesValue(possibleActions);
+            if (!isEventValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleActionsEvent");
+            }
 
-        indexChosenAction = userChoice( possibleActions.size() );
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("choose your next action");
+                drawer.saveActionsChoicesValue(possibleActions);
+            }
 
-        //in case there is only one possible action I directly send the possible action
-        //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
+            indexChosenAction = userChoice(possibleActions.size());
 
-        switch ( possibleActions.get(indexChosenAction) ) {
+            //in case there is only one possible action I directly send the possible action
+            //indexChosenAction is initialized to 0 so automatically takes the first and only possible action
 
-            case "Move":
-                clientView.sendCTSEvent(new ChosenMoveActionEvent(nickname, "Move", rowUsedPawn, columnUsedPawn));
-                break;
+            switch (possibleActions.get(indexChosenAction)) {
 
-            case "Build":
-                clientView.sendCTSEvent(new ChosenBuildActionEvent(nickname, "Build", rowUsedPawn, columnUsedPawn));
-                break;
+                case "Move":
+                    clientView.sendCTSEvent(new ChosenMoveActionEvent(nickname, "Move", rowUsedPawn, columnUsedPawn));
+                    break;
 
-            case "Destroy":
-                clientView.sendCTSEvent(new ChosenDestroyActionEvent(nickname, "Destroy", rowUsedPawn, columnUsedPawn));
-                break;
+                case "Build":
+                    clientView.sendCTSEvent(new ChosenBuildActionEvent(nickname, "Build", rowUsedPawn, columnUsedPawn));
+                    break;
 
-            case "Force":
-                clientView.sendCTSEvent(new ChosenForceActionEvent(nickname, "Force", rowUsedPawn, columnUsedPawn));
-                break;
+                case "Destroy":
+                    clientView.sendCTSEvent(new ChosenDestroyActionEvent(nickname, "Destroy", rowUsedPawn, columnUsedPawn));
+                    break;
 
-            case "End turn":
-                clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
+                case "Force":
+                    clientView.sendCTSEvent(new ChosenForceActionEvent(nickname, "Force", rowUsedPawn, columnUsedPawn));
+                    break;
 
-                drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
-                drawer.clearChoicePanelValues();
+                case "End turn":
+                    clientView.sendCTSEvent(new ChosenFinishActionEvent(nickname, "End turn"));
 
-                drawer.show();
-                break;
+                    synchronized (drawLock) {
+                        drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
+                        drawer.clearChoicePanelValues();
 
-            default:
-                throw new RuntimeException("Error while selecting the next action!");
+                        drawer.show();
+                    }
+                    break;
 
-        }
+                default:
+                    throw new RuntimeException("Error while selecting the next action!");
 
+            }
+        });
+
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToMoveEvent event) {
 
-        List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
-        boolean isEventValid = event.isValid;
-        int selectedCell = -1;
+        eventThread = new Thread(() -> {
 
-        if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToMoveEvent");
-        }
+            List<Point> cellsAvailableToMove = event.cellsAvailableToMove;
+            boolean isEventValid = event.isValid;
+            int selectedCell = -1;
 
-        drawer.saveTitleChoicePanel("choose the cell where you want to move");
-        drawer.saveCellsChoicesValue(cellsAvailableToMove);
+            if (!isEventValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToMoveEvent");
+            }
 
-        selectedCell = userChoice( cellsAvailableToMove.size() );
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("choose the cell where you want to move");
+                drawer.saveCellsChoicesValue(cellsAvailableToMove);
+            }
+            selectedCell = userChoice(cellsAvailableToMove.size());
 
-        nextActionRow = cellsAvailableToMove.get(selectedCell).x;
-        nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
+            nextActionRow = cellsAvailableToMove.get(selectedCell).x;
+            nextActionColumn = cellsAvailableToMove.get(selectedCell).y;
 
-        clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+            clientView.sendCTSEvent(new ChosenCellToMoveEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
 
-        //save the new position of the pawn
-        rowUsedPawn = cellsAvailableToMove.get(selectedCell).x;
-        columnUsedPawn = cellsAvailableToMove.get(selectedCell).y;
+            //save the new position of the pawn
+            rowUsedPawn = cellsAvailableToMove.get(selectedCell).x;
+            columnUsedPawn = cellsAvailableToMove.get(selectedCell).y;
+        });
+
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToBuildEvent event) {
 
-        List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
-        boolean isEventValid = event.isValid;
-        int selectedCell = 0;
+        eventThread = new Thread(() -> {
 
-        if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToBuildEvent");
-        }
+            List<Point> cellsAvailableToBuild = event.cellsAvailableToBuild;
+            boolean isEventValid = event.isValid;
+            int selectedCell = 0;
 
-        drawer.saveTitleChoicePanel("choose the cell where you want to build");
-        drawer.saveCellsChoicesValue(cellsAvailableToBuild);
+            if (!isEventValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToBuildEvent");
+            }
 
-        selectedCell = userChoice( cellsAvailableToBuild.size() );
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("choose the cell where you want to build");
+                drawer.saveCellsChoicesValue(cellsAvailableToBuild);
+            }
+            selectedCell = userChoice(cellsAvailableToBuild.size());
 //        do {
 //            drawer.show();
 //
@@ -678,69 +768,65 @@ public class CLI implements Client, ServerToClientManager {
 //            }
 //
 //        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
-        nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
-        nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
+            nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
+            nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
 
-        clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+            clientView.sendCTSEvent(new ChosenCellToBuildEvent(nickname, rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+        });
 
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(GivePossibleBuildingsEvent event) {
 
-        List<Integer> buildingsLevel = event.buildings;
-        boolean isEventValid = event.isValid;
-        int selectedLevel = 0;
+        eventThread = new Thread(() -> {
 
-        if(!isEventValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleBuildingsEvent");
-        }
+            List<Integer> buildingsLevel = event.buildings;
+            boolean isEventValid = event.isValid;
+            int selectedLevel = 0;
 
-        //if there are more than one single options then I
-        //have to display them and give the possibility to choose
-        if(buildingsLevel.size() > 1) {
+            if (!isEventValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleBuildingsEvent");
+            }
 
-            drawer.saveTitleChoicePanel("Choose the building to build on the selected cell");
-            drawer.saveBuildingsChoicesValue(buildingsLevel);
+            //if there are more than one single options then I
+            //have to display them and give the possibility to choose
+            if (buildingsLevel.size() > 1) {
 
-            selectedLevel = userChoice( buildingsLevel.size() );
-//            do {
-//                drawer.show();
-//
-//                while(!input.hasNextInt()) {
-//                    System.err.println("Insert an Number!");
-//                    drawer.show();
-//
-//                    input.next();
-//                }
-//                selectedLevel = input.nextInt();
-//
-//                if( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) ) {
-//                    System.err.println("Unavailable Choice!");
-//                }
-//
-//            } while( !(selectedLevel >= 0 && selectedLevel < buildingsLevel.size()) );
-        }
+                synchronized (drawLock) {
+                    drawer.saveTitleChoicePanel("Choose the building to build on the selected cell");
+                    drawer.saveBuildingsChoicesValue(buildingsLevel);
+                }
+                selectedLevel = userChoice(buildingsLevel.size());
 
-        clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+            }
+
+            clientView.sendCTSEvent(new ChosenBuildingEvent(nickname, buildingsLevel.get(selectedLevel), rowUsedPawn, columnUsedPawn, nextActionRow, nextActionColumn));
+        });
+
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToDestroyEvent event) {
 
-        List<Point> availableCellsToDestroy = event.cells;
-        int selectedCell = -1;
+        eventThread = new Thread(() -> {
 
-        if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToDestroyEvent");
-        }
+            List<Point> availableCellsToDestroy = event.cells;
+            int selectedCell = -1;
 
-        drawer.saveTitleChoicePanel("choose the cell where you want to destroy the roof");
-        drawer.saveCellsChoicesValue(availableCellsToDestroy);
+            if (!event.isValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToDestroyEvent");
+            }
 
-        selectedCell = userChoice( availableCellsToDestroy.size() );
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("choose the cell where you want to destroy the roof");
+                drawer.saveCellsChoicesValue(availableCellsToDestroy);
+            }
+            selectedCell = userChoice(availableCellsToDestroy.size());
 //        do {
 //            drawer.show();
 //
@@ -757,28 +843,32 @@ public class CLI implements Client, ServerToClientManager {
 //            }
 //
 //        } while( !(selectedCell >= 0 && selectedCell < availableCellsToDestroy.size()) );
-        int selectedRowToDestroy = event.cells.get(selectedCell).x;
-        int selectedColumnToDestroy = event.cells.get(selectedCell).y;
+            int selectedRowToDestroy = event.cells.get(selectedCell).x;
+            int selectedColumnToDestroy = event.cells.get(selectedCell).y;
 
-        clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowToDestroy, selectedColumnToDestroy));
+            clientView.sendCTSEvent(new ChosenCellToDestroyEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowToDestroy, selectedColumnToDestroy));
+        });
 
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(GivePossibleCellsToForceEvent event) {
 
-        List<Point> availableCellsToForce = event.cells;
-        int selectedCell = -1;
+        eventThread = new Thread(() -> {
+            List<Point> availableCellsToForce = event.cells;
+            int selectedCell = -1;
 
-        if (!event.isValid) {
-            System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToForceEvent");
-        }
+            if (!event.isValid) {
+                System.err.println("Apparently there was an error! Reselect... GivePossibleCellsToForceEvent");
+            }
 
-        drawer.saveTitleChoicePanel("choose the cell where you want to force an opponent pawn");
-        drawer.saveCellsChoicesValue(availableCellsToForce);
-
-        selectedCell = userChoice( availableCellsToForce.size() );
+            synchronized (drawLock) {
+                drawer.saveTitleChoicePanel("choose the cell where you want to force an opponent pawn");
+                drawer.saveCellsChoicesValue(availableCellsToForce);
+            }
+            selectedCell = userChoice(availableCellsToForce.size());
 //        do {
 //            drawer.show();
 //
@@ -795,98 +885,121 @@ public class CLI implements Client, ServerToClientManager {
 //            }
 //
 //        } while( !(selectedCell >= 0 && selectedCell < availableCellsToForce.size()) );
-        int selectedRowForcedPawn = availableCellsToForce.get(selectedCell).x;
-        int selectedColumnForcedPawn = availableCellsToForce.get(selectedCell).y;
+            int selectedRowForcedPawn = availableCellsToForce.get(selectedCell).x;
+            int selectedColumnForcedPawn = availableCellsToForce.get(selectedCell).y;
 
-        clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
+            clientView.sendCTSEvent(new ChosenCellToForceEvent(nickname, rowUsedPawn, columnUsedPawn, selectedRowForcedPawn, selectedColumnForcedPawn));
+        });
 
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(LosingByNoActionEvent event) {
 
-        String loser = event.nickname;
-        List<String> actions = new ArrayList<>();
+        eventThread = new Thread(() -> {
+            String loser = event.nickname;
+            List<String> actions = new ArrayList<>();
 
-        if( this.nickname.equals(loser) ) {
+            if (this.nickname.equals(loser)) {
+                List<String> actionsAfterLosing = event.actionsAfterLosing;
 
-            drawer.saveTitleChoicePanel("----------------------- you have lost the game! -----------------------");
-
-            List<String> actionsAfterLosing = event.actionsAfterLosing;
-            drawer.saveActionsChoicesValue(actionsAfterLosing);
-
-            int indexChosenAction = -1;
+                synchronized (drawLock) {
+                    drawer.saveTitleChoicePanel("----------------------- you have lost the game! -----------------------");
 
 
-            do {
-                drawer.show();
-
-                while(!input.hasNextInt()) {
-                    System.err.println("Insert a Number!");
-                    drawer.show();
-
-                    input.next();
+                    drawer.saveActionsChoicesValue(actionsAfterLosing);
                 }
-                indexChosenAction = input.nextInt();
+                int indexChosenAction = -1;
 
-                if( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) ) {
-                    System.err.println("Choice Unavailable !");
+
+                do {
+                    synchronized (drawLock) {
+                        drawer.show();
+                    }
+                    while (!input.hasNextInt()) {
+                        System.err.println("Insert a Number!");
+                        synchronized (drawLock) {
+                            drawer.show();
+
+                            input.next();
+                        }
+                    }
+                    indexChosenAction = input.nextInt();
+
+                    if (!(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size())) {
+                        System.err.println("Choice Unavailable !");
+                    }
+
+                } while (!(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()));
+
+
+                switch (actionsAfterLosing.get(indexChosenAction)) {
+
+                    case "Spectate Match":
+                        break;
+
+                    case "Leave":
+                        manageEvent(new DisconnectionClientEvent());
+                        break;
+
                 }
 
-            } while( !(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()) );
+                actions.add("If you want to play again you have to reconnect to the server!");
+                actions.add("PayPal email for donations: alfonsocatelli@gmail.com");
 
+                synchronized (drawLock) {
+                    drawer.saveActionsChoicesValue(actions);
+                }
+            }
+            // this client hasn't lost the game
+            else {
+                playersInfo.removeIf(p -> p.getNickname().equals(loser));
+                playersInfo.add(new FormattedPlayerInfo(loser, "LOSER", Couple.create("loser", "---------------------------------------------------------------------------------------")));
 
-            switch (actionsAfterLosing.get(indexChosenAction)) {
-
-                case "Spectate Match":
-                    break;
-
-                case "Leave":
-                    manageEvent(new DisconnectionClientEvent());
-                    break;
-
+                synchronized (drawLock) {
+                    drawer.saveInfoPlayerPanel(playersInfo);
+                }
             }
 
-            actions.add("If you want to play again you have to reconnect to the server!");
-            actions.add("PayPal email for donations: alfonsocatelli@gmail.com");
+            synchronized (drawLock) {
+                drawer.show();
+            }
+        });
 
-            drawer.saveActionsChoicesValue(actions);
-
-        }
-        // this client hasn't lost the game
-        else {
-            playersInfo.removeIf(p -> p.getNickname().equals(loser));
-            playersInfo.add(new FormattedPlayerInfo(loser, "LOSER", Couple.create("loser", "---------------------------------------------------------------------------------------")));
-
-            drawer.saveInfoPlayerPanel(playersInfo);
-        }
-
-        drawer.show();
+        eventThread.start();
     }
 
 
     @Override
     public void manageEvent(EndGameSTCEvent event) {
 
-        String winner = event.winner;
-        List<String> actions = new ArrayList<>();
+        eventThread = new Thread(() -> {
+            String winner = event.winner;
+            List<String> actions = new ArrayList<>();
 
-        if( this.nickname.equals(winner) ) {
-            drawer.saveTitleChoicePanel("----------------------- you are the winneeeer! -----------------------");
-        }
-        else {
-            drawer.saveTitleChoicePanel("----- " + winner + " is the winner of the match! ------");
-        }
+            if (this.nickname.equals(winner)) {
+                synchronized (drawLock) {
+                    drawer.saveTitleChoicePanel("----------------------- you are the winneeeer! -----------------------");
+                }
+            } else {
+                synchronized (drawLock) {
+                    drawer.saveTitleChoicePanel("----- " + winner + " is the winner of the match! ------");
+                }
+            }
 
-        actions.add("If you want to play again you have to reconnect to the server!");
-        actions.add("paypal email for donations : alfonsocatelli@gmail.com");
+            actions.add("If you want to play again you have to reconnect to the server!");
+            actions.add("paypal email for donations : alfonsocatelli@gmail.com");
 
-        drawer.saveActionsChoicesValue(actions);
-        drawer.show();
+            synchronized (drawLock) {
+                drawer.saveActionsChoicesValue(actions);
+                drawer.show();
+            }
+            manageEvent(new DisconnectionClientEvent());
+        });
 
-        manageEvent(new DisconnectionClientEvent());
-
+        eventThread.start();
     }
 
 
@@ -909,12 +1022,16 @@ public class CLI implements Client, ServerToClientManager {
             /* in the manageEvent we set the title and the choices
              * then in here we show them every time the user enter an
              * invalid choice */
-            drawer.show();
+            synchronized (drawLock) {
+                drawer.show();
+            }
 
             // control if the user insert an number
             while(!input.hasNextInt()) {
                 System.err.println("Insert an Number!");
-                drawer.show();
+                synchronized (drawLock) {
+                    drawer.show();
+                }
 
                 input.next();
             }

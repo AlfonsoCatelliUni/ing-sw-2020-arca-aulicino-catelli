@@ -18,7 +18,10 @@ public class Server {
     private static final int SOCKET_PORT = 64209;
 
 
-    private Controller controller;
+    private static Controller controller =  new Controller();
+
+
+    private static List<Controller> controllerList = new ArrayList<>();
 
 
     private ServerSocket serverSocket;
@@ -38,10 +41,10 @@ public class Server {
 
     public Server() {
 
-        controller = new Controller();
-
         this.executor = Executors.newFixedThreadPool(128);
         this.randomGen = new Random();
+
+        controllerList.add(controller);
 
         this.connections = new ArrayList<>();
 
@@ -70,16 +73,34 @@ public class Server {
 
     public void run() {
 
-        System.out.println("Server listening on port : " + SOCKET_PORT);
+        System.out.println("Server listening on port : " + SOCKET_PORT + "\n");
 
         try {
 
             while (true) {
 
-                /* non so se mettere la mappatura tra connessione e id numerico del player nel server o nel controller */
                 Socket socket = serverSocket.accept();
-                System.out.println("Accepted new socket connection from " + socket.getRemoteSocketAddress());
 
+                if (controller.isClosed()) {
+                    controller = new Controller();
+                    controllerList.add(controller);
+
+                    System.out.println("------------------------------");
+                    System.out.println("NEW CONTROLLER CREATED !");
+                    System.out.println("------------------------------");
+                    System.out.println("All Connection with the Server:");
+
+                    Map<Integer, Connection> hash = controller.getVirtualView().getConnectionMap();
+
+                    for(Integer i : hash.keySet() ) {
+                        System.out.println(String.valueOf(i) + " - " + hash.get(i) );
+                    }
+
+                    System.out.println("------------------------------\n");
+
+                }
+
+                System.out.println("Accepted new socket connection from " + socket.getRemoteSocketAddress());
 
                 Integer id;
                 do {
@@ -90,7 +111,7 @@ public class Server {
 
                 VirtualView.newConnection(id, connection);
 
-                System.out.println("New socket bounded at the player with ID: " + id);
+                System.out.println("New socket bounded at the player with ID: " + id + "\n");
 
                 executor.submit(connection);
                 //new Thread(connection).start();

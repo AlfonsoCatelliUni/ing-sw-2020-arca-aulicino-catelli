@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
  */
 public class Controller implements Observer, ClientToServerManager {
 
+
     /**
      * View to send and receive events
      */
@@ -53,7 +54,11 @@ public class Controller implements Observer, ClientToServerManager {
      */
     private TimerTask timerTask;
 
+
     private Object lock;
+
+
+    private Boolean isClosed;
 
 
     // MARK : Constructor Section ======================================================================================
@@ -67,7 +72,10 @@ public class Controller implements Observer, ClientToServerManager {
 
         lock = new Object();
 
+        this.isClosed = false;
+
     }
+
 
     //ONLY FOR TESTING
     public Controller(VirtualView virtualView) {
@@ -78,11 +86,19 @@ public class Controller implements Observer, ClientToServerManager {
 
         lock = new Object();
 
+        this.isClosed = false;
+
     }
+
 
     //used in server to connect controller with its virtual View
     public VirtualView getVirtualView() {
         return this.virtualView;
+    }
+
+
+    public Boolean isClosed() {
+        return this.isClosed;
     }
 
 
@@ -251,6 +267,7 @@ public class Controller implements Observer, ClientToServerManager {
     public void closeGameLobby(){
 
         preGameLobby.closeLobby();
+        isClosed = true;
 
         virtualView.sendMessage(new ClosedWaitingRoomEvent(new ArrayList<>(preGameLobby.getConnectedPlayers())));
 
@@ -337,9 +354,9 @@ public class Controller implements Observer, ClientToServerManager {
 
         Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);
         Boolean isNicknameValid = preGameLobby.isNicknameValid(nickname);
+        Boolean isNicknameViewFree = VirtualView.isValidNickname(nickname);
 
-
-        if(isNicknameFree && isNicknameValid && !preGameLobby.isClosed()) {
+        if(isNicknameViewFree && isNicknameFree && isNicknameValid && !preGameLobby.isClosed()) {
 
             preGameLobby.addPlayer(nickname);
 
@@ -380,7 +397,6 @@ public class Controller implements Observer, ClientToServerManager {
         }
         //if the waitingRoom is already closed than we disconnect the player
         else if(preGameLobby.isClosed()) {
-
             virtualView.sendMessageTo(ID, new UnableToEnterWaitingRoomEvent());
         }
         //if the chosen nickname is already taken we ask to enter it again
@@ -469,18 +485,22 @@ public class Controller implements Observer, ClientToServerManager {
         List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
 
         if(numberOfPlayers == 2 || numberOfPlayers == 3) {
+
             preGameLobby.setNumberOfPlayers(numberOfPlayers);
-            if (preGameLobby.getConnectedPlayers().size() == numberOfPlayers){
+
+            if (connectedPlayers.size() == numberOfPlayers){
                 closeGameLobby();
             }
-            else if (preGameLobby.getConnectedPlayers().size() > numberOfPlayers) {
-                int numConnected = preGameLobby.getConnectedPlayers().size();
+            else if (connectedPlayers.size() > numberOfPlayers) {
+                int numConnected = connectedPlayers.size();
                 int diff = numConnected - numberOfPlayers;
 
                 do {
-                    String player = preGameLobby.getConnectedPlayers().get(preGameLobby.getConnectedPlayers().size() - 1);
+                    String player = connectedPlayers.get(connectedPlayers.size() - 1);
                     preGameLobby.deletePlayerInformation(player);
+
                     virtualView.sendMessageTo(player, new UnableToEnterWaitingRoomEvent());
+                    virtualView.removeNicknameIDConnection( virtualView.getIDFromNickname(player) );
                     diff--;
 
                 } while(diff > 0);
@@ -491,9 +511,7 @@ public class Controller implements Observer, ClientToServerManager {
         }
         else {
             preGameLobby.setNumberOfPlayers(2);
-
         }
-
 
     }
 

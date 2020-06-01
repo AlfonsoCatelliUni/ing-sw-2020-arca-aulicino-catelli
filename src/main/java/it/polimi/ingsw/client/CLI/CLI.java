@@ -312,8 +312,7 @@ public class CLI implements Client, ServerToClientManager {
 
     @Override
     public void manageEvent(UnableToEnterWaitingRoomEvent event) {
-        System.out.println("---THE WAITING ROOM IS FILLED!---");
-        System.out.println();
+        System.out.println("\n--- YOU'VE BEEN KICKED FROM THE ROOM, PLEASE RECONNECT TO THE SERVER TO START A NEW MATCH!---\n");
         System.out.println("---YOU HAVE BEEN DISCONNECTED!---");
         this.clientView = null;
         System.exit(0);
@@ -869,22 +868,7 @@ public class CLI implements Client, ServerToClientManager {
                 drawer.saveCellsChoicesValue(availableCellsToForce);
             }
             selectedCell = userChoice(availableCellsToForce.size());
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert an Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            selectedCell = input.nextInt();
-//
-//            if( !(selectedCell >= 0 && selectedCell < availableCellsToForce.size()) ) {
-//                System.out.println("Unavailable choice");
-//            }
-//
-//        } while( !(selectedCell >= 0 && selectedCell < availableCellsToForce.size()) );
+
             int selectedRowForcedPawn = availableCellsToForce.get(selectedCell).x;
             int selectedColumnForcedPawn = availableCellsToForce.get(selectedCell).y;
 
@@ -1025,7 +1009,7 @@ public class CLI implements Client, ServerToClientManager {
             synchronized (drawLock) {
                 drawer.show();
             }
-
+ 
             // control if the user insert an number
             while(!input.hasNextInt()) {
                 System.err.println("Insert an Number!");
@@ -1052,6 +1036,7 @@ public class CLI implements Client, ServerToClientManager {
         // if the user insert an available choice then we return to the manageEvent
         return selected;
     }
+
 
     /**
      * this method is dedicated to the challenger because the event of the challenger are different to display in CLI
@@ -1091,6 +1076,7 @@ public class CLI implements Client, ServerToClientManager {
         // if the user insert an available choice then we return to the manageEvent
         return selected;
     }
+
 
     /**
      * this method control the validity of the ip address

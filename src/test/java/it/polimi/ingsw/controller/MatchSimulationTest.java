@@ -15,14 +15,17 @@ import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.State.BuildAndFinishState;
 import it.polimi.ingsw.model.Player.State.BuildState;
+import it.polimi.ingsw.server.Connection;
 import it.polimi.ingsw.view.server.VirtualView;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.SocketHandler;
 
 import static org.junit.Assert.*;
 
@@ -86,16 +89,33 @@ public class MatchSimulationTest  {
 
     void MVCPreGameStartSetUp() {
 
-
-        virtualView.update(new NewConnectionEvent(player1));
+        virtualView.update(new NewConnectionEvent(1,player1));
 
         virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
 
-        virtualView.update(new NewConnectionEvent(player2));
+        virtualView.update(new NewConnectionEvent(2, player2));
 
-        virtualView.update(new NewConnectionEvent(player3));
+        virtualView.update(new NewConnectionEvent(3, player3));
 
         controller.getPreGameLobby().getPickedCards().clear();
+
+        Socket socket1 = new Socket();
+
+        Socket socket2 = new Socket();
+
+        Socket socket3 = new Socket();
+
+        Connection player1Connection = new Connection(69,socket1, virtualView);
+
+        Connection player2Connection = new Connection(70, socket2, virtualView);
+
+        Connection player3Connection = new Connection(71, socket3, virtualView);
+
+        VirtualView.newConnection(1, player1Connection);
+
+        VirtualView.newConnection(2, player2Connection);
+
+        VirtualView.newConnection(3, player3Connection);
 
         /*
 
@@ -2255,19 +2275,31 @@ public class MatchSimulationTest  {
 
         player2 = "Mashu7";
 
-        virtualView.update(new NewConnectionEvent(player1));
+        Socket socket1 = new Socket();
+
+        Socket socket2 = new Socket();
+
+        Connection player1Connection = new Connection(69,socket1, virtualView);
+
+        Connection player2Connection = new Connection(70, socket2, virtualView);
+
+        VirtualView.newConnection(1, player1Connection);
+
+        VirtualView.newConnection(2, player2Connection);
+
+        virtualView.update(new NewConnectionEvent(1, player1));
 
         virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
 
-        virtualView.update(new NewConnectionEvent(player2));
+        virtualView.update(new NewConnectionEvent(2, player2));
 
-        virtualView.update(new ClientDisconnectionEvent(player2));
+        virtualView.update(new ClientDisconnectionEvent(2, player2));
 
         assertEquals(player1, controller.getPreGameLobby().getConnectedPlayers().get(0));
 
         assertEquals(3, controller.getPreGameLobby().getNumberOfPlayers());
 
-        virtualView.update(new ClientDisconnectionEvent(player1));
+        virtualView.update(new ClientDisconnectionEvent(1, player1));
 
         assertEquals(-1, controller.getPreGameLobby().getNumberOfPlayers());
 
@@ -2287,15 +2319,33 @@ public class MatchSimulationTest  {
         player3 = "Giammi10";
 
 
-        virtualView.update(new NewConnectionEvent(player1));
+        virtualView.update(new NewConnectionEvent(1, player1));
 
         virtualView.update(new ChosenPlayerNumberEvent(player1, 3));
 
-        virtualView.update(new NewConnectionEvent(player2));
+        virtualView.update(new NewConnectionEvent(2, player2));
 
-        virtualView.update(new NewConnectionEvent(player3));
+        virtualView.update(new NewConnectionEvent(3, player3));
 
         controller.getPreGameLobby().getPickedCards().clear();
+
+        Socket socket1 = new Socket();
+
+        Socket socket2 = new Socket();
+
+        Socket socket3 = new Socket();
+
+        Connection player1Connection = new Connection(69,socket1, virtualView);
+
+        Connection player2Connection = new Connection(70, socket2, virtualView);
+
+        Connection player3Connection = new Connection(71, socket3, virtualView);
+
+        VirtualView.newConnection(1, player1Connection);
+
+        VirtualView.newConnection(2, player2Connection);
+
+        VirtualView.newConnection(3, player3Connection);
 
 
         Card Atlas = JsonHandler.deserializeCardList().get(3);
@@ -2311,7 +2361,7 @@ public class MatchSimulationTest  {
 
         virtualView.update(new ChosenCardEvent(player1, Atlas.getName()));
 
-        virtualView.update(new ClientDisconnectionEvent(player2));
+        virtualView.update(new ClientDisconnectionEvent(2, player2));
 
         assertNull(controller.getGame());
 

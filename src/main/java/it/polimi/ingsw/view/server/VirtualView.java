@@ -44,6 +44,9 @@ public class VirtualView extends Observable implements Observer {
 
 
     public VirtualView() {
+
+        this.nicknames = new ArrayList<>();
+
     }
 
 
@@ -144,15 +147,23 @@ public class VirtualView extends Observable implements Observer {
         }
 
         //USED ONLY FOR TESTING
-        //System.out.println(event.toString() + "\n");
+        System.out.println(event.toString() + "\n");
 
     }
 
 
     public void sendMessageTo(Integer ID, ServerToClientEvent event) {
+
         synchronized (lock) {
-            connectionMap.get(ID).sendEvent(event);
+            try {
+                connectionMap.get(ID).sendEvent(event);
+            } catch (NullPointerException e) {
+                //USED ONLY FOR TESTING
+                System.out.println("ID not found");
+            }
         }
+
+
     }
 
 
@@ -165,7 +176,7 @@ public class VirtualView extends Observable implements Observer {
         catch (NullPointerException e) {
             //e.printStackTrace();
             //USED ONLY FOR TESTING
-            //System.out.println(event.toString() + "\n");
+            System.out.println(event.toString() + "\n");
         }
     }
 

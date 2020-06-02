@@ -48,13 +48,8 @@ public class PreGameLobby {
     private Map<String, Card> playerCardMap;
 
 
-    private final static int MAXPLAYERS = 3;
-
-
-    private final static int MINPLAYERS = 2;
-
-
     private final Object lockClose;
+
 
     private final Object lockNicknames;
 

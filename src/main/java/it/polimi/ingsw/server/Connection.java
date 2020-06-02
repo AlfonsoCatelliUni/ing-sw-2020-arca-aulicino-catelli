@@ -111,6 +111,10 @@ public class Connection implements Runnable {
         return this.active;
     }
 
+    public void setReceiver(VirtualView virtualView){
+        this.receiver = virtualView;
+    }
+
 
 
 

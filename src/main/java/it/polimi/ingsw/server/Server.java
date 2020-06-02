@@ -129,6 +129,23 @@ public class Server {
 
     }
 
+    public static void changeController(String nickname){
+
+        int ID = VirtualView.getIDFromNickname(nickname);
+
+        Controller lastController = controllerList.get(controllerList.size() - 1);
+
+        if (lastController.isClosed()){
+            controller = new Controller();
+            controllerList.add(controller);
+        }
+        VirtualView.getConnectionFromID(ID).setReceiver(controller.getVirtualView());
+
+        controller.changedController(nickname);
+
+    }
+
+
 
 
 }

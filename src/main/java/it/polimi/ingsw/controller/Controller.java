@@ -14,6 +14,7 @@ import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.server.PreGameLobby;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.view.server.VirtualView;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -59,6 +60,12 @@ public class Controller implements Observer, ClientToServerManager {
 
 
     private Boolean isClosed;
+
+
+    private final int MAXPLAYERS = 3;
+
+
+    private final static int MINPLAYERS = 2;
 
 
     // MARK : Constructor Section ======================================================================================
@@ -342,6 +349,45 @@ public class Controller implements Observer, ClientToServerManager {
     }
 
 
+    public void changedController(String nickname){
+
+        List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
+
+        virtualView.sendMessage(new OnePlayerEnteredEvent(nickname, new ArrayList<>(connectedPlayers)));
+
+        preGameLobby.addPlayer(nickname);
+        virtualView.addNickname(nickname);
+
+        connectedPlayers = preGameLobby.getConnectedPlayers();
+
+        if(preGameLobby.getConnectedPlayers().size() == 1) {
+
+            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+            virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));
+            countdownStart();
+        }
+        else if(connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {
+
+            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+
+            closeGameLobby();
+            timerTask.cancel();
+
+        }
+        else {
+            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));
+        }
+
+        if (connectedPlayers.size() == MAXPLAYERS){
+            this.isClosed = true;
+        }
+
+
+
+
+    }
+
+
     // MARK : Network Event Manager Section ======================================================================================
 
 
@@ -402,6 +448,10 @@ public class Controller implements Observer, ClientToServerManager {
         //if the chosen nickname is already taken we ask to enter it again
         else {
             virtualView.sendMessageTo(ID, new UnavailableNicknameEvent(ID));
+        }
+
+        if (preGameLobby.getConnectedPlayers().size() == MAXPLAYERS){
+            this.isClosed = true;
         }
 
 
@@ -484,7 +534,9 @@ public class Controller implements Observer, ClientToServerManager {
 
         List<String> connectedPlayers = preGameLobby.getConnectedPlayers();
 
-        if(numberOfPlayers == 2 || numberOfPlayers == 3) {
+        boolean isFirstPlayer = preGameLobby.getConnectedPlayers().get(0).equals(nickname);
+
+        if(isFirstPlayer && (numberOfPlayers == 2 || numberOfPlayers == 3)) {
 
             preGameLobby.setNumberOfPlayers(numberOfPlayers);
 
@@ -492,15 +544,20 @@ public class Controller implements Observer, ClientToServerManager {
                 closeGameLobby();
             }
             else if (connectedPlayers.size() > numberOfPlayers) {
+
+                this.isClosed = true;
+
                 int numConnected = connectedPlayers.size();
+
                 int diff = numConnected - numberOfPlayers;
 
                 do {
                     String player = connectedPlayers.get(connectedPlayers.size() - 1);
                     preGameLobby.deletePlayerInformation(player);
+                    virtualView.removeParticularNickname(player);
 
-                    virtualView.sendMessageTo(player, new UnableToEnterWaitingRoomEvent());
-                    virtualView.removeNicknameIDConnection( virtualView.getIDFromNickname(player) );
+                    virtualView.sendMessageTo(player, new PlainTextEvent("You are added to new Lobby"));
+                    Server.changeController(player);
                     diff--;
 
                 } while(diff > 0);
@@ -509,8 +566,9 @@ public class Controller implements Observer, ClientToServerManager {
             }
 
         }
+        //if something goes wrong, set the default number of player to 3
         else {
-            preGameLobby.setNumberOfPlayers(2);
+            preGameLobby.setNumberOfPlayers(3);
         }
 
     }

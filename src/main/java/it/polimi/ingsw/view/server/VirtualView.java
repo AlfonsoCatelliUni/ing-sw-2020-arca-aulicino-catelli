@@ -124,6 +124,18 @@ public class VirtualView extends Observable implements Observer {
         return nickname;
     }
 
+    public void removeParticularNickname(String nickname){
+        nicknames.remove(nickname);
+    }
+
+    public List<String> getNicknames() {
+        return nicknames;
+    }
+
+    public void addNickname(String nickname){
+        nicknames.add(nickname);
+    }
+
 
     // ======================================================================================
 
@@ -184,8 +196,13 @@ public class VirtualView extends Observable implements Observer {
     // ======================================================================================
 
 
-    public Integer getIDFromNickname(String nickname) {
+    public static Integer getIDFromNickname(String nickname) {
         return nicknameMap.get(nickname);
+    }
+
+
+    public static Connection getConnectionFromID(int ID){
+        return connectionMap.get(ID);
     }
 
 
@@ -197,6 +214,7 @@ public class VirtualView extends Observable implements Observer {
     public Map<Integer, Connection> getConnectionMap() {
         return connectionMap;
     }
+
 
     //ONLY USED IN TESTING
     public static void clearVirtualView(){

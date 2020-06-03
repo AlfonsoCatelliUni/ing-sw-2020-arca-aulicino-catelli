@@ -476,8 +476,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         Platform.runLater( () -> {
 
-            dialog.display("You are the challenger! Players in game are " + event.numberOfPlayers + ", so choose " + event.numberOfPlayers + " cards to play with");
-
             Parent root = null;
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource("/FXML/AllCardsScene.fxml") );
@@ -498,6 +496,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
             stage.setResizable(false);
 
             stage.show();
+
+            dialog.display("You are the challenger! Players in game are " + event.numberOfPlayers + ", so choose " + event.numberOfPlayers + " cards to play with");
 
         });
 

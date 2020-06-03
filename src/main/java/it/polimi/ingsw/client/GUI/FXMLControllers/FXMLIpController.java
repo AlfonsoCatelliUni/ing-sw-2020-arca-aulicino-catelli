@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.GUI.FXMLControllers;
 
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.view.client.ClientView;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -213,6 +214,9 @@ public class FXMLIpController {
             serverSocket.connect( new InetSocketAddress(ipAddress, port), 5000);
         }
         catch (IOException e ) {
+            Platform.runLater(()->{
+                gui.getDialog().display("Connection Failed, try to reconnect");
+            });
             ConnectButton.setDisable(false);
             return;
         }

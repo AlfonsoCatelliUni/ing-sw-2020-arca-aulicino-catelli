@@ -33,9 +33,10 @@ Where "param0" can be :
 | CLI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | GUI | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Advanced Gods | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
+| Multiple Games | [![GREEN](https://placehold.it/15/44bb44/44bb44)](#) |
 | Undo | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
 | Persistence | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
-| Multiple Games | [![RED](https://placehold.it/15/f03c15/f03c15)](#) |
+
 
 
 #### Devs 💻

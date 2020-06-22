@@ -40,7 +40,6 @@ public class Connection implements Runnable {
         }
         catch (Exception e){
             TheLogger.LOGGER.log(Level.SEVERE, "Error while creating a new Connection object");
-            //e.printStackTrace();
         }
 
     }
@@ -63,9 +62,6 @@ public class Connection implements Runnable {
         }
         catch(IOException | ClassNotFoundException e ) {
             System.err.println("The socket with ID : " + connectionID + " has been disconnected!");
-            //e.printStackTrace();
-        }
-        finally {
             close();
         }
 
@@ -101,7 +97,7 @@ public class Connection implements Runnable {
         }
         catch (IOException e) {
             System.err.println("SOCKET exception: disconnecting " + connectionID);
-            //e.printStackTrace();
+
         }
 
     }

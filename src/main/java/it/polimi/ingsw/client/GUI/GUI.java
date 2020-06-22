@@ -249,7 +249,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
         System.out.println("RECEIVED UnavailableNicknameEvent");
 
         Platform.runLater( () -> {
-            dialog.display("This Nickname is already used, choose another one");
 
             Parent root = null;
             try {
@@ -270,6 +269,8 @@ public class GUI extends Application implements Client, ServerToClientManager {
             stage.setResizable(false);
 
             stage.show();
+
+            dialog.display("This Nickname is already used, choose another one");
         });
 
     }

@@ -120,8 +120,7 @@ public class Server {
             }
         }
         catch(IOException e) {
-            //TheLogger.LOGGER.log(Level.SEVERE, "Error while accepting new connections"  );
-            //e.printStackTrace();
+            TheLogger.LOGGER.log(Level.SEVERE, "Error while accepting new connections"  );
         }
 
 

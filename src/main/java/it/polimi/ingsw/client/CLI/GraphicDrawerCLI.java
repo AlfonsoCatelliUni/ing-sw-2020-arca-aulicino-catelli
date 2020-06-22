@@ -315,7 +315,7 @@ public class GraphicDrawerCLI {
         String color = cellInfo.getPawnInfo().getFirst();
         String sex = cellInfo.getPawnInfo().getSecond();
 
-        String retString = String.valueOf(cellInfo.getHeight()) + " ";
+        String retString = cellInfo.getHeight() + " ";
 
         if (isDome) {
             retString += "X";
@@ -323,6 +323,11 @@ public class GraphicDrawerCLI {
         }
         else if(color.equals("") && sex.equals("")) {
             retString += ".";
+
+            if(cellInfo.getHeight() == 0) {
+                retString = "   ";
+            }
+
             print(printRow, printCol, retString, GREEN_C);
         }
         else {
@@ -345,6 +350,7 @@ public class GraphicDrawerCLI {
                     break;
             }
         }
+
 
 
     }

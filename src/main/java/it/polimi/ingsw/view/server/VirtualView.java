@@ -117,7 +117,7 @@ public class VirtualView extends Observable implements Observer {
             }
         }
         catch(Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
 
@@ -158,7 +158,7 @@ public class VirtualView extends Observable implements Observer {
             sendMessageTo(nick, event);
         }
 
-        //USED ONLY FOR TESTING
+        //USED ONLY FOR TESTING, COMMENT FOR PLAY
         System.out.println(event.toString() + "\n");
 
     }
@@ -170,7 +170,7 @@ public class VirtualView extends Observable implements Observer {
             try {
                 connectionMap.get(ID).sendEvent(event);
             } catch (NullPointerException e) {
-                //USED ONLY FOR TESTING
+                //USED ONLY FOR TESTING, COMMENT FOR PLAY
                 System.out.println("ID not found");
             }
         }
@@ -187,7 +187,7 @@ public class VirtualView extends Observable implements Observer {
         }
         catch (NullPointerException e) {
             //e.printStackTrace();
-            //USED ONLY FOR TESTING
+            //USED ONLY FOR TESTING, COMMENT FOR PLAY
             System.out.println(event.toString() + "\n");
         }
     }

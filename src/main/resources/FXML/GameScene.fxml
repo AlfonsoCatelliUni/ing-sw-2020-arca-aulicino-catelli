@@ -320,7 +320,7 @@
                         <Region prefWidth="50.0" HBox.hgrow="SOMETIMES" />
                         <AnchorPane fx:id="rightPanel" prefHeight="575.0">
                            <children>
-                              <GridPane fx:id="rightGrid" prefHeight="575.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <GridPane fx:id="rightGrid" layoutX="-4.0" prefHeight="600.0" prefWidth="364.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
@@ -409,7 +409,6 @@
                               </GridPane>
                            </children>
                         </AnchorPane>
-                        <Region prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

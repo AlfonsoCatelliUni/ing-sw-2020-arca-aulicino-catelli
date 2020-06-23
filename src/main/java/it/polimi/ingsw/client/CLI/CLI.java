@@ -1081,6 +1081,7 @@ public class CLI implements Client, ServerToClientManager {
     /**
      * this method control the validity of the ip address
      * @return true if the ip address is valid, false in case the ip is invalid
+     * @param ip the ip that will be verified
      */
     private boolean isValidIP(String ip) {
         // code taken from : https://stackoverflow.com/Questions/5667371/validate-ipv4-address-in-java

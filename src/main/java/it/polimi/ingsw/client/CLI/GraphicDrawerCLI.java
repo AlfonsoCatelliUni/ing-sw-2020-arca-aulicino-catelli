@@ -7,11 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <h3>Graphic Drawer CLI</h3>
- * <p>this class is used to compose and draw the graphic
- * of the textual part of the game</p>
- */
+
 public class GraphicDrawerCLI {
 
     private final String RESET = "\u001B[0m";
@@ -418,6 +414,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the title of the players information panel
+     * @param title the title of the player panel
      */
     public void saveTitlePlayerPanel(String title) {
         this.playerPanelTitle = title.toUpperCase();
@@ -426,6 +423,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the actual players information
+     * @param playerInfoList the list of player's information
      */
     public void saveInfoPlayerPanel(List<FormattedPlayerInfo> playerInfoList) {
         this.playersInfo = playerInfoList;
@@ -438,6 +436,8 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the available cards information
+     * @param cardsNameList the list of cards name
+     * @param cardsEffectList the list of effects
      */
     public void savePlayerCardChoice(List<String> cardsNameList, List<String> cardsEffectList) {
         this.cardsNameChoices = cardsNameList;
@@ -447,6 +447,8 @@ public class GraphicDrawerCLI {
 
     /**
      * this method fills the players information panel with the available cards
+     * @param cardsNameList the list of cards name
+     * @param cardsEffectList the list of effects
      */
     private void fillPlayerCardChoice( List<String> cardsNameList, List<String> cardsEffectList) {
 
@@ -477,6 +479,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method print the title of the players information panel
+     * @param title the title of the player panel
      */
     private void fillTitlePlayerPanel(String title) {
 
@@ -492,6 +495,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method fills the players information panel with the actual information
+     * @param playerInfoList the list of the players information
      */
     private void fillInfoPlayerPanel( List<FormattedPlayerInfo> playerInfoList ) {
 
@@ -708,6 +712,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the title of the choice panel
+     * @param title the title of the choice panel
      */
     public void saveTitleChoicePanel(String title) {
 
@@ -721,6 +726,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the available cells information
+     * @param cellsList the list of available cells
      */
     public void saveCellsChoicesValue(List<Point> cellsList) {
         clearChoicePanelValues();
@@ -730,6 +736,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the available actions information
+     * @param actionsList the list of possible actions
      */
     public void saveActionsChoicesValue(List<String> actionsList) {
         clearChoicePanelValues();
@@ -739,6 +746,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the available buildings information
+     * @param buildingsList the list of available buildings
      */
     public void saveBuildingsChoicesValue(List<Integer> buildingsList) {
         clearChoicePanelValues();
@@ -758,6 +766,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method print the exit value in the choice panel
+     * @param list the list of options
      */
     private void fillExit(List<?> list) {
 
@@ -823,6 +832,8 @@ public class GraphicDrawerCLI {
 
     /**
      * this method fills the players information panel with the available cards
+     * @param cardsEffectList the list of effects
+     * @param cardsNameList the list of cards name
      */
     private void fillChallengerChoice( List<String> cardsNameList, List<String> cardsEffectList) {
 
@@ -853,6 +864,7 @@ public class GraphicDrawerCLI {
 
     /**
      * this method print the title of the players information panel
+     * @param title the title of the challenger panel
      */
     private void fillTitleChallengerPanel(String title) {
 
@@ -873,6 +885,8 @@ public class GraphicDrawerCLI {
 
     /**
      * this method saves the available cards information
+     * @param cardsNameList the list of cards name
+     * @param cardsEffectList the list of effects
      */
     public void saveChallengerChoice(List<String> cardsNameList, List<String> cardsEffectList) {
         this.cardsNameChallenger = cardsNameList;

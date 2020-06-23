@@ -85,6 +85,7 @@ public class JsonHandler {
 
     //MARK : generate All Buildings from the JSON file in Resources ======================================================================================
 
+
     /**
      * generate a list of buildings list from the json file
      * @return the list of buildings
@@ -102,8 +103,11 @@ public class JsonHandler {
         return buildings;
     }
 
+
     /**
      * this map each building with the corresponding decorator class
+     * @param buildingJson a json object with the building information
+     * @return a building created from the passed object
      */
     private static Building deserializeBuilding(JsonObject buildingJson) {
 
@@ -135,6 +139,8 @@ public class JsonHandler {
 
     /**
      * this map each card with the corresponding decorator class
+     * @param cardJson the json with the information of the card
+     * @return a card generated from the json
      */
     private static Card deserializeCard(JsonObject cardJson) {
 

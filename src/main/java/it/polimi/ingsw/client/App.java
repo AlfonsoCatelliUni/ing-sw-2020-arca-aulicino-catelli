@@ -6,11 +6,7 @@ import it.polimi.ingsw.server.Server;
 
 import java.util.Scanner;
 
-/**
- * <h3> Client </h3>
- * <p> this class is the initial point of the client runnable program
- * </p>
- */
+
 public class App {
 
 

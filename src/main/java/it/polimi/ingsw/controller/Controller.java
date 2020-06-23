@@ -137,6 +137,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     /**
      * start the game and initialize all the information using arguments in Game constructor
+     * @param firstPlayerNickname the nickname of the first player
      */
     public void startGame ( String firstPlayerNickname ) {
 

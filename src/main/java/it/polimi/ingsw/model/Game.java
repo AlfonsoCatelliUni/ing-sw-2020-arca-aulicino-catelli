@@ -24,24 +24,44 @@ import java.util.Map;
 public class Game extends Observable implements GameConsequenceHandler {
 
 
+    /**
+     * the game board
+     */
     private Board gameBoard;
 
-
+    /**
+     * the list of players
+     */
     private List<Player> players;
 
-
+    /**
+     * the list of players nicknames
+     */
     private List<String> playersNickname;
 
-
+    /**
+     * the index of the current player
+     */
     private int indexCurrentPlayer;
 
-
+    /**
+     * the last list of cells returned
+     */
     private List<Cell> lastCellsList;
 
+    /**
+     * the last list of actions returned
+     */
     private List<Action> lastActionsList;
 
+    /**
+     * the last list of buildings returned
+     */
     private List<Building> lastBuildingsList;
 
+    /**
+     * the last update sent
+     */
     private String lastUpdateSent;
 
 
@@ -53,6 +73,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param playersNickname is the list of players that will play this game
      * @param colors is the enumeration of possible colors assignable to the players
      * @param nicknameCardMap is where is mapped a nickname's player to his chosen card
+     * @param virtualView the virtualView of the match
      */
     public Game(List<String> playersNickname, List<Color> colors, Map<String, Card> nicknameCardMap, VirtualView virtualView){
 
@@ -158,6 +179,7 @@ public class Game extends Observable implements GameConsequenceHandler {
     /**
      * which are the possible actions that i can do with the selected pawn
      * if i can't do any move with the pawn i lose the game
+     * @param playerName player name
      * @param row the row coordinate of the pawn
      * @param column the column coordinate of the pawn
      * @return the list of possible actions
@@ -175,6 +197,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     /**
      * where the pawn can be moved based on its position?
+     * @param playerName player name
      * @param row the row position of the pawn you want the list
      * @param column the column position of the pawn you want the list
      * @return the list of cells where this pawn can be moved
@@ -191,6 +214,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     /**
      * where the pawn can build based on its position ?
+     * @param playerName player name
      * @param row the row coordinate of the pawn
      * @param column the column coordinate of the pawn
      * @return a list of cells where the pawn can build
@@ -207,6 +231,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     /**
      * which are the possible type of buildings that can be built on this position ?
+     * @param playerName player name
      * @param row the row coordinate the position
      * @param column the column coordinate of the position
      * @return a list of type of buildings
@@ -257,7 +282,8 @@ public class Game extends Observable implements GameConsequenceHandler {
 
 
     /**
-     * the current master <3 move the pawn based on his decoration
+     * the current player move the pawn based on his decoration
+     * @param playerName player name
      * @param row the row coordinate of the pawn that he wants to move
      * @param column the column coordinate of the pawn that he wants to move
      * @param newRow the row coordinate of the new position of the pawn
@@ -277,6 +303,7 @@ public class Game extends Observable implements GameConsequenceHandler {
 
     /**
      * the current master build based on the position of the pawn he has moved
+     * @param playerName player name
      * @param pawnRow the row coordinate of the pawn that have to build
      * @param pawnColumn the column coordinate of the pawn that have to build
      * @param buildRow the row coordinate of the cell that i want to build in

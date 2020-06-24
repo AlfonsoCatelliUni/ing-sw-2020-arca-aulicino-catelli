@@ -1,0 +1,178 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CanForceEffect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CanForceEffect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CanForceEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,2%
+  </span>
+  <span class="absValue">
+    (20/ 21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Consequence.Consequence;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Player.State.BuildState;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.Player.State.ForceAndMoveState;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveState;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.ArrayList;
+<i>12</i>&nbsp;import java.util.List;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public class CanForceEffect extends EffectDecorator {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public CanForceEffect(Effect e) {
+<b class="fc"><i>18</i>&nbsp;        super(e);</b>
+<b class="fc"><i>19</i>&nbsp;        changeState(new ForceAndMoveState(this));</b>
+<b class="fc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    // ======================================================================================
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * this method checks if the designatedPawn can force an opponent pawn to the
+<i>28</i>&nbsp;     * space directly on the other side of the designatedPawn position if that space is unoccupied
+<i>29</i>&nbsp;     * @param gameBoard is the board where the game is played
+<i>30</i>&nbsp;     * @param designatedPawn is the pawn of the current player
+<i>31</i>&nbsp;     * @return a list of cells that are the positions of the opponent player&#39;s pawn that can be forced
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public List&lt;Cell&gt; getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn) {
+<i>35</i>&nbsp;
+<b class="fc"><i>36</i>&nbsp;        List&lt;Cell&gt; opponentsCell = super.getOpponentsNeighboring(gameBoard, designatedPawn);</b>
+<b class="fc"><i>37</i>&nbsp;        List&lt;Cell&gt; opponentNeighboringCell = new ArrayList&lt;&gt;();</b>
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        for (Cell c : opponentsCell){</b>
+<b class="fc"><i>40</i>&nbsp;            if (gameBoard.getSymmetrical( designatedPawn.getPosition(), c ) != null &amp;&amp; c.getPawnInThisCell().getColor() != designatedPawn.getColor())</b>
+<b class="fc"><i>41</i>&nbsp;                if (gameBoard.getSymmetrical( designatedPawn.getPosition(), c ).getIsFree())</b>
+<b class="fc"><i>42</i>&nbsp;                    opponentNeighboringCell.add(c);</b>
+<b class="fc"><i>43</i>&nbsp;        }</b>
+<b class="fc"><i>44</i>&nbsp;        return opponentNeighboringCell;</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * this method force the designatedPawn to the nextPosition base on the symmetrical force,
+<i>49</i>&nbsp;     * then changes the state of the player to a MoveState
+<i>50</i>&nbsp;     * @param gameBoard is the board where the game is played
+<i>51</i>&nbsp;     * @param designatedPawn is the pawn to be forced
+<i>52</i>&nbsp;     * @param nextPosition is the next position of the opponent&#39;s pawn
+<i>53</i>&nbsp;     */
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    public void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+<i>56</i>&nbsp;
+<b class="fc"><i>57</i>&nbsp;        super.force(gameBoard, designatedPawn, nextPosition);</b>
+<i>58</i>&nbsp;
+<b class="fc"><i>59</i>&nbsp;        if(this.effect.getState().getClass().equals(ForceAndMoveState.class)) {</b>
+<i>60</i>&nbsp;
+<b class="fc"><i>61</i>&nbsp;            this.effect.changeState(new MoveState(this));</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;        }
+<b class="fc"><i>64</i>&nbsp;    }</b>
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * this method changes the state of the player after he does a basic move action
+<i>68</i>&nbsp;     * @param gameBoard is the board where the game is played
+<i>69</i>&nbsp;     * @param designatedPawn is the pawn used for the move action
+<i>70</i>&nbsp;     * @param nextPosition is the position where the designatedPawn will be moved
+<i>71</i>&nbsp;     * @return a consequence of the move action
+<i>72</i>&nbsp;     */
+<i>73</i>&nbsp;    @Override
+<i>74</i>&nbsp;    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+<i>75</i>&nbsp;
+<b class="fc"><i>76</i>&nbsp;        Consequence consequence = super.move(gameBoard, designatedPawn, nextPosition);</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        if (this.effect.getState().getClass().equals(ForceAndMoveState.class)) {</b>
+<i>79</i>&nbsp;
+<b class="nc"><i>80</i>&nbsp;            this.effect.changeState(new BuildState(this));</b>
+<i>81</i>&nbsp;        }
+<i>82</i>&nbsp;
+<b class="fc"><i>83</i>&nbsp;        return consequence;</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    @Override
+<i>87</i>&nbsp;    public Effect clone() {
+<b class="fc"><i>88</i>&nbsp;        return new CanForceEffect(effect.clone());</b>
+<i>89</i>&nbsp;    }
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;    @Override
+<i>92</i>&nbsp;    public Effect addEffect(Effect e) {
+<b class="fc"><i>93</i>&nbsp;        return new CanForceEffect(e);</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

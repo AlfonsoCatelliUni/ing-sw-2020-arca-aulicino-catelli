@@ -1,0 +1,152 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Effect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Effect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">Effect</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Actions.Action;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Consequence.Consequence;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Board.Building;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import it.polimi.ingsw.model.Player.State.StateEffectInterface;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public interface Effect extends Cloneable {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    // ======================================================================================
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    //&lt;editor-fold desc=&quot;Getter Section&quot;&gt;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    StateEffectInterface getState();
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    Effect getEffect();
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    // ======================================================================================
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    //&lt;editor-fold desc=&quot;Setter Section&quot;&gt;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    void changeState(StateEffectInterface state);
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    // ======================================================================================
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    //&lt;editor-fold desc=&quot;Possibilities Control Section&quot;&gt;
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    List&lt;Action&gt; getPossibleActions(Board gameBoard, Pawn designatedPawn);
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    List&lt;Cell&gt; wherePawnCanMove(Board gameBoard, Pawn designatedPawn);
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    List&lt;Cell&gt; wherePawnCanBuild(Board gameBoard, Pawn designatedPawn);
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    List&lt;Building&gt; getPossibleBuildingOnCell( Board gameBoard, Cell designatedCell);
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    List&lt;Cell&gt; getOpponentsNeighboring(Board gameBoard, Pawn designatedPawn);
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    List&lt;Cell&gt; wherePawnCanDestroy(Board gameBoard, Pawn designatedPawn);
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    // ======================================================================================
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    //&lt;editor-fold desc=&quot;Real Actions Section&quot;&gt;
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List&lt;Building&gt; buildings);
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    void force(Board gameBoard, Pawn designatedPawn, Cell nextPosition);
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    void destroy(Cell designatedCell, List&lt;Building&gt; buildings);
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    // ======================================================================================
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    //&lt;editor-fold desc=&quot;Pawn Placing Section&quot;&gt;
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    void removePawn(Board gameBoard, Pawn designatedPawn);
+<i>90</i>&nbsp;
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    void placePawn(Board gameBoard, Pawn designatedPawn, Cell designatedCell);
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    // ======================================================================================
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;    Effect clone();
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    Effect addEffect(Effect e);
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MovePerimeterAgainEffect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MovePerimeterAgainEffect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MovePerimeterAgainEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,3%
+  </span>
+  <span class="absValue">
+    (14/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Board.Building;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Consequence.Consequence;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.Player.State.BuildState;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.Player.State.FinishState;
+<i>10</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
+<i>11</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveState;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;/**
+<i>16</i>&nbsp; * this decorator gives the possibility to move again each time the pawn moves onto perimeter space
+<i>17</i>&nbsp; */
+<i>18</i>&nbsp;public class MovePerimeterAgainEffect extends EffectDecorator {
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public MovePerimeterAgainEffect(Effect e) {
+<b class="fc"><i>22</i>&nbsp;        super(e);</b>
+<b class="fc"><i>23</i>&nbsp;        this.effect.getState().setEffect(this);</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    // ======================================================================================
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * This method is similar to basic, but the player can move again each time pawn moves onto perimeter space
+<i>32</i>&nbsp;     * is so, after the player moved, the action &quot;build&quot; and also &quot;move&quot; are available
+<i>33</i>&nbsp;     * For the end of the turn, it&#39;s only the action &quot;finish&quot;
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    @Override
+<i>36</i>&nbsp;    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+<b class="fc"><i>37</i>&nbsp;        Consequence consequence = super.move(gameBoard, designatedPawn, nextPosition);</b>
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        Cell position = designatedPawn.getPosition();</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;        if (position.isPerimeter())</b>
+<b class="fc"><i>42</i>&nbsp;            this.effect.changeState(new MoveAndBuildState(this));</b>
+<i>43</i>&nbsp;        else
+<b class="fc"><i>44</i>&nbsp;            this.effect.changeState(new BuildState(this));</b>
+<i>45</i>&nbsp;
+<b class="fc"><i>46</i>&nbsp;        return consequence;</b>
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     * this method changes the state of the player after he does a basic build action
+<i>53</i>&nbsp;     * @param designatedPawn is the pawn used for the move action
+<i>54</i>&nbsp;     * @param designatedCell is the position where the designatedPawn will be moved
+<i>55</i>&nbsp;     * @param chosenLevel is the level of the building that will be built
+<i>56</i>&nbsp;     * @param buildings is the list of possible buildings that can be built
+<i>57</i>&nbsp;     * @return a consequence of the build action
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List&lt;Building&gt; buildings) {
+<i>60</i>&nbsp;
+<b class="fc"><i>61</i>&nbsp;        Consequence consequence = super.effect.build(designatedPawn, designatedCell, chosenLevel, buildings);</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;
+<b class="fc"><i>64</i>&nbsp;        if(super.effect.getState().getClass().equals(MoveAndBuildState.class))</b>
+<b class="fc"><i>65</i>&nbsp;            super.effect.changeState(new FinishState(this));</b>
+<i>66</i>&nbsp;
+<b class="fc"><i>67</i>&nbsp;        return consequence;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    @Override
+<i>72</i>&nbsp;    public Effect clone() {
+<b class="nc"><i>73</i>&nbsp;        return new MovePerimeterAgainEffect(effect.clone());</b>
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    @Override
+<i>78</i>&nbsp;    public Effect addEffect(Effect e) {
+<b class="fc"><i>79</i>&nbsp;        return new MovePerimeterAgainEffect(e);</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

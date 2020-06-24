@@ -1,0 +1,137 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BuildInsideCellEffect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BuildInsideCellEffect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BuildInsideCellEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/ 8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveAndBuildState;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveState;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * this decorator gives the possibility to build twice, but player can not build for the second time on the perimeter cells
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public class BuildInsideCellEffect extends EffectDecorator {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public BuildInsideCellEffect(Effect e) {
+<b class="fc"><i>18</i>&nbsp;        super(e);</b>
+<b class="fc"><i>19</i>&nbsp;        this.effect.getState().setEffect(this);</b>
+<b class="fc"><i>20</i>&nbsp;    }</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    // ======================================================================================
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * this method returns the cells where a pawn can build but if it&#39;s the second time to build, it removes the perimeter cells
+<i>28</i>&nbsp;     * @param gameBoard the game board where the pawn can build on
+<i>29</i>&nbsp;     * @param designatedPawn the pawn that&#39;s designated to build
+<i>30</i>&nbsp;     * @return the list of cells available to be built
+<i>31</i>&nbsp;     */
+<i>32</i>&nbsp;    @Override
+<i>33</i>&nbsp;    public List&lt;Cell&gt; wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;        List&lt;Cell&gt; availableCellToBuild;
+<i>36</i>&nbsp;
+<b class="fc"><i>37</i>&nbsp;        availableCellToBuild = super.wherePawnCanBuild(gameBoard, designatedPawn);</b>
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;        availableCellToBuild.removeIf(Cell::isPerimeter);</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;        return availableCellToBuild;</b>
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    @Override
+<i>46</i>&nbsp;    public Effect clone() {
+<b class="nc"><i>47</i>&nbsp;        return new BuildInsideCellEffect(effect.clone());</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    @Override
+<i>51</i>&nbsp;    public Effect addEffect(Effect e) {
+<b class="nc"><i>52</i>&nbsp;        return new BuildInsideCellEffect(e);</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

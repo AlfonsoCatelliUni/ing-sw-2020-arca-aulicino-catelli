@@ -1,0 +1,921 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Game</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Game (it.polimi.ingsw.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Game</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    95,5%
+  </span>
+  <span class="absValue">
+    (42/ 44)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98%
+  </span>
+  <span class="absValue">
+    (244/ 249)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.JsonHandler;
+<i>4</i>&nbsp;import it.polimi.ingsw.client.FormattedCellInfo;
+<i>5</i>&nbsp;import it.polimi.ingsw.events.CTSEvents.VictoryEvent;
+<i>6</i>&nbsp;import it.polimi.ingsw.events.STCEvents.NotifyStatusEvent;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Consequence.*;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.Player.Effect.BasicEffect;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.Player.Effect.NotMoveUpEffect;
+<i>10</i>&nbsp;import it.polimi.ingsw.observer.Observable;
+<i>11</i>&nbsp;import it.polimi.ingsw.model.Actions.*;
+<i>12</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>13</i>&nbsp;import it.polimi.ingsw.model.Board.Building;
+<i>14</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>15</i>&nbsp;import it.polimi.ingsw.model.Player.*;
+<i>16</i>&nbsp;import it.polimi.ingsw.view.server.VirtualView;
+<i>17</i>&nbsp;import org.json.simple.JSONArray;
+<i>18</i>&nbsp;import org.json.simple.JSONObject;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;import java.util.ArrayList;
+<i>21</i>&nbsp;import java.util.List;
+<i>22</i>&nbsp;import java.util.Map;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;public class Game extends Observable implements GameConsequenceHandler {
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * the game board
+<i>29</i>&nbsp;     */
+<i>30</i>&nbsp;    private Board gameBoard;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * the list of players
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    private List&lt;Player&gt; players;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * the list of players nicknames
+<i>39</i>&nbsp;     */
+<i>40</i>&nbsp;    private List&lt;String&gt; playersNickname;
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * the index of the current player
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    private int indexCurrentPlayer;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * the last list of cells returned
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    private List&lt;Cell&gt; lastCellsList;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    /**
+<i>53</i>&nbsp;     * the last list of actions returned
+<i>54</i>&nbsp;     */
+<i>55</i>&nbsp;    private List&lt;Action&gt; lastActionsList;
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * the last list of buildings returned
+<i>59</i>&nbsp;     */
+<i>60</i>&nbsp;    private List&lt;Building&gt; lastBuildingsList;
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    /**
+<i>63</i>&nbsp;     * the last update sent
+<i>64</i>&nbsp;     */
+<i>65</i>&nbsp;    private String lastUpdateSent;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    // MARK : Constructors ======================================================================================
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * constructor of the Game class
+<i>73</i>&nbsp;     * @param playersNickname is the list of players that will play this game
+<i>74</i>&nbsp;     * @param colors is the enumeration of possible colors assignable to the players
+<i>75</i>&nbsp;     * @param nicknameCardMap is where is mapped a nickname&#39;s player to his chosen card
+<i>76</i>&nbsp;     * @param virtualView the virtualView of the match
+<i>77</i>&nbsp;     */
+<i>78</i>&nbsp;    public Game(List&lt;String&gt; playersNickname, List&lt;Color&gt; colors, Map&lt;String, Card&gt; nicknameCardMap, VirtualView virtualView){
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        super();</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;        this.gameBoard = new Board();</b>
+<b class="fc"><i>83</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>84</i>&nbsp;        this.indexCurrentPlayer = 0;</b>
+<b class="fc"><i>85</i>&nbsp;        this.playersNickname = playersNickname;</b>
+<i>86</i>&nbsp;
+<b class="fc"><i>87</i>&nbsp;        addObserver(virtualView);</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;        for (int i = 0; i &lt; playersNickname.size(); i++) {</b>
+<i>91</i>&nbsp;            //creating a new player based on his chosen nickname, card and color
+<b class="fc"><i>92</i>&nbsp;            players.add(new Player(playersNickname.get(i),</b>
+<b class="fc"><i>93</i>&nbsp;                    colors.get(i),</b>
+<b class="fc"><i>94</i>&nbsp;                    nicknameCardMap.get(playersNickname.get(i)),</b>
+<b class="fc"><i>95</i>&nbsp;                    nicknameCardMap.get(playersNickname.get(i)).getBaseEffect())</b>
+<i>96</i>&nbsp;            );
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;        }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;
+<b class="fc"><i>101</i>&nbsp;        lastActionsList = new ArrayList&lt;&gt;();</b>
+<i>102</i>&nbsp;
+<b class="fc"><i>103</i>&nbsp;    }</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    // MARK : Main Functional Methods ======================================================================================
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    public List&lt;Cell&gt; getPawnsCoordinateByPlayer(String nickname){
+<b class="fc"><i>110</i>&nbsp;        Player player = getPlayerByName(nickname);</b>
+<b class="fc"><i>111</i>&nbsp;        List&lt;Cell&gt; cells = new ArrayList&lt;&gt;();</b>
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;
+<b class="fc"><i>114</i>&nbsp;        List &lt;Pawn&gt; pawns = player.getPawns();</b>
+<i>115</i>&nbsp;
+<b class="fc"><i>116</i>&nbsp;        if (pawns.size() &gt; 0) {</b>
+<b class="fc"><i>117</i>&nbsp;            cells.add(pawns.get(0).getPosition());</b>
+<b class="fc"><i>118</i>&nbsp;            cells.add(pawns.get(1).getPosition());</b>
+<i>119</i>&nbsp;        }
+<b class="fc"><i>120</i>&nbsp;        return cells;</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    public List&lt;Cell&gt; getAllPawnsCoordinates(){
+<b class="fc"><i>125</i>&nbsp;        List&lt;Cell&gt; cells = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>126</i>&nbsp;        for (String name : playersNickname)</b>
+<b class="fc"><i>127</i>&nbsp;            cells.addAll(getPawnsCoordinateByPlayer(name));</b>
+<b class="fc"><i>128</i>&nbsp;        return cells;</b>
+<i>129</i>&nbsp;    }
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    /**
+<i>133</i>&nbsp;     * this method initializes the player&#39;s pawn in the cell [row,column] in the board
+<i>134</i>&nbsp;     * @param nickname is the name of the current player
+<i>135</i>&nbsp;     * @param row is the row where the pawn will be initialized
+<i>136</i>&nbsp;     * @param column is the column where the pawn will be initialized
+<i>137</i>&nbsp;     */
+<i>138</i>&nbsp;    public void initializePawn(String nickname, int row, int column){
+<b class="fc"><i>139</i>&nbsp;        Player player = getPlayerByName(nickname);</b>
+<i>140</i>&nbsp;
+<b class="fc"><i>141</i>&nbsp;        player.initPawn(gameBoard, gameBoard.getCell(row, column));</b>
+<i>142</i>&nbsp;
+<i>143</i>&nbsp;        //send the update of the initialization of the pawns only if all two of the pawns are setted
+<b class="fc"><i>144</i>&nbsp;        if(player.getPawns().size()==2) {</b>
+<b class="fc"><i>145</i>&nbsp;            updateAllObservers(new NotifyStatusEvent(generateStatusJson()));</b>
+<i>146</i>&nbsp;        }
+<i>147</i>&nbsp;
+<b class="fc"><i>148</i>&nbsp;    }</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    /**
+<i>152</i>&nbsp;     * this method checks the cell where pawns which can do at least one action are onto, if the list is empty, player loses
+<i>153</i>&nbsp;     * @param nickname the player who has the pawns
+<i>154</i>&nbsp;     * @return list of cell of the pawns
+<i>155</i>&nbsp;     */
+<i>156</i>&nbsp;    public List&lt;Cell&gt; getAvailablePawns(String nickname) {
+<i>157</i>&nbsp;
+<b class="fc"><i>158</i>&nbsp;        Player player = getPlayerByName(nickname);</b>
+<b class="fc"><i>159</i>&nbsp;        List&lt;Pawn&gt; playerPawns = player.getPawns();</b>
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;        List&lt;Action&gt; possibleActions;
+<b class="fc"><i>162</i>&nbsp;        List&lt;Cell&gt; availablePawns = new ArrayList&lt;&gt;();</b>
+<i>163</i>&nbsp;
+<b class="fc"><i>164</i>&nbsp;        for (Pawn p : playerPawns ) {</b>
+<b class="fc"><i>165</i>&nbsp;            possibleActions = player.getPossibleActions(gameBoard, p);</b>
+<i>166</i>&nbsp;
+<b class="fc"><i>167</i>&nbsp;            if (possibleActions.size() != 0) {</b>
+<b class="fc"><i>168</i>&nbsp;                availablePawns.add(p.getPosition());</b>
+<i>169</i>&nbsp;            }
+<i>170</i>&nbsp;
+<b class="fc"><i>171</i>&nbsp;            possibleActions.clear();</b>
+<b class="fc"><i>172</i>&nbsp;        }</b>
+<i>173</i>&nbsp;
+<b class="fc"><i>174</i>&nbsp;        lastCellsList = availablePawns;</b>
+<b class="fc"><i>175</i>&nbsp;        return new ArrayList&lt;&gt;(availablePawns);</b>
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;    /**
+<i>180</i>&nbsp;     * which are the possible actions that i can do with the selected pawn
+<i>181</i>&nbsp;     * if i can&#39;t do any move with the pawn i lose the game
+<i>182</i>&nbsp;     * @param playerName player name
+<i>183</i>&nbsp;     * @param row the row coordinate of the pawn
+<i>184</i>&nbsp;     * @param column the column coordinate of the pawn
+<i>185</i>&nbsp;     * @return the list of possible actions
+<i>186</i>&nbsp;     */
+<i>187</i>&nbsp;    public List&lt;Action&gt; getPossibleActions(String playerName, int row, int column) {
+<i>188</i>&nbsp;
+<b class="fc"><i>189</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>190</i>&nbsp;
+<b class="fc"><i>191</i>&nbsp;        lastActionsList = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));</b>
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;
+<b class="fc"><i>194</i>&nbsp;        return new ArrayList&lt;&gt;(lastActionsList);</b>
+<i>195</i>&nbsp;    }
+<i>196</i>&nbsp;
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;    /**
+<i>199</i>&nbsp;     * where the pawn can be moved based on its position?
+<i>200</i>&nbsp;     * @param playerName player name
+<i>201</i>&nbsp;     * @param row the row position of the pawn you want the list
+<i>202</i>&nbsp;     * @param column the column position of the pawn you want the list
+<i>203</i>&nbsp;     * @return the list of cells where this pawn can be moved
+<i>204</i>&nbsp;     */
+<i>205</i>&nbsp;    public List&lt;Cell&gt; wherePawnCanMove(String playerName, int row, int column ){
+<i>206</i>&nbsp;
+<b class="fc"><i>207</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>208</i>&nbsp;
+<b class="fc"><i>209</i>&nbsp;        lastCellsList = player.wherePawnCanMove(gameBoard, gameBoard.getPawnByCoordinates(row, column));</b>
+<i>210</i>&nbsp;
+<b class="fc"><i>211</i>&nbsp;        return new ArrayList&lt;&gt;(lastCellsList);</b>
+<i>212</i>&nbsp;    }
+<i>213</i>&nbsp;
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    /**
+<i>216</i>&nbsp;     * where the pawn can build based on its position ?
+<i>217</i>&nbsp;     * @param playerName player name
+<i>218</i>&nbsp;     * @param row the row coordinate of the pawn
+<i>219</i>&nbsp;     * @param column the column coordinate of the pawn
+<i>220</i>&nbsp;     * @return a list of cells where the pawn can build
+<i>221</i>&nbsp;     */
+<i>222</i>&nbsp;    public List&lt;Cell&gt; wherePawnCanBuild(String playerName, int row, int column ) {
+<i>223</i>&nbsp;
+<b class="fc"><i>224</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>225</i>&nbsp;
+<b class="fc"><i>226</i>&nbsp;        lastCellsList = player.wherePawnCanBuild(gameBoard, gameBoard.getPawnByCoordinates(row, column));</b>
+<i>227</i>&nbsp;
+<b class="fc"><i>228</i>&nbsp;        return new ArrayList&lt;&gt;(lastCellsList);</b>
+<i>229</i>&nbsp;    }
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;
+<i>232</i>&nbsp;    /**
+<i>233</i>&nbsp;     * which are the possible type of buildings that can be built on this position ?
+<i>234</i>&nbsp;     * @param playerName player name
+<i>235</i>&nbsp;     * @param row the row coordinate the position
+<i>236</i>&nbsp;     * @param column the column coordinate of the position
+<i>237</i>&nbsp;     * @return a list of type of buildings
+<i>238</i>&nbsp;     */
+<i>239</i>&nbsp;    public List&lt;Building&gt; getPossibleBuildingOnCell(String playerName, int row, int column) {
+<i>240</i>&nbsp;
+<b class="fc"><i>241</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>242</i>&nbsp;
+<b class="fc"><i>243</i>&nbsp;        lastBuildingsList = player.getPossibleBuildingOnCell(gameBoard, gameBoard.getCell(row, column));</b>
+<i>244</i>&nbsp;
+<b class="fc"><i>245</i>&nbsp;        return new ArrayList&lt;&gt;(lastBuildingsList);</b>
+<i>246</i>&nbsp;    }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;
+<i>249</i>&nbsp;    /**
+<i>250</i>&nbsp;     * which are the possible cells where I can force an opponent pawn to move
+<i>251</i>&nbsp;     * @param playerName the nickname of the player
+<i>252</i>&nbsp;     * @param row the row of the pawn that wants to force an opponent pawn
+<i>253</i>&nbsp;     * @param column the column of the pawn that wants force an opponent pawn
+<i>254</i>&nbsp;     * @return the list of the cells where are present
+<i>255</i>&nbsp;     */
+<i>256</i>&nbsp;    public List&lt;Cell&gt; getOpponentsNeighboring(String playerName, int row, int column){
+<i>257</i>&nbsp;
+<b class="fc"><i>258</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>259</i>&nbsp;
+<b class="fc"><i>260</i>&nbsp;        lastCellsList = player.getOpponentsNeighboring(gameBoard, gameBoard.getPawnByCoordinates(row,column));</b>
+<i>261</i>&nbsp;
+<b class="fc"><i>262</i>&nbsp;        return new ArrayList&lt;&gt;(lastCellsList);</b>
+<i>263</i>&nbsp;    }
+<i>264</i>&nbsp;
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;    /**
+<i>267</i>&nbsp;     * this method is used when there is a DestroyBlockPlayer
+<i>268</i>&nbsp;     * @param playerNickname is the name of the DestroyBlockPlayer
+<i>269</i>&nbsp;     * @return the list of cells where the not-moved pawn can destroy a block
+<i>270</i>&nbsp;     */
+<i>271</i>&nbsp;    public List&lt;Cell&gt; wherePawnCanDestroy(String playerNickname) {
+<i>272</i>&nbsp;
+<b class="fc"><i>273</i>&nbsp;        Player player = getPlayerByName(playerNickname);</b>
+<i>274</i>&nbsp;
+<b class="fc"><i>275</i>&nbsp;        Pawn notMovedPawn = player.getPawns().stream().filter(pawn -&gt; !pawn.getHasMoved()).findAny().get();</b>
+<i>276</i>&nbsp;
+<b class="fc"><i>277</i>&nbsp;        lastCellsList = player.wherePawnCanDestroy(gameBoard, notMovedPawn);</b>
+<i>278</i>&nbsp;
+<b class="fc"><i>279</i>&nbsp;        return new ArrayList&lt;&gt;(lastCellsList);</b>
+<i>280</i>&nbsp;
+<i>281</i>&nbsp;    }
+<i>282</i>&nbsp;
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;    /**
+<i>285</i>&nbsp;     * the current player move the pawn based on his decoration
+<i>286</i>&nbsp;     * @param playerName player name
+<i>287</i>&nbsp;     * @param row the row coordinate of the pawn that he wants to move
+<i>288</i>&nbsp;     * @param column the column coordinate of the pawn that he wants to move
+<i>289</i>&nbsp;     * @param newRow the row coordinate of the new position of the pawn
+<i>290</i>&nbsp;     * @param newColumn the column coordinate of the new position of the pawn
+<i>291</i>&nbsp;     */
+<i>292</i>&nbsp;    public void movePawn(String playerName, int row, int column, int newRow, int newColumn) {
+<i>293</i>&nbsp;
+<b class="fc"><i>294</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>295</i>&nbsp;
+<b class="fc"><i>296</i>&nbsp;        Consequence moveResult = player.move(gameBoard, gameBoard.getPawnByCoordinates(row, column), gameBoard.getCell(newRow, newColumn));</b>
+<i>297</i>&nbsp;
+<b class="fc"><i>298</i>&nbsp;        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );</b>
+<i>299</i>&nbsp;
+<b class="fc"><i>300</i>&nbsp;        receiveConsequence(moveResult);</b>
+<b class="fc"><i>301</i>&nbsp;    }</b>
+<i>302</i>&nbsp;
+<i>303</i>&nbsp;
+<i>304</i>&nbsp;    /**
+<i>305</i>&nbsp;     * the current master build based on the position of the pawn he has moved
+<i>306</i>&nbsp;     * @param playerName player name
+<i>307</i>&nbsp;     * @param pawnRow the row coordinate of the pawn that have to build
+<i>308</i>&nbsp;     * @param pawnColumn the column coordinate of the pawn that have to build
+<i>309</i>&nbsp;     * @param buildRow the row coordinate of the cell that i want to build in
+<i>310</i>&nbsp;     * @param buildColumn the column coordinate of the cell that i want to build in
+<i>311</i>&nbsp;     * @param level the level of the building that i want build, the level indicate a unique building
+<i>312</i>&nbsp;     */
+<i>313</i>&nbsp;    public void pawnBuild(String playerName, int pawnRow, int pawnColumn, int buildRow, int buildColumn, int level ){
+<i>314</i>&nbsp;
+<b class="fc"><i>315</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>316</i>&nbsp;
+<b class="fc"><i>317</i>&nbsp;        Pawn designatedPawn = gameBoard.getPawnByCoordinates(pawnRow, pawnColumn);</b>
+<b class="fc"><i>318</i>&nbsp;        Cell designatedCell = gameBoard.getCell(buildRow, buildColumn);</b>
+<i>319</i>&nbsp;
+<b class="fc"><i>320</i>&nbsp;        Consequence consequence = player.build(designatedPawn, designatedCell, level, gameBoard.getBuildings());</b>
+<i>321</i>&nbsp;
+<b class="fc"><i>322</i>&nbsp;        receiveConsequence(consequence);</b>
+<i>323</i>&nbsp;
+<b class="fc"><i>324</i>&nbsp;        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );</b>
+<b class="fc"><i>325</i>&nbsp;    }</b>
+<i>326</i>&nbsp;
+<i>327</i>&nbsp;
+<i>328</i>&nbsp;    /**
+<i>329</i>&nbsp;     * This method forces the opponent pawn to his symmetrical cell in relation to the current player&#39;s pawn
+<i>330</i>&nbsp;     * @param playerName is the name of the player
+<i>331</i>&nbsp;     * @param pawnRow is the row of the current player&#39;s pawn
+<i>332</i>&nbsp;     * @param pawnColumn is the column of the current player&#39;s pawn
+<i>333</i>&nbsp;     * @param opponentRow is the row of the opponent player&#39;s pawn that will be forced
+<i>334</i>&nbsp;     * @param opponentColumn is the column od the opponent player&#39;a pawn that will be forced
+<i>335</i>&nbsp;     */
+<i>336</i>&nbsp;    public void forceOpponent(String playerName, int pawnRow, int pawnColumn, int opponentRow, int opponentColumn){
+<b class="fc"><i>337</i>&nbsp;        Cell nextPosition = gameBoard.getSymmetrical(gameBoard.getCell(pawnRow,pawnColumn), gameBoard.getCell(opponentRow, opponentColumn));</b>
+<i>338</i>&nbsp;
+<b class="fc"><i>339</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>340</i>&nbsp;
+<b class="fc"><i>341</i>&nbsp;        player.force(gameBoard, gameBoard.getPawnByCoordinates(opponentRow,opponentColumn), nextPosition);</b>
+<i>342</i>&nbsp;
+<b class="fc"><i>343</i>&nbsp;        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );</b>
+<b class="fc"><i>344</i>&nbsp;    }</b>
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;
+<i>347</i>&nbsp;    /**
+<i>348</i>&nbsp;     * this method is used when there is a DestroyBlockPlayer
+<i>349</i>&nbsp;     * @param playerName is the name of the player
+<i>350</i>&nbsp;     * @param row is the row of the cell where a block will be destroyed
+<i>351</i>&nbsp;     * @param column is the column od the cell where a block will be destroyed
+<i>352</i>&nbsp;     */
+<i>353</i>&nbsp;    public void destroyBlock(String playerName, int row, int column) {
+<i>354</i>&nbsp;
+<b class="fc"><i>355</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>356</i>&nbsp;
+<b class="fc"><i>357</i>&nbsp;        player.destroy(gameBoard.getCell(row, column), gameBoard.getBuildings());</b>
+<i>358</i>&nbsp;
+<b class="fc"><i>359</i>&nbsp;        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );</b>
+<b class="fc"><i>360</i>&nbsp;    }</b>
+<i>361</i>&nbsp;
+<i>362</i>&nbsp;
+<i>363</i>&nbsp;    /**
+<i>364</i>&nbsp;     * this method is needed to remove the pawns of a losing player
+<i>365</i>&nbsp;     * @param playerName the losing player
+<i>366</i>&nbsp;     */
+<i>367</i>&nbsp;    public void removePlayer(String playerName) {
+<i>368</i>&nbsp;
+<i>369</i>&nbsp;
+<b class="fc"><i>370</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>371</i>&nbsp;
+<b class="fc"><i>372</i>&nbsp;        List&lt;Pawn&gt; pawns = player.getPawns();</b>
+<i>373</i>&nbsp;
+<i>374</i>&nbsp;        //remove the pawns of the losing player from the game board
+<b class="fc"><i>375</i>&nbsp;        for( Pawn p : pawns ) {</b>
+<b class="fc"><i>376</i>&nbsp;            player.removePawn(gameBoard, p);</b>
+<b class="fc"><i>377</i>&nbsp;        }</b>
+<i>378</i>&nbsp;
+<i>379</i>&nbsp;        //remove the losing player from the players list
+<b class="fc"><i>380</i>&nbsp;        players.removeIf(p -&gt; p.equals(player));</b>
+<b class="fc"><i>381</i>&nbsp;        playersNickname.removeIf(p -&gt; p.equals(playerName));</b>
+<i>382</i>&nbsp;
+<i>383</i>&nbsp;        //if i removed the last player, now the current is the first player
+<b class="fc"><i>384</i>&nbsp;        if (indexCurrentPlayer &gt;= players.size()){</b>
+<b class="nc"><i>385</i>&nbsp;            indexCurrentPlayer = 0;</b>
+<i>386</i>&nbsp;        }
+<i>387</i>&nbsp;
+<b class="fc"><i>388</i>&nbsp;        updateAllObservers( new NotifyStatusEvent(generateChangesJson()) );</b>
+<b class="fc"><i>389</i>&nbsp;    }</b>
+<i>390</i>&nbsp;
+<i>391</i>&nbsp;
+<i>392</i>&nbsp;    /**
+<i>393</i>&nbsp;     * puts in a json file all the info of the game in a give moment
+<i>394</i>&nbsp;     * @return the status of the game in a given moment
+<i>395</i>&nbsp;     */
+<i>396</i>&nbsp;    public String generateStatusJson() {
+<i>397</i>&nbsp;
+<b class="fc"><i>398</i>&nbsp;        String statusString = &quot;&quot;;</b>
+<i>399</i>&nbsp;
+<b class="fc"><i>400</i>&nbsp;        JSONObject obj = new JSONObject();</b>
+<i>401</i>&nbsp;
+<b class="fc"><i>402</i>&nbsp;        JSONArray jsonGameBoard = new JSONArray();</b>
+<i>403</i>&nbsp;
+<i>404</i>&nbsp;        /* pass each cell of the board and format the information */
+<b class="fc"><i>405</i>&nbsp;        for(int row = 0; row &lt;= 4; row++) {</b>
+<b class="fc"><i>406</i>&nbsp;            for(int column = 0; column &lt;= 4; column++) {</b>
+<i>407</i>&nbsp;
+<b class="fc"><i>408</i>&nbsp;                Cell cell = gameBoard.getCell(row, column);</b>
+<b class="fc"><i>409</i>&nbsp;                Building roof = cell.getRoof();</b>
+<b class="fc"><i>410</i>&nbsp;                Pawn pawn = null;</b>
+<i>411</i>&nbsp;
+<b class="fc"><i>412</i>&nbsp;                if(cell.getPawnInThisCell() != null) {</b>
+<b class="fc"><i>413</i>&nbsp;                    pawn = cell.getPawnInThisCell();</b>
+<i>414</i>&nbsp;                }
+<i>415</i>&nbsp;
+<b class="fc"><i>416</i>&nbsp;                JSONObject cellObj = new JSONObject();</b>
+<i>417</i>&nbsp;
+<i>418</i>&nbsp;                /* writing the cell coordinate into the Json */
+<b class="fc"><i>419</i>&nbsp;                cellObj.put(&quot;height&quot;, cell.getHeight());</b>
+<b class="fc"><i>420</i>&nbsp;                cellObj.put(&quot;column&quot;, cell.getColumnPosition());</b>
+<b class="fc"><i>421</i>&nbsp;                cellObj.put(&quot;row&quot;, cell.getRowPosition());</b>
+<i>422</i>&nbsp;
+<i>423</i>&nbsp;
+<b class="fc"><i>424</i>&nbsp;                JSONObject roofObj = new JSONObject();</b>
+<i>425</i>&nbsp;
+<i>426</i>&nbsp;                /* writing the roof information into the Json */
+<b class="fc"><i>427</i>&nbsp;                roofObj.put(&quot;level&quot;, roof.getLevel());</b>
+<b class="fc"><i>428</i>&nbsp;                roofObj.put(&quot;isDome&quot;, roof.getIsDome());</b>
+<i>429</i>&nbsp;
+<b class="fc"><i>430</i>&nbsp;                cellObj.put(&quot;roof&quot;, roofObj);</b>
+<i>431</i>&nbsp;
+<i>432</i>&nbsp;                /* write the pawn info, if it&#39;s present in this cell */
+<b class="fc"><i>433</i>&nbsp;                if(pawn == null) {</b>
+<b class="fc"><i>434</i>&nbsp;                    JSONObject pawnObj = new JSONObject();</b>
+<i>435</i>&nbsp;
+<b class="fc"><i>436</i>&nbsp;                    pawnObj.put(&quot;color&quot;, &quot;&quot;);</b>
+<b class="fc"><i>437</i>&nbsp;                    pawnObj.put(&quot;sex&quot;, &quot;&quot;);</b>
+<b class="fc"><i>438</i>&nbsp;                    pawnObj.put(&quot;hasMoved&quot;, false);</b>
+<b class="fc"><i>439</i>&nbsp;                    pawnObj.put(&quot;hasBuilt&quot;, false);</b>
+<b class="fc"><i>440</i>&nbsp;                    pawnObj.put(&quot;forcedMoved&quot;, false);</b>
+<b class="fc"><i>441</i>&nbsp;                    pawnObj.put(&quot;goneUp&quot;, false);</b>
+<i>442</i>&nbsp;
+<b class="fc"><i>443</i>&nbsp;                    cellObj.put(&quot;pawn&quot;, pawnObj);</b>
+<b class="fc"><i>444</i>&nbsp;                }</b>
+<i>445</i>&nbsp;                else {
+<b class="fc"><i>446</i>&nbsp;                    JSONObject pawnObj = new JSONObject();</b>
+<i>447</i>&nbsp;
+<b class="fc"><i>448</i>&nbsp;                    pawnObj.put(&quot;color&quot;, pawn.getColor());</b>
+<b class="fc"><i>449</i>&nbsp;                    pawnObj.put(&quot;sex&quot;, pawn.getSex());</b>
+<b class="fc"><i>450</i>&nbsp;                    pawnObj.put(&quot;hasMoved&quot;, pawn.getHasMoved());</b>
+<b class="fc"><i>451</i>&nbsp;                    pawnObj.put(&quot;hasBuilt&quot;, pawn.getHasBuilt());</b>
+<b class="fc"><i>452</i>&nbsp;                    pawnObj.put(&quot;forcedMoved&quot;, pawn.getForcedMove());</b>
+<b class="fc"><i>453</i>&nbsp;                    pawnObj.put(&quot;goneUp&quot;, pawn.getGoneUp());</b>
+<i>454</i>&nbsp;
+<b class="fc"><i>455</i>&nbsp;                    cellObj.put(&quot;pawn&quot;, pawnObj);</b>
+<i>456</i>&nbsp;                }
+<i>457</i>&nbsp;
+<i>458</i>&nbsp;                /* add the cell in the gameBoard JsonObject */
+<b class="fc"><i>459</i>&nbsp;                jsonGameBoard.add(cellObj);</b>
+<i>460</i>&nbsp;            }
+<i>461</i>&nbsp;        }
+<i>462</i>&nbsp;
+<i>463</i>&nbsp;
+<b class="fc"><i>464</i>&nbsp;        JSONArray playersJson = new JSONArray();</b>
+<b class="fc"><i>465</i>&nbsp;        for( Player p : players ) {</b>
+<b class="fc"><i>466</i>&nbsp;            JSONObject playerObj = new JSONObject();</b>
+<i>467</i>&nbsp;
+<b class="fc"><i>468</i>&nbsp;            playerObj.put(&quot;name&quot;, p.getName());</b>
+<b class="fc"><i>469</i>&nbsp;            playerObj.put(&quot;color&quot;, p.getColor());</b>
+<b class="fc"><i>470</i>&nbsp;            playerObj.put(&quot;effect&quot;, p.getCard().getEffectDescription());</b>
+<i>471</i>&nbsp;
+<b class="fc"><i>472</i>&nbsp;            playersJson.add(playerObj);</b>
+<b class="fc"><i>473</i>&nbsp;        }</b>
+<i>474</i>&nbsp;
+<i>475</i>&nbsp;
+<b class="fc"><i>476</i>&nbsp;        obj.put(&quot;players&quot;, playersJson);</b>
+<b class="fc"><i>477</i>&nbsp;        obj.put(&quot;gameBoard&quot;, jsonGameBoard);</b>
+<i>478</i>&nbsp;
+<b class="fc"><i>479</i>&nbsp;        statusString = obj.toString();</b>
+<b class="fc"><i>480</i>&nbsp;        lastUpdateSent = statusString;</b>
+<i>481</i>&nbsp;
+<b class="fc"><i>482</i>&nbsp;        return statusString;</b>
+<i>483</i>&nbsp;    }
+<i>484</i>&nbsp;
+<i>485</i>&nbsp;
+<i>486</i>&nbsp;    /**
+<i>487</i>&nbsp;     * @return a json-formatted String of what changed in the board due to a player&#39;s action
+<i>488</i>&nbsp;     */
+<i>489</i>&nbsp;    public String generateChangesJson() {
+<i>490</i>&nbsp;
+<b class="fc"><i>491</i>&nbsp;        String changesString = &quot;&quot;;</b>
+<i>492</i>&nbsp;
+<b class="fc"><i>493</i>&nbsp;        List&lt;FormattedCellInfo&gt; oldCellsInfo = JsonHandler.generateCellsList(lastUpdateSent);</b>
+<i>494</i>&nbsp;
+<b class="fc"><i>495</i>&nbsp;        String newStatusJson = generateStatusJson();</b>
+<b class="fc"><i>496</i>&nbsp;        List&lt;FormattedCellInfo&gt; newCellsInfo = JsonHandler.generateCellsList(newStatusJson);</b>
+<i>497</i>&nbsp;
+<b class="fc"><i>498</i>&nbsp;        List&lt;FormattedCellInfo&gt; changedCellsInfo = new ArrayList&lt;&gt;();</b>
+<i>499</i>&nbsp;
+<b class="fc"><i>500</i>&nbsp;        for(int i = 0; i &lt; newCellsInfo.size(); i++) {</b>
+<b class="fc"><i>501</i>&nbsp;            if( !oldCellsInfo.get(i).equals(newCellsInfo.get(i)) ) {</b>
+<b class="fc"><i>502</i>&nbsp;                changedCellsInfo.add(newCellsInfo.get(i));</b>
+<i>503</i>&nbsp;            }
+<i>504</i>&nbsp;        }
+<i>505</i>&nbsp;
+<b class="fc"><i>506</i>&nbsp;        JSONObject obj = new JSONObject();</b>
+<i>507</i>&nbsp;
+<b class="fc"><i>508</i>&nbsp;        JSONArray jsonGameBoard = new JSONArray();</b>
+<i>509</i>&nbsp;
+<b class="fc"><i>510</i>&nbsp;        for(FormattedCellInfo cell : changedCellsInfo) {</b>
+<i>511</i>&nbsp;
+<b class="fc"><i>512</i>&nbsp;            JSONObject cellObj = new JSONObject();</b>
+<b class="fc"><i>513</i>&nbsp;            cellObj.put(&quot;height&quot;, cell.getHeight());</b>
+<b class="fc"><i>514</i>&nbsp;            cellObj.put(&quot;column&quot;, cell.getColumn());</b>
+<b class="fc"><i>515</i>&nbsp;            cellObj.put(&quot;row&quot;, cell.getRow());</b>
+<i>516</i>&nbsp;
+<i>517</i>&nbsp;
+<b class="fc"><i>518</i>&nbsp;            JSONObject roofObj = new JSONObject();</b>
+<b class="fc"><i>519</i>&nbsp;            roofObj.put(&quot;level&quot;, cell.getRoofInfo().getFirst());</b>
+<b class="fc"><i>520</i>&nbsp;            roofObj.put(&quot;isDome&quot;, cell.getRoofInfo().getSecond());</b>
+<i>521</i>&nbsp;
+<b class="fc"><i>522</i>&nbsp;            cellObj.put(&quot;roof&quot;, roofObj);</b>
+<i>523</i>&nbsp;
+<i>524</i>&nbsp;
+<b class="fc"><i>525</i>&nbsp;            JSONObject pawnObj = new JSONObject();</b>
+<b class="fc"><i>526</i>&nbsp;            pawnObj.put(&quot;color&quot;, cell.getPawnInfo().getFirst());</b>
+<b class="fc"><i>527</i>&nbsp;            pawnObj.put(&quot;sex&quot;, cell.getPawnInfo().getSecond());</b>
+<i>528</i>&nbsp;
+<b class="fc"><i>529</i>&nbsp;            cellObj.put(&quot;pawn&quot;, pawnObj);</b>
+<i>530</i>&nbsp;
+<b class="fc"><i>531</i>&nbsp;            jsonGameBoard.add(cellObj);</b>
+<b class="fc"><i>532</i>&nbsp;        }</b>
+<i>533</i>&nbsp;
+<b class="fc"><i>534</i>&nbsp;        obj.put(&quot;gameBoard&quot;, jsonGameBoard);</b>
+<i>535</i>&nbsp;
+<b class="fc"><i>536</i>&nbsp;        changesString = obj.toString();</b>
+<b class="fc"><i>537</i>&nbsp;        lastUpdateSent = newStatusJson;</b>
+<i>538</i>&nbsp;
+<b class="fc"><i>539</i>&nbsp;        return changesString;</b>
+<i>540</i>&nbsp;    }
+<i>541</i>&nbsp;
+<i>542</i>&nbsp;
+<i>543</i>&nbsp;    // MARK : Consequence of an Action ======================================================================================
+<i>544</i>&nbsp;
+<i>545</i>&nbsp;
+<i>546</i>&nbsp;    /**
+<i>547</i>&nbsp;     * receives the consequence of an action
+<i>548</i>&nbsp;     * this method is a part of the visitor pattern
+<i>549</i>&nbsp;     * once the consequence is received, is handled by the game handler
+<i>550</i>&nbsp;     * @param consequence is a consequence of an action
+<i>551</i>&nbsp;     */
+<i>552</i>&nbsp;    @Override
+<i>553</i>&nbsp;    public void receiveConsequence(Consequence consequence) {
+<b class="fc"><i>554</i>&nbsp;        consequence.accept(this);</b>
+<b class="fc"><i>555</i>&nbsp;    }</b>
+<i>556</i>&nbsp;
+<i>557</i>&nbsp;
+<i>558</i>&nbsp;    /**
+<i>559</i>&nbsp;     * This method notifies all the observers that there is a winner for this game
+<i>560</i>&nbsp;     * with a victory event with the nickname&#39;s winner
+<i>561</i>&nbsp;     * @param consequence is the consequence received from the handler
+<i>562</i>&nbsp;     */
+<i>563</i>&nbsp;    @Override
+<i>564</i>&nbsp;    public void doConsequence(VictoryConsequence consequence) {
+<b class="fc"><i>565</i>&nbsp;        updateAllObservers(new VictoryEvent(consequence.getNickname()));</b>
+<b class="fc"><i>566</i>&nbsp;    }</b>
+<i>567</i>&nbsp;
+<i>568</i>&nbsp;
+<i>569</i>&nbsp;    /**
+<i>570</i>&nbsp;     * Blocks all the players from moving up the next turn, less the one who invoked this method
+<i>571</i>&nbsp;     * @param consequence is the consequence received from the handler
+<i>572</i>&nbsp;     */
+<i>573</i>&nbsp;    @Override
+<i>574</i>&nbsp;    public void doConsequence(BlockConsequence consequence) {
+<b class="fc"><i>575</i>&nbsp;        players.stream().filter(p -&gt; !p.getName().equals(consequence.getNickname())).forEach(p -&gt; p.setEffect(new NotMoveUpEffect(p.getEffect())));</b>
+<b class="fc"><i>576</i>&nbsp;    }</b>
+<i>577</i>&nbsp;
+<i>578</i>&nbsp;
+<i>579</i>&nbsp;    /**
+<i>580</i>&nbsp;     * This method do nothing because there is no consequence from the action who invoked this
+<i>581</i>&nbsp;     * @param consequence is the consequence received from the handler
+<i>582</i>&nbsp;     */
+<i>583</i>&nbsp;    @Override
+<i>584</i>&nbsp;    public void doConsequence(NoConsequence consequence) {
+<i>585</i>&nbsp;        //nothing to do here :(
+<b class="fc"><i>586</i>&nbsp;    }</b>
+<i>587</i>&nbsp;
+<i>588</i>&nbsp;
+<i>589</i>&nbsp;    /**
+<i>590</i>&nbsp;     * this method calls the destroyTowers method from the Board class
+<i>591</i>&nbsp;     * @param consequence is the consequence received from the handler
+<i>592</i>&nbsp;     */
+<i>593</i>&nbsp;    @Override
+<i>594</i>&nbsp;    public void doConsequence(DestroyTowersConsequence consequence) {
+<b class="nc"><i>595</i>&nbsp;        gameBoard.destroyTowers();</b>
+<b class="nc"><i>596</i>&nbsp;    }</b>
+<i>597</i>&nbsp;
+<i>598</i>&nbsp;
+<i>599</i>&nbsp;    // MARK : Support Methods ======================================================================================
+<i>600</i>&nbsp;
+<i>601</i>&nbsp;
+<i>602</i>&nbsp;    /**
+<i>603</i>&nbsp;     * checks if the coordinates are valid
+<i>604</i>&nbsp;     * @param row is the row coordinate of the board
+<i>605</i>&nbsp;     * @param column is the column coordinate of the board
+<i>606</i>&nbsp;     * @return true if the coordinates are valid
+<i>607</i>&nbsp;     */
+<i>608</i>&nbsp;    public boolean isValidCoordinate(int row, int column) {
+<b class="fc"><i>609</i>&nbsp;        return row &gt;= 0 &amp;&amp; row &lt;= 4 &amp;&amp; column &gt;= 0 &amp;&amp; column &lt;= 4;</b>
+<i>610</i>&nbsp;    }
+<i>611</i>&nbsp;
+<i>612</i>&nbsp;
+<i>613</i>&nbsp;    /**
+<i>614</i>&nbsp;     * checks if there&#39;s no pawn
+<i>615</i>&nbsp;     * @param row is the row coordinate of the spot
+<i>616</i>&nbsp;     * @param column is the column coordinate of the spot
+<i>617</i>&nbsp;     * @return if there&#39;s no pawn in this spot
+<i>618</i>&nbsp;     */
+<i>619</i>&nbsp;    public boolean isValidSpot(int row, int column){
+<b class="fc"><i>620</i>&nbsp;        return !gameBoard.getCell(row, column).isPawnHere();</b>
+<i>621</i>&nbsp;    }
+<i>622</i>&nbsp;
+<i>623</i>&nbsp;
+<i>624</i>&nbsp;    /**
+<i>625</i>&nbsp;     * @param buildingLevel is the level of a building
+<i>626</i>&nbsp;     * @return if the building level is valid
+<i>627</i>&nbsp;     */
+<i>628</i>&nbsp;    public boolean isValid(int buildingLevel) {
+<b class="fc"><i>629</i>&nbsp;        for ( Building b : lastBuildingsList ) {</b>
+<b class="fc"><i>630</i>&nbsp;            if(b.getLevel() == buildingLevel) {</b>
+<b class="fc"><i>631</i>&nbsp;                return true;</b>
+<i>632</i>&nbsp;            }
+<b class="fc"><i>633</i>&nbsp;        }</b>
+<i>634</i>&nbsp;
+<b class="fc"><i>635</i>&nbsp;        return false;</b>
+<i>636</i>&nbsp;    }
+<i>637</i>&nbsp;
+<i>638</i>&nbsp;
+<i>639</i>&nbsp;    /**
+<i>640</i>&nbsp;     * @param row is the row of the cell to be checked
+<i>641</i>&nbsp;     * @param column is the column of the cell to be checked
+<i>642</i>&nbsp;     * @return if the [row,column] cell is valid
+<i>643</i>&nbsp;     */
+<i>644</i>&nbsp;    public boolean isValid(int row, int column) {
+<b class="fc"><i>645</i>&nbsp;        for( Cell c : lastCellsList ) {</b>
+<b class="fc"><i>646</i>&nbsp;            if(c.getRowPosition() == row &amp;&amp; c.getColumnPosition() == column &amp;&amp; isValidCoordinate(row, column)) {</b>
+<b class="fc"><i>647</i>&nbsp;                return true;</b>
+<i>648</i>&nbsp;            }
+<b class="fc"><i>649</i>&nbsp;        }</b>
+<i>650</i>&nbsp;
+<b class="fc"><i>651</i>&nbsp;        return false;</b>
+<i>652</i>&nbsp;    }
+<i>653</i>&nbsp;
+<i>654</i>&nbsp;
+<i>655</i>&nbsp;    /**
+<i>656</i>&nbsp;     * @param actionID is the ID of an action
+<i>657</i>&nbsp;     * @return is the action is valid
+<i>658</i>&nbsp;     */
+<i>659</i>&nbsp;    public boolean isValid(String actionID) {
+<b class="fc"><i>660</i>&nbsp;        for(Action a : lastActionsList) {</b>
+<b class="fc"><i>661</i>&nbsp;            if(a.getActionID().equals(actionID)) {</b>
+<b class="fc"><i>662</i>&nbsp;                return true;</b>
+<i>663</i>&nbsp;            }
+<b class="fc"><i>664</i>&nbsp;        }</b>
+<i>665</i>&nbsp;
+<b class="fc"><i>666</i>&nbsp;        return false;</b>
+<i>667</i>&nbsp;    }
+<i>668</i>&nbsp;
+<i>669</i>&nbsp;
+<i>670</i>&nbsp;    /**
+<i>671</i>&nbsp;     * @param nickname is the nickname of the player
+<i>672</i>&nbsp;     * @param row is the row coordinate of the pawn
+<i>673</i>&nbsp;     * @param column is the column coordinate of the pawn
+<i>674</i>&nbsp;     * @return if the pawn of the player is valid
+<i>675</i>&nbsp;     */
+<i>676</i>&nbsp;    public boolean isValidPawn(String nickname, int row, int column ){
+<i>677</i>&nbsp;
+<b class="fc"><i>678</i>&nbsp;        if (isValidCoordinate(row, column)) {</b>
+<b class="fc"><i>679</i>&nbsp;            Player player = getPlayerByName(nickname);</b>
+<i>680</i>&nbsp;
+<b class="fc"><i>681</i>&nbsp;            Pawn pawn = player.getPawnInCoordinates(row, column);</b>
+<i>682</i>&nbsp;
+<b class="fc"><i>683</i>&nbsp;            return pawn.isChosen();</b>
+<i>684</i>&nbsp;        }
+<b class="nc"><i>685</i>&nbsp;        return false;</b>
+<i>686</i>&nbsp;    }
+<i>687</i>&nbsp;
+<i>688</i>&nbsp;
+<i>689</i>&nbsp;    /**
+<i>690</i>&nbsp;     * @param nickname is the nickname of the player
+<i>691</i>&nbsp;     * @return if the player is the current player
+<i>692</i>&nbsp;     */
+<i>693</i>&nbsp;    public boolean isValidPlayer(String nickname){
+<b class="fc"><i>694</i>&nbsp;        return nickname.equals(playersNickname.get(indexCurrentPlayer));</b>
+<i>695</i>&nbsp;    }
+<i>696</i>&nbsp;
+<i>697</i>&nbsp;
+<i>698</i>&nbsp;    public void setChosenPawn(String nickname, int row, int column){
+<i>699</i>&nbsp;
+<b class="fc"><i>700</i>&nbsp;        Player player = getPlayerByName(nickname);</b>
+<i>701</i>&nbsp;
+<b class="fc"><i>702</i>&nbsp;        player.getPawnInCoordinates(row, column).setChosen(true);</b>
+<i>703</i>&nbsp;
+<i>704</i>&nbsp;
+<b class="fc"><i>705</i>&nbsp;    }</b>
+<i>706</i>&nbsp;
+<i>707</i>&nbsp;
+<i>708</i>&nbsp;    public List&lt;Building&gt; getLastBuildingsList() {
+<b class="nc"><i>709</i>&nbsp;        return this.lastBuildingsList;</b>
+<i>710</i>&nbsp;    }
+<i>711</i>&nbsp;
+<i>712</i>&nbsp;
+<i>713</i>&nbsp;    public List&lt;Cell&gt; getLastCellsList() {
+<b class="fc"><i>714</i>&nbsp;        return this.lastCellsList;</b>
+<i>715</i>&nbsp;    }
+<i>716</i>&nbsp;
+<i>717</i>&nbsp;
+<i>718</i>&nbsp;    public List&lt;Action&gt; getLastActionsList() {
+<b class="fc"><i>719</i>&nbsp;        return this.lastActionsList;</b>
+<i>720</i>&nbsp;    }
+<i>721</i>&nbsp;
+<i>722</i>&nbsp;
+<i>723</i>&nbsp;    public List&lt;String&gt; getPlayersNickname() {
+<b class="fc"><i>724</i>&nbsp;        return playersNickname;</b>
+<i>725</i>&nbsp;    }
+<i>726</i>&nbsp;
+<i>727</i>&nbsp;
+<i>728</i>&nbsp;    public List&lt;Player&gt; getPlayers() {
+<b class="fc"><i>729</i>&nbsp;        return players;</b>
+<i>730</i>&nbsp;    }
+<i>731</i>&nbsp;
+<i>732</i>&nbsp;
+<i>733</i>&nbsp;    /**
+<i>734</i>&nbsp;     * @param nickname is the nickname of the player that I want
+<i>735</i>&nbsp;     * @return the player with the given nickname
+<i>736</i>&nbsp;     */
+<i>737</i>&nbsp;    public Player getPlayerByName(String nickname) {
+<b class="fc"><i>738</i>&nbsp;        return getPlayers().stream().filter(p -&gt; p.getName().equals(nickname)).findAny().orElse(null);</b>
+<i>739</i>&nbsp;    }
+<i>740</i>&nbsp;
+<i>741</i>&nbsp;    
+<i>742</i>&nbsp;    /**
+<i>743</i>&nbsp;     * sets the index of the next current player in the arraylist of players
+<i>744</i>&nbsp;     */
+<i>745</i>&nbsp;    public void nextCurrentPlayer() {
+<i>746</i>&nbsp;
+<i>747</i>&nbsp;        //if it&#39;s last player, next player is the first player
+<b class="fc"><i>748</i>&nbsp;        if(indexCurrentPlayer == players.size() - 1) {</b>
+<b class="fc"><i>749</i>&nbsp;            indexCurrentPlayer = 0;</b>
+<i>750</i>&nbsp;        }
+<i>751</i>&nbsp;        //pick the next player
+<i>752</i>&nbsp;        else {
+<b class="fc"><i>753</i>&nbsp;            indexCurrentPlayer++;</b>
+<i>754</i>&nbsp;        }
+<i>755</i>&nbsp;
+<b class="fc"><i>756</i>&nbsp;    }</b>
+<i>757</i>&nbsp;
+<i>758</i>&nbsp;
+<i>759</i>&nbsp;    /**
+<i>760</i>&nbsp;     * this method only invokes the resetPlayerStatus in the Player class
+<i>761</i>&nbsp;     * @param playerName is the nickname of the player that has to be reset
+<i>762</i>&nbsp;     */
+<i>763</i>&nbsp;    public void resetPlayerStatus(String playerName) {
+<b class="fc"><i>764</i>&nbsp;        Player player = getPlayerByName(playerName);</b>
+<i>765</i>&nbsp;
+<b class="fc"><i>766</i>&nbsp;        player.resetPlayerStatus();</b>
+<b class="fc"><i>767</i>&nbsp;    }</b>
+<i>768</i>&nbsp;
+<i>769</i>&nbsp;
+<i>770</i>&nbsp;    public String getCurrentPlayer() {
+<b class="fc"><i>771</i>&nbsp;        return this.playersNickname.get(indexCurrentPlayer);</b>
+<i>772</i>&nbsp;    }
+<i>773</i>&nbsp;
+<i>774</i>&nbsp;
+<i>775</i>&nbsp;    // MARK : Testing Methods ======================================================================================
+<i>776</i>&nbsp;
+<i>777</i>&nbsp;
+<i>778</i>&nbsp;    /* USED ONLY FOR TESTING */
+<i>779</i>&nbsp;    public Game(String playerName, String opponentName) {
+<i>780</i>&nbsp;
+<b class="fc"><i>781</i>&nbsp;        super();</b>
+<i>782</i>&nbsp;
+<b class="fc"><i>783</i>&nbsp;        this.gameBoard = new Board();</b>
+<b class="fc"><i>784</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>785</i>&nbsp;        this.indexCurrentPlayer = 0;</b>
+<i>786</i>&nbsp;
+<i>787</i>&nbsp;
+<b class="fc"><i>788</i>&nbsp;        players.add(new Player(playerName, Color.BLUE, new Card(&quot;God_Player&quot;, true, &quot;effect_god&quot;), new BasicEffect()));</b>
+<b class="fc"><i>789</i>&nbsp;        players.add(new Player(opponentName, Color.GREY, new Card(&quot;God_Player&quot;, true, &quot;effect_god&quot;), new BasicEffect()));</b>
+<i>790</i>&nbsp;
+<i>791</i>&nbsp;
+<b class="fc"><i>792</i>&nbsp;    }</b>
+<i>793</i>&nbsp;
+<i>794</i>&nbsp;
+<i>795</i>&nbsp;    /* USED ONLY FOR TESTING */
+<i>796</i>&nbsp;    public Game(Player player, Player opponent) {
+<i>797</i>&nbsp;
+<b class="fc"><i>798</i>&nbsp;        super();</b>
+<i>799</i>&nbsp;
+<b class="fc"><i>800</i>&nbsp;        this.gameBoard = new Board();</b>
+<b class="fc"><i>801</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>802</i>&nbsp;        this.indexCurrentPlayer = 0;</b>
+<b class="fc"><i>803</i>&nbsp;        this.playersNickname = new ArrayList&lt;&gt;();</b>
+<i>804</i>&nbsp;
+<b class="fc"><i>805</i>&nbsp;        playersNickname.add(player.getName());</b>
+<b class="fc"><i>806</i>&nbsp;        playersNickname.add(opponent.getName());</b>
+<i>807</i>&nbsp;
+<b class="fc"><i>808</i>&nbsp;        players.add(player);</b>
+<b class="fc"><i>809</i>&nbsp;        players.add(opponent);</b>
+<i>810</i>&nbsp;
+<i>811</i>&nbsp;
+<i>812</i>&nbsp;
+<b class="fc"><i>813</i>&nbsp;    }</b>
+<i>814</i>&nbsp;
+<i>815</i>&nbsp;
+<i>816</i>&nbsp;    /* USED ONLY FOR TESTING */
+<i>817</i>&nbsp;    public Board getGameBoard() {
+<b class="fc"><i>818</i>&nbsp;        return this.gameBoard;</b>
+<i>819</i>&nbsp;    }
+<i>820</i>&nbsp;
+<i>821</i>&nbsp;
+<i>822</i>&nbsp;    /* USED ONLY FOR TESTING */
+<b class="fc"><i>823</i>&nbsp;    public Game(List&lt;String&gt; playersName){</b>
+<b class="fc"><i>824</i>&nbsp;        gameBoard = new Board();</b>
+<b class="fc"><i>825</i>&nbsp;        this.playersNickname = playersName;</b>
+<b class="fc"><i>826</i>&nbsp;        this.players = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>827</i>&nbsp;        indexCurrentPlayer = 0;</b>
+<i>828</i>&nbsp;
+<b class="fc"><i>829</i>&nbsp;        players.add(new Player(playersName.get(0), Color.BLUE, new Card(&quot;God_Player&quot;, true, &quot;effect_god&quot;), new BasicEffect()));</b>
+<b class="fc"><i>830</i>&nbsp;        players.add(new Player(playersName.get(1), Color.GREY, new Card(&quot;God_Player&quot;, true, &quot;effect_god&quot;), new BasicEffect()));</b>
+<b class="fc"><i>831</i>&nbsp;        players.add(new Player(playersName.get(2), Color.WHITE, new Card(&quot;God_Player&quot;, true, &quot;effect_god&quot;), new BasicEffect()));</b>
+<i>832</i>&nbsp;
+<b class="fc"><i>833</i>&nbsp;        lastActionsList = null;</b>
+<b class="fc"><i>834</i>&nbsp;        lastBuildingsList = null;</b>
+<b class="fc"><i>835</i>&nbsp;        lastCellsList = null;</b>
+<b class="fc"><i>836</i>&nbsp;    }</b>
+<i>837</i>&nbsp;
+<i>838</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

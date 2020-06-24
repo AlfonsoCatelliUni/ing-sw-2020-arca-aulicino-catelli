@@ -1,0 +1,1312 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Controller</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Controller (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Controller</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,2%
+  </span>
+  <span class="absValue">
+    (41/ 44)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84,5%
+  </span>
+  <span class="absValue">
+    (402/ 476)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Controller$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/ 4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    91,3%
+  </span>
+  <span class="absValue">
+    (42/ 46)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    84%
+  </span>
+  <span class="absValue">
+    (403/ 480)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.events.CTSEvents.*;
+<i>4</i>&nbsp;import it.polimi.ingsw.events.STCEvents.*;
+<i>5</i>&nbsp;import it.polimi.ingsw.events.ServerToClientEvent;
+<i>6</i>&nbsp;import it.polimi.ingsw.events.manager.ClientToServerManager;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Actions.Action;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.Board.Building;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.Color;
+<i>10</i>&nbsp;import it.polimi.ingsw.model.Player.Card;
+<i>11</i>&nbsp;import it.polimi.ingsw.model.Player.Player;
+<i>12</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i>13</i>&nbsp;import it.polimi.ingsw.events.ClientToServerEvent;
+<i>14</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>15</i>&nbsp;import it.polimi.ingsw.model.Game;
+<i>16</i>&nbsp;import it.polimi.ingsw.server.PreGameLobby;
+<i>17</i>&nbsp;import it.polimi.ingsw.server.Server;
+<i>18</i>&nbsp;import it.polimi.ingsw.view.server.VirtualView;
+<i>19</i>&nbsp;import org.json.simple.JSONArray;
+<i>20</i>&nbsp;import org.json.simple.JSONObject;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;import java.awt.*;
+<i>23</i>&nbsp;import java.util.ArrayList;
+<i>24</i>&nbsp;import java.util.List;
+<i>25</i>&nbsp;import java.util.Timer;
+<i>26</i>&nbsp;import java.util.TimerTask;
+<i>27</i>&nbsp;import java.util.stream.Collectors;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;/**
+<i>30</i>&nbsp; * Controller to handle events from the view and modify model in order of pattern MVC
+<i>31</i>&nbsp; */
+<i>32</i>&nbsp;public class Controller implements Observer, ClientToServerManager {
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * View to send and receive events
+<i>37</i>&nbsp;     */
+<i>38</i>&nbsp;    private VirtualView virtualView;
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /**
+<i>42</i>&nbsp;     * Lobby to handle new connections in game and manage the login events
+<i>43</i>&nbsp;     */
+<i>44</i>&nbsp;    private PreGameLobby preGameLobby;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * tha manager of the model od the game
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    private Game game;
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    /**
+<i>54</i>&nbsp;     * timer to control the time during lobby
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    private TimerTask timerTask;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    private Object lock;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    private Boolean isClosed;
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;
+<b class="fc"><i>65</i>&nbsp;    private final int MAXPLAYERS = 3;</b>
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;
+<i>68</i>&nbsp;    private final static int MINPLAYERS = 2;
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    // MARK : Constructor Section ======================================================================================
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;
+<b class="fc"><i>75</i>&nbsp;    public Controller() {</b>
+<b class="fc"><i>76</i>&nbsp;        this.virtualView = new VirtualView(this);</b>
+<i>77</i>&nbsp;
+<b class="fc"><i>78</i>&nbsp;        this.preGameLobby = new PreGameLobby();</b>
+<i>79</i>&nbsp;
+<b class="fc"><i>80</i>&nbsp;        lock = new Object();</b>
+<i>81</i>&nbsp;
+<b class="fc"><i>82</i>&nbsp;        this.isClosed = false;</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;    }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    //ONLY FOR TESTING
+<b class="fc"><i>88</i>&nbsp;    public Controller(VirtualView virtualView) {</b>
+<i>89</i>&nbsp;
+<b class="fc"><i>90</i>&nbsp;        this.virtualView = virtualView;</b>
+<i>91</i>&nbsp;
+<b class="fc"><i>92</i>&nbsp;        this.preGameLobby = new PreGameLobby();</b>
+<i>93</i>&nbsp;
+<b class="fc"><i>94</i>&nbsp;        lock = new Object();</b>
+<i>95</i>&nbsp;
+<b class="fc"><i>96</i>&nbsp;        this.isClosed = false;</b>
+<i>97</i>&nbsp;
+<b class="fc"><i>98</i>&nbsp;    }</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;
+<i>101</i>&nbsp;    //used in server to connect controller with its virtual View
+<i>102</i>&nbsp;    public VirtualView getVirtualView() {
+<b class="nc"><i>103</i>&nbsp;        return this.virtualView;</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;    public Boolean isClosed() {
+<b class="nc"><i>108</i>&nbsp;        return this.isClosed;</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    // MARK : Pattern Visitor Methods ======================================================================================
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    @Override
+<i>116</i>&nbsp;    public void update(ClientToServerEvent event) {
+<b class="fc"><i>117</i>&nbsp;        synchronized (lock) {</b>
+<b class="fc"><i>118</i>&nbsp;            receiveEvent(event);</b>
+<b class="fc"><i>119</i>&nbsp;        }</b>
+<b class="fc"><i>120</i>&nbsp;    }</b>
+<i>121</i>&nbsp;
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    @Override
+<i>124</i>&nbsp;    public void update(ServerToClientEvent event) {
+<b class="fc"><i>125</i>&nbsp;        throw new RuntimeException(&quot;How the hell is possible that the Controller received a ServerToClientEvent? --- Great! Now I&#39;ve to fix it.&quot;);</b>
+<i>126</i>&nbsp;    }
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;    @Override
+<i>130</i>&nbsp;    public void receiveEvent(ClientToServerEvent event) {
+<b class="fc"><i>131</i>&nbsp;        event.accept(this);</b>
+<b class="fc"><i>132</i>&nbsp;    }</b>
+<i>133</i>&nbsp;
+<i>134</i>&nbsp;
+<i>135</i>&nbsp;    // MARK : Controller Function Section ======================================================================================
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;
+<i>138</i>&nbsp;    /**
+<i>139</i>&nbsp;     * start the game and initialize all the information using arguments in Game constructor
+<i>140</i>&nbsp;     * @param firstPlayerNickname the nickname of the first player
+<i>141</i>&nbsp;     */
+<i>142</i>&nbsp;    public void startGame ( String firstPlayerNickname ) {
+<i>143</i>&nbsp;
+<b class="fc"><i>144</i>&nbsp;        List&lt;String&gt; connectedPlayers = preGameLobby.getConnectedPlayers();</b>
+<b class="fc"><i>145</i>&nbsp;        int indexOfFirstPlayer = connectedPlayers.indexOf(firstPlayerNickname);</b>
+<i>146</i>&nbsp;
+<b class="fc"><i>147</i>&nbsp;        List&lt;String&gt; orderedPlayers = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>148</i>&nbsp;        int i = indexOfFirstPlayer;</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;        do {
+<i>152</i>&nbsp;
+<b class="fc"><i>153</i>&nbsp;            orderedPlayers.add( connectedPlayers.get(i) );</b>
+<i>154</i>&nbsp;
+<b class="fc"><i>155</i>&nbsp;            i++;</b>
+<b class="fc"><i>156</i>&nbsp;            if(i == connectedPlayers.size()) {</b>
+<b class="fc"><i>157</i>&nbsp;                i = 0;</b>
+<i>158</i>&nbsp;            }
+<i>159</i>&nbsp;
+<b class="fc"><i>160</i>&nbsp;        } while(i != indexOfFirstPlayer);</b>
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;
+<b class="fc"><i>163</i>&nbsp;        List&lt;Color&gt; colors = Color.getRandomColors(preGameLobby.getNumberOfPlayers());</b>
+<i>164</i>&nbsp;
+<b class="fc"><i>165</i>&nbsp;        game = new Game(orderedPlayers, colors, preGameLobby.getPlayerCardMap(), virtualView);</b>
+<i>166</i>&nbsp;
+<b class="fc"><i>167</i>&nbsp;        List&lt;Card&gt; cards = new ArrayList&lt;&gt;();</b>
+<i>168</i>&nbsp;
+<b class="fc"><i>169</i>&nbsp;        for ( String name : orderedPlayers ) {</b>
+<b class="fc"><i>170</i>&nbsp;            cards.add( preGameLobby.getCardOfPlayer(name) );</b>
+<b class="fc"><i>171</i>&nbsp;        }</b>
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;        //String cardsInfo = generateJsonCards(cards);
+<i>174</i>&nbsp;
+<b class="fc"><i>175</i>&nbsp;        String info = generateJsonPlayersInfo(orderedPlayers, colors, cards);</b>
+<i>176</i>&nbsp;
+<b class="fc"><i>177</i>&nbsp;        virtualView.sendMessage(new StartGameEvent(info));</b>
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;        // the game starts so lobby is closed and null
+<b class="fc"><i>180</i>&nbsp;        preGameLobby = null;</b>
+<i>181</i>&nbsp;
+<b class="fc"><i>182</i>&nbsp;        String firstPlayer = game.getPlayersNickname().get(0);</b>
+<i>183</i>&nbsp;
+<b class="fc"><i>184</i>&nbsp;        virtualView.sendMessageTo(firstPlayer, new AskInitPawnsEvent(firstPlayer, true));</b>
+<b class="fc"><i>185</i>&nbsp;    }</b>
+<i>186</i>&nbsp;
+<i>187</i>&nbsp;
+<i>188</i>&nbsp;    public void countdownStart() {
+<i>189</i>&nbsp;
+<b class="fc"><i>190</i>&nbsp;        new Timer().schedule(timerTask = new TimerTask() {</b>
+<i>191</i>&nbsp;            @Override
+<i>192</i>&nbsp;            public void run() {
+<i>193</i>&nbsp;
+<b class="nc"><i>194</i>&nbsp;                if(preGameLobby != null &amp;&amp; !preGameLobby.isClosed()) {</b>
+<i>195</i>&nbsp;
+<b class="nc"><i>196</i>&nbsp;                        virtualView.sendMessage(new RoomNotFilledEvent(&quot;Room Not Filled In Time!&quot;));</b>
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;                }
+<b class="nc"><i>199</i>&nbsp;            }</b>
+<i>200</i>&nbsp;        }, 2 * 60 * 1000); // 2 minutes timer
+<i>201</i>&nbsp;
+<b class="fc"><i>202</i>&nbsp;    }</b>
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;
+<i>205</i>&nbsp;    /**
+<i>206</i>&nbsp;     * this method takes in the player that has ended his turn, reset his status and
+<i>207</i>&nbsp;     * take the successor, calculate his available pawns then send theis coordinates
+<i>208</i>&nbsp;     * to their player.
+<i>209</i>&nbsp;     * if there are no pawns available notify the owner that he has loosed the game
+<i>210</i>&nbsp;     * because he can&#39;t do any action
+<i>211</i>&nbsp;     * @param isLosingEnding this must be set true if the player &quot;nickname&quot; has lost the game,
+<i>212</i>&nbsp;     *                       in this case before picking the next player, the method remove
+<i>213</i>&nbsp;     *                       the losing player from the game info
+<i>214</i>&nbsp;     *                       this must be set false if is a normal end of turn
+<i>215</i>&nbsp;     */
+<i>216</i>&nbsp;    public void endTurn(Boolean isLosingEnding) {
+<i>217</i>&nbsp;
+<b class="fc"><i>218</i>&nbsp;        String nameWhoEndedTurn = game.getCurrentPlayer();</b>
+<i>219</i>&nbsp;
+<i>220</i>&nbsp;        //reset status of the ending player
+<b class="fc"><i>221</i>&nbsp;        game.resetPlayerStatus(nameWhoEndedTurn);</b>
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;        //if the player has ended his turn because he has lost then we send to him a losing message and remove his info from the game
+<b class="fc"><i>224</i>&nbsp;        if(isLosingEnding) {</b>
+<b class="fc"><i>225</i>&nbsp;            if (game.getPlayersNickname().size() &gt; 2) {</b>
+<b class="fc"><i>226</i>&nbsp;                virtualView.sendMessage(new LosingByNoActionEvent(nameWhoEndedTurn, &quot;So Sad!&quot;));</b>
+<i>227</i>&nbsp;            }
+<b class="fc"><i>228</i>&nbsp;            game.removePlayer(nameWhoEndedTurn);</b>
+<i>229</i>&nbsp;        } else {
+<b class="fc"><i>230</i>&nbsp;            game.nextCurrentPlayer();</b>
+<i>231</i>&nbsp;        }
+<i>232</i>&nbsp;
+<i>233</i>&nbsp;        //takes the index, nickname and pawn of the next player that has to play his turn
+<b class="fc"><i>234</i>&nbsp;        String currentPlayerNickname = game.getCurrentPlayer();</b>
+<b class="fc"><i>235</i>&nbsp;        List&lt;Point&gt; currentPlayerAvailablePawns = generatePointsByCells(game.getAvailablePawns(currentPlayerNickname));</b>
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;
+<i>238</i>&nbsp;
+<b class="fc"><i>239</i>&nbsp;        while(currentPlayerAvailablePawns.size() == 0 &amp;&amp; game.getPlayers().size() &gt; 1) {</b>
+<i>240</i>&nbsp;
+<i>241</i>&nbsp;            //send the message that the current player has lost the game because he can&#39;t do any action
+<b class="fc"><i>242</i>&nbsp;            if (game.getPlayersNickname().size() &gt; 2) {</b>
+<b class="fc"><i>243</i>&nbsp;                virtualView.sendMessage(new LosingByNoActionEvent(currentPlayerNickname, &quot;So Sad!&quot;));</b>
+<i>244</i>&nbsp;            }
+<i>245</i>&nbsp;
+<i>246</i>&nbsp;            //save the nickname of the loser player
+<b class="fc"><i>247</i>&nbsp;            String loserPlayer = currentPlayerNickname;</b>
+<i>248</i>&nbsp;
+<i>249</i>&nbsp;            //remove the loser player
+<b class="fc"><i>250</i>&nbsp;            game.removePlayer(loserPlayer);</b>
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;            //now the current is the player after the removed player because the index shifted
+<b class="fc"><i>253</i>&nbsp;            currentPlayerNickname = game.getCurrentPlayer();</b>
+<i>254</i>&nbsp;
+<i>255</i>&nbsp;
+<b class="fc"><i>256</i>&nbsp;            currentPlayerAvailablePawns = generatePointsByCells(game.getAvailablePawns(currentPlayerNickname));</b>
+<i>257</i>&nbsp;
+<i>258</i>&nbsp;
+<b class="fc"><i>259</i>&nbsp;        }</b>
+<i>260</i>&nbsp;
+<i>261</i>&nbsp;        //if there&#39;s only one player we have to notify him with a victory event and return because doesn&#39;t need his next actions
+<b class="fc"><i>262</i>&nbsp;        if( game.getPlayersNickname().size() == 1 ) {</b>
+<b class="fc"><i>263</i>&nbsp;            manageEvent( new VictoryEvent(game.getPlayersNickname().get(0)) );</b>
+<b class="fc"><i>264</i>&nbsp;            return;</b>
+<i>265</i>&nbsp;        }
+<i>266</i>&nbsp;
+<b class="fc"><i>267</i>&nbsp;        virtualView.sendMessageTo(currentPlayerNickname, new AskWhichPawnsUseEvent(currentPlayerNickname, true, currentPlayerAvailablePawns));</b>
+<i>268</i>&nbsp;
+<b class="fc"><i>269</i>&nbsp;    }</b>
+<i>270</i>&nbsp;
+<i>271</i>&nbsp;
+<i>272</i>&nbsp;    /**
+<i>273</i>&nbsp;     * close game lobby and send events, then send to the first player the event to choose a card for the game
+<i>274</i>&nbsp;     */
+<i>275</i>&nbsp;    public void closeGameLobby(){
+<i>276</i>&nbsp;
+<b class="fc"><i>277</i>&nbsp;        preGameLobby.closeLobby();</b>
+<b class="fc"><i>278</i>&nbsp;        isClosed = true;</b>
+<i>279</i>&nbsp;
+<b class="fc"><i>280</i>&nbsp;        virtualView.sendMessage(new ClosedWaitingRoomEvent(new ArrayList&lt;&gt;(preGameLobby.getConnectedPlayers())));</b>
+<i>281</i>&nbsp;
+<i>282</i>&nbsp;
+<i>283</i>&nbsp;        //List&lt;String&gt; cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
+<i>284</i>&nbsp;        //List&lt;String&gt; cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());
+<i>285</i>&nbsp;
+<i>286</i>&nbsp;        //String firstPlayer = preGameLobby.getConnectedPlayers().get(0);
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;        //virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cardsName, cardsEffect,  true));
+<i>289</i>&nbsp;
+<i>290</i>&nbsp;        //MARK : Con Challenger
+<b class="fc"><i>291</i>&nbsp;        List&lt;String&gt; cardsName  = preGameLobby.getAllCardsForPlayers().stream().map(Card::getName).collect(Collectors.toList());</b>
+<b class="fc"><i>292</i>&nbsp;        List&lt;String&gt; cardsEffect = preGameLobby.getAllCardsForPlayers().stream().map(Card::getEffectDescription).collect(Collectors.toList());</b>
+<b class="fc"><i>293</i>&nbsp;        int numberOfPlayers = preGameLobby.getNumberOfPlayers();</b>
+<i>294</i>&nbsp;
+<b class="fc"><i>295</i>&nbsp;        String challenger = preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1);</b>
+<i>296</i>&nbsp;
+<b class="fc"><i>297</i>&nbsp;        virtualView.sendMessageTo(challenger, new AllCardsEvent(challenger, cardsName, cardsEffect, numberOfPlayers,true));</b>
+<i>298</i>&nbsp;
+<b class="fc"><i>299</i>&nbsp;    }</b>
+<i>300</i>&nbsp;
+<i>301</i>&nbsp;
+<i>302</i>&nbsp;    /**
+<i>303</i>&nbsp;     * send events of end game and create a new lobby to manage another game
+<i>304</i>&nbsp;     * @param winner nickname of the winner
+<i>305</i>&nbsp;     */
+<i>306</i>&nbsp;    public void endGame(String winner) {
+<i>307</i>&nbsp;
+<b class="fc"><i>308</i>&nbsp;        Player winnerPlayer = game.getPlayerByName(winner);</b>
+<i>309</i>&nbsp;
+<b class="fc"><i>310</i>&nbsp;        virtualView.sendMessage(new EndGameSTCEvent(winnerPlayer.getName()));</b>
+<i>311</i>&nbsp;
+<b class="fc"><i>312</i>&nbsp;        game = null;</b>
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;        // a new preGameLobby to handler new connections
+<b class="fc"><i>315</i>&nbsp;        this.preGameLobby = new PreGameLobby();</b>
+<i>316</i>&nbsp;
+<b class="fc"><i>317</i>&nbsp;    }</b>
+<i>318</i>&nbsp;
+<i>319</i>&nbsp;
+<i>320</i>&nbsp;    /**
+<i>321</i>&nbsp;     * this method takes in the nickname of the player we want to know the new possible actions,
+<i>322</i>&nbsp;     * if this player has some new actions then we send them to him, in case the player doesn&#39;t have
+<i>323</i>&nbsp;     * any type of action then he lose the game
+<i>324</i>&nbsp;     * @param nickname the nickname of the player that wants his next actions
+<i>325</i>&nbsp;     * @param pawnRow the row of the pawn of the player that wants to know the new actions
+<i>326</i>&nbsp;     * @param pawnColumn the row of the column of the player that wants to know the new actions
+<i>327</i>&nbsp;     */
+<i>328</i>&nbsp;    public void newPossibleActions(String nickname, int pawnRow, int pawnColumn) {
+<i>329</i>&nbsp;
+<b class="fc"><i>330</i>&nbsp;        List&lt;Action&gt; possibleActions = new ArrayList&lt;&gt;();</b>
+<i>331</i>&nbsp;
+<i>332</i>&nbsp;        //take the possible actions of the player with &quot;nickname&quot; for the pawn in (pawnRow, pawnColumn)
+<i>333</i>&nbsp;        try {
+<b class="fc"><i>334</i>&nbsp;            possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn);</b>
+<b class="fc"><i>335</i>&nbsp;        } catch (NullPointerException e) {</b>
+<b class="fc"><i>336</i>&nbsp;            return;</b>
+<b class="fc"><i>337</i>&nbsp;        }</b>
+<i>338</i>&nbsp;
+<i>339</i>&nbsp;        //if there is at least one possible action then we have to send to the player
+<b class="fc"><i>340</i>&nbsp;        if (possibleActions.size() &gt; 0) {</b>
+<i>341</i>&nbsp;            //transform the actions into string and then send
+<b class="fc"><i>342</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions(possibleActions);</b>
+<b class="fc"><i>343</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));</b>
+<b class="fc"><i>344</i>&nbsp;        }</b>
+<i>345</i>&nbsp;        //if the player have no possible action then he lose the game and pass the turn to the next player
+<i>346</i>&nbsp;        else {
+<b class="fc"><i>347</i>&nbsp;            endTurn(true);</b>
+<i>348</i>&nbsp;        }
+<i>349</i>&nbsp;
+<b class="fc"><i>350</i>&nbsp;    }</b>
+<i>351</i>&nbsp;
+<i>352</i>&nbsp;
+<i>353</i>&nbsp;    public void changedController(String nickname){
+<i>354</i>&nbsp;
+<b class="nc"><i>355</i>&nbsp;        List&lt;String&gt; connectedPlayers = preGameLobby.getConnectedPlayers();</b>
+<i>356</i>&nbsp;
+<b class="nc"><i>357</i>&nbsp;        virtualView.sendMessage(new OnePlayerEnteredEvent(nickname, new ArrayList&lt;&gt;(connectedPlayers)));</b>
+<i>358</i>&nbsp;
+<b class="nc"><i>359</i>&nbsp;        preGameLobby.addPlayer(nickname);</b>
+<b class="nc"><i>360</i>&nbsp;        virtualView.addNickname(nickname);</b>
+<i>361</i>&nbsp;
+<b class="nc"><i>362</i>&nbsp;        connectedPlayers = preGameLobby.getConnectedPlayers();</b>
+<i>363</i>&nbsp;
+<b class="nc"><i>364</i>&nbsp;        if(preGameLobby.getConnectedPlayers().size() == 1) {</b>
+<i>365</i>&nbsp;
+<b class="nc"><i>366</i>&nbsp;            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));</b>
+<b class="nc"><i>367</i>&nbsp;            virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));</b>
+<b class="nc"><i>368</i>&nbsp;            countdownStart();</b>
+<i>369</i>&nbsp;        }
+<b class="nc"><i>370</i>&nbsp;        else if(connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {</b>
+<i>371</i>&nbsp;
+<b class="nc"><i>372</i>&nbsp;            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));</b>
+<i>373</i>&nbsp;
+<b class="nc"><i>374</i>&nbsp;            closeGameLobby();</b>
+<b class="nc"><i>375</i>&nbsp;            timerTask.cancel();</b>
+<i>376</i>&nbsp;
+<i>377</i>&nbsp;        }
+<i>378</i>&nbsp;        else {
+<b class="nc"><i>379</i>&nbsp;            virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));</b>
+<i>380</i>&nbsp;        }
+<i>381</i>&nbsp;
+<b class="nc"><i>382</i>&nbsp;        if (connectedPlayers.size() == MAXPLAYERS){</b>
+<b class="nc"><i>383</i>&nbsp;            this.isClosed = true;</b>
+<i>384</i>&nbsp;        }
+<i>385</i>&nbsp;
+<i>386</i>&nbsp;
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;
+<b class="nc"><i>389</i>&nbsp;    }</b>
+<i>390</i>&nbsp;
+<i>391</i>&nbsp;
+<i>392</i>&nbsp;    // MARK : Network Event Manager Section ======================================================================================
+<i>393</i>&nbsp;
+<i>394</i>&nbsp;
+<i>395</i>&nbsp;    @Override
+<i>396</i>&nbsp;    public void manageEvent(NewConnectionEvent event) {
+<i>397</i>&nbsp;
+<b class="fc"><i>398</i>&nbsp;        Integer ID = event.ID;</b>
+<i>399</i>&nbsp;
+<b class="fc"><i>400</i>&nbsp;        String nickname = event.nickname;</b>
+<i>401</i>&nbsp;
+<b class="fc"><i>402</i>&nbsp;        Boolean isNicknameFree = preGameLobby.isNicknameAvailable(nickname);</b>
+<b class="fc"><i>403</i>&nbsp;        Boolean isNicknameValid = preGameLobby.isNicknameValid(nickname);</b>
+<b class="fc"><i>404</i>&nbsp;        Boolean isNicknameViewFree = VirtualView.isValidNickname(nickname);</b>
+<i>405</i>&nbsp;
+<b class="fc"><i>406</i>&nbsp;        if(isNicknameViewFree &amp;&amp; isNicknameFree &amp;&amp; isNicknameValid &amp;&amp; !preGameLobby.isClosed()) {</b>
+<i>407</i>&nbsp;
+<b class="fc"><i>408</i>&nbsp;            preGameLobby.addPlayer(nickname);</b>
+<i>409</i>&nbsp;
+<b class="fc"><i>410</i>&nbsp;            List&lt;String&gt; connectedPlayers = preGameLobby.getConnectedPlayers();</b>
+<b class="fc"><i>411</i>&nbsp;            List&lt;String&gt; connectedPlayerExceptThis = new ArrayList&lt;&gt;(connectedPlayers);</b>
+<b class="fc"><i>412</i>&nbsp;            connectedPlayerExceptThis.remove(nickname);</b>
+<i>413</i>&nbsp;
+<b class="fc"><i>414</i>&nbsp;            for (String playerConnected : connectedPlayerExceptThis) {</b>
+<b class="fc"><i>415</i>&nbsp;                virtualView.sendMessageTo(playerConnected, new OnePlayerEnteredEvent(nickname, new ArrayList&lt;&gt;(connectedPlayers)));</b>
+<b class="fc"><i>416</i>&nbsp;            }</b>
+<i>417</i>&nbsp;
+<b class="fc"><i>418</i>&nbsp;            virtualView.newNicknameID(nickname, ID);</b>
+<i>419</i>&nbsp;
+<i>420</i>&nbsp;
+<i>421</i>&nbsp;            //if there&#39;s only one player connected to the waitingRoom, than this is the first one
+<i>422</i>&nbsp;            //and he has to choose the number of the players for the new match
+<b class="fc"><i>423</i>&nbsp;            if(connectedPlayers.size() == 1) {</b>
+<b class="fc"><i>424</i>&nbsp;                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));</b>
+<b class="fc"><i>425</i>&nbsp;                virtualView.sendMessageTo(nickname, new FirstConnectedEvent(nickname));</b>
+<b class="fc"><i>426</i>&nbsp;                countdownStart();</b>
+<i>427</i>&nbsp;
+<i>428</i>&nbsp;            }
+<i>429</i>&nbsp;            //if the waitingRoom is filled than we broadcast a message that communicates this event
+<i>430</i>&nbsp;            //and we ask the first entered player to choose his card
+<b class="fc"><i>431</i>&nbsp;            else if(connectedPlayers.size() == preGameLobby.getNumberOfPlayers()) {</b>
+<i>432</i>&nbsp;
+<b class="fc"><i>433</i>&nbsp;                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));</b>
+<i>434</i>&nbsp;
+<b class="fc"><i>435</i>&nbsp;                closeGameLobby();</b>
+<b class="fc"><i>436</i>&nbsp;                timerTask.cancel();</b>
+<i>437</i>&nbsp;
+<i>438</i>&nbsp;            }
+<i>439</i>&nbsp;            //if is an intermediate connection than nothing happens
+<i>440</i>&nbsp;            else {
+<b class="fc"><i>441</i>&nbsp;                virtualView.sendMessageTo(nickname, new SuccessfullyConnectedEvent(connectedPlayers, nickname));</b>
+<i>442</i>&nbsp;            }
+<i>443</i>&nbsp;
+<b class="fc"><i>444</i>&nbsp;        }</b>
+<i>445</i>&nbsp;        //if the waitingRoom is already closed than we disconnect the player
+<b class="nc"><i>446</i>&nbsp;        else if(preGameLobby.isClosed()) {</b>
+<b class="nc"><i>447</i>&nbsp;            virtualView.sendMessageTo(ID, new UnableToEnterWaitingRoomEvent());</b>
+<i>448</i>&nbsp;        }
+<i>449</i>&nbsp;        //if the chosen nickname is already taken we ask to enter it again
+<i>450</i>&nbsp;        else {
+<b class="nc"><i>451</i>&nbsp;            virtualView.sendMessageTo(ID, new UnavailableNicknameEvent(ID));</b>
+<i>452</i>&nbsp;        }
+<i>453</i>&nbsp;
+<b class="fc"><i>454</i>&nbsp;        if (preGameLobby.getConnectedPlayers().size() == MAXPLAYERS){</b>
+<b class="fc"><i>455</i>&nbsp;            this.isClosed = true;</b>
+<i>456</i>&nbsp;        }
+<i>457</i>&nbsp;
+<i>458</i>&nbsp;
+<b class="fc"><i>459</i>&nbsp;    }</b>
+<i>460</i>&nbsp;
+<i>461</i>&nbsp;
+<i>462</i>&nbsp;    @Override
+<i>463</i>&nbsp;    public void manageEvent(ClientDisconnectionEvent event) {
+<i>464</i>&nbsp;
+<b class="fc"><i>465</i>&nbsp;        String disconnectedPlayer = virtualView.removeNicknameIDConnection(event.ID);</b>
+<i>466</i>&nbsp;
+<b class="fc"><i>467</i>&nbsp;        if (disconnectedPlayer == null)</b>
+<b class="nc"><i>468</i>&nbsp;            throw new RuntimeException(&quot;It&#39;s strange, but the ID of the player is corrupt!&quot;);</b>
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;        //if the nickname is not available then the player was really connected in the preGameLobby
+<b class="fc"><i>471</i>&nbsp;        if (preGameLobby != null &amp;&amp; preGameLobby.isNicknameAvailable(disconnectedPlayer))</b>
+<b class="nc"><i>472</i>&nbsp;            throw new RuntimeException(&quot;It&#39;s strange, but the Nickname of the player is corrupt!&quot;);</b>
+<i>473</i>&nbsp;
+<i>474</i>&nbsp;
+<i>475</i>&nbsp;
+<b class="fc"><i>476</i>&nbsp;        if(preGameLobby != null &amp;&amp; !preGameLobby.isClosed()) {</b>
+<i>477</i>&nbsp;
+<b class="fc"><i>478</i>&nbsp;            boolean disconnectedPlayerWasFirst = disconnectedPlayer.equals(preGameLobby.getConnectedPlayers().get(0));</b>
+<i>479</i>&nbsp;
+<i>480</i>&nbsp;            //if the preGameLobby isn&#39;t closed we have to delete all info of the disconnected player
+<b class="fc"><i>481</i>&nbsp;            preGameLobby.deletePlayerInformation(disconnectedPlayer);</b>
+<i>482</i>&nbsp;
+<b class="fc"><i>483</i>&nbsp;            if (preGameLobby.getConnectedPlayers().size() &gt; 0) {</b>
+<i>484</i>&nbsp;
+<b class="fc"><i>485</i>&nbsp;                List&lt;String&gt; connectedPlayers = new ArrayList&lt;&gt;(preGameLobby.getConnectedPlayers());</b>
+<b class="fc"><i>486</i>&nbsp;                virtualView.sendMessage(new OneClientDisconnectedEvent(disconnectedPlayer, connectedPlayers));</b>
+<i>487</i>&nbsp;
+<i>488</i>&nbsp;                //if the disconnected player was the creator of the lobby
+<i>489</i>&nbsp;                //we have to ask to reselect the number of the players for the match
+<b class="fc"><i>490</i>&nbsp;                if (disconnectedPlayerWasFirst) {</b>
+<b class="nc"><i>491</i>&nbsp;                    preGameLobby.setNumberOfPlayers(-1);</b>
+<b class="nc"><i>492</i>&nbsp;                    virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new PlainTextEvent(&quot;Now you are the first player, so&quot;));</b>
+<b class="nc"><i>493</i>&nbsp;                    virtualView.sendMessageTo(preGameLobby.getConnectedPlayers().get(0), new FirstConnectedEvent(preGameLobby.getConnectedPlayers().get(0)));</b>
+<i>494</i>&nbsp;                }
+<i>495</i>&nbsp;
+<b class="fc"><i>496</i>&nbsp;            }</b>
+<i>497</i>&nbsp;            //if there are no players connected to the lobby we reset to default value the number of players of the match
+<i>498</i>&nbsp;            else {
+<b class="fc"><i>499</i>&nbsp;                preGameLobby.setNumberOfPlayers(-1);</b>
+<b class="fc"><i>500</i>&nbsp;                timerTask.cancel(); // stop the timer</b>
+<i>501</i>&nbsp;            }
+<i>502</i>&nbsp;
+<b class="fc"><i>503</i>&nbsp;        }</b>
+<i>504</i>&nbsp;        //the player lost the game and decided to quit
+<b class="fc"><i>505</i>&nbsp;        else if(game != null &amp;&amp; !game.getPlayersNickname().contains(disconnectedPlayer)) {</b>
+<b class="nc"><i>506</i>&nbsp;            virtualView.removeNicknameIDConnection(event.ID);</b>
+<i>507</i>&nbsp;        }
+<i>508</i>&nbsp;        //if the game is started or the preGameLobby has been closed we have to disconnect all the players
+<i>509</i>&nbsp;        else {
+<i>510</i>&nbsp;
+<b class="fc"><i>511</i>&nbsp;            virtualView.sendMessage(new PlainTextEvent(disconnectedPlayer + &quot; is disconnected, so the game ended&quot;));</b>
+<b class="fc"><i>512</i>&nbsp;            virtualView.sendMessage(new DisconnectionClientEvent());</b>
+<i>513</i>&nbsp;
+<i>514</i>&nbsp;            //if the game is not started but the preGameLobby is closed we have to delete all the info of the players
+<b class="fc"><i>515</i>&nbsp;            if(preGameLobby != null) {</b>
+<b class="fc"><i>516</i>&nbsp;                preGameLobby.clearLobby();</b>
+<i>517</i>&nbsp;            }
+<i>518</i>&nbsp;            else {
+<b class="nc"><i>519</i>&nbsp;                game = null;</b>
+<b class="nc"><i>520</i>&nbsp;                preGameLobby = new PreGameLobby();</b>
+<i>521</i>&nbsp;            }
+<i>522</i>&nbsp;
+<i>523</i>&nbsp;        }
+<i>524</i>&nbsp;
+<i>525</i>&nbsp;
+<b class="fc"><i>526</i>&nbsp;    }</b>
+<i>527</i>&nbsp;
+<i>528</i>&nbsp;
+<i>529</i>&nbsp;    @Override
+<i>530</i>&nbsp;    public void manageEvent(ChosenPlayerNumberEvent event) {
+<i>531</i>&nbsp;
+<b class="fc"><i>532</i>&nbsp;        String nickname = event.nickname;</b>
+<i>533</i>&nbsp;
+<b class="fc"><i>534</i>&nbsp;        Integer numberOfPlayers = event.number;</b>
+<i>535</i>&nbsp;
+<b class="fc"><i>536</i>&nbsp;        List&lt;String&gt; connectedPlayers = preGameLobby.getConnectedPlayers();</b>
+<i>537</i>&nbsp;
+<b class="fc"><i>538</i>&nbsp;        boolean isFirstPlayer = preGameLobby.getConnectedPlayers().get(0).equals(nickname);</b>
+<i>539</i>&nbsp;
+<b class="fc"><i>540</i>&nbsp;        if(isFirstPlayer &amp;&amp; (numberOfPlayers == 2 || numberOfPlayers == 3)) {</b>
+<i>541</i>&nbsp;
+<b class="fc"><i>542</i>&nbsp;            preGameLobby.setNumberOfPlayers(numberOfPlayers);</b>
+<i>543</i>&nbsp;
+<b class="fc"><i>544</i>&nbsp;            if (connectedPlayers.size() == numberOfPlayers){</b>
+<b class="nc"><i>545</i>&nbsp;                closeGameLobby();</b>
+<i>546</i>&nbsp;            }
+<b class="fc"><i>547</i>&nbsp;            else if (connectedPlayers.size() &gt; numberOfPlayers) {</b>
+<i>548</i>&nbsp;
+<b class="nc"><i>549</i>&nbsp;                this.isClosed = true;</b>
+<i>550</i>&nbsp;
+<b class="nc"><i>551</i>&nbsp;                int numConnected = connectedPlayers.size();</b>
+<i>552</i>&nbsp;
+<b class="nc"><i>553</i>&nbsp;                int diff = numConnected - numberOfPlayers;</b>
+<i>554</i>&nbsp;
+<i>555</i>&nbsp;                do {
+<b class="nc"><i>556</i>&nbsp;                    String player = connectedPlayers.get(connectedPlayers.size() - 1);</b>
+<b class="nc"><i>557</i>&nbsp;                    preGameLobby.deletePlayerInformation(player);</b>
+<b class="nc"><i>558</i>&nbsp;                    virtualView.removeParticularNickname(player);</b>
+<i>559</i>&nbsp;
+<b class="nc"><i>560</i>&nbsp;                    virtualView.sendMessageTo(player, new PlainTextEvent(&quot;You are added to new Lobby&quot;));</b>
+<b class="nc"><i>561</i>&nbsp;                    Server.changeController(player);</b>
+<b class="nc"><i>562</i>&nbsp;                    diff--;</b>
+<i>563</i>&nbsp;
+<b class="nc"><i>564</i>&nbsp;                } while(diff &gt; 0);</b>
+<i>565</i>&nbsp;
+<b class="nc"><i>566</i>&nbsp;                closeGameLobby();</b>
+<b class="nc"><i>567</i>&nbsp;            }</b>
+<i>568</i>&nbsp;
+<i>569</i>&nbsp;        }
+<i>570</i>&nbsp;        //if something goes wrong, set the default number of player to 3
+<i>571</i>&nbsp;        else {
+<b class="nc"><i>572</i>&nbsp;            preGameLobby.setNumberOfPlayers(3);</b>
+<i>573</i>&nbsp;        }
+<i>574</i>&nbsp;
+<b class="fc"><i>575</i>&nbsp;    }</b>
+<i>576</i>&nbsp;
+<i>577</i>&nbsp;
+<i>578</i>&nbsp;
+<i>579</i>&nbsp;    // MARK : Game Based Event Manager Section ======================================================================================
+<i>580</i>&nbsp;
+<i>581</i>&nbsp;
+<i>582</i>&nbsp;    @Override
+<i>583</i>&nbsp;    public void manageEvent(ChosenCardsChallengerEvent event) {
+<i>584</i>&nbsp;
+<b class="fc"><i>585</i>&nbsp;        Boolean cardsAreValid = preGameLobby.areValidCards(event.cardsName);</b>
+<i>586</i>&nbsp;
+<b class="fc"><i>587</i>&nbsp;        int numberOfPlayers = preGameLobby.getNumberOfPlayers();</b>
+<b class="fc"><i>588</i>&nbsp;        Boolean isChallenger = event.challengerNickname.equals( preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1) );</b>
+<i>589</i>&nbsp;
+<b class="fc"><i>590</i>&nbsp;        if(cardsAreValid &amp;&amp; isChallenger) {</b>
+<i>591</i>&nbsp;
+<b class="fc"><i>592</i>&nbsp;            preGameLobby.setPickedCards(event.cardsName);</b>
+<i>593</i>&nbsp;
+<b class="fc"><i>594</i>&nbsp;            String firstPickingPlayer = preGameLobby.getConnectedPlayers().get(0);</b>
+<i>595</i>&nbsp;
+<b class="fc"><i>596</i>&nbsp;            List&lt;String&gt; cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());</b>
+<b class="fc"><i>597</i>&nbsp;            List&lt;String&gt; cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());</b>
+<i>598</i>&nbsp;
+<b class="fc"><i>599</i>&nbsp;            virtualView.sendMessageTo(firstPickingPlayer, new GivePossibleCardsEvent(firstPickingPlayer, cardsName, cardsEffect, true));</b>
+<i>600</i>&nbsp;
+<b class="fc"><i>601</i>&nbsp;        }</b>
+<i>602</i>&nbsp;        else {
+<i>603</i>&nbsp;
+<b class="nc"><i>604</i>&nbsp;            List&lt;String&gt; cardsName  = preGameLobby.getAllCardsForPlayers().stream().map(Card::getName).collect(Collectors.toList());</b>
+<b class="nc"><i>605</i>&nbsp;            List&lt;String&gt; cardsEffect = preGameLobby.getAllCardsForPlayers().stream().map(Card::getEffectDescription).collect(Collectors.toList());</b>
+<i>606</i>&nbsp;
+<b class="nc"><i>607</i>&nbsp;            String challenger = preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1);</b>
+<i>608</i>&nbsp;
+<b class="nc"><i>609</i>&nbsp;            virtualView.sendMessageTo(challenger, new AllCardsEvent(challenger, cardsName, cardsEffect, numberOfPlayers,false));</b>
+<i>610</i>&nbsp;
+<i>611</i>&nbsp;        }
+<i>612</i>&nbsp;
+<i>613</i>&nbsp;
+<b class="fc"><i>614</i>&nbsp;    }</b>
+<i>615</i>&nbsp;
+<i>616</i>&nbsp;
+<i>617</i>&nbsp;    @Override
+<i>618</i>&nbsp;    public void manageEvent(ChosenCardEvent event) {
+<i>619</i>&nbsp;
+<b class="fc"><i>620</i>&nbsp;        Boolean isCardAvailable = preGameLobby.isCardAvailable(event.card);</b>
+<i>621</i>&nbsp;
+<b class="fc"><i>622</i>&nbsp;        if(isCardAvailable) {</b>
+<b class="fc"><i>623</i>&nbsp;            preGameLobby.addCard(event.playerNickname, event.card);</b>
+<i>624</i>&nbsp;
+<b class="fc"><i>625</i>&nbsp;            int index = preGameLobby.getConnectedPlayers().indexOf(event.playerNickname);</b>
+<b class="fc"><i>626</i>&nbsp;            index++;</b>
+<i>627</i>&nbsp;
+<b class="fc"><i>628</i>&nbsp;            if (index &lt; preGameLobby.getNumberOfPlayers() - 1) {</b>
+<b class="fc"><i>629</i>&nbsp;                String nextPlayer = preGameLobby.getConnectedPlayers().get(index);</b>
+<i>630</i>&nbsp;
+<b class="fc"><i>631</i>&nbsp;                virtualView.sendMessageTo(nextPlayer, new GivePossibleCardsEvent(nextPlayer,</b>
+<b class="fc"><i>632</i>&nbsp;                        preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),</b>
+<b class="fc"><i>633</i>&nbsp;                        preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),</b>
+<i>634</i>&nbsp;                        true));
+<i>635</i>&nbsp;
+<b class="fc"><i>636</i>&nbsp;            } else if(index == preGameLobby.getNumberOfPlayers() - 1) {</b>
+<i>637</i>&nbsp;
+<i>638</i>&nbsp;                //startGame();
+<b class="fc"><i>639</i>&nbsp;                String challenger = preGameLobby.getConnectedPlayers().get(index);</b>
+<b class="fc"><i>640</i>&nbsp;                preGameLobby.addCard(challenger, preGameLobby.getPickedCards().get(0).getName());</b>
+<i>641</i>&nbsp;
+<b class="fc"><i>642</i>&nbsp;                List&lt;String&gt; playersNickname = preGameLobby.getConnectedPlayers();</b>
+<b class="fc"><i>643</i>&nbsp;                List&lt;String&gt; cardsName = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>644</i>&nbsp;                List&lt;String&gt; cardsEffect = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>645</i>&nbsp;                for (String p : playersNickname) {</b>
+<b class="fc"><i>646</i>&nbsp;                    cardsName.add( preGameLobby.getCardOfPlayer(p).getName() );</b>
+<b class="fc"><i>647</i>&nbsp;                    cardsEffect.add( preGameLobby.getCardOfPlayer(p).getEffectDescription() );</b>
+<b class="fc"><i>648</i>&nbsp;                }</b>
+<i>649</i>&nbsp;
+<b class="fc"><i>650</i>&nbsp;                virtualView.sendMessageTo(challenger, new GiveFirstPlayerChoiceEvent(playersNickname, cardsName, cardsEffect, true));</b>
+<i>651</i>&nbsp;            }
+<b class="fc"><i>652</i>&nbsp;        }</b>
+<i>653</i>&nbsp;        else {
+<b class="fc"><i>654</i>&nbsp;            virtualView.sendMessageTo(event.playerNickname, new GivePossibleCardsEvent(event.playerNickname,</b>
+<b class="fc"><i>655</i>&nbsp;                    preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList()),</b>
+<b class="fc"><i>656</i>&nbsp;                    preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList()),</b>
+<i>657</i>&nbsp;                    false));
+<i>658</i>&nbsp;        }
+<i>659</i>&nbsp;
+<i>660</i>&nbsp;
+<i>661</i>&nbsp;
+<b class="fc"><i>662</i>&nbsp;    }</b>
+<i>663</i>&nbsp;
+<i>664</i>&nbsp;
+<i>665</i>&nbsp;    @Override
+<i>666</i>&nbsp;    public void manageEvent(ChosenFirstPlayerEvent event) {
+<i>667</i>&nbsp;
+<b class="fc"><i>668</i>&nbsp;        int numberOfPlayers = preGameLobby.getNumberOfPlayers();</b>
+<b class="fc"><i>669</i>&nbsp;        Boolean isChallenger = event.challengerNickname.equals( preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1) );</b>
+<i>670</i>&nbsp;
+<b class="fc"><i>671</i>&nbsp;        Boolean isValidNickname = preGameLobby.getConnectedPlayers().contains(event.firstPlayerNickname);</b>
+<i>672</i>&nbsp;
+<b class="fc"><i>673</i>&nbsp;        if(isChallenger &amp;&amp; isValidNickname) {</b>
+<b class="fc"><i>674</i>&nbsp;            startGame( event.firstPlayerNickname );</b>
+<i>675</i>&nbsp;        }
+<i>676</i>&nbsp;        else {
+<i>677</i>&nbsp;
+<b class="nc"><i>678</i>&nbsp;            String challenger = preGameLobby.getConnectedPlayers().get(numberOfPlayers - 1);</b>
+<i>679</i>&nbsp;
+<b class="nc"><i>680</i>&nbsp;            List&lt;String&gt; playersNickname = preGameLobby.getConnectedPlayers();</b>
+<b class="nc"><i>681</i>&nbsp;            List&lt;String&gt; cardsName = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>682</i>&nbsp;            List&lt;String&gt; cardsEffect = new ArrayList&lt;&gt;();</b>
+<i>683</i>&nbsp;
+<b class="nc"><i>684</i>&nbsp;            for (String p : playersNickname) {</b>
+<b class="nc"><i>685</i>&nbsp;                cardsName.add( preGameLobby.getCardOfPlayer(p).getName() );</b>
+<b class="nc"><i>686</i>&nbsp;                cardsEffect.add( preGameLobby.getCardOfPlayer(p).getEffectDescription() );</b>
+<b class="nc"><i>687</i>&nbsp;            }</b>
+<i>688</i>&nbsp;
+<b class="nc"><i>689</i>&nbsp;            virtualView.sendMessageTo(challenger, new GiveFirstPlayerChoiceEvent(playersNickname, cardsName, cardsEffect, false));</b>
+<i>690</i>&nbsp;        }
+<i>691</i>&nbsp;
+<b class="fc"><i>692</i>&nbsp;    }</b>
+<i>693</i>&nbsp;
+<i>694</i>&nbsp;
+<i>695</i>&nbsp;    @Override
+<i>696</i>&nbsp;    public void manageEvent(ChosenInitialPawnCellEvent event) {
+<i>697</i>&nbsp;
+<b class="fc"><i>698</i>&nbsp;        boolean isMaleSpotFree = game.isValidSpot(event.malePawnRow, event.malePawnColumn);</b>
+<b class="fc"><i>699</i>&nbsp;        boolean isFemaleSpotFree = game.isValidSpot(event.femalePawnRow, event.femalePawnColumn);</b>
+<i>700</i>&nbsp;
+<i>701</i>&nbsp;        /* before I control that the selected spot is really free and if the player is the current */
+<b class="fc"><i>702</i>&nbsp;        if(isMaleSpotFree &amp;&amp; isFemaleSpotFree &amp;&amp; game.isValidPlayer(event.playerNickname)) {</b>
+<i>703</i>&nbsp;
+<b class="fc"><i>704</i>&nbsp;            game.initializePawn(event.playerNickname, event.malePawnRow, event.malePawnColumn);</b>
+<b class="fc"><i>705</i>&nbsp;            game.initializePawn(event.playerNickname, event.femalePawnRow, event.femalePawnColumn);</b>
+<i>706</i>&nbsp;
+<b class="fc"><i>707</i>&nbsp;            if (game.getPlayersNickname().indexOf(event.playerNickname) != game.getPlayers().size() - 1) {</b>
+<i>708</i>&nbsp;
+<b class="fc"><i>709</i>&nbsp;                game.nextCurrentPlayer();</b>
+<i>710</i>&nbsp;
+<b class="fc"><i>711</i>&nbsp;                int index = game.getPlayersNickname().indexOf(game.getCurrentPlayer());</b>
+<i>712</i>&nbsp;
+<b class="fc"><i>713</i>&nbsp;                List &lt;Cell&gt; occupiedCell = game.getAllPawnsCoordinates();</b>
+<b class="fc"><i>714</i>&nbsp;                List&lt;Point&gt; info = generatePointsByCells(occupiedCell);</b>
+<b class="fc"><i>715</i>&nbsp;                virtualView.sendMessageTo(game.getPlayersNickname().get(index), new AskInitPawnsEvent(game.getPlayersNickname().get(index), true, info ));</b>
+<b class="fc"><i>716</i>&nbsp;            }</b>
+<i>717</i>&nbsp;            else {
+<i>718</i>&nbsp;                // if everybody initialized pawns, last player end turn
+<b class="fc"><i>719</i>&nbsp;                endTurn(false);</b>
+<i>720</i>&nbsp;            }
+<i>721</i>&nbsp;        }
+<i>722</i>&nbsp;        else{
+<b class="nc"><i>723</i>&nbsp;            List &lt;Cell&gt; occupiedCell = game.getAllPawnsCoordinates();</b>
+<b class="nc"><i>724</i>&nbsp;            List&lt;Point&gt; info = generatePointsByCells(occupiedCell);</b>
+<b class="nc"><i>725</i>&nbsp;            virtualView.sendMessageTo(event.playerNickname, new AskInitPawnsEvent(event.playerNickname, false, info));</b>
+<i>726</i>&nbsp;        }
+<i>727</i>&nbsp;
+<i>728</i>&nbsp;
+<b class="fc"><i>729</i>&nbsp;    }</b>
+<i>730</i>&nbsp;
+<i>731</i>&nbsp;
+<i>732</i>&nbsp;    @Override
+<i>733</i>&nbsp;    public void manageEvent(ChosenPawnToUseEvent event) {
+<i>734</i>&nbsp;
+<b class="fc"><i>735</i>&nbsp;        String nickname = event.playerNickname;</b>
+<b class="fc"><i>736</i>&nbsp;        int row = event.pawnRow;</b>
+<b class="fc"><i>737</i>&nbsp;        int column = event.pawnColumn;</b>
+<i>738</i>&nbsp;
+<b class="fc"><i>739</i>&nbsp;        boolean isValid = game.isValid(row, column);</b>
+<i>740</i>&nbsp;
+<b class="fc"><i>741</i>&nbsp;        if (isValid &amp;&amp; game.isValidPlayer(nickname)) {</b>
+<i>742</i>&nbsp;
+<b class="fc"><i>743</i>&nbsp;            game.setChosenPawn(nickname, row, column);</b>
+<i>744</i>&nbsp;
+<b class="fc"><i>745</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions(game.getPossibleActions(nickname, row, column));</b>
+<i>746</i>&nbsp;
+<b class="fc"><i>747</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, true));</b>
+<i>748</i>&nbsp;
+<b class="fc"><i>749</i>&nbsp;        } else if (!isValid){</b>
+<b class="fc"><i>750</i>&nbsp;            List&lt;Cell&gt; availablePawnsCell = game.getAvailablePawns(nickname);</b>
+<i>751</i>&nbsp;
+<b class="fc"><i>752</i>&nbsp;            List&lt;Point&gt; points = generatePointsByCells(availablePawnsCell);</b>
+<i>753</i>&nbsp;
+<b class="fc"><i>754</i>&nbsp;            virtualView.sendMessageTo(nickname, new AskWhichPawnsUseEvent(nickname, false, points));</b>
+<i>755</i>&nbsp;        }
+<b class="fc"><i>756</i>&nbsp;    }</b>
+<i>757</i>&nbsp;
+<i>758</i>&nbsp;
+<i>759</i>&nbsp;    @Override
+<i>760</i>&nbsp;    public void manageEvent(ChosenMoveActionEvent event) {
+<i>761</i>&nbsp;
+<b class="fc"><i>762</i>&nbsp;        String nickname = event.playerNickname;</b>
+<b class="fc"><i>763</i>&nbsp;        String chosenAction = event.action;</b>
+<b class="fc"><i>764</i>&nbsp;        int row = event.pawnRow;</b>
+<b class="fc"><i>765</i>&nbsp;        int column = event.pawnColumn;</b>
+<i>766</i>&nbsp;
+<i>767</i>&nbsp;
+<b class="fc"><i>768</i>&nbsp;        if( game.isValid(chosenAction) &amp;&amp; game.isValidPawn(nickname, row, column) &amp;&amp; game.isValidPlayer(nickname) ) {</b>
+<i>769</i>&nbsp;
+<b class="fc"><i>770</i>&nbsp;            List&lt;Cell&gt; availableCellsToMove = game.wherePawnCanMove(nickname, row, column);</b>
+<b class="fc"><i>771</i>&nbsp;            List&lt;Point&gt; cellInfo = generatePointsByCells(availableCellsToMove);</b>
+<i>772</i>&nbsp;
+<b class="fc"><i>773</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));</b>
+<i>774</i>&nbsp;
+<b class="fc"><i>775</i>&nbsp;        } else if ( !(game.isValid(chosenAction) &amp;&amp; game.isValidPawn(nickname, row, column)) ){</b>
+<b class="fc"><i>776</i>&nbsp;            List&lt;Action&gt; possibleActions = game.getLastActionsList();</b>
+<b class="fc"><i>777</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions(possibleActions);</b>
+<i>778</i>&nbsp;
+<b class="fc"><i>779</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));</b>
+<i>780</i>&nbsp;        }
+<b class="fc"><i>781</i>&nbsp;    }</b>
+<i>782</i>&nbsp;
+<i>783</i>&nbsp;
+<i>784</i>&nbsp;    @Override
+<i>785</i>&nbsp;    public void manageEvent(ChosenBuildActionEvent event) {
+<i>786</i>&nbsp;
+<b class="fc"><i>787</i>&nbsp;        String nickname = event.playerNickname;</b>
+<b class="fc"><i>788</i>&nbsp;        String chosenAction = event.action;</b>
+<i>789</i>&nbsp;
+<b class="fc"><i>790</i>&nbsp;        int row = event.pawnRow;</b>
+<b class="fc"><i>791</i>&nbsp;        int column = event.pawnColumn;</b>
+<i>792</i>&nbsp;
+<i>793</i>&nbsp;        //here there&#39;s the control to verify that the chosen action is valid
+<b class="fc"><i>794</i>&nbsp;        if ( game.isValid(chosenAction) &amp;&amp; game.isValidPawn(nickname, row, column) &amp;&amp; game.isValidPlayer(nickname) ) {</b>
+<i>795</i>&nbsp;            //if it&#39;s ok the game automatically return the cells available to this action
+<i>796</i>&nbsp;
+<b class="fc"><i>797</i>&nbsp;            List&lt;Cell&gt; availableCellsToBuild = game.wherePawnCanBuild(nickname, row, column);</b>
+<b class="fc"><i>798</i>&nbsp;            List&lt;Point&gt; cellsInfo = generatePointsByCells(availableCellsToBuild);</b>
+<i>799</i>&nbsp;
+<b class="fc"><i>800</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo, true));</b>
+<b class="fc"><i>801</i>&nbsp;        }</b>
+<b class="fc"><i>802</i>&nbsp;        else if ( !(game.isValid(chosenAction) &amp;&amp; game.isValidPawn(nickname, row, column)) ) {</b>
+<i>803</i>&nbsp;            //if it&#39;s not ok than the game automatically return the last possible actions list
+<i>804</i>&nbsp;            //because the game state isn&#39;t changed
+<b class="fc"><i>805</i>&nbsp;            List&lt;Action&gt; possibleActions = game.getLastActionsList();</b>
+<b class="fc"><i>806</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions(possibleActions);</b>
+<i>807</i>&nbsp;
+<b class="fc"><i>808</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));</b>
+<i>809</i>&nbsp;        }
+<b class="fc"><i>810</i>&nbsp;    }</b>
+<i>811</i>&nbsp;
+<i>812</i>&nbsp;
+<i>813</i>&nbsp;    @Override
+<i>814</i>&nbsp;    public void manageEvent(ChosenDestroyActionEvent event) {
+<b class="fc"><i>815</i>&nbsp;        String nickname = event.playerNickname;</b>
+<i>816</i>&nbsp;
+<b class="fc"><i>817</i>&nbsp;        String actionID = event.action;</b>
+<i>818</i>&nbsp;
+<b class="fc"><i>819</i>&nbsp;        int pawnRow = event.pawnRow;</b>
+<b class="fc"><i>820</i>&nbsp;        int pawnColumn = event.pawnColumn;</b>
+<i>821</i>&nbsp;
+<b class="fc"><i>822</i>&nbsp;        if (game.isValid(actionID) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) &amp;&amp; game.isValidPlayer(nickname)){</b>
+<i>823</i>&nbsp;
+<b class="fc"><i>824</i>&nbsp;            List&lt;Cell&gt; availableCells = game.wherePawnCanDestroy(nickname);</b>
+<b class="fc"><i>825</i>&nbsp;            List&lt;Point&gt; cellsInfo = generatePointsByCells(availableCells);</b>
+<i>826</i>&nbsp;
+<b class="fc"><i>827</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo, true));</b>
+<i>828</i>&nbsp;
+<b class="fc"><i>829</i>&nbsp;        } else if ( !(game.isValid(actionID) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn)) ){</b>
+<b class="nc"><i>830</i>&nbsp;            List&lt;Action&gt; possibleActions = game.getLastActionsList();</b>
+<b class="nc"><i>831</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions(possibleActions);</b>
+<i>832</i>&nbsp;
+<b class="nc"><i>833</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));</b>
+<i>834</i>&nbsp;        }
+<i>835</i>&nbsp;
+<b class="fc"><i>836</i>&nbsp;    }</b>
+<i>837</i>&nbsp;
+<i>838</i>&nbsp;
+<i>839</i>&nbsp;    @Override
+<i>840</i>&nbsp;    public void manageEvent(ChosenForceActionEvent event) {
+<i>841</i>&nbsp;
+<b class="fc"><i>842</i>&nbsp;        String nickname = event.playerNickname;</b>
+<i>843</i>&nbsp;
+<b class="fc"><i>844</i>&nbsp;        String actionID = event.action;</b>
+<i>845</i>&nbsp;
+<b class="fc"><i>846</i>&nbsp;        int pawnRow = event.pawnRow;</b>
+<b class="fc"><i>847</i>&nbsp;        int pawnColumn = event.pawnColumn;</b>
+<i>848</i>&nbsp;
+<b class="fc"><i>849</i>&nbsp;        if (game.isValid(actionID) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) &amp;&amp; game.isValidPlayer(nickname)){</b>
+<i>850</i>&nbsp;
+<b class="fc"><i>851</i>&nbsp;            List&lt;Cell&gt; availableCellsToForce = game.getOpponentsNeighboring(nickname, pawnRow, pawnColumn);</b>
+<b class="fc"><i>852</i>&nbsp;            List&lt;Point&gt; cellInfo = generatePointsByCells(availableCellsToForce);</b>
+<i>853</i>&nbsp;
+<b class="fc"><i>854</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellInfo, true));</b>
+<b class="fc"><i>855</i>&nbsp;        }</b>
+<b class="nc"><i>856</i>&nbsp;        else if ( !(game.isValid(actionID) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn)) ) {</b>
+<b class="nc"><i>857</i>&nbsp;            List&lt;Action&gt; possibleActions = game.getLastActionsList();</b>
+<b class="nc"><i>858</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions(possibleActions);</b>
+<i>859</i>&nbsp;
+<b class="nc"><i>860</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));</b>
+<i>861</i>&nbsp;        }
+<i>862</i>&nbsp;
+<b class="fc"><i>863</i>&nbsp;    }</b>
+<i>864</i>&nbsp;
+<i>865</i>&nbsp;
+<i>866</i>&nbsp;    @Override
+<i>867</i>&nbsp;    public void manageEvent(ChosenFinishActionEvent event) {
+<b class="fc"><i>868</i>&nbsp;        String nickname = event.playerNickname;</b>
+<i>869</i>&nbsp;
+<b class="fc"><i>870</i>&nbsp;        String chosenAction = event.action;</b>
+<i>871</i>&nbsp;
+<b class="fc"><i>872</i>&nbsp;        if( game.isValid(chosenAction) &amp;&amp; game.isValidPlayer(nickname) ) {</b>
+<b class="fc"><i>873</i>&nbsp;            endTurn(false);</b>
+<i>874</i>&nbsp;        }
+<b class="fc"><i>875</i>&nbsp;        else if ( !(game.isValid(chosenAction)) ){</b>
+<b class="fc"><i>876</i>&nbsp;            List&lt;String&gt; actionsInfo = generateActionIDByActions((game.getLastActionsList()));</b>
+<b class="fc"><i>877</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsInfo, false));</b>
+<i>878</i>&nbsp;        }
+<i>879</i>&nbsp;
+<b class="fc"><i>880</i>&nbsp;    }</b>
+<i>881</i>&nbsp;
+<i>882</i>&nbsp;
+<i>883</i>&nbsp;    @Override
+<i>884</i>&nbsp;    public void manageEvent(ChosenCellToMoveEvent event) {
+<i>885</i>&nbsp;
+<b class="fc"><i>886</i>&nbsp;        String nickname = event.playerNickname;</b>
+<i>887</i>&nbsp;
+<b class="fc"><i>888</i>&nbsp;        int pawnRow = event.pawnRow;</b>
+<b class="fc"><i>889</i>&nbsp;        int pawnColumn = event.pawnColumn;</b>
+<i>890</i>&nbsp;
+<b class="fc"><i>891</i>&nbsp;        int nextRow = event.nextRow;</b>
+<b class="fc"><i>892</i>&nbsp;        int nextColumn = event.nextColumn;</b>
+<i>893</i>&nbsp;
+<b class="fc"><i>894</i>&nbsp;        if( game.isValid(nextRow, nextColumn) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) &amp;&amp; game.isValidPlayer(nickname)) {</b>
+<i>895</i>&nbsp;
+<i>896</i>&nbsp;            //THAT&#39;S IMPORTANT!
+<b class="fc"><i>897</i>&nbsp;            game.movePawn(nickname, pawnRow, pawnColumn, nextRow, nextColumn);</b>
+<i>898</i>&nbsp;
+<b class="fc"><i>899</i>&nbsp;            newPossibleActions(nickname, nextRow, nextColumn);</b>
+<i>900</i>&nbsp;
+<i>901</i>&nbsp;        }
+<b class="nc"><i>902</i>&nbsp;        else if ( !(game.isValid(nextRow, nextColumn) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn)) ){</b>
+<b class="nc"><i>903</i>&nbsp;            List&lt;Cell&gt; availableCellsToMove = game.wherePawnCanMove(nickname, pawnRow, pawnColumn);</b>
+<b class="nc"><i>904</i>&nbsp;            List&lt;Point&gt; cellInfo = generatePointsByCells(availableCellsToMove);</b>
+<i>905</i>&nbsp;
+<b class="nc"><i>906</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToMoveEvent(nickname, cellInfo,true));</b>
+<i>907</i>&nbsp;        }
+<i>908</i>&nbsp;
+<b class="fc"><i>909</i>&nbsp;    }</b>
+<i>910</i>&nbsp;
+<i>911</i>&nbsp;
+<i>912</i>&nbsp;    @Override
+<i>913</i>&nbsp;    public void manageEvent(ChosenCellToBuildEvent event) {
+<b class="fc"><i>914</i>&nbsp;        String nickname = event.playerNickname;</b>
+<i>915</i>&nbsp;
+<b class="fc"><i>916</i>&nbsp;        int row = event.pawnRow;</b>
+<b class="fc"><i>917</i>&nbsp;        int column = event.pawnColumn;</b>
+<i>918</i>&nbsp;
+<b class="fc"><i>919</i>&nbsp;        int nextRow = event.nextRow;</b>
+<b class="fc"><i>920</i>&nbsp;        int nextColumn = event.nextColumn;</b>
+<i>921</i>&nbsp;
+<i>922</i>&nbsp;        //controlling if has been selected a valid cell
+<b class="fc"><i>923</i>&nbsp;        if(game.isValidPawn(nickname, row, column) &amp;&amp; game.isValid(nextRow, nextColumn) &amp;&amp; game.isValidPlayer(nickname)) {</b>
+<i>924</i>&nbsp;
+<i>925</i>&nbsp;
+<i>926</i>&nbsp;            //taking the available buildings on the selected cell
+<b class="fc"><i>927</i>&nbsp;            List&lt;Building&gt; availableBuildings = game.getPossibleBuildingOnCell(nickname, nextRow, nextColumn);</b>
+<i>928</i>&nbsp;
+<i>929</i>&nbsp;            //controlling if there are available building
+<b class="fc"><i>930</i>&nbsp;            if(availableBuildings.size() &gt; 0) {</b>
+<b class="fc"><i>931</i>&nbsp;                List&lt;Integer&gt; buildingInfo = generateLevelByBuilding(availableBuildings);</b>
+<i>932</i>&nbsp;
+<i>933</i>&nbsp;                //sending the available buildings to the client
+<b class="fc"><i>934</i>&nbsp;                virtualView.sendMessageTo(nickname, new GivePossibleBuildingsEvent(nickname, buildingInfo, true));</b>
+<b class="fc"><i>935</i>&nbsp;            }</b>
+<i>936</i>&nbsp;            else {
+<b class="nc"><i>937</i>&nbsp;                throw new RuntimeException(&quot;I don&#39;t really know what&#39;s happen here, please control some of your code! It&#39;s something with the buildings on a cell. :/&quot;);</b>
+<i>938</i>&nbsp;            }
+<b class="fc"><i>939</i>&nbsp;        }</b>
+<i>940</i>&nbsp;        //if the selected cell to build is invalid i ask again the cell
+<b class="fc"><i>941</i>&nbsp;        else if ( !(game.isValidPawn(nickname, row, column) &amp;&amp; game.isValid(nextRow, nextColumn)) ){</b>
+<b class="fc"><i>942</i>&nbsp;            List&lt;Point&gt; cellsInfo = generatePointsByCells(game.getLastCellsList());</b>
+<b class="fc"><i>943</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToBuildEvent(nickname, cellsInfo , false));</b>
+<i>944</i>&nbsp;        }
+<b class="fc"><i>945</i>&nbsp;    }</b>
+<i>946</i>&nbsp;
+<i>947</i>&nbsp;
+<i>948</i>&nbsp;    @Override
+<i>949</i>&nbsp;    public void manageEvent(ChosenCellToDestroyEvent event) {
+<b class="fc"><i>950</i>&nbsp;        String nickname = event.playerNickname;</b>
+<i>951</i>&nbsp;
+<b class="fc"><i>952</i>&nbsp;        int pawnRow = event.pawnRow;</b>
+<b class="fc"><i>953</i>&nbsp;        int pawnColumn = event.pawnColumn;</b>
+<i>954</i>&nbsp;
+<b class="fc"><i>955</i>&nbsp;        int row = event.rowToDestroy;</b>
+<b class="fc"><i>956</i>&nbsp;        int column = event.columnToDestroy;</b>
+<i>957</i>&nbsp;
+<i>958</i>&nbsp;        //controlling if has been selected a valid cell
+<b class="fc"><i>959</i>&nbsp;        if (game.isValid(row, column) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) &amp;&amp; game.isValidPlayer(nickname)){</b>
+<i>960</i>&nbsp;
+<b class="fc"><i>961</i>&nbsp;            game.destroyBlock(nickname, row, column);</b>
+<i>962</i>&nbsp;
+<b class="fc"><i>963</i>&nbsp;            newPossibleActions(nickname, pawnRow, pawnColumn);</b>
+<i>964</i>&nbsp;
+<i>965</i>&nbsp;
+<b class="fc"><i>966</i>&nbsp;        } else if ( !(game.isValid(row, column) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn)) ) {</b>
+<b class="fc"><i>967</i>&nbsp;            List &lt;Point&gt; cellsInfo = generatePointsByCells(game.getLastCellsList());</b>
+<b class="fc"><i>968</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleCellsToDestroyEvent(nickname, cellsInfo, false ));</b>
+<i>969</i>&nbsp;        }
+<i>970</i>&nbsp;
+<b class="fc"><i>971</i>&nbsp;    }</b>
+<i>972</i>&nbsp;
+<i>973</i>&nbsp;
+<i>974</i>&nbsp;    @Override
+<i>975</i>&nbsp;    public void manageEvent(ChosenCellToForceEvent event) {
+<i>976</i>&nbsp;
+<b class="fc"><i>977</i>&nbsp;       String nickname = event.playerNickname;</b>
+<i>978</i>&nbsp;
+<b class="fc"><i>979</i>&nbsp;       int pawnRow = event.pawnRow;</b>
+<b class="fc"><i>980</i>&nbsp;       int pawnColumn = event.pawnColumn;</b>
+<i>981</i>&nbsp;
+<b class="fc"><i>982</i>&nbsp;       int row = event.rowForcedPawn;</b>
+<b class="fc"><i>983</i>&nbsp;       int column = event.columnForcedPawn;</b>
+<i>984</i>&nbsp;
+<b class="fc"><i>985</i>&nbsp;       if (game.isValid(row, column) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) &amp;&amp; game.isValidPlayer(nickname) ){</b>
+<i>986</i>&nbsp;
+<b class="fc"><i>987</i>&nbsp;           game.forceOpponent(nickname, pawnRow, pawnColumn, row, column);</b>
+<i>988</i>&nbsp;
+<b class="fc"><i>989</i>&nbsp;           List&lt;Action&gt; possibleActions = game.getPossibleActions(nickname, pawnRow, pawnColumn );</b>
+<b class="fc"><i>990</i>&nbsp;           List&lt;String&gt; actionsID = generateActionIDByActions(possibleActions);</b>
+<i>991</i>&nbsp;
+<b class="fc"><i>992</i>&nbsp;           virtualView.sendMessageTo(nickname, new GivePossibleActionsEvent(nickname, actionsID, true) );</b>
+<i>993</i>&nbsp;
+<b class="fc"><i>994</i>&nbsp;       } else if ( !game.isValid(row, column) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) ){</b>
+<i>995</i>&nbsp;
+<b class="nc"><i>996</i>&nbsp;           List &lt;Point&gt; cellsInfo = generatePointsByCells(game.getLastCellsList());</b>
+<b class="nc"><i>997</i>&nbsp;           virtualView.sendMessageTo(nickname, new GivePossibleCellsToForceEvent(nickname, cellsInfo, false));</b>
+<i>998</i>&nbsp;       }
+<i>999</i>&nbsp;
+<b class="fc"><i>1000</i>&nbsp;    }</b>
+<i>1001</i>&nbsp;
+<i>1002</i>&nbsp;
+<i>1003</i>&nbsp;    @Override
+<i>1004</i>&nbsp;    public void manageEvent(ChosenBuildingEvent event) {
+<i>1005</i>&nbsp;
+<b class="fc"><i>1006</i>&nbsp;        String nickname = event.playerNickname;</b>
+<b class="fc"><i>1007</i>&nbsp;        int level = event.levelBuilding;</b>
+<b class="fc"><i>1008</i>&nbsp;        int pawnRow = event.pawnRow;</b>
+<b class="fc"><i>1009</i>&nbsp;        int pawnColumn = event.pawnColumn;</b>
+<b class="fc"><i>1010</i>&nbsp;        int buildRow = event.buildRow;</b>
+<b class="fc"><i>1011</i>&nbsp;        int buildColumn = event.buildColumn;</b>
+<i>1012</i>&nbsp;
+<b class="fc"><i>1013</i>&nbsp;        if (game.isValid(buildRow, buildColumn) &amp;&amp; game.isValid(level) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn) &amp;&amp; game.isValidPlayer(nickname)) {</b>
+<i>1014</i>&nbsp;
+<b class="fc"><i>1015</i>&nbsp;            game.pawnBuild(nickname, pawnRow, pawnColumn, buildRow, buildColumn, level);</b>
+<i>1016</i>&nbsp;
+<b class="fc"><i>1017</i>&nbsp;            newPossibleActions(nickname, pawnRow, pawnColumn);</b>
+<i>1018</i>&nbsp;
+<i>1019</i>&nbsp;        }
+<b class="fc"><i>1020</i>&nbsp;        else if ( !(game.isValid(buildRow, buildColumn) &amp;&amp; game.isValid(level) &amp;&amp; game.isValidPawn(nickname, pawnRow, pawnColumn)) ) {</b>
+<b class="fc"><i>1021</i>&nbsp;            List&lt;Building&gt; availableBuildings = game.getPossibleBuildingOnCell(nickname, buildRow, buildColumn);</b>
+<b class="fc"><i>1022</i>&nbsp;            List&lt;Integer&gt; buildingInfo = generateLevelByBuilding(availableBuildings);</b>
+<i>1023</i>&nbsp;
+<b class="fc"><i>1024</i>&nbsp;            virtualView.sendMessageTo(nickname, new GivePossibleBuildingsEvent(nickname, buildingInfo, false ));</b>
+<i>1025</i>&nbsp;        }
+<b class="fc"><i>1026</i>&nbsp;    }</b>
+<i>1027</i>&nbsp;
+<i>1028</i>&nbsp;
+<i>1029</i>&nbsp;    @Override
+<i>1030</i>&nbsp;    public void manageEvent(VictoryEvent event) {
+<i>1031</i>&nbsp;
+<b class="fc"><i>1032</i>&nbsp;       endGame(event.winnerNickname);</b>
+<i>1033</i>&nbsp;
+<b class="fc"><i>1034</i>&nbsp;    }</b>
+<i>1035</i>&nbsp;
+<i>1036</i>&nbsp;
+<i>1037</i>&nbsp;    // MARK : Support Methods Section ======================================================================================
+<i>1038</i>&nbsp;
+<i>1039</i>&nbsp;
+<i>1040</i>&nbsp;    public Point generatePointByCell (Cell c){
+<b class="fc"><i>1041</i>&nbsp;        return new Point(c.getRowPosition(), c.getColumnPosition());</b>
+<i>1042</i>&nbsp;    }
+<i>1043</i>&nbsp;
+<i>1044</i>&nbsp;
+<i>1045</i>&nbsp;    public List&lt;Point&gt; generatePointsByCells(List&lt;Cell&gt; cells){
+<i>1046</i>&nbsp;
+<b class="fc"><i>1047</i>&nbsp;        List &lt;Point&gt; points = new ArrayList&lt;&gt;();</b>
+<i>1048</i>&nbsp;
+<b class="fc"><i>1049</i>&nbsp;        for (Cell c : cells){</b>
+<b class="fc"><i>1050</i>&nbsp;            points.add(generatePointByCell(c));</b>
+<b class="fc"><i>1051</i>&nbsp;        }</b>
+<b class="fc"><i>1052</i>&nbsp;        return points;</b>
+<i>1053</i>&nbsp;
+<i>1054</i>&nbsp;    }
+<i>1055</i>&nbsp;
+<i>1056</i>&nbsp;
+<i>1057</i>&nbsp;    public List&lt;String&gt; generateActionIDByActions(List&lt;Action&gt; actions){
+<i>1058</i>&nbsp;
+<b class="fc"><i>1059</i>&nbsp;        List&lt;String&gt; actionsID = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>1060</i>&nbsp;        for (Action a : actions)</b>
+<b class="fc"><i>1061</i>&nbsp;            actionsID.add(a.getActionID());</b>
+<b class="fc"><i>1062</i>&nbsp;        return actionsID;</b>
+<i>1063</i>&nbsp;    }
+<i>1064</i>&nbsp;
+<i>1065</i>&nbsp;
+<i>1066</i>&nbsp;    public List&lt;Integer&gt; generateLevelByBuilding(List&lt;Building&gt; buildings){
+<i>1067</i>&nbsp;
+<b class="fc"><i>1068</i>&nbsp;        List&lt;Integer&gt; levels = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>1069</i>&nbsp;        for (Building b : buildings)</b>
+<b class="fc"><i>1070</i>&nbsp;            levels.add(b.getLevel());</b>
+<b class="fc"><i>1071</i>&nbsp;        return levels;</b>
+<i>1072</i>&nbsp;    }
+<i>1073</i>&nbsp;
+<i>1074</i>&nbsp;
+<i>1075</i>&nbsp;    // USED ONLY FOR TESTING
+<i>1076</i>&nbsp;    public PreGameLobby getPreGameLobby() {
+<b class="fc"><i>1077</i>&nbsp;        return this.preGameLobby;</b>
+<i>1078</i>&nbsp;    }
+<i>1079</i>&nbsp;
+<i>1080</i>&nbsp;
+<i>1081</i>&nbsp;    // USED ONLY FOR TESTING
+<i>1082</i>&nbsp;    public Game getGame() {
+<b class="fc"><i>1083</i>&nbsp;        return this.game;</b>
+<i>1084</i>&nbsp;    }
+<i>1085</i>&nbsp;
+<i>1086</i>&nbsp;
+<i>1087</i>&nbsp;    // MARK : Json Generator Section ======================================================================================
+<i>1088</i>&nbsp;
+<i>1089</i>&nbsp;
+<i>1090</i>&nbsp;    public String generateJsonActions(List&lt;Action&gt; actions) {
+<i>1091</i>&nbsp;
+<b class="fc"><i>1092</i>&nbsp;        String generatedJSON = &quot;&quot;;</b>
+<i>1093</i>&nbsp;
+<b class="fc"><i>1094</i>&nbsp;        JSONArray jsonList = new JSONArray();</b>
+<i>1095</i>&nbsp;
+<b class="fc"><i>1096</i>&nbsp;        for (Action a : actions ) {</b>
+<b class="fc"><i>1097</i>&nbsp;            JSONObject cellObj = new JSONObject();</b>
+<i>1098</i>&nbsp;
+<i>1099</i>&nbsp;            // writing the cell coordinate into the Json
+<b class="fc"><i>1100</i>&nbsp;            cellObj.put(&quot;action_id&quot;, a.getActionID());</b>
+<i>1101</i>&nbsp;
+<b class="fc"><i>1102</i>&nbsp;            jsonList.add(cellObj);</b>
+<b class="fc"><i>1103</i>&nbsp;        }</b>
+<i>1104</i>&nbsp;
+<b class="fc"><i>1105</i>&nbsp;        generatedJSON = jsonList.toString();</b>
+<i>1106</i>&nbsp;
+<b class="fc"><i>1107</i>&nbsp;        return generatedJSON;</b>
+<i>1108</i>&nbsp;    }
+<i>1109</i>&nbsp;
+<i>1110</i>&nbsp;
+<i>1111</i>&nbsp;    public String generateJsonCells(List&lt;Cell&gt; cells) {
+<i>1112</i>&nbsp;
+<b class="fc"><i>1113</i>&nbsp;        String generatedJSON = &quot;&quot;;</b>
+<i>1114</i>&nbsp;
+<b class="fc"><i>1115</i>&nbsp;        JSONArray jsonList = new JSONArray();</b>
+<i>1116</i>&nbsp;
+<b class="fc"><i>1117</i>&nbsp;        for (Cell c : cells ) {</b>
+<b class="fc"><i>1118</i>&nbsp;            JSONObject cellObj = new JSONObject();</b>
+<i>1119</i>&nbsp;
+<i>1120</i>&nbsp;            // writing the cell coordinate into the Json
+<b class="fc"><i>1121</i>&nbsp;            cellObj.put(&quot;row&quot;, c.getRowPosition());</b>
+<b class="fc"><i>1122</i>&nbsp;            cellObj.put(&quot;column&quot;, c.getColumnPosition());</b>
+<i>1123</i>&nbsp;
+<b class="fc"><i>1124</i>&nbsp;            jsonList.add(cellObj);</b>
+<b class="fc"><i>1125</i>&nbsp;        }</b>
+<i>1126</i>&nbsp;
+<b class="fc"><i>1127</i>&nbsp;        generatedJSON = jsonList.toString();</b>
+<i>1128</i>&nbsp;
+<b class="fc"><i>1129</i>&nbsp;        return generatedJSON;</b>
+<i>1130</i>&nbsp;    }
+<i>1131</i>&nbsp;
+<i>1132</i>&nbsp;
+<i>1133</i>&nbsp;    public String generateJsonBuildings(List&lt;Building&gt; buildings) {
+<i>1134</i>&nbsp;
+<b class="fc"><i>1135</i>&nbsp;        String generatedJSON = &quot;&quot;;</b>
+<i>1136</i>&nbsp;
+<b class="fc"><i>1137</i>&nbsp;        JSONArray jsonList = new JSONArray();</b>
+<i>1138</i>&nbsp;
+<b class="fc"><i>1139</i>&nbsp;        for (Building b : buildings ) {</b>
+<b class="fc"><i>1140</i>&nbsp;            JSONObject cellObj = new JSONObject();</b>
+<i>1141</i>&nbsp;
+<i>1142</i>&nbsp;            // writing the building info into the Json
+<b class="fc"><i>1143</i>&nbsp;            cellObj.put(&quot;level&quot;, b.getLevel());</b>
+<b class="fc"><i>1144</i>&nbsp;            cellObj.put(&quot;is_dome&quot;, b.getIsDome());</b>
+<i>1145</i>&nbsp;
+<b class="fc"><i>1146</i>&nbsp;            jsonList.add(cellObj);</b>
+<b class="fc"><i>1147</i>&nbsp;        }</b>
+<i>1148</i>&nbsp;
+<b class="fc"><i>1149</i>&nbsp;        generatedJSON = jsonList.toString();</b>
+<i>1150</i>&nbsp;
+<b class="fc"><i>1151</i>&nbsp;        return generatedJSON;</b>
+<i>1152</i>&nbsp;    }
+<i>1153</i>&nbsp;
+<i>1154</i>&nbsp;
+<i>1155</i>&nbsp;    public String generateJsonCards(List&lt;Card&gt; cards) {
+<i>1156</i>&nbsp;
+<b class="fc"><i>1157</i>&nbsp;        String generatedJSON = &quot;&quot;;</b>
+<i>1158</i>&nbsp;
+<b class="fc"><i>1159</i>&nbsp;        JSONArray jsonList = new JSONArray();</b>
+<i>1160</i>&nbsp;
+<b class="fc"><i>1161</i>&nbsp;        for (Card c : cards ) {</b>
+<b class="fc"><i>1162</i>&nbsp;            JSONObject cellObj = new JSONObject();</b>
+<i>1163</i>&nbsp;
+<i>1164</i>&nbsp;            // writing the cards info into the Json
+<b class="fc"><i>1165</i>&nbsp;            cellObj.put(&quot;name&quot;, c.getName());</b>
+<b class="fc"><i>1166</i>&nbsp;            cellObj.put(&quot;effect&quot;, c.getEffectDescription());</b>
+<i>1167</i>&nbsp;
+<b class="fc"><i>1168</i>&nbsp;            jsonList.add(cellObj);</b>
+<b class="fc"><i>1169</i>&nbsp;        }</b>
+<i>1170</i>&nbsp;
+<b class="fc"><i>1171</i>&nbsp;        generatedJSON = jsonList.toString();</b>
+<i>1172</i>&nbsp;
+<b class="fc"><i>1173</i>&nbsp;        return generatedJSON;</b>
+<i>1174</i>&nbsp;    }
+<i>1175</i>&nbsp;
+<i>1176</i>&nbsp;
+<i>1177</i>&nbsp;    public String generateJsonPlayersInfo(List&lt;String&gt; players,
+<i>1178</i>&nbsp;                                          List&lt;Color&gt; colors,
+<i>1179</i>&nbsp;                                          List&lt;Card&gt; cards) {
+<i>1180</i>&nbsp;
+<b class="fc"><i>1181</i>&nbsp;        String generatedJSON = &quot;&quot;;</b>
+<i>1182</i>&nbsp;
+<b class="fc"><i>1183</i>&nbsp;        JSONArray jsonList = new JSONArray();</b>
+<i>1184</i>&nbsp;
+<b class="fc"><i>1185</i>&nbsp;        for(int i = 0; i &lt; players.size(); i++) {</b>
+<b class="fc"><i>1186</i>&nbsp;            JSONObject cellObj = new JSONObject();</b>
+<i>1187</i>&nbsp;
+<i>1188</i>&nbsp;            // writing the cards info into the Json
+<b class="fc"><i>1189</i>&nbsp;            cellObj.put(&quot;nickname&quot;, players.get(i));</b>
+<b class="fc"><i>1190</i>&nbsp;            cellObj.put(&quot;color&quot;, colors.get(i).toString());</b>
+<b class="fc"><i>1191</i>&nbsp;            cellObj.put(&quot;card&quot;, cards.get(i).getName());</b>
+<b class="fc"><i>1192</i>&nbsp;            cellObj.put(&quot;effect&quot;, cards.get(i).getEffectDescription());</b>
+<i>1193</i>&nbsp;
+<b class="fc"><i>1194</i>&nbsp;            jsonList.add(cellObj);</b>
+<i>1195</i>&nbsp;        }
+<i>1196</i>&nbsp;
+<b class="fc"><i>1197</i>&nbsp;        generatedJSON = jsonList.toString();</b>
+<i>1198</i>&nbsp;
+<b class="fc"><i>1199</i>&nbsp;        return generatedJSON;</b>
+<i>1200</i>&nbsp;    }
+<i>1201</i>&nbsp;
+<i>1202</i>&nbsp;
+<i>1203</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

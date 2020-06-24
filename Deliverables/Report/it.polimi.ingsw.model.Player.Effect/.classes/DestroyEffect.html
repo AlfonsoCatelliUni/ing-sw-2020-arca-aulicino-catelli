@@ -1,0 +1,150 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DestroyEffect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DestroyEffect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DestroyEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    93,8%
+  </span>
+  <span class="absValue">
+    (15/ 16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Board.Building;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Consequence.Consequence;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>7</i>&nbsp;import it.polimi.ingsw.model.Player.State.DestroyAndFinishState;
+<i>8</i>&nbsp;import it.polimi.ingsw.model.Player.State.FinishState;
+<i>9</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveState;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;public class DestroyEffect extends EffectDecorator {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public DestroyEffect(Effect e) {
+<b class="fc"><i>17</i>&nbsp;        super(e);</b>
+<b class="fc"><i>18</i>&nbsp;        this.effect.getState().setEffect(this);</b>
+<b class="fc"><i>19</i>&nbsp;    }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    // ======================================================================================
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    /**
+<i>26</i>&nbsp;     * this method destroys the roof of the chosen cell.
+<i>27</i>&nbsp;     * This method will not destroy a dome because the wherePawnCanDestroy do not return cells with a dome in them
+<i>28</i>&nbsp;     * Same for the cells with height == 0
+<i>29</i>&nbsp;     * The block is only removed, so it is reusable
+<i>30</i>&nbsp;     * @param buildings is the list of possible buildings
+<i>31</i>&nbsp;     * @param designatedCell is the cell where the block will be destroyed
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    @Override
+<i>34</i>&nbsp;    public void destroy(Cell designatedCell, List&lt;Building&gt; buildings) {
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;        //find the correct building that stay under the actual roof
+<b class="fc"><i>37</i>&nbsp;        for(Building b : buildings) {</b>
+<i>38</i>&nbsp;
+<b class="fc"><i>39</i>&nbsp;            if(designatedCell.getHeight() == 1) {</b>
+<b class="fc"><i>40</i>&nbsp;                designatedCell.destroyRoof(new Building(0,25));</b>
+<b class="fc"><i>41</i>&nbsp;                break;</b>
+<i>42</i>&nbsp;
+<b class="fc"><i>43</i>&nbsp;            } else if(b.getLevel() + 1 == designatedCell.getHeight()) {</b>
+<b class="fc"><i>44</i>&nbsp;                designatedCell.destroyRoof(b); //destroy and place the chosen building</b>
+<b class="fc"><i>45</i>&nbsp;                break;</b>
+<i>46</i>&nbsp;            }
+<b class="nc"><i>47</i>&nbsp;        }</b>
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;        //if you have destroyed a block the you can only finish the game
+<b class="fc"><i>50</i>&nbsp;        if (super.effect.getState().getClass().equals(DestroyAndFinishState.class)) {</b>
+<b class="fc"><i>51</i>&nbsp;            changeState(new FinishState(this));</b>
+<i>52</i>&nbsp;        }
+<b class="fc"><i>53</i>&nbsp;    }</b>
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    @Override
+<i>59</i>&nbsp;    public Effect clone() {
+<b class="fc"><i>60</i>&nbsp;        return new DestroyEffect(effect.clone());</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    @Override
+<i>64</i>&nbsp;    public Effect addEffect(Effect e) {
+<b class="fc"><i>65</i>&nbsp;        return new DestroyEffect(e);</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

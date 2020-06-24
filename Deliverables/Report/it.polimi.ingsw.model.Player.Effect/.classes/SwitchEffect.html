@@ -1,0 +1,147 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SwitchEffect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SwitchEffect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SwitchEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (15/ 15)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Consequence.Consequence;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;public class SwitchEffect extends  EffectDecorator {
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;    public SwitchEffect(Effect e) {
+<b class="fc"><i>11</i>&nbsp;        super(e);</b>
+<b class="fc"><i>12</i>&nbsp;        this.effect.getState().setEffect(this);</b>
+<b class="fc"><i>13</i>&nbsp;    }</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    // ======================================================================================
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    /**
+<i>20</i>&nbsp;     * this is the method that actually move the pawn, in case of switching with
+<i>21</i>&nbsp;     * an opponent pawn this method force the opponent pawn in the designatedPawn
+<i>22</i>&nbsp;     * starting cell
+<i>23</i>&nbsp;     * @param gameBoard the gameBoard
+<i>24</i>&nbsp;     * @param designatedPawn the pawn that i want to move
+<i>25</i>&nbsp;     * @param nextPosition the new position of the pawn
+<i>26</i>&nbsp;     * @return an encoded value that indicates if the pawn moved on a third level
+<i>27</i>&nbsp;     */
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public Consequence move(Board gameBoard, Pawn designatedPawn, Cell nextPosition) {
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;        Consequence resultAction;
+<i>32</i>&nbsp;
+<b class="fc"><i>33</i>&nbsp;        if( nextPosition.isPawnHere() ) {</b>
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;            Pawn opponentPawn = nextPosition.getPawnInThisCell();</b>
+<b class="fc"><i>36</i>&nbsp;            Cell myPawnCell = designatedPawn.getPosition();</b>
+<i>37</i>&nbsp;
+<b class="fc"><i>38</i>&nbsp;            removePawn(gameBoard, opponentPawn);</b>
+<i>39</i>&nbsp;
+<b class="fc"><i>40</i>&nbsp;            resultAction = super.move(gameBoard, designatedPawn, nextPosition);</b>
+<i>41</i>&nbsp;
+<b class="fc"><i>42</i>&nbsp;            placePawn(gameBoard, opponentPawn, myPawnCell);</b>
+<b class="fc"><i>43</i>&nbsp;            opponentPawn.forcePawn(myPawnCell);</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;
+<b class="fc"><i>46</i>&nbsp;        }</b>
+<i>47</i>&nbsp;        else {
+<b class="fc"><i>48</i>&nbsp;            resultAction = super.move(gameBoard, designatedPawn, nextPosition);</b>
+<i>49</i>&nbsp;        }
+<b class="fc"><i>50</i>&nbsp;        return resultAction;</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    public Effect clone() {
+<b class="fc"><i>56</i>&nbsp;        return new SwitchEffect(effect.clone());</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    @Override
+<i>61</i>&nbsp;    public Effect addEffect(Effect e) {
+<b class="fc"><i>62</i>&nbsp;        return new SwitchEffect(e);</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

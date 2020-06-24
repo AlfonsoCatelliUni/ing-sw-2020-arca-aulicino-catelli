@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Card</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Card (it.polimi.ingsw.model.Player)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Card</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85,7%
+  </span>
+  <span class="absValue">
+    (6/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88,2%
+  </span>
+  <span class="absValue">
+    (15/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Player.Effect.Effect;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * the Card of the player, each player chooses one card, it&#39;s a description,
+<i>7</i>&nbsp; * the player will be decorated according to the card chosen
+<i>8</i>&nbsp; */
+<i>9</i>&nbsp;public class Card {
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    /**
+<i>13</i>&nbsp;     * identify the card
+<i>14</i>&nbsp;     */
+<i>15</i>&nbsp;    private String name;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * is it for a 3 player match?
+<i>20</i>&nbsp;     */
+<i>21</i>&nbsp;    private Boolean available3P;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    /**
+<i>25</i>&nbsp;     * effects of the card
+<i>26</i>&nbsp;     */
+<i>27</i>&nbsp;    private String effectDescription;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    /**
+<i>31</i>&nbsp;     * this is the base effect of the card where the player starts his turn
+<i>32</i>&nbsp;     */
+<i>33</i>&nbsp;    private Effect baseEffect;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    // ======================================================================================
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;
+<b class="fc"><i>40</i>&nbsp;    public Card(String name, Boolean available3P, String effectDescription) {</b>
+<b class="fc"><i>41</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>42</i>&nbsp;        this.available3P = available3P;</b>
+<b class="fc"><i>43</i>&nbsp;        this.effectDescription = effectDescription;</b>
+<b class="fc"><i>44</i>&nbsp;    }</b>
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;
+<b class="fc"><i>47</i>&nbsp;    public Card(String name, Boolean available3P, String effectDescription, Effect baseEffect) {</b>
+<b class="fc"><i>48</i>&nbsp;        this.name = name;</b>
+<b class="fc"><i>49</i>&nbsp;        this.available3P = available3P;</b>
+<b class="fc"><i>50</i>&nbsp;        this.effectDescription = effectDescription;</b>
+<b class="fc"><i>51</i>&nbsp;        this.baseEffect = baseEffect;</b>
+<b class="fc"><i>52</i>&nbsp;    }</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    // ======================================================================================
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    public String getName() {
+<b class="fc"><i>59</i>&nbsp;        return name;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    /**
+<i>64</i>&nbsp;     * @return if true, card can be used during 3 players match
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    public Boolean isAvailable3P() {
+<b class="fc"><i>67</i>&nbsp;        return available3P;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    public String getEffectDescription() {
+<b class="fc"><i>72</i>&nbsp;        return effectDescription;</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    public void setBaseEffect(Effect baseEffect) {
+<b class="nc"><i>77</i>&nbsp;        this.baseEffect = baseEffect;</b>
+<b class="nc"><i>78</i>&nbsp;    }</b>
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    public Effect getBaseEffect() {
+<b class="fc"><i>82</i>&nbsp;        return baseEffect.clone();</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

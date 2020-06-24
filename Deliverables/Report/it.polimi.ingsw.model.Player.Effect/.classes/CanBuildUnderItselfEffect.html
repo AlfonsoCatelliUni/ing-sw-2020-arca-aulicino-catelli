@@ -1,0 +1,133 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CanBuildUnderItselfEffect</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">it.polimi.ingsw.model.Player.Effect</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CanBuildUnderItselfEffect (it.polimi.ingsw.model.Player.Effect)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CanBuildUnderItselfEffect</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package it.polimi.ingsw.model.Player.Effect;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import it.polimi.ingsw.model.Board.Board;
+<i>4</i>&nbsp;import it.polimi.ingsw.model.Board.Cell;
+<i>5</i>&nbsp;import it.polimi.ingsw.model.Player.Pawn;
+<i>6</i>&nbsp;import it.polimi.ingsw.model.Player.State.MoveState;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;public class CanBuildUnderItselfEffect extends EffectDecorator {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    public CanBuildUnderItselfEffect(Effect e) {
+<b class="fc"><i>14</i>&nbsp;        super(e);</b>
+<b class="fc"><i>15</i>&nbsp;        this.effect.getState().setEffect(this);</b>
+<b class="fc"><i>16</i>&nbsp;    }</b>
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    // ======================================================================================
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    /**
+<i>23</i>&nbsp;     * this method calculates all the possible cells where the designated pawn can build,
+<i>24</i>&nbsp;     * adding the cell where the pawn itself is located, because with this decorator
+<i>25</i>&nbsp;     * you can build under your own pawn
+<i>26</i>&nbsp;     * @param gameBoard the board
+<i>27</i>&nbsp;     * @param designatedPawn the pawn that have to build
+<i>28</i>&nbsp;     * @return the list of cells
+<i>29</i>&nbsp;     */
+<i>30</i>&nbsp;    @Override
+<i>31</i>&nbsp;    public List&lt;Cell&gt; wherePawnCanBuild(Board gameBoard, Pawn designatedPawn) {
+<b class="fc"><i>32</i>&nbsp;        List&lt;Cell&gt; cellsAvailableToBuild = super.wherePawnCanBuild(gameBoard, designatedPawn);</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;        if(designatedPawn.getHeight() &lt;= 2) {</b>
+<b class="fc"><i>35</i>&nbsp;            cellsAvailableToBuild.add(designatedPawn.getPosition());</b>
+<i>36</i>&nbsp;        }
+<i>37</i>&nbsp;
+<b class="fc"><i>38</i>&nbsp;        return cellsAvailableToBuild;</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    @Override
+<i>42</i>&nbsp;    public Effect clone() {
+<b class="fc"><i>43</i>&nbsp;        return new CanBuildUnderItselfEffect(effect.clone());</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    public Effect addEffect(Effect e) {
+<b class="fc"><i>48</i>&nbsp;        return new CanBuildUnderItselfEffect(e);</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-23 10:13</div>
+</div>
+</body>
+</html>

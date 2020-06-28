@@ -15,13 +15,13 @@ Download the unique jar file and use this command line to execute the game.
 You need to go in the folder where you've saved the AM02.jar file.
 
 ```bash
-java -jar AM02.jar "param0"
+java -jar AM02.jar param0
 ```
 
-Where "param0" can be :
-* "server" : to execute the Server mode
-* "cli" : to execute the client in Command Line Interface mode
-* "gui" : to execute the client in Graphical User Interface mode
+Where "param0" can be:
+* server : to execute the Server mode
+* cli : to execute the client in Command Line Interface mode
+* gui : to execute the client in Graphical User Interface mode
 
 
 #### Code State ✅

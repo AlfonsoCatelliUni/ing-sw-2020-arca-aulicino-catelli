@@ -1,5 +1,5 @@
+# AM02
 # Software Engineering Project 2020
-### Group AM02
 ![Santorini : game cover](https://i2.wp.com/www.aleator.it/wp-content/uploads/2018/05/santorini-review-main-2.jpg)
 
 #### About The Game 🎮
@@ -11,8 +11,8 @@ To run the game you need to install [Java]
 
 
 #### Running 🏃🏻‍♂️
-Download the unique jar file and use this command line to execute the game.
-You need to go in the folder where you've saved the AM02.jar file.
+Download the unique jar file form [this directory].  
+In the terminal, go to the folder where you've saved the AM02.jar file and execute it using this command line.
 
 ```bash
 java -jar AM02.jar param0
@@ -22,6 +22,8 @@ Where "param0" can be:
 * server : to execute the Server mode
 * cli : to execute the client in Command Line Interface mode
 * gui : to execute the client in Graphical User Interface mode
+
+When the program asks the IP address and port number, if left empty, there will be automatically filled with 127.0.0.1 and 64209.
 
 
 #### Code State ✅
@@ -62,3 +64,4 @@ Where "param0" can be:
 
 [Java]:<https://www.java.com>
 [here]: <https://roxley.com/products/santorini>
+[this directory]: <https://github.com/AlfonsoCatelliUni/ing-sw-2020-arca-aulicino-catelli/tree/master/Deliverables/Jar>

@@ -7,7 +7,6 @@ import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.BuildAndFinishState;
 import it.polimi.ingsw.model.Player.State.BuildState;
 import it.polimi.ingsw.model.Player.State.FinishState;
-import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 

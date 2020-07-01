@@ -18,6 +18,7 @@ public class EndGameSTCEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "EndGameSTCEvent{" + "\n" +

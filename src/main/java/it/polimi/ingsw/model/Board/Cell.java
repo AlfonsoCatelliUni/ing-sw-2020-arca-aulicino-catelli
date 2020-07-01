@@ -9,7 +9,6 @@ public class Cell {
 
     /* x = column , y = row */
 
-
     /**
      * y = row
      */

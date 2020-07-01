@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.model.Color;
 
 public class FormattedPlayerInfo {
 

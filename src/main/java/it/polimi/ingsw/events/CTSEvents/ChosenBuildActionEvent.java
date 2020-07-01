@@ -44,25 +44,4 @@ public class ChosenBuildActionEvent extends ClientToServerEvent {
 
     // ======================================================================================
 
-
-//    public Action getAction() {
-//        return this.action;
-//    }
-//
-//
-//    public String getPlayerNickname() {
-//        return this.playerNickname;
-//    }
-//
-//
-//    public int getPawnRow() {
-//        return this.pawnRow;
-//    }
-//
-//
-//    public int getPawnColumn() {
-//        return this.pawnColumn;
-//    }
-
-
 }

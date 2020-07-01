@@ -92,10 +92,7 @@ public class Building {
     // ======================================================================================
 
 
-    /**
-     * USED ONLY FOR TESTING
-     * @param placedNumber is the number of block placed
-     */
+    //ONLY USED IN TESTING
     public void setPlacedNumber(int placedNumber) {
         this.placedNumber = placedNumber;
     }

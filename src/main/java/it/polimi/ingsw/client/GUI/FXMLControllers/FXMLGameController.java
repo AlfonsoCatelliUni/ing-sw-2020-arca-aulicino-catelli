@@ -666,8 +666,6 @@ public class FXMLGameController {
             for(int column = 0; column < 5; column++) {
                 index = (row * 5) + column;
                 domeImageList.get(index).setUserData( new FormattedSimpleCell(row, column) );
-                //domeImageList.get(index).setImage( new Image(getClass().getResourceAsStream("/Graphics/GameScene/Buildings/Dome.png")) );
-                //domeImageList.get(index).setVisible(false);
             }
         }
 
@@ -1226,7 +1224,7 @@ public class FXMLGameController {
                 updateHeight(index, cell.getHeight()-1);
                 domeImageList.get(index).setImage(blockDome);
                 domeImageList.get(index).setVisible(true);
-                //blockImageList.get(index).setVisible(false);
+
 
             }
             else {

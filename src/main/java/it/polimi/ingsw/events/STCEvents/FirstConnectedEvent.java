@@ -3,7 +3,6 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-import java.io.Serializable;
 
 public class FirstConnectedEvent extends ServerToClientEvent {
 
@@ -21,6 +20,7 @@ public class FirstConnectedEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "FirstConnectedEvent{" + "\n" +

@@ -25,12 +25,8 @@ public class FormattedCellInfo {
         this.column = column;
         this.height = height;
 
-        if( !pawnColor.equals("") && !pawnSex.equals("") ) {
-            this.isPawnHere = true;
-        }
-        else {
-            this.isPawnHere = false;
-        }
+        this.isPawnHere = !pawnColor.equals("") && !pawnSex.equals("");
+
         this.pawnInfo = Couple.create(pawnColor, pawnSex);
 
 
@@ -78,6 +74,7 @@ public class FormattedCellInfo {
     public Couple<Integer, Boolean> getRoofInfo() {
         return roofInfo;
     }
+
 
     @Override
     public boolean equals(Object o) {

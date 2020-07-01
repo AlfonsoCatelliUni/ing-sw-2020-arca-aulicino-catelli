@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
 import java.awt.*;
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 

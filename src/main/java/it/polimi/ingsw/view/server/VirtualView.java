@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.server;
 
+import it.polimi.ingsw.TheLogger;
 import it.polimi.ingsw.controller.Controller;
-import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 
@@ -10,7 +10,7 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.Connection;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
+import java.util.logging.Level;
 
 public class VirtualView extends Observable implements Observer {
 
@@ -117,7 +117,6 @@ public class VirtualView extends Observable implements Observer {
             }
         }
         catch(Exception e) {
-            //e.printStackTrace();
             return null;
         }
 
@@ -159,7 +158,7 @@ public class VirtualView extends Observable implements Observer {
         }
 
         //USED ONLY FOR TESTING, COMMENT FOR PLAY
-        System.out.println(event.toString() + "\n");
+        //System.out.println(event.toString() + "\n");
 
     }
 
@@ -170,8 +169,9 @@ public class VirtualView extends Observable implements Observer {
             try {
                 connectionMap.get(ID).sendEvent(event);
             } catch (NullPointerException e) {
+                TheLogger.LOGGER.log(Level.SEVERE, "Error trying to send message");
                 //USED ONLY FOR TESTING, COMMENT FOR PLAY
-                System.out.println("ID not found");
+                //System.out.println("ID not found");
             }
         }
 
@@ -186,9 +186,9 @@ public class VirtualView extends Observable implements Observer {
             }
         }
         catch (NullPointerException e) {
-            //e.printStackTrace();
+            TheLogger.LOGGER.log(Level.SEVERE, "Error trying to send message");
             //USED ONLY FOR TESTING, COMMENT FOR PLAY
-            System.out.println(event.toString() + "\n");
+            //System.out.println(event.toString() + "\n");
         }
     }
 

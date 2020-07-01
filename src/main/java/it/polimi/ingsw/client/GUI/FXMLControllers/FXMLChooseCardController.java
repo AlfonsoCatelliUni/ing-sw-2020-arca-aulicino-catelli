@@ -242,8 +242,6 @@ public class FXMLChooseCardController {
 
         disableCardsClick();
 
-
-
         ImageView selectedCard = (ImageView) event.getSource();
         String card = (String) selectedCard.getUserData();
 

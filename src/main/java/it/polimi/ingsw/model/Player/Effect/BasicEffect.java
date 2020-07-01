@@ -229,6 +229,7 @@ public class BasicEffect implements Effect {
         removePawn(gameBoard, designatedPawn);
 
         placePawn(gameBoard, designatedPawn, nextPosition);
+
         designatedPawn.forcePawn(nextPosition);
 
     }

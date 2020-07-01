@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -325,17 +324,6 @@ public class FXMLAllCardsController {
             });
         }
 
-        for (int i = 0 ; i < cardsList.size() ; i++){
-            int finalI = i;
-            labelList.get(i).setOnMouseEntered(e -> {
-                cardsList.get(finalI).setOpacity(0.7);
-            });
-
-            labelList.get(i).setOnMouseExited(e -> {
-                cardsList.get(finalI).setOpacity(1);
-            });
-        }
-
 
 
     }
@@ -346,11 +334,6 @@ public class FXMLAllCardsController {
             image.setOnMouseClicked( mouseEvent -> {});
             image.setOnMouseEntered( mouseEvent -> {});
             image.setOnMouseExited( mouseEvent -> {});
-        }
-
-        for (Label label : labelList){
-            label.setOnMouseEntered(e -> {});
-            label.setOnMouseExited(e -> {});
         }
 
 

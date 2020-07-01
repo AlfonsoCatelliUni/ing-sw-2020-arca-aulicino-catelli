@@ -34,6 +34,7 @@ public class GivePossibleCellsToForceEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "GivePossibleCellsToForceEvent{" + "\n" +

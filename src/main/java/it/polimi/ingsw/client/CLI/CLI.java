@@ -409,7 +409,7 @@ public class CLI implements Client, ServerToClientManager {
 
                    drawer.saveChallengerChoice(cardsName, cardsEffect);
                }
-               //drawer.showChallenger();
+
 
                choiceNum = challengerChoice(cardsName.size());
 
@@ -624,7 +624,6 @@ public class CLI implements Client, ServerToClientManager {
 
             clientView.sendCTSEvent(new ChosenPawnToUseEvent(nickname, rowUsedPawn, columnUsedPawn));
 
-            //TODO : forse questo titolo non è necessario
             synchronized (drawLock) {
                 drawer.saveTitleChoicePanel("-- WAIT UNTIL YOUR NEXT TURN --");
                 drawer.clearChoicePanelValues();
@@ -751,22 +750,7 @@ public class CLI implements Client, ServerToClientManager {
                 drawer.saveCellsChoicesValue(cellsAvailableToBuild);
             }
             selectedCell = userChoice(cellsAvailableToBuild.size());
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert an Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            selectedCell = input.nextInt();
-//
-//            if( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) ) {
-//                System.err.println("Unavailable Choice!");
-//            }
-//
-//        } while( !(selectedCell >= 0 && selectedCell < cellsAvailableToBuild.size()) );
+
             nextActionRow = cellsAvailableToBuild.get(selectedCell).x;
             nextActionColumn = cellsAvailableToBuild.get(selectedCell).y;
 
@@ -826,22 +810,7 @@ public class CLI implements Client, ServerToClientManager {
                 drawer.saveCellsChoicesValue(availableCellsToDestroy);
             }
             selectedCell = userChoice(availableCellsToDestroy.size());
-//        do {
-//            drawer.show();
-//
-//            while(!input.hasNextInt()) {
-//                System.err.println("Insert an Number!");
-//                drawer.show();
-//
-//                input.next();
-//            }
-//            selectedCell = input.nextInt();
-//
-//            if( !(selectedCell >= 0 && selectedCell < availableCellsToDestroy.size()) ) {
-//                System.out.println("Unavailable choice");
-//            }
-//
-//        } while( !(selectedCell >= 0 && selectedCell < availableCellsToDestroy.size()) );
+
             int selectedRowToDestroy = event.cells.get(selectedCell).x;
             int selectedColumnToDestroy = event.cells.get(selectedCell).y;
 
@@ -913,7 +882,7 @@ public class CLI implements Client, ServerToClientManager {
                     indexChosenAction = input.nextInt();
 
                     if (!(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size())) {
-                        System.err.println("Choice Unavailable !");
+                        System.err.println("Choice Unavailable!");
                     }
 
                 } while (!(indexChosenAction >= 0 && indexChosenAction < actionsAfterLosing.size()));
@@ -974,7 +943,7 @@ public class CLI implements Client, ServerToClientManager {
             }
 
             actions.add("If you want to play again you have to reconnect to the server!");
-            actions.add("paypal email for donations : alfonsocatelli@gmail.com");
+            actions.add("paypal email for donations: alfonsocatelli@gmail.com");
 
             synchronized (drawLock) {
                 drawer.saveActionsChoicesValue(actions);

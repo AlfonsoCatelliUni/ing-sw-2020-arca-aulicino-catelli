@@ -2,7 +2,6 @@ package it.polimi.ingsw.events.STCEvents;
 
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Actions.Action;
 
 import java.util.List;
 
@@ -39,17 +38,7 @@ public class GivePossibleActionsEvent extends ServerToClientEvent {
 
     // ======================================================================================
 
-
-//    public String getReceiverNickname() {
-//        return this.receiverNickname;
-//    }
-//
-//
-//    public List<Action> getActions() {
-//        return this.actions;
-//    }
-
-
+    //USED IN TESTING
     @Override
     public String toString() {
         return "GivePossibleActionsEvent{" + "\n" +

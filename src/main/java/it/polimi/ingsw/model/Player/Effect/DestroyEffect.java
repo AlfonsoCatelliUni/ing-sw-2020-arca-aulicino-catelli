@@ -2,11 +2,8 @@ package it.polimi.ingsw.model.Player.Effect;
 
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
-import it.polimi.ingsw.model.Consequence.Consequence;
-import it.polimi.ingsw.model.Player.Pawn;
 import it.polimi.ingsw.model.Player.State.DestroyAndFinishState;
 import it.polimi.ingsw.model.Player.State.FinishState;
-import it.polimi.ingsw.model.Player.State.MoveState;
 
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class DestroyEffect extends EffectDecorator {
     @Override
     public void destroy(Cell designatedCell, List<Building> buildings) {
 
-        //find the correct building that stay under the actual roof
+        //find the correct building that stays under the actual roof
         for(Building b : buildings) {
 
             if(designatedCell.getHeight() == 1) {
@@ -46,7 +43,7 @@ public class DestroyEffect extends EffectDecorator {
             }
         }
 
-        //if you have destroyed a block the you can only finish the game
+        //if you have destroyed a block then you can only finish the game
         if (super.effect.getState().getClass().equals(DestroyAndFinishState.class)) {
             changeState(new FinishState(this));
         }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
-import it.polimi.ingsw.model.Actions.Action;
 
 public class ChosenCellToMoveEvent extends ClientToServerEvent {
 

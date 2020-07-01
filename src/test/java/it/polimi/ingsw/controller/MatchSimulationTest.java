@@ -4,11 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import it.polimi.ingsw.JsonHandler;
-import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.events.CTSEvents.*;
-import it.polimi.ingsw.events.ClientToServerEvent;
-import it.polimi.ingsw.events.STCEvents.DisconnectionClientEvent;
-import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.model.Actions.*;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Board.Cell;
@@ -25,7 +21,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.SocketHandler;
 
 import static org.junit.Assert.*;
 
@@ -253,10 +248,6 @@ public class MatchSimulationTest  {
         chosenCards.add(Artemis.getName());
         chosenCards.add(Athena.getName());
 
-    //    controller.getPreGameLobby().getPickedCards().add(Apollo);
-    //    controller.getPreGameLobby().getPickedCards().add(Artemis);
-    //    controller.getPreGameLobby().getPickedCards().add(Athena);
-
         virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
 
 
@@ -264,7 +255,6 @@ public class MatchSimulationTest  {
 
         virtualView.update(new ChosenCardEvent(player2,Artemis.getName()));
 
-        //virtualView.update(new ChosenCardEvent(player3, Athena.getName()));
 
         virtualView.update(new ChosenFirstPlayerEvent(player3, player1));
 
@@ -768,23 +758,12 @@ public class MatchSimulationTest  {
         chosenCards.add(Charon.getName());
         chosenCards.add(Ares.getName());
 
-       // controller.getPreGameLobby().getPickedCards().add(Zeus);
-       // controller.getPreGameLobby().getPickedCards().add(Charon);
-       // controller.getPreGameLobby().getPickedCards().add(Ares);
-
-
-       // controller.getPreGameLobby().getPickedCards().add(Zeus);
-       // controller.getPreGameLobby().getPickedCards().add(Charon);
-       // controller.getPreGameLobby().getPickedCards().add(Ares);
-
         virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
-
 
         virtualView.update(new ChosenCardEvent(player1,Zeus.getName()));
 
         virtualView.update(new ChosenCardEvent(player2,Charon.getName()));
 
-       // virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
 
         virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
 
@@ -1370,22 +1349,12 @@ public class MatchSimulationTest  {
         chosenCards.add(Charon.getName());
         chosenCards.add(Ares.getName());
 
-       // controller.getPreGameLobby().getPickedCards().add(Prometheus);
-       // controller.getPreGameLobby().getPickedCards().add(Charon);
-       // controller.getPreGameLobby().getPickedCards().add(Ares);
-
-
-       // controller.getPreGameLobby().getPickedCards().add(Prometheus);
-       // controller.getPreGameLobby().getPickedCards().add(Charon);
-       // controller.getPreGameLobby().getPickedCards().add(Ares);
-
         virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
 
         virtualView.update(new ChosenCardEvent(player1,Prometheus.getName()));
 
         virtualView.update(new ChosenCardEvent(player2,Charon.getName()));
 
-        //virtualView.update(new ChosenCardEvent(player3, Ares.getName()));
 
         virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
 
@@ -1534,18 +1503,12 @@ public class MatchSimulationTest  {
 
         virtualView.update(new NewConnectionEvent(player3));
 
-        //controller.getPreGameLobby().getPickedCards().clear();
-
 
         Card Atlas = JsonHandler.deserializeCardList().get(3);
 
         Card Demeter = JsonHandler.deserializeCardList().get(4);
 
         Card Hephaestus = JsonHandler.deserializeCardList().get(5);
-
-        //controller.getPreGameLobby().getPickedCards().add(Atlas);
-        //controller.getPreGameLobby().getPickedCards().add(Demeter);
-        //controller.getPreGameLobby().getPickedCards().add(Hephaestus);
 
         List<String> chosenCards = new ArrayList<>();
         chosenCards.add(Atlas.getName());
@@ -1560,8 +1523,6 @@ public class MatchSimulationTest  {
 
         virtualView.update(new ChosenCardEvent(player2, Demeter.getName()));
 
-
-        //virtualView.update(new ChosenCardEvent(player3, Hephaestus.getName()));
 
         virtualView.update(new ChosenFirstPlayerEvent(player3, player1));
 
@@ -1846,18 +1807,11 @@ public class MatchSimulationTest  {
         virtualView.update(new ChosenCardsChallengerEvent(player3, chosenCards));
 
 
-        //controller.getPreGameLobby().getPickedCards().add(Pan);
-        //controller.getPreGameLobby().getPickedCards().add(Ares);
-        //controller.getPreGameLobby().getPickedCards().add(Hestia);
-
-
         virtualView.update(new ChosenCardEvent(player1, Pan.getName()));
 
 
         virtualView.update(new ChosenCardEvent(player2, Ares.getName()));
 
-
-        //virtualView.update(new ChosenCardEvent(player3, Hestia.getName()));
 
         virtualView.update(new ChosenFirstPlayerEvent(player3,player1));
 

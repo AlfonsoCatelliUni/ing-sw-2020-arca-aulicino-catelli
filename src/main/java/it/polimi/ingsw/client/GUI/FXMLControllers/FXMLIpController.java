@@ -61,9 +61,6 @@ public class FXMLIpController {
         ));
 
 
-
-        //ConnectButton.setDefaultButton(true);
-
         exitButton.setVisible(true);
         exitButtonPressed.setVisible(false);
 

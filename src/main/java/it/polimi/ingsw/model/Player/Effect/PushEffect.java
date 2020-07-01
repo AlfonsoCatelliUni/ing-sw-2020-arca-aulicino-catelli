@@ -36,6 +36,7 @@ public class PushEffect extends EffectDecorator {
             int diffColumn = nextPosition.getColumnPosition() - designatedPawn.getPosition().getColumnPosition();
 
             Pawn oppPawn = nextPosition.getPawnInThisCell();
+
             Cell oppCell = gameBoard.getCell( nextPosition.getRowPosition()+diffRow, nextPosition.getColumnPosition()+diffColumn );
 
             removePawn(gameBoard, nextPosition.getPawnInThisCell());

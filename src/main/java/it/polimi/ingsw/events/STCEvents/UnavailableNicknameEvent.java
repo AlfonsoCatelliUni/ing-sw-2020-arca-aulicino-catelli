@@ -3,8 +3,6 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-import java.io.Serializable;
-
 public class UnavailableNicknameEvent extends ServerToClientEvent {
 
 
@@ -20,6 +18,7 @@ public class UnavailableNicknameEvent extends ServerToClientEvent {
     }
 
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "UnavailableNicknameEvent{" + "\n" +

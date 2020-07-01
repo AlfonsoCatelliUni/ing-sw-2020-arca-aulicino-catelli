@@ -53,7 +53,6 @@ public class Server {
         }
         catch (IOException e) {
             TheLogger.LOGGER.log(Level.SEVERE, "Error while opening server socket");
-            e.printStackTrace();
         }
 
     }
@@ -64,7 +63,6 @@ public class Server {
 
     public static void main(String[] args) {
 
-        // :)
         Server server = new Server();
         server.run();
 
@@ -73,7 +71,7 @@ public class Server {
 
     public void run() {
 
-        System.out.println("Server listening on port : " + SOCKET_PORT + "\n");
+        System.out.println("Server listening on port: " + SOCKET_PORT + "\n");
 
         try {
 
@@ -86,14 +84,14 @@ public class Server {
                     controllerList.add(controller);
 
                     System.out.println("------------------------------");
-                    System.out.println("NEW CONTROLLER CREATED !");
+                    System.out.println("NEW CONTROLLER CREATED!");
                     System.out.println("------------------------------");
                     System.out.println("All Connection with the Server:");
 
                     Map<Integer, Connection> hash = controller.getVirtualView().getConnectionMap();
 
                     for(Integer i : hash.keySet() ) {
-                        System.out.println(String.valueOf(i) + " - " + hash.get(i) );
+                        System.out.println(i + " - " + hash.get(i) );
                     }
 
                     System.out.println("------------------------------\n");
@@ -114,7 +112,6 @@ public class Server {
                 System.out.println("New socket bounded at the player with ID: " + id + "\n");
 
                 executor.submit(connection);
-                //new Thread(connection).start();
 
                 connection.sendEvent(new ConnectionEstablishedEvent(id));
             }

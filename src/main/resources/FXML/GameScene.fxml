@@ -409,6 +409,7 @@
                               </GridPane>
                            </children>
                         </AnchorPane>
+                        <Region prefHeight="200.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </children>

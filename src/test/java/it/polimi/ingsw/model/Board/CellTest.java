@@ -25,10 +25,10 @@ class CellTest {
     }
 
 
-    /**
-     * testing if a only initialized cell is considered free and
-     * if adding and removing a pawn a cell set it free
-     */
+
+
+    // testing if a only initialized cell is considered free and
+    // if adding and removing a pawn a cell set it free
     @Test
     void getIsFree() {
 
@@ -91,10 +91,8 @@ class CellTest {
 
     }
 
-    /**
-     * testing if a only initialized cell is considered free and
-     * if adding and removing a pawn a cell set it free
-     */
+    // testing if a only initialized cell is considered free and
+    // if adding and removing a pawn a cell set it free
     @Test
     void freeCell() {
 

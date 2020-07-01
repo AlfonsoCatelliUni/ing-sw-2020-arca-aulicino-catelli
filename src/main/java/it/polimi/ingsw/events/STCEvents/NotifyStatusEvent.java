@@ -26,11 +26,7 @@ public class NotifyStatusEvent extends ServerToClientEvent {
     }
 
 
-//    public String getStatus(){
-//        return this.status;
-//    }
-
-
+    //USED IN TESTING
     @Override
     public String toString() {
         return "NotifyStatusEvent{" + "\n" +

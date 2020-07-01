@@ -415,8 +415,6 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 e.printStackTrace();
             }
 
-
-
             assert root != null;
             Scene scene = new Scene(root);
 
@@ -436,26 +434,14 @@ public class GUI extends Application implements Client, ServerToClientManager {
 
         System.out.println("RECEIVED ClosedWaitingRoomEvent ");
 
-        Platform.runLater( () -> {
-            lobbyController.close(event.connectedPlayers);
-//            VBox waitLayout = new VBox(25);
-//            waitLayout.setAlignment(Pos.CENTER);
-//            Label text = new Label("Wait your turn");
-//            waitLayout.getChildren().add(text);
-//
-//            Scene nextScene = new Scene(waitLayout, 750,500);
-//
-//            stage.setScene(nextScene);
-        });
+        Platform.runLater( () -> lobbyController.close(event.connectedPlayers));
     }
 
 
     @Override
     public void manageEvent(AskInitPawnsEvent event) {
 
-        Platform.runLater( () -> {
-            gameSceneController.chooseInitPawn(event);
-        });
+        Platform.runLater( () -> gameSceneController.chooseInitPawn(event));
 
     }
 
@@ -661,8 +647,7 @@ public class GUI extends Application implements Client, ServerToClientManager {
                 loseStage.setScene(scene);
                 loseStage.sizeToScene();
 
-                //loseStage.setHeight(600);
-                //loseStage.setWidth(800);
+
                 loseStage.setResizable(false);
                 loseStage.initModality(Modality.APPLICATION_MODAL);
 

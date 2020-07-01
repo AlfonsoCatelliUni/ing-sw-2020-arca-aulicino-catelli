@@ -52,7 +52,6 @@ class BasicEffectTest {
 
 
         alfoEffect = new BasicEffect();
-        //alfoEffect = new SwitchEffect(alfoEffect);
         alfoCard = new Card("switch_card", true, "switch_effect");
 
         alfoPlayer = new Player("alfonso", Color.BLUE, alfoCard, alfoEffect);
@@ -70,22 +69,6 @@ class BasicEffectTest {
         //massiPlayer.initPawn(gameBoard, gameBoard.getCell(0,4));
         //massiPlayer.initPawn(gameBoard, gameBoard.getCell(1,1));
 
-    }
-
-
-    /**
-     * this method is just a setter
-     */
-    @Test
-    void changeState() {
-    }
-
-
-    /**
-     * this method only calls the checkPossibleActions method of the state
-     */
-    @Test
-    void getPossibleActions() {
     }
 
 
@@ -171,34 +154,6 @@ class BasicEffectTest {
     }
 
 
-    /**
-     * this method only calls the gameboard.getCellsAvailableToBuild, already tested
-     */
-    @Test
-    void wherePawnCanBuild() {
-    }
-
-
-    /**
-     * this method only calls the gameboard.getPossibleBuildingOnCell, already tested
-     */
-    @Test
-    void getPossibleBuildingOnCell() {
-    }
-
-
-    @Test
-    void wherePawnCanForce() {
-    }
-
-    /**
-     * shouldn't be called by a player with a basic effect
-     */
-    @Test
-    void wherePawnCanDestroy() {
-    }
-
-
     @Test
     void move() {
         Consequence retMoveEncoded;
@@ -276,25 +231,6 @@ class BasicEffectTest {
     }
 
 
-    /**
-     * this method calls only the forcePawn from Pawn class that's already tested
-     */
-    @Test
-    void force() {
-    }
-
-
-    /**
-     * shouldn't be called by a player with a basic effect
-     */
-    @Test
-    void destroy() {
-    }
-
-
-    /**
-     * this method only calls the gameboard.PlacePawnHere
-     */
     @Test
     void placePawn() {
         massiPlayer.initPawn(gameBoard, gameBoard.getCell(4,4));

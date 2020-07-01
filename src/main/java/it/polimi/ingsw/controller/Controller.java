@@ -170,8 +170,6 @@ public class Controller implements Observer, ClientToServerManager {
             cards.add( preGameLobby.getCardOfPlayer(name) );
         }
 
-        //String cardsInfo = generateJsonCards(cards);
-
         String info = generateJsonPlayersInfo(orderedPlayers, colors, cards);
 
         virtualView.sendMessage(new StartGameEvent(info));
@@ -279,15 +277,6 @@ public class Controller implements Observer, ClientToServerManager {
 
         virtualView.sendMessage(new ClosedWaitingRoomEvent(new ArrayList<>(preGameLobby.getConnectedPlayers())));
 
-
-        //List<String> cardsName = preGameLobby.getPickedCards().stream().map(Card::getName).collect(Collectors.toList());
-        //List<String> cardsEffect = preGameLobby.getPickedCards().stream().map(Card::getEffectDescription).collect(Collectors.toList());
-
-        //String firstPlayer = preGameLobby.getConnectedPlayers().get(0);
-
-        //virtualView.sendMessageTo(firstPlayer, new GivePossibleCardsEvent(firstPlayer, cardsName, cardsEffect,  true));
-
-        //MARK : Con Challenger
         List<String> cardsName  = preGameLobby.getAllCardsForPlayers().stream().map(Card::getName).collect(Collectors.toList());
         List<String> cardsEffect = preGameLobby.getAllCardsForPlayers().stream().map(Card::getEffectDescription).collect(Collectors.toList());
         int numberOfPlayers = preGameLobby.getNumberOfPlayers();
@@ -635,7 +624,6 @@ public class Controller implements Observer, ClientToServerManager {
 
             } else if(index == preGameLobby.getNumberOfPlayers() - 1) {
 
-                //startGame();
                 String challenger = preGameLobby.getConnectedPlayers().get(index);
                 preGameLobby.addCard(challenger, preGameLobby.getPickedCards().get(0).getName());
 
@@ -812,6 +800,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenDestroyActionEvent event) {
+
         String nickname = event.playerNickname;
 
         String actionID = event.action;
@@ -865,6 +854,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenFinishActionEvent event) {
+
         String nickname = event.playerNickname;
 
         String chosenAction = event.action;
@@ -893,7 +883,6 @@ public class Controller implements Observer, ClientToServerManager {
 
         if( game.isValid(nextRow, nextColumn) && game.isValidPawn(nickname, pawnRow, pawnColumn) && game.isValidPlayer(nickname)) {
 
-            //THAT'S IMPORTANT!
             game.movePawn(nickname, pawnRow, pawnColumn, nextRow, nextColumn);
 
             newPossibleActions(nickname, nextRow, nextColumn);
@@ -947,6 +936,7 @@ public class Controller implements Observer, ClientToServerManager {
 
     @Override
     public void manageEvent(ChosenCellToDestroyEvent event) {
+
         String nickname = event.playerNickname;
 
         int pawnRow = event.pawnRow;

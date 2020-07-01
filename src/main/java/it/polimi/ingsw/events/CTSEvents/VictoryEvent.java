@@ -26,10 +26,4 @@ public class VictoryEvent extends ClientToServerEvent {
         visitor.manageEvent(this);
     }
 
-
-//    public String getWinnerNickname() {
-//        return this.winnerNickname;
-//    }
-
-
 }

@@ -3,8 +3,6 @@ package it.polimi.ingsw.events.CTSEvents;
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 
-import java.io.Serializable;
-
 public class ClientDisconnectionEvent extends ClientToServerEvent {
 
 

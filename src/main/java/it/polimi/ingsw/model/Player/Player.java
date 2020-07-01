@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Player {
 
-    private final int QUANTITY = 2;
+    private static final int QUANTITY = 2;
 
 
     private String name;
@@ -117,6 +117,15 @@ public class Player {
             p.resetPawnStatus();
         }
         this.effect = this.card.getBaseEffect();
+    }
+
+
+    /**
+     * this method checks if all pawns of the player are initialized
+     * @return true if player setted all two pawns
+     */
+    public boolean allInitializePawns(){
+        return pawns.size() == 2;
     }
 
 

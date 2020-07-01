@@ -16,6 +16,7 @@ public class PlainTextEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "PlainTextEvent{" + "\n" +

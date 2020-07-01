@@ -25,7 +25,7 @@ public class RoomNotFilledEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
-
+    //USED IN TESTING
     @Override
     public String toString() {
         return "RoomNotFilled{" + "\n" +

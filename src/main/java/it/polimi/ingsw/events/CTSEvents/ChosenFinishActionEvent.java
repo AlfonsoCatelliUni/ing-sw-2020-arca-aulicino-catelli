@@ -2,7 +2,6 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.manager.ClientToServerManager;
-import it.polimi.ingsw.model.Actions.Action;
 
 public class ChosenFinishActionEvent extends ClientToServerEvent {
 
@@ -32,16 +31,5 @@ public class ChosenFinishActionEvent extends ClientToServerEvent {
 
 
     // ======================================================================================
-
-
-//    public Action getAction() {
-//        return this.action;
-//    }
-//
-//
-//    public String getPlayerNickname() {
-//        return this.playerNickname;
-//    }
-
 
 }

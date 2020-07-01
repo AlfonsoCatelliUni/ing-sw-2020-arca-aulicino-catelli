@@ -2,7 +2,6 @@ package it.polimi.ingsw.events.CTSEvents;
 
 import it.polimi.ingsw.events.manager.ClientToServerManager;
 import it.polimi.ingsw.events.ClientToServerEvent;
-import it.polimi.ingsw.model.Actions.Action;
 
 public class ChosenMoveActionEvent extends ClientToServerEvent {
 
@@ -41,26 +40,5 @@ public class ChosenMoveActionEvent extends ClientToServerEvent {
 
 
     // ======================================================================================
-
-
-//    public String getPlayerNickname() {
-//        return this.playerNickname;
-//    }
-//
-//
-//    public Action getAction() {
-//        return this.action;
-//    }
-//
-//
-//    public int getPawnRow() {
-//        return this.pawnRow;
-//    }
-//
-//
-//    public int getPawnColumn() {
-//        return this.pawnColumn;
-//    }
-
 
 }

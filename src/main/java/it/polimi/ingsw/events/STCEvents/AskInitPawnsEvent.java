@@ -42,6 +42,7 @@ public class AskInitPawnsEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "AskInitPawnsEvent{" + "\n" +

@@ -4,8 +4,6 @@ import it.polimi.ingsw.client.CLI.CLI;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.server.Server;
 
-import java.util.Scanner;
-
 
 public class App {
 

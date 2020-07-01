@@ -15,8 +15,7 @@ public enum Color {
     ;
 
 
-    Color() {
-    }
+    Color() {}
 
     public static List<Color> getRandomColors(int size) {
 

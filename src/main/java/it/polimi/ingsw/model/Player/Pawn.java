@@ -73,6 +73,7 @@ public class Pawn {
      * @param startCell the initial cell of the pawn in the Board
      */
     public Pawn(Color color, Sex sex, Cell startCell) {
+
         this.color = color;
         this.sex = sex;
 
@@ -85,7 +86,6 @@ public class Pawn {
         this.forcedMove = false;
         this.chosen = false;
 
-
     }
 
 
@@ -93,7 +93,7 @@ public class Pawn {
 
 
     /**
-     * can i have the color of this pawn ?
+     * can i have the color of this pawn?
      * @return the color of the pawn
      */
     public Color getColor() {
@@ -102,7 +102,7 @@ public class Pawn {
 
 
     /**
-     * can i have the sex of the pawn ?
+     * can i have the sex of the pawn?
      * @return the sex of this pawn
      */
     public Sex getSex() {
@@ -111,7 +111,7 @@ public class Pawn {
 
 
     /**
-     * can i have the position of this pawn ?
+     * can i have the position of this pawn?
      * @return the cell that represent the position of the pawn
      */
     public Cell getPosition() {
@@ -120,7 +120,7 @@ public class Pawn {
 
 
     /**
-     * can i have the height level of this pawn ?
+     * can i have the height level of this pawn?
      * @return the height of the cell where the pawn actually is
      */
     public int getHeight() {
@@ -129,7 +129,7 @@ public class Pawn {
 
 
     /**
-     * has the pawn been moved ?
+     * has the pawn been moved?
      * @return true if it's been moved
      */
     public Boolean getHasMoved() {
@@ -138,7 +138,7 @@ public class Pawn {
 
 
     /**
-     * has the pawn built a construction ?
+     * has the pawn built a construction?
      * @return true if it has built a construction
      */
     public Boolean getHasBuilt() {
@@ -147,7 +147,7 @@ public class Pawn {
 
 
     /**
-     * has the pawn gone up ?
+     * has the pawn gone up?
      * @return true if it's gone up
      */
     public Boolean getGoneUp() {
@@ -156,7 +156,7 @@ public class Pawn {
 
 
     /**
-     * has the pawn been forced to move ?
+     * has the pawn been forced to move?
      * @return true if it's been forced to move
      */
     public Boolean getForcedMove() {
@@ -173,20 +173,6 @@ public class Pawn {
     }
 // ======================================================================================
 
-
-    // ONLY USED FOR TESTING
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-
-    public void setChosen(Boolean chosen) {
-        this.chosen = chosen;
-    }
-
-    // ======================================================================================
-
-
     /**
      * actually move the pawn, changing its state
      * @param nextPosition is the cell where the pawn will move to
@@ -197,8 +183,6 @@ public class Pawn {
         this.hasMoved = true;
         this.forcedMove = false;
 
-        /* potendo scendere di 1 o piu livelli devo controllare che
-         * la poszione successiva sia ad un livello minore dell'attuale */
         if( nextPosition.getHeight() < this.height ) {
             this.goneUp = false;
         }
@@ -233,6 +217,7 @@ public class Pawn {
 
         this.position = nextPosition;
         this.height = nextPosition.getHeight();
+
     }
 
 
@@ -249,6 +234,23 @@ public class Pawn {
         this.chosen = false;
 
     }
+
+
+    // ======================================================================================
+
+
+    // ONLY USED FOR TESTING
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+
+    public void setChosen(Boolean chosen) {
+        this.chosen = chosen;
+    }
+
+
+    // ======================================================================================
 
 
 

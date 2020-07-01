@@ -40,6 +40,7 @@ public class AllCardsEvent extends ServerToClientEvent {
     }
 
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "AllPossibleCards{" +  ",\n" +

@@ -37,6 +37,7 @@ public class Card {
     // ======================================================================================
 
 
+    //USED IN TESTING
     public Card(String name, Boolean available3P, String effectDescription) {
         this.name = name;
         this.available3P = available3P;
@@ -78,6 +79,10 @@ public class Card {
     }
 
 
+    /**
+     * get the base effect, not modified
+     * @return return the effect cloned in order to not modify it
+     */
     public Effect getBaseEffect() {
         return baseEffect.clone();
     }

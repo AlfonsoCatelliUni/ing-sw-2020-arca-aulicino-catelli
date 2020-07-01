@@ -2,7 +2,6 @@ package it.polimi.ingsw.events.STCEvents;
 
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Board.Cell;
 
 import java.awt.*;
 import java.util.List;
@@ -47,6 +46,7 @@ public class GivePossibleCellsToMoveEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "GivePossibleCellsToMoveEvent{" + "\n" +

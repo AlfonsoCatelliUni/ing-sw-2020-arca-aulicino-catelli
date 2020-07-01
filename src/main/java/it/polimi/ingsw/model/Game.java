@@ -106,6 +106,11 @@ public class Game extends Observable implements GameConsequenceHandler {
     // MARK : Main Functional Methods ======================================================================================
 
 
+    /**
+     * this method return the Cell of the pawns of player
+     * @param nickname name of the player to return pawn
+     * @return List of the Cell where the player's pawns are
+     */
     public List<Cell> getPawnsCoordinateByPlayer(String nickname){
         Player player = getPlayerByName(nickname);
         List<Cell> cells = new ArrayList<>();
@@ -121,6 +126,10 @@ public class Game extends Observable implements GameConsequenceHandler {
     }
 
 
+    /**
+     * this method return the Cell of the pawns of all players in game
+     * @return List of the Cell where the players' pawns are
+     */
     public List<Cell> getAllPawnsCoordinates(){
         List<Cell> cells = new ArrayList<>();
         for (String name : playersNickname)
@@ -141,7 +150,7 @@ public class Game extends Observable implements GameConsequenceHandler {
         player.initPawn(gameBoard, gameBoard.getCell(row, column));
 
         //send the update of the initialization of the pawns only if all two of the pawns are setted
-        if(player.getPawns().size()==2) {
+        if(player.allInitializePawns()) {
             updateAllObservers(new NotifyStatusEvent(generateStatusJson()));
         }
 
@@ -189,7 +198,6 @@ public class Game extends Observable implements GameConsequenceHandler {
         Player player = getPlayerByName(playerName);
 
         lastActionsList = player.getPossibleActions(gameBoard, gameBoard.getPawnByCoordinates(row, column));
-
 
         return new ArrayList<>(lastActionsList);
     }
@@ -334,6 +342,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param opponentColumn is the column od the opponent player'a pawn that will be forced
      */
     public void forceOpponent(String playerName, int pawnRow, int pawnColumn, int opponentRow, int opponentColumn){
+
         Cell nextPosition = gameBoard.getSymmetrical(gameBoard.getCell(pawnRow,pawnColumn), gameBoard.getCell(opponentRow, opponentColumn));
 
         Player player = getPlayerByName(playerName);
@@ -365,7 +374,6 @@ public class Game extends Observable implements GameConsequenceHandler {
      * @param playerName the losing player
      */
     public void removePlayer(String playerName) {
-
 
         Player player = getPlayerByName(playerName);
 
@@ -582,7 +590,7 @@ public class Game extends Observable implements GameConsequenceHandler {
      */
     @Override
     public void doConsequence(NoConsequence consequence) {
-        //nothing to do here :(
+        //nothing to do here :/
     }
 
 

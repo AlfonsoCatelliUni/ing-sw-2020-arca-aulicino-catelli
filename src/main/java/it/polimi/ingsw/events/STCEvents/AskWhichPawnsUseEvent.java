@@ -32,6 +32,7 @@ public class AskWhichPawnsUseEvent extends ServerToClientEvent {
     @Override
     public void accept(ServerToClientManager visitor) {visitor.manageEvent(this);}
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "AskWhichPawnsUseEvent{" + "\n" +

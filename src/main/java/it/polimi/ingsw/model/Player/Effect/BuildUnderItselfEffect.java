@@ -34,7 +34,7 @@ public class BuildUnderItselfEffect extends EffectDecorator {
     public Consequence build(Pawn designatedPawn, Cell designatedCell, int chosenLevel, List<Building> buildings) {
         super.build(designatedPawn, designatedCell, chosenLevel, buildings);
 
-        //if i build under myself I have to force myself up one level
+        //if I build under myself I have to force myself up one level
         if(designatedCell.equals(designatedPawn.getPosition())) {
             designatedPawn.forcePawn(designatedCell);
         }

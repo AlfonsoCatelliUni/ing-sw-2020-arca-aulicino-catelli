@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Player.*;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class PreGameLobby {
@@ -147,7 +146,6 @@ public class PreGameLobby {
 
     public void addPlayer(String nickname) {
 
-        //fare controllo prima di chiamare addPlayer
         if (!isNicknameAvailable(nickname)) {
             throw new RuntimeException("This Lobby already contains this player");
         }
@@ -200,7 +198,6 @@ public class PreGameLobby {
 
 
     public  void deletePlayerInformation(String nickname) {
-
 
         try {
             synchronized (lockNicknames) {

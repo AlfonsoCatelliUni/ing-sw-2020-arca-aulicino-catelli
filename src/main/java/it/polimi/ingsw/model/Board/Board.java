@@ -278,7 +278,7 @@ public class Board {
 
 
     /**
-     * how much complete towers are placed on the board right now ?
+     * how much complete towers are placed on the board right now?
      * @return the number of domes placed on the board
      */
     public int getNumberOfCompleteTowers() {

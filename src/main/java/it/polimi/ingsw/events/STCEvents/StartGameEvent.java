@@ -2,10 +2,6 @@ package it.polimi.ingsw.events.STCEvents;
 
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Color;
-
-import java.util.List;
-import java.util.ListResourceBundle;
 
 public class StartGameEvent extends ServerToClientEvent {
 
@@ -21,6 +17,7 @@ public class StartGameEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "StartGameEvent{" +  "\n" +

@@ -3,7 +3,6 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class SuccessfullyConnectedEvent extends ServerToClientEvent {
@@ -29,11 +28,7 @@ public class SuccessfullyConnectedEvent extends ServerToClientEvent {
     }
 
 
-//    public List<String> getConnectedPlayers() {
-//        return connectedPlayers;
-//    }
-
-
+    //USED IN TESTING
     @Override
     public String toString() {
         return "SuccessfullyConnectedEvent{" + "\n" +

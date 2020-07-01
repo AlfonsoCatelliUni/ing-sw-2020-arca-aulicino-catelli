@@ -3,8 +3,6 @@ package it.polimi.ingsw.events.STCEvents;
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
 
-import java.io.Serializable;
-
 public class ConnectionEstablishedEvent extends ServerToClientEvent {
 
 
@@ -31,11 +29,7 @@ public class ConnectionEstablishedEvent extends ServerToClientEvent {
     // ======================================================================================
 
 
-//    public Integer getID() {
-//        return this.ID;
-//    }
-
-
+    //USED IN TESTING
     @Override
     public String toString() {
         return "ConnectionEstablishedEvent{" + "\n" +

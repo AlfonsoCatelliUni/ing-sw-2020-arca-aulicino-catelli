@@ -47,27 +47,4 @@ public class ChosenInitialPawnCellEvent extends ClientToServerEvent {
     }
 
 
-    // ======================================================================================
-
-
-//    public String getActionID() {
-//        return this.actionID;
-//    }
-//
-//
-//    public String getPlayerNickname() {
-//        return this.playerNickname;
-//    }
-//
-//
-//    public int getPawnRow() {
-//        return this.pawnRow;
-//    }
-//
-//
-//    public int getPawnColumn() {
-//        return this.pawnColumn;
-//    }
-
-
 }

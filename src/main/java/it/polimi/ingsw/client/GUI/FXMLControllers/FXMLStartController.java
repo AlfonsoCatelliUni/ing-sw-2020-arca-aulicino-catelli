@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.GUI.FXMLControllers;
 
-import it.polimi.ingsw.client.GUI.FXMLControllers.FXMLIpController;
 import it.polimi.ingsw.client.GUI.GUI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,8 +32,6 @@ public class FXMLStartController {
     }
 
     private void initializeButton() {
-
-        //startGameButton.setDefaultButton(true);
 
         startGameButton.setOnMouseClicked(mouseEvent -> {
 

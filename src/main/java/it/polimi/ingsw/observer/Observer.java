@@ -1,6 +1,5 @@
 package it.polimi.ingsw.observer;
 
-
 import it.polimi.ingsw.events.ClientToServerEvent;
 import it.polimi.ingsw.events.ServerToClientEvent;
 

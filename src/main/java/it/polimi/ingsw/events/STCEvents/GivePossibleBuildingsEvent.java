@@ -2,7 +2,6 @@ package it.polimi.ingsw.events.STCEvents;
 
 import it.polimi.ingsw.events.ServerToClientEvent;
 import it.polimi.ingsw.events.manager.ServerToClientManager;
-import it.polimi.ingsw.model.Board.Building;
 
 import java.util.List;
 
@@ -28,6 +27,7 @@ public class GivePossibleBuildingsEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "GivePossibleBuildingsEvent{" + "\n" +

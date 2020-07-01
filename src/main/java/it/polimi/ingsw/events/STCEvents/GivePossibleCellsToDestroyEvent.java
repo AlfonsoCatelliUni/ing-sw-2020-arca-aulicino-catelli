@@ -28,6 +28,7 @@ public class GivePossibleCellsToDestroyEvent extends ServerToClientEvent {
 
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "GivePossibleCellsToDestroyEvent{" + "\n" +

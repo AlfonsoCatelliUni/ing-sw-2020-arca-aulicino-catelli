@@ -5,24 +5,21 @@ import it.polimi.ingsw.model.Actions.DestroyAction;
 import it.polimi.ingsw.model.Actions.FinishAction;
 import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
-import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Effect.BasicEffect;
 import it.polimi.ingsw.model.Player.Effect.CanDestroyEffect;
 import it.polimi.ingsw.model.Player.Effect.DestroyEffect;
-import it.polimi.ingsw.model.Player.Effect.MoreBuildNotOnSameEffect;
 import it.polimi.ingsw.model.Player.Player;
-import it.polimi.ingsw.model.Sex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.management.PlatformLoggingMXBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 class DestroyAndFinishStateTest {
 

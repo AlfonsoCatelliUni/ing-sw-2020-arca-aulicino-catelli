@@ -37,6 +37,7 @@ public class LosingByNoActionEvent extends ServerToClientEvent {
         visitor.manageEvent(this);
     }
 
+    //USED IN TESTING
     @Override
     public String toString() {
         return "LosingByNoActionEvent{" + "\n" +

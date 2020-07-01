@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.JsonHandler;
 import it.polimi.ingsw.model.Board.Cell;
 import it.polimi.ingsw.model.Consequence.BlockConsequence;
-import it.polimi.ingsw.model.Board.Board;
 import it.polimi.ingsw.model.Board.Building;
 import it.polimi.ingsw.model.Player.Card;
 import it.polimi.ingsw.model.Player.Effect.*;
@@ -330,51 +329,6 @@ class GameTest {
 
     }
 
-
-
-    /**
-     * this method calls only the wherePawnCanMove from Player class that's already tested
-     */
-    @Test
-    void wherePawnCanMove() {
-    }
-
-
-    /**
-     * this method calls only the wherePawnCanBuild from Player class that's already tested
-     */
-    @Test
-    void wherePawnCanBuild() {
-    }
-
-
-    /**
-     * this method calls only the getPossibleBuildingOnCell from Player class that's already tested
-     */
-    @Test
-    void getPossibleBuildingOnCell() {
-    }
-
-
-    /**
-     * this method calls only the getPossibleActions from Player class that's already tested
-     */
-    @Test
-    void getPossibleActions() {
-    }
-
-
-    /**
-     * this method calls only the getPawnsCoordinates from Player class that's already tested
-     */
-    @Test
-    void getPawnsCoordinates() {
-    }
-
-
-    /**
-     * this method calls only the pawnBuild from Player class that's already tested
-     */
     @Test
     void movePawn() {
         List<String> players = new ArrayList<>();
@@ -402,17 +356,6 @@ class GameTest {
     }
 
 
-    /**
-     * this method calls only the pawnBuild from Player class that's already tested
-     */
-    @Test
-    void pawnBuild() {
-    }
-
-
-    /**
-     * this method only calls the destroyBlock in player
-     */
     @Test
     void destroyBlock() {
 
@@ -444,7 +387,6 @@ class GameTest {
     }
 
 
-
     @Test
     void wherePawnCanDestroy() {
         List<String> players = new ArrayList<>();
@@ -474,8 +416,6 @@ class GameTest {
         List<Cell> returnedCells = gameTest.wherePawnCanDestroy("Alfantasy");
 
         assertEquals(correctCells, returnedCells);
-
-
 
     }
 

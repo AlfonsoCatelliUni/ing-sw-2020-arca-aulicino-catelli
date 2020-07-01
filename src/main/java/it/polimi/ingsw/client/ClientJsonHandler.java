@@ -1,15 +1,9 @@
 package it.polimi.ingsw.client;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.model.Board.Building;
-import it.polimi.ingsw.model.Player.Card;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.List;
 

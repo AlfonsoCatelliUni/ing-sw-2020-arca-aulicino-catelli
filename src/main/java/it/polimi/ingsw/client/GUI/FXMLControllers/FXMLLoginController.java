@@ -1,19 +1,13 @@
 package it.polimi.ingsw.client.GUI.FXMLControllers;
 
-import it.polimi.ingsw.client.GUI.Dialog;
 import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.events.CTSEvents.NewConnectionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -86,9 +80,6 @@ public class FXMLLoginController {
                         15
                 ));
 
-
-
-        //LoginButton.setDefaultButton(true);
 
         LoginButton.setOnMouseClicked(mouseEvent -> {
             LoginButton.setDisable(true);

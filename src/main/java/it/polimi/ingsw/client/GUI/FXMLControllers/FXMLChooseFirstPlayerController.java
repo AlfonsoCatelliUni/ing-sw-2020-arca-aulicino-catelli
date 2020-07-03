@@ -354,7 +354,7 @@ public class FXMLChooseFirstPlayerController {
 
                 name2.setText(playersNicknames.get(2));
                 name2.setVisible(true);
-                label2.setText(cardsName.get(1) + "\n\n" + effectsList.get(1));
+                label2.setText(cardsName.get(2) + "\n\n" + effectsList.get(2));
                 cardImage2.setImage(new Image(getClass().getResourceAsStream(cardsUrl.get(2))));
                 cardImage2.setVisible(true);
                 label2.setVisible(true);

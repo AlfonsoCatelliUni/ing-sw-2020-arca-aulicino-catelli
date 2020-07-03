@@ -59,6 +59,7 @@ public class Controller implements Observer, ClientToServerManager {
     private Object lock;
 
 
+    //multiple Games
     private Boolean isClosed;
 
 

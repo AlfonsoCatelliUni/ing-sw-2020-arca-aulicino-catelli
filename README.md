@@ -2,6 +2,9 @@
 # Software Engineering Project 2020
 ![Santorini : game cover](https://i2.wp.com/www.aleator.it/wp-content/uploads/2018/05/santorini-review-main-2.jpg)
 
+#### Final Grade 🎓
+30L
+
 #### About The Game 🎮
 You can find more information about the game [here].
 
